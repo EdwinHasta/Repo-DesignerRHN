@@ -72,7 +72,7 @@ public class ControlUnidad implements Serializable {
     private String tipoUnidad;
     //editar celda
     private Unidades editarUnidad;
-    private boolean cambioEditor, aceptarEditar;
+    private boolean cambioEditor, aceptarEditar,activarLov;
     //DUPLICAR
     private Unidades duplicarUnidad;
     //RASTRO
@@ -121,6 +121,7 @@ public class ControlUnidad implements Serializable {
         //secuenciaEmpleado = new BigInteger("11280578");
         secuenciaEmpleado = null;
         secuenciaPruebaConceptoEmpresa = null;
+        activarLov = true;
     }
 
     @PostConstruct
@@ -130,12 +131,6 @@ public class ControlUnidad implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarUnidades.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
-            getListaUnidades();
-            if (listaUnidades != null) {
-                infoRegistro = "Cantidad de registros : " + listaUnidades.size();
-            } else {
-                infoRegistro = "Cantidad de registros : 0";
-            }
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -143,6 +138,10 @@ public class ControlUnidad implements Serializable {
     }
 
     public void recibirPaginaEntrante(String pagina) {
+        listaUnidades = null;
+        getListaUnidades();
+        contarRegistros();
+        deshabbilitarBotonLov();
         paginaAnterior = pagina;
     }
 
@@ -188,16 +187,6 @@ public class ControlUnidad implements Serializable {
         }
     }
 
-    //EVENTO FILTRAR
-    public void eventofiltrar() {
-        if (tipoLista == 0) {
-            tipoLista = 1;
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        infoRegistro = "Cantidad de registros: " + filtradoListaUnidades.size();
-        context.update("form:informacionRegistro");
-    }
-
     //UBICACION CELDA
     public void cambiarIndice(int indice, int celda) {
         if (permitirIndex == true) {
@@ -206,17 +195,21 @@ public class ControlUnidad implements Serializable {
             tablaImprimir = ":formExportar:datosUnidadesExportar";
             nombreArchivo = "UnidadesXML";
             if (tipoLista == 0) {
+                deshabbilitarBotonLov();
                 secRegistro = listaUnidades.get(index).getSecuencia();
                 descrecuperado = listaUnidades.get(index).getNombre();
                 codiguin = listaUnidades.get(index).getCodigo();
                 if (cualCelda == 2) {
+                    habilitarBotonLov();
                     tipoUnidad = listaUnidades.get(index).getTipounidad().getNombre();
                 }
             } else {
                 secRegistro = filtradoListaUnidades.get(index).getSecuencia();
                 descrecuperado = filtradoListaUnidades.get(index).getNombre();
                 codiguin = filtradoListaUnidades.get(index).getCodigo();
+                deshabbilitarBotonLov();
                 if (cualCelda == 2) {
+                    habilitarBotonLov();
                     tipoUnidad = filtradoListaUnidades.get(index).getTipounidad().getNombre();
                 }
             }
@@ -236,14 +229,17 @@ public class ControlUnidad implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
+                deshabbilitarBotonLov();
                 context.update("formularioDialogos:editarCodigos");
                 context.execute("editarCodigos.show()");
                 cualCelda = -1;
             } else if (cualCelda == 1) {
+                deshabbilitarBotonLov();
                 context.update("formularioDialogos:editarNombres");
                 context.execute("editarNombres.show()");
                 cualCelda = -1;
             } else if (cualCelda == 2) {
+                habilitarBotonLov();
                 context.update("formularioDialogos:editarTipos");
                 context.execute("editarTipos.show()");
                 cualCelda = -1;
@@ -275,7 +271,7 @@ public class ControlUnidad implements Serializable {
                                 System.out.println("codiguin 3 " + codiguin);
                                 pasas++;
                             }
-                        } 
+                        }
                     }
                     if (pasas == 1) {
                         if (listaUnidadesModificar.isEmpty()) {
@@ -290,7 +286,7 @@ public class ControlUnidad implements Serializable {
                     } else {
                         listaUnidades.get(indice).setCodigo(codiguin);
                         context.update("formularioDialogos:existe");
-                        context.execute("existe.show()");                   
+                        context.execute("existe.show()");
                     }
                 }
                 index = -1;
@@ -317,7 +313,7 @@ public class ControlUnidad implements Serializable {
                             guardado = false;
                             context.update("form:ACEPTAR");
                         }
-                    } else{
+                    } else {
                         filtradoListaUnidades.get(indice).setCodigo(codiguin);
                         context.update("formularioDialogos:existe");
                         context.execute("existe.show()");
@@ -483,6 +479,7 @@ public class ControlUnidad implements Serializable {
 
     public void asignarIndex(Integer indice, int dlg, int LND) {
         index = indice;
+        deshabbilitarBotonLov();
         RequestContext context = RequestContext.getCurrentInstance();
         if (LND == 0) {
             tipoActualizacion = 0;
@@ -497,6 +494,8 @@ public class ControlUnidad implements Serializable {
             tipoActualizacion = 2;
         }
         if (dlg == 0) {
+            modificarInfoRegistroTUnidades(lovTiposUnidades.size());
+            habilitarBotonLov();
             context.update("formularioDialogos:tiposUnidadesDialogo");
             context.execute("tiposUnidadesDialogo.show()");
         }
@@ -553,6 +552,7 @@ public class ControlUnidad implements Serializable {
     }
 
     public void cancelarCambioTiposUnidades() {
+        RequestContext context = RequestContext.getCurrentInstance();
         lovFiltradoTiposUnidades = null;
         tiposUnidadSeleccionado = null;
         aceptar = true;
@@ -561,6 +561,9 @@ public class ControlUnidad implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
+        context.reset("formularioDialogos:LOVTiposUnidades:globalFilter");
+        context.execute("LOVTiposUnidades.clearFilters()");
+        context.execute("tiposUnidadesDialogo.hide()");
     }
 
     //LISTA DE VALORES DINAMICA
@@ -568,6 +571,8 @@ public class ControlUnidad implements Serializable {
         if (index >= 0) {
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 2) {
+                habilitarBotonLov();
+                modificarInfoRegistroTUnidades(lovTiposUnidades.size());
                 context.update("formularioDialogos:tiposUnidadesDialogo");
                 context.execute("tiposUnidadesDialogo.show()");
                 tipoActualizacion = 0;
@@ -673,12 +678,7 @@ public class ControlUnidad implements Serializable {
         k = 0;
         listaUnidades = null;
         getListaUnidades();
-        if (listaUnidades != null && !listaUnidades.isEmpty()) {
-            unidadSeleccionada = listaUnidades.get(0);
-            infoRegistro = "Cantidad de registros: " + listaUnidades.size();
-        } else {
-            infoRegistro = "Cantidad de registros: 0";
-        }
+        contarRegistros();
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -714,6 +714,8 @@ public class ControlUnidad implements Serializable {
         secRegistro = null;
         k = 0;
         listaUnidades = null;
+        getListaUnidades();
+        contarRegistros();
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -794,7 +796,6 @@ public class ControlUnidad implements Serializable {
                     listaUnidadesBorrar.add(listaUnidades.get(index));
                 }
                 listaUnidades.remove(index);
-                infoRegistro = "Cantidad de registros: " + listaUnidades.size();
             }
 
             if (tipoLista == 1) {
@@ -811,9 +812,10 @@ public class ControlUnidad implements Serializable {
                 int CIndex = listaUnidades.indexOf(filtradoListaUnidades.get(index));
                 listaUnidades.remove(CIndex);
                 filtradoListaUnidades.remove(index);
-                infoRegistro = "Cantidad de registros: " + filtradoListaUnidades.size();
+                modificarInfoRegistro(filtradoListaUnidades.size());
             }
 
+            modificarInfoRegistro(listaUnidades.size());
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosUnidades");
             context.update("form:informacionRegistro");
@@ -882,7 +884,7 @@ public class ControlUnidad implements Serializable {
             nuevaUnidad.setSecuencia(l);
             listaUnidadesCrear.add(nuevaUnidad);
             listaUnidades.add(nuevaUnidad);
-            infoRegistro = "Cantidad de registros: " + listaUnidades.size();
+            modificarInfoRegistro(listaUnidades.size());
             context.update("form:informacionRegistro");
             nuevaUnidad = new Unidades();
             //  nuevaCiudad.setNombre(Departamento);
@@ -986,7 +988,7 @@ public class ControlUnidad implements Serializable {
             listaUnidadesCrear.add(duplicarUnidad);
             context.update("form:datosUnidades");
             duplicarUnidad = new Unidades();
-            infoRegistro = "Cantidad de registros: " + listaUnidades.size();
+            modificarInfoRegistro(listaUnidades.size());
             context.update("form:informacionRegistro");
             context.update("formularioDialogos:DuplicarRegistroUnidad");
             context.execute("DuplicarRegistroUnidad.hide()");
@@ -1027,12 +1029,7 @@ public class ControlUnidad implements Serializable {
                 System.out.println("Se guardaron los datos con exito");
                 listaUnidades = null;
                 getListaUnidades();
-                if (listaUnidades != null && !listaUnidades.isEmpty()) {
-                    unidadSeleccionada = listaUnidades.get(0);
-                    infoRegistro = "Cantidad de registros: " + listaUnidades.size();
-                } else {
-                    infoRegistro = "Cantidad de registros: 0";
-                }
+                contarRegistros();
                 context.update("form:informacionRegistro");
                 context.update("form:datosUnidades");
                 guardado = true;
@@ -1050,6 +1047,48 @@ public class ControlUnidad implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
         }
+    }
+    
+    public void habilitarBotonLov(){
+    activarLov = false;
+    RequestContext.getCurrentInstance().update("form:listaValores");
+    }
+    
+    public void deshabbilitarBotonLov(){
+    activarLov = true;    
+    RequestContext.getCurrentInstance().update("form:listaValores");
+    }
+    
+
+    //EVENTO FILTRAR
+    public void eventofiltrar() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        modificarInfoRegistro(filtradoListaUnidades.size());
+        context.update("form:informacionRegistro");
+    }
+
+    public void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+    }
+
+    public void contarRegistros() {
+        if (listaUnidades != null) {
+            modificarInfoRegistro(listaUnidades.size());
+        } else {
+            modificarInfoRegistro(0);
+        }
+    }
+
+    public void modificarInfoRegistroTUnidades(int valor) {
+        infoRegistroTiposUnidades = String.valueOf(valor);
+    }
+    
+    public void eventoFiltrarTUnidades(){
+        modificarInfoRegistroTUnidades(lovFiltradoTiposUnidades.size());
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroTiposUnidades");
     }
 
     //Getter & Setters
@@ -1090,14 +1129,6 @@ public class ControlUnidad implements Serializable {
 
     public List<TiposUnidades> getLovTiposUnidades() {
         lovTiposUnidades = administrarUnidades.consultarTiposUnidades();
-        RequestContext context = RequestContext.getCurrentInstance();
-
-        if (lovTiposUnidades == null || lovTiposUnidades.isEmpty()) {
-            infoRegistroTiposUnidades = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistroTiposUnidades = "Cantidad de registros: " + lovTiposUnidades.size();
-        }
-        context.update("formularioDialogos:infoRegistroTiposUnidades");
         return lovTiposUnidades;
     }
 
@@ -1242,6 +1273,14 @@ public class ControlUnidad implements Serializable {
 
     public void setNombreArchivo(String nombreArchivo) {
         this.nombreArchivo = nombreArchivo;
+    }
+
+    public boolean isActivarLov() {
+        return activarLov;
+    }
+
+    public void setActivarLov(boolean activarLov) {
+        this.activarLov = activarLov;
     }
 
 }

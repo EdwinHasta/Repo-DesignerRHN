@@ -99,6 +99,7 @@ public class AdministrarComprobantes implements AdministrarComprobantesInterface
     public List<Parametros> consultarParametrosComprobantesActualUsuario() {
         String usuarioBD;
         usuarioBD = persistenciaActualUsuario.actualAliasBD(em);
+        System.out.println("administrarcomprobantes consultarParametrosComprobantesActualUsuario()  actualUsuario: " + usuarioBD );
         return persistenciaParametros.parametrosComprobantes(em,usuarioBD);
     }
 

@@ -3160,6 +3160,23 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/Legislacion.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tiposcotizantes</from-outcome>
+            <to-view-id>/tipocotizante.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipocotizante.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasLegislacion</from-outcome>
+            <to-view-id>/Legislacion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>detallestiposcotizantes</from-outcome>
@@ -3768,6 +3785,16 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+        <navigation-rule>
+        <from-view-id>/novedad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadtercero</from-outcome>
+            <to-view-id>/NovedadTercero.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
     <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>

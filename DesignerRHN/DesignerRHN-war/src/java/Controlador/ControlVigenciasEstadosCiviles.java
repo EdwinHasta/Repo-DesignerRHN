@@ -122,7 +122,9 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         contarRegistros();
         deshabilitarBotonLov();
         if (!listVigenciaEstadoCivilPorEmpleado.isEmpty()) {
-            vigenciaSeleccionada = listVigenciaEstadoCivilPorEmpleado.get(0);
+            if (listVigenciaEstadoCivilPorEmpleado != null) {
+                vigenciaSeleccionada = listVigenciaEstadoCivilPorEmpleado.get(0);
+            }
         }
 
     }

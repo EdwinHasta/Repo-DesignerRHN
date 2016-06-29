@@ -16,76 +16,89 @@
                     <f:loadBundle basename="Recursos.emplvigenciaindicador" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
                     
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal" >  
 
-                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red;font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlEmplVigenciaIndicador.empleado.persona.primerapellido} #{controlEmplVigenciaIndicador.empleado.persona.segundoapellido} #{controlEmplVigenciaIndicador.empleado.persona.nombre}">
+<!--                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red;font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlEmplVigenciaIndicador.empleado.persona.primerapellido} #{controlEmplVigenciaIndicador.empleado.persona.segundoapellido} #{controlEmplVigenciaIndicador.empleado.persona.nombre}">
                         </h:outputText>
-                        
-                        <p:toolbar style="position: absolute; top: 37px; left: 12px; height: 23px">  
+                        -->
+                        <p:toolbar styleClass="cssToolbar">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-size: 100% 100%;background-image: url(Imagenes/guardar.jpg) ;background-repeat: no-repeat; width: 25px; height: 25px;" actionListener="#{controlEmplVigenciaIndicador.guardadoGeneral()}" process="@this" />
+                                <p:commandButton id="guardarRapido" value="" style="background-size: 100% 100%;background-image: url(Imagenes/Iconos/guardar.png) ;background-repeat: no-repeat; width: 25px; height: 25px; border: none" actionListener="#{controlEmplVigenciaIndicador.guardadoGeneral()}" process="@this" />
                                 <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
 
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaIndicador.editarCelda()}" process="@this"/>
+                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none " actionListener="#{controlEmplVigenciaIndicador.editarCelda()}" process="@this"/>
                                 <p:tooltip  for="editar" value="#{msg['editar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaIndicador.listaValoresBoton()}" process="@this"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none " actionListener="#{controlEmplVigenciaIndicador.listaValoresBoton()}" process="@this"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaIndicador.activarCtrlF11()}" process="@this"/>
+                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none " actionListener="#{controlEmplVigenciaIndicador.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlEmplVigenciaIndicador.verificarExportXLS()}" />
+                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none " ajax="false" actionListener="#{controlEmplVigenciaIndicador.verificarExportXLS()}" />
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaIndicador.limpiarNuevaV()}" ajax="false">
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none " actionListener="#{controlEmplVigenciaIndicador.limpiarNuevaV()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportarV:datosVigenciaExportar" fileName="CensosXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaIndicador.validarExportPDF()}" ajax="false"/>
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none " actionListener="#{controlEmplVigenciaIndicador.validarExportPDF()}" ajax="false"/>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
                                 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroV.show()" update=":formularioDialogos:nuevaV"  process="@this"/> 
+                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none " oncomplete="NuevoRegistroV.show()" update=":formularioDialogos:nuevaV"  process="@this"/> 
                                 <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaIndicador.validarBorradoVigencia()}" process="@this"/>  
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none " actionListener="#{controlEmplVigenciaIndicador.validarBorradoVigencia()}" process="@this"/>  
                                 <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaIndicador.verificarDuplicarVigencia()}"  process="@this"/>  
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none " actionListener="#{controlEmplVigenciaIndicador.verificarDuplicarVigencia()}"  process="@this"/>  
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
                                 
                                 <p:separator style="position: relative; top: -9px"/>
                                 
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaIndicador.verificarRastro()}" process="@this"/>  
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none " actionListener="#{controlEmplVigenciaIndicador.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}" />
                                 
                                 <p:separator style="position: relative; top: -9px"/>
                                 
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaIndicador.cancelarModificacionV()}" process="@this"/>  
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none " actionListener="#{controlEmplVigenciaIndicador.cancelarModificacionV()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
                                 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplVigenciaIndicador.salir()}" action="infoEmplIndividual" process="@this"/>  
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none " actionListener="#{controlEmplVigenciaIndicador.salir()}" action="infoEmplIndividual" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
                                 
                             </p:toolbarGroup>  
                         </p:toolbar> 
+                         <p:commandButton style=" position: absolute; left: 675px; top: 500px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value=" " onclick="confirmarGuardar.show();" disabled="#{controlEmplVigenciaIndicador.guardado}" update=":form:datosVigencia" process="@this" />
+                        <p:commandButton style=" position: absolute; left: 765px; top: 500px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value=" " actionListener="#{controlEmplVigenciaIndicador.salir()}" action="infoEmplIndividual" process="@this" />
 
+                        <fieldset style="position: absolute; top: 73px; left: 10px; height: 18px; width: 833px; border-radius: 3px; text-align: left; border: solid #C7BFBF 1px">
+                        <h:outputText value="#{msg['empleado']} " style="font-weight: bold; color: #14388B; position: relative; top: 5px; left: 0px" />
+                        <h:outputText id="nombreEmpleado" value="#{controlEmplVigenciaIndicador.empleado.persona.nombreCompleto}" 
+                                          style="font-weight: bold; color: #BF1A1A; position: relative; left: 10px; top: 5px"/>
 
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 375px;width: 830px; border-radius: 10px; text-align: left">
+                            <h:outputText value="#{msg['codigo']}" style="font-weight: bold; color: #14388B; position: relative; left: 120px; top: 5px" />
+                            <h:outputText id="docEmpleado" value="#{controlEmplVigenciaIndicador.empleado.codigoempleado}" 
+                                          style="font-weight: bold; color: #BF1A1A; position: relative; left: 130px; top: 5px" />
+                        </fieldset>
+                        
+                        <fieldset style="position: absolute;top: 105px;left: 10px;height: 375px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="color: blue"><strong>#{msg['historicoCenso']}</strong></legend>
                             <p:dataTable id="datosVigencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceV" value="#{controlEmplVigenciaIndicador.listVigenciasIndicadores}" 
                                          filteredValue="#{controlEmplVigenciaIndicador.filtrarListVigenciasIndicadores}" editable="true" editMode="cell"
                                          scrollable="true" scrollWidth="825" scrollHeight="#{controlEmplVigenciaIndicador.altoTabla}" emptyMessage="#{msg['vacio']}" style="border: 1px;width: 810px"
                                          liveScroll="true" scrollRows="20" selection="#{controlEmplVigenciaIndicador.vigenciaTablaSeleccionada}" selectionMode="single">
-
+                                <f:event type="preRenderView" listener="#{controlEmplVigenciaIndicador.recordarSeleccion()}"/>
+                                <p:ajax event="filter" listener="#{controlEmplVigenciaIndicador.eventoFiltrar()}"/>
 
                                 <p:column headerText="#{msg['fechaInicial']}" sortBy="#{info.strFechaIni}" filterBy="#{info.strFechaIni}" filterMatchMode="contains" id="viFechaInicial" width="30"
                                           filterStyle="display: none; visibility: hidden;"  >                                  
@@ -97,9 +110,9 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <lnk:calendar id="dateFechaInicial" value="#{info.fechainicial}" width="99" > 
-                                                <p:ajax event="dateSelect" listener="#{controlEmplVigenciaIndicador.modificarFechas(indiceV,0)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlEmplVigenciaIndicador.modificarFechas(indiceV,0)}" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlEmplVigenciaIndicador.cambiarIndiceV(indiceV,0)}" process="@this"/> 
+                                                <p:ajax event="dateSelect" listener="#{controlEmplVigenciaIndicador.modificarFechas(info,0)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplVigenciaIndicador.modificarFechas(info,0)}" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlEmplVigenciaIndicador.cambiarIndiceV(info,0)}" process="@this"/> 
                                             </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -118,9 +131,9 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <lnk:calendar id="dateFechaFinal" value="#{info.fechafinal}" width="99" > 
-                                                <p:ajax event="dateSelect" listener="#{controlEmplVigenciaIndicador.modificarFechas(indiceV,1)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlEmplVigenciaIndicador.modificarFechas(indiceV,1)}" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlEmplVigenciaIndicador.cambiarIndiceV(indiceV,1)}" process="@this"/> 
+                                                <p:ajax event="dateSelect" listener="#{controlEmplVigenciaIndicador.modificarFechas(info,1)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplVigenciaIndicador.modificarFechas(info,1)}" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlEmplVigenciaIndicador.cambiarIndiceV(info,1)}" process="@this"/> 
                                             </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -135,9 +148,9 @@
                                         <f:facet name="output"><h:outputText value="#{info.tipoindicador.descripcion}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.tipoindicador.descripcion}" id="editarTipoIndicadorVI" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
-                                                <p:ajax event="select" listener="#{controlEmplVigenciaIndicador.cambiarIndiceV(indiceV,2)}" process="@this"/> 
-                                                <p:ajax event="dblclick" listener="#{controlEmplVigenciaIndicador.asignarIndex(indiceV,0,0)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlEmplVigenciaIndicador.modificarVigencia(indiceV, 'TIPOS', info.tipoindicador.descripcion)}" process="@this" update="editarTipoIndicadorVI"/>
+                                                <p:ajax event="select" listener="#{controlEmplVigenciaIndicador.cambiarIndiceV(info,2)}" process="@this"/> 
+                                                <p:ajax event="dblclick" listener="#{controlEmplVigenciaIndicador.asignarIndex(info,0,0)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplVigenciaIndicador.modificarVigencia(info, 'TIPOS', info.tipoindicador.descripcion)}" process="@this" update="editarTipoIndicadorVI"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -153,9 +166,9 @@
                                         <f:facet name="output"><h:outputText value="#{info.indicador.descripcion}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info.indicador.descripcion}" id="editarIndicadorVI" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
-                                                <p:ajax event="select" listener="#{controlEmplVigenciaIndicador.cambiarIndiceV(indiceV,3)}" process="@this"/> 
-                                                <p:ajax event="dblclick" listener="#{controlEmplVigenciaIndicador.asignarIndex(indiceV,1,0)}" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlEmplVigenciaIndicador.modificarVigencia(indiceV, 'INDICADORES', info.indicador.descripcion)}" process="@this" update="editarIndicadorVI"/>
+                                                <p:ajax event="select" listener="#{controlEmplVigenciaIndicador.cambiarIndiceV(info,3)}" process="@this"/> 
+                                                <p:ajax event="dblclick" listener="#{controlEmplVigenciaIndicador.asignarIndex(info,1,0)}" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplVigenciaIndicador.modificarVigencia(info, 'INDICADORES', info.indicador.descripcion)}" process="@this" update="editarIndicadorVI"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -165,6 +178,7 @@
                                 </p:column>
 
                             </p:dataTable>
+                            <h:outputText id="informacionRegistro" value="#{msg['infoRegistros']} #{controlEmplVigenciaIndicador.infoRegistro}" style="position: relative; left: 15px; top: 4px; font-weight: bold"/>
                         </fieldset>
 
                         <p:dialog header="#{msg['censoM']}" widgetVar="TiposDialogo" draggable="false" resizable="false" closable="false" id="TiposDialogo"  
@@ -174,6 +188,7 @@
                                          filteredValue="#{controlEmplVigenciaIndicador.filtrarListTiposIndicadores}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEmplVigenciaIndicador.activarAceptar()}" update=":form:aceptarT"/>
                                 <p:ajax event="rowDblselect" listener="#{controlEmplVigenciaIndicador.actualizarTipoIndicador()}" process="@this" />
+                                <p:ajax event="filter" listener="#{controlEmplVigenciaIndicador.eventoFiltrarTipo()}"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTI']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTipos.filter();" style="width:150px; position: relative; left: 40px;" />  
@@ -186,7 +201,7 @@
                                 </p:column>
                             </p:dataTable>
                             
-                            <h:outputText id="infoRegistroTipo" value="#{controlEmplVigenciaIndicador.infoRegistroTipo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroTipo" value="#{msg['infoRegistros']} #{controlEmplVigenciaIndicador.infoRegistroTipo}" style="position: absolute; left: 20px; top: 350px; font-weight: bold"/>
                             
                             <p:commandButton id="aceptarT" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlEmplVigenciaIndicador.aceptar}" actionListener="#{controlEmplVigenciaIndicador.actualizarTipoIndicador()}" process="@this"/>
                             
@@ -202,6 +217,7 @@
                                          filteredValue="#{controlEmplVigenciaIndicador.filtrarListIndicadores}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEmplVigenciaIndicador.activarAceptar()}" update=":form:aceptarI"/>
                                 <p:ajax event="rowDblselect" listener="#{controlEmplVigenciaIndicador.actualizarIndicador()}" process="@this" />
+                                <p:ajax event="filter" listener="#{controlEmplVigenciaIndicador.eventoFiltrarIndicador()}"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarI']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovIndicador.filter();" style="width:150px; position: relative; left: 20px;" />  
@@ -215,7 +231,7 @@
                                 </p:column>
                             </p:dataTable>
                             
-                            <h:outputText id="infoRegistroIndicador" value="#{controlEmplVigenciaIndicador.infoRegistroIndicador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroIndicador" value="#{msg['infoRegistros']} #{controlEmplVigenciaIndicador.infoRegistroIndicador}" style="position: absolute; left: 20px; top: 350px; font-weight: bold"/>
                             
                             <p:commandButton id="aceptarI" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlEmplVigenciaIndicador.actualizarIndicador()}" disabled="#{controlEmplVigenciaIndicador.aceptar}" process="@this"/>
                             
@@ -223,75 +239,71 @@
                             
                         </p:dialog>
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 475px" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlEmplVigenciaIndicador.guardado}" update=":form:datosVigencia" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 475px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlEmplVigenciaIndicador.salir()}" action="infoEmplIndividual" process="@this" />
-                        <h:outputText id="informacionRegistro" value="#{controlEmplVigenciaIndicador.infoRegistro}" style="position: absolute; left: 15px; top: 480px; font-weight: bold"/>
-
                     </p:panel>
 
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplVigenciaIndicador.guardadoGeneral()}" action="infoEmplIndividual" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplVigenciaIndicador.salir()}" action="infoEmplIndividual" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplVigenciaIndicador.guardadoGeneral()}" action="infoEmplIndividual" style="position: absolute; top: 50px; left: 125px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplVigenciaIndicador.salir()}" action="infoEmplIndividual" style="position: absolute; top: 50px; left: 190px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 260px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>    
                     
                     
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplVigenciaIndicador.backUpSecRegistro, 'VigenciasIndicadores', 'vigenciaIndRastro')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplVigenciaIndicador.backUpSecRegistro, 'VigenciasIndicadores', 'vigenciaIndRastro')}" style="position: absolute; top: 63px; left: 175px" icon="ui-icon-check" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 240px" icon="ui-icon-close" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('VigenciasIndicadores', 'vigenciaIndRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('VigenciasIndicadores', 'vigenciaIndRastro')}" style="position: absolute; top: 60px; left: 175px" icon="ui-icon-check" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 240px" icon="ui-icon-close" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    <p:dialog id="errorRastroHistorico" header="#{msg['error']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    <p:dialog id="errorRegistroRastro" header="#{msg['error']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['atencion']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplVigenciaIndicador.backUpSecRegistro, 'VigenciasIndicadores', 'vigenciaIndRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    <p:dialog id="errorTablaConRastro" header="#{msg['informacion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorTablaConRastro']} #{msg['atencion']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplVigenciaIndicador.backUpSecRegistro, 'VigenciasIndicadores', 'vigenciaIndRastro')}" style="position: absolute; top: 70px; left: 175px" action="rastro" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 70px; left: 240px" process="@this" icon="ui-icon-close" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                    <p:dialog id="errorTablaSinRastro" header="#{msg['error']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
+                    <p:dialog id="seleccionarRegistro" header="#{msg['error']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    <p:dialog id="errorObjetosDB" header="#{msg['error']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="70" width="280px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 5px; width: 185px; font-weight:bold;" />
                     </p:dialog>
                     
                     <p:dialog id="errorFechas" header="#{msg['atencion']}" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['atencion']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['errorFechas']}" onclick="errorFechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="errorFechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" icon="ui-icon-check" />
                     </p:dialog>
                     
-                    <p:dialog id="errorRegInfo" header="#{msg['atencion']}" widgetVar="errorRegInfo"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                    <p:dialog id="errorRegInfo" header="#{msg['error']}" widgetVar="errorRegInfo"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRegInfo']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
@@ -324,24 +336,24 @@
                             
                             <strong><h:outputText value="#{msg['tipoIndicadorN']}" style="position: absolute; top: 135px; left: 50px" /></strong>
                             <p:inputText id="nuevaTipoIndicadorV" value="#{controlEmplVigenciaIndicador.nuevaVigencia.tipoindicador.descripcion}" style="width: 122px; position: absolute; left: 200px; top: 130px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="dblclick" listener="#{controlEmplVigenciaIndicador.asignarIndex(indice,0,1)}"/>
+                                <p:ajax event="dblclick" listener="#{controlEmplVigenciaIndicador.asignarIndex(info,0,1)}"/>
                                 <p:ajax event="click" listener="#{controlEmplVigenciaIndicador.valoresBackupAutocompletarVigencia(1, 'TIPOS')}" />
                                 <p:ajax event="change" listener="#{controlEmplVigenciaIndicador.autocompletarNuevoyDuplicadoVigencia('TIPOS', controlEmplVigenciaIndicador.nuevaVigencia.tipoindicador.descripcion,1)}" process="@this" update="nuevaTipoIndicadorV"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 330px; top: 130px;  " id="btnNuevaTipos" icon="ui-icon-search" process="@this"  actionListener="#{controlEmplVigenciaIndicador.asignarIndex(indice,0,1)}" update="nuevaTipoIndicadorV"/>   
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 23px; border: none; position: absolute; left: 330px; top: 130px;  " id="btnNuevaTipos" value=" " actionListener="#{controlEmplVigenciaIndicador.asignarIndex(info,0,1)}" update="nuevaTipoIndicadorV"/>   
                             <p:watermark for="nuevaTipoIndicadorV" value="#{msg['tipoIndicador']}" />
 
                             <strong><h:outputText value="*#{msg['indicadorN']}" style="position: absolute; top: 165px; left: 50px" /></strong>
                             <p:inputText id="nuevaIndicadorV" value="#{controlEmplVigenciaIndicador.nuevaVigencia.indicador.descripcion}" style="width: 122px; position: absolute; left: 200px; top: 160px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="dblclick" listener="#{controlEmplVigenciaIndicador.asignarIndex(indice,1,1)}"/>
+                                <p:ajax event="dblclick" listener="#{controlEmplVigenciaIndicador.asignarIndex(info,1,1)}"/>
                                 <p:ajax event="click" listener="#{controlEmplVigenciaIndicador.valoresBackupAutocompletarVigencia(1, 'INDICADORES')}" />
                                 <p:ajax event="change" listener="#{controlEmplVigenciaIndicador.autocompletarNuevoyDuplicadoVigencia('INDICADORES', controlEmplVigenciaIndicador.nuevaVigencia.indicador.descripcion,1)}" process="@this" update="nuevaIndicadorV"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 330px; top: 160px;  " id="btnNuevaIndicador" icon="ui-icon-search" process="@this"  actionListener="#{controlEmplVigenciaIndicador.asignarIndex(indice,1,1)}" update="nuevaIndicadorV"/>   
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none ; position: absolute; left: 330px; top: 160px;  " id="btnNuevaIndicador" value=" " process="@this"  actionListener="#{controlEmplVigenciaIndicador.asignarIndex(info,1,1)}" update="nuevaIndicadorV"/>   
                             <p:watermark for="nuevaIndicadorV" value="#{msg['descripcion']}" />
 
                             <p:commandButton icon="ui-icon-trash" id="limpiarNV" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 195px;" actionListener="#{controlEmplVigenciaIndicador.limpiarNuevaV()}" update="nuevaV" process="@this"/>
-                            <p:commandButton icon="ui-icon-circle-check" id="agregarNV" value="#{msg['agregar']}" style="position: absolute; left: 190px; top: 195px;" actionListener="#{controlEmplVigenciaIndicador.agregarNuevaV()}" process="@this"/>
+                            <p:commandButton icon="ui-icon-circle-check" id="agregarNV" value="#{msg['agregar']}" style="position: absolute; left: 180px; top: 195px;" actionListener="#{controlEmplVigenciaIndicador.agregarNuevaV()}" process="@this"/>
                             <p:commandButton icon="ui-icon-circle-close" id="cancelarNV" value="#{msg['cancelar']}" style="position: absolute; left: 280px; top: 195px;" actionListener="#{controlEmplVigenciaIndicador.limpiarNuevaV()}" update="nuevaV" onclick="NuevoRegistroV.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -370,24 +382,24 @@
 
                             <strong><h:outputText value="#{msg['tipoIndicadorN']}" style="position: absolute; top: 135px; left: 50px" /></strong>
                             <p:inputText id="duplicarTipoV" value="#{controlEmplVigenciaIndicador.duplicarVigenciaIndicador.tipoindicador.descripcion}" style="width: 122px; position: absolute; left: 200px; top: 130px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="dblclick" listener="#{controlEmplVigenciaIndicador.asignarIndex(indice,0,2)}"/>
+                                <p:ajax event="dblclick" listener="#{controlEmplVigenciaIndicador.asignarIndex(info,0,2)}"/>
                                 <p:ajax event="click" listener="#{controlEmplVigenciaIndicador.valoresBackupAutocompletarVigencia(2, 'TIPOS')}" />
                                 <p:ajax event="change" listener="#{controlEmplVigenciaIndicador.autocompletarNuevoyDuplicadoVigencia('TIPOS', controlEmplVigenciaIndicador.duplicarVigenciaIndicador.tipoindicador.descripcion,2)}" process="@this" update="duplicarTipoV"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 330px; top: 130px;  " id="btnDuplicaTipo" icon="ui-icon-search" process="@this"  actionListener="#{controlEmplVigenciaIndicador.asignarIndex(indice,0,2)}" update="duplicarTipoV"/>   
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 23px; border: none; position: absolute; left: 330px; top: 130px;  " id="btnDuplicaTipo" value="" process="@this"  actionListener="#{controlEmplVigenciaIndicador.asignarIndex(info,0,2)}" update="duplicarTipoV"/>   
                             <p:watermark for="duplicarTipoV" value="#{msg['tipoIndicador']}" />
 
                             <strong><h:outputText value="*#{msg['indicadorN']}" style="position: absolute; top: 165px; left: 50px" /></strong>
                             <p:inputText id="duplicarIndicadorV" value="#{controlEmplVigenciaIndicador.duplicarVigenciaIndicador.indicador.descripcion}" style="width: 122px; position: absolute; left: 200px; top: 160px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="dblclick" listener="#{controlEmplVigenciaIndicador.asignarIndex(indice,1,2)}"/>
+                                <p:ajax event="dblclick" listener="#{controlEmplVigenciaIndicador.asignarIndex(info,1,2)}"/>
                                 <p:ajax event="click" listener="#{controlEmplVigenciaIndicador.valoresBackupAutocompletarVigencia(2, 'INDICADORES')}" />
                                 <p:ajax event="change" listener="#{controlEmplVigenciaIndicador.autocompletarNuevoyDuplicadoVigencia('INDICADORES', controlEmplVigenciaIndicador.duplicarVigenciaIndicador.indicador.descripcion,2)}" process="@this" update="duplicarIndicadorV"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 330px; top: 165px;  " id="btnDuplicaIndicador" icon="ui-icon-search" process="@this"  actionListener="#{controlEmplVigenciaIndicador.asignarIndex(indice,1,2)}" update="duplicarIndicadorV"/>   
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 23px; border: none; position: absolute; left: 330px; top: 160px;  " id="btnDuplicaIndicador" value=" " process="@this"  actionListener="#{controlEmplVigenciaIndicador.asignarIndex(info,1,2)}" update="duplicarIndicadorV"/>   
                             <p:watermark for="duplicarIndicadorV" value="#{msg['descripcion']}" />
 
                             <p:commandButton icon="ui-icon-trash" id="limpiarDV" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 195px;" actionListener="#{controlEmplVigenciaIndicador.limpiarduplicarV()}" update="duplicarV" process="@this"/>
-                            <p:commandButton icon="ui-icon-circle-check" id="agregarDV" value="#{msg['agregar']}" style="position: absolute; left: 190px; top: 195px;" actionListener="#{controlEmplVigenciaIndicador.confirmarDuplicarV()}" process="@this"/>
+                            <p:commandButton icon="ui-icon-circle-check" id="agregarDV" value="#{msg['agregar']}" style="position: absolute; left: 180px; top: 195px;" actionListener="#{controlEmplVigenciaIndicador.confirmarDuplicarV()}" process="@this"/>
                             <p:commandButton icon="ui-icon-circle-close" id="cancelarDV" value="#{msg['cancelar']}" style="position: absolute; left: 280px; top: 195px;" actionListener="#{controlEmplVigenciaIndicador.limpiarduplicarV()}" update="duplicarV" onclick="DuplicarRegistroV.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -395,23 +407,23 @@
                     <!-- ////// ////// ////// -->
                    
                     <p:dialog id="editarFechaInicialVD" header="#{msg['editarFechaInicialVD']}" widgetVar="editarFechaInicialVD" resizable="false" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  
-                        <p:inputTextarea value="#{controlEmplVigenciaIndicador.editarVigenciaIndicador.fechainicial}" style="overflow: auto; width: 200px; height: 40px" readonly="true">                        
+                        <p:inputTextarea value="#{controlEmplVigenciaIndicador.editarVigenciaIndicador.fechainicial}" style="overflow: auto; width: 360px; height: 60px" readonly="true">                        
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:inputTextarea>
                     </p:dialog>
 
                     <p:dialog id="editarFechaFinalVD" header="#{msg['editarFechaFinalVD']}" widgetVar="editarFechaFinalVD" resizable="false" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  
-                        <p:inputTextarea value="#{controlEmplVigenciaIndicador.editarVigenciaIndicador.fechafinal}" style="overflow: auto; width: 200px; height: 40px" readonly="true">                        
+                        <p:inputTextarea value="#{controlEmplVigenciaIndicador.editarVigenciaIndicador.fechafinal}" style="overflow: auto; width: 360px; height: 60px" readonly="true">                        
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:inputTextarea>
                     </p:dialog>
 
                     <p:dialog id="editarTipoVD" header="#{msg['editarTipoVD']}" widgetVar="editarTipoVD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlEmplVigenciaIndicador.editarVigenciaIndicador.tipoindicador.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:inputTextarea value="#{controlEmplVigenciaIndicador.editarVigenciaIndicador.tipoindicador.descripcion}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
                     <p:dialog id="editarIndicadorVD" header="#{msg['editarIndicadorVD']}" widgetVar="editarIndicadorVD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlEmplVigenciaIndicador.editarVigenciaIndicador.indicador.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:inputTextarea value="#{controlEmplVigenciaIndicador.editarVigenciaIndicador.indicador.descripcion}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
 

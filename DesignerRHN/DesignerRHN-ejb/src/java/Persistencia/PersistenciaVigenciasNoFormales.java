@@ -27,6 +27,7 @@ public class PersistenciaVigenciasNoFormales implements PersistenciaVigenciasNoF
 
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
+     * @param em
      */
     /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;
@@ -37,7 +38,8 @@ public class PersistenciaVigenciasNoFormales implements PersistenciaVigenciasNoF
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciasNoFormales);
+            //em.merge(vigenciasNoFormales);
+            em.persist(vigenciasNoFormales);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasNoFormales.crear: " + e);

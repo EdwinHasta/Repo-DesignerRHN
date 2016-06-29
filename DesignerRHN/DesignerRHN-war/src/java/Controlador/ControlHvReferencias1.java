@@ -121,12 +121,13 @@ public class ControlHvReferencias1 implements Serializable {
     }
 
     public void recibirEmpleado(BigInteger sec) {
+       secuenciaPersona = sec;
         listHvReferencias1 = null;
         empleado = administrarHvReferencias1.empleadoActual(sec);
         getListHvReferencias1();
         contarRegistros();
         deshabilitarBotonLov();
-        if (listHvReferencias1 != null) {
+        if (!listHvReferencias1.isEmpty()) {
             hvReferencia1Seleccionada = listHvReferencias1.get(0);
         }
     }
@@ -1314,6 +1315,9 @@ public class ControlHvReferencias1 implements Serializable {
 
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<HvReferencias> getListHvReferencias1() {
+        if(listHvReferencias1 == null){
+           listHvReferencias1=administrarHvReferencias1.consultarHvReferenciasPersonalesPorPersona(empleado.getPersona().getSecuencia());
+       }
         return listHvReferencias1;
     }
 

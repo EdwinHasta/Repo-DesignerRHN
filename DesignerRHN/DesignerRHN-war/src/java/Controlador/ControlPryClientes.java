@@ -100,7 +100,12 @@ public class ControlPryClientes implements Serializable {
         listPryClientes = null;
         getListPryClientes();
         contarRegistros();
+        if(listPryClientes == null || listPryClientes.isEmpty()){
+            pryClienteSeleccionado= null;
+        } else {
         pryClienteSeleccionado = listPryClientes.get(0);
+        }
+        
     }
 
     public String redirigirPaginaAnterior() {

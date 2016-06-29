@@ -6,6 +6,7 @@ package InterfaceAdministrar;
 
 import Entidades.AdiestramientosNF;
 import Entidades.Cursos;
+import Entidades.Empleados;
 import Entidades.Instituciones;
 import Entidades.Personas;
 import Entidades.VigenciasNoFormales;
@@ -32,4 +33,5 @@ public interface AdministrarVigenciasNoFormalesInterface {
     public void modificarVigenciaNoFormal(List<VigenciasNoFormales> listaVigenciasNoFormalesModificar);
     public void borrarVigenciaNoFormal(VigenciasNoFormales vigenciasNoFormales);
     public void crearVigenciaNoFormal(VigenciasNoFormales vigenciasNoFormales);
+    public Empleados empleadoActual(BigInteger secuenciaE);
 }

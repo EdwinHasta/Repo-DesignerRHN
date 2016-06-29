@@ -110,7 +110,9 @@ public class ControlVigenciaDeporte implements Serializable {
         getListVigenciasDeportes();
         contarRegistrosVD();
         deshabilitarBotonLov();
-        if (listVigenciasDeportes != null) {
+        if (listVigenciasDeportes == null) {
+            vigenciaTablaSeleccionada = null;
+        } else{
             vigenciaTablaSeleccionada = listVigenciasDeportes.get(0);
         }
     }

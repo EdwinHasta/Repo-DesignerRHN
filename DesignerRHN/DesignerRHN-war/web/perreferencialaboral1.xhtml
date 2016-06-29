@@ -11,9 +11,9 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form">                    
+                    <f:loadBundle basename="Recursos.perreferencialaboral" var="msg" />
                     <p:growl id="growl" showDetail="true"/> 
                     <p:panel  id="PanelTotal" header="Referencias Familiares" styleClass="panelTotal">  
-                        <h:outputText style="position: absolute; left: 580px; top: 50px; position: absolute; color: #BF1A1A; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlHvReferencias1.personaSeleccionada.primerapellido} #{controlHvReferencias1.personaSeleccionada.segundoapellido} #{controlHvReferencias1.personaSeleccionada.nombre}"/>
                         <p:toolbar styleClass="cssToolbar">  
                             <p:toolbarGroup align="left"> 
 
@@ -72,8 +72,17 @@
                         <p:commandButton style=" position: absolute; left: 675px; top: 484px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" disabled="#{controlHvReferencias1.guardado}"  id="ACEPTAR" value=" "  actionListener="#{controlHvReferencias1.revisarDialogoGuardar()}"   process="@this"   />
                         <p:commandButton style=" position: absolute; left: 765px; top: 484px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value=" " action="perReferenciaLaboral1Atras"    />
 
+                        <fieldset style="position: absolute; top: 75px; left: 10px; height: 18px; width: 830px; border-radius: 3px; text-align: left; border: solid #C7BFBF 1px">
+                            <h:outputText value="#{msg['empleado']} " style="font-weight: bold; color: #14388B; position: relative; top: 5px; left: 0px" />
+                            <h:outputText id="nombreEmpleado" value="#{controlHvReferencias1.empleado.persona.nombreCompleto}" 
+                                          style="font-weight: bold; color: #BF1A1A; position: relative; left: 10px; top: 5px"/>
 
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
+                            <h:outputText value="#{msg['codigo']}" style="font-weight: bold; color: #14388B; position: relative; left: 120px; top: 5px" />
+                            <h:outputText id="docEmpleado" value="#{controlHvReferencias1.empleado.codigoempleado}" 
+                                          style="font-weight: bold; color: #BF1A1A; position: relative; left: 130px; top: 5px" />
+                        </fieldset>
+                        
+                        <fieldset style="position: absolute;top: 110px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Referencias Familiares</strong></legend>
 
                             <p:dataTable id="datosHvReferencia" var="info" widgetVar="datosHvReferencia" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ; border: 1px;"                           
@@ -165,7 +174,7 @@
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
-                            <h:outputText id="informacionRegistro" value="#{controlHvReferencias1.infoRegistro}" style="position: relative; left: 15px; top: 5px; font-weight: bold"/>
+                            <h:outputText id="informacionRegistro" value="#{msg['infoRegistros']} #{controlHvReferencias1.infoRegistro}" style="position: relative; left: 15px; top: 5px; font-weight: bold"/>
 
                         </fieldset>
 

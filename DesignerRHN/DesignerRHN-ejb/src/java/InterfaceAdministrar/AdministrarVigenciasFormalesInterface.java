@@ -5,6 +5,7 @@
 package InterfaceAdministrar;
 
 import Entidades.AdiestramientosF;
+import Entidades.Empleados;
 import Entidades.Instituciones;
 import Entidades.Personas;
 import Entidades.Profesiones;
@@ -31,7 +32,7 @@ public interface AdministrarVigenciasFormalesInterface {
     public void modificarVigenciaFormal(List<VigenciasFormales> listaVigenciasFormalesModificar);
     public void borrarVigenciaFormal(VigenciasFormales vigenciasFormales);
     public void crearVigenciaFormal(VigenciasFormales vigenciasFormales);
-    
+    public Empleados empleadoActual(BigInteger secuenciaE);
     
             
     

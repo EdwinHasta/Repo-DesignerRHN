@@ -48,7 +48,6 @@ public class ControlNovedadesReemplazos implements Serializable {
     private Encargaturas encargaturaSeleccionada;
     //OTROS
     private boolean aceptar;
-    private int index;
     private int tipoActualizacion; //Activo/Desactivo Crtl + F11
     private int bandera;
     private boolean permitirIndex;
@@ -82,7 +81,6 @@ public class ControlNovedadesReemplazos implements Serializable {
     //Seleccion Mostrar Todos
     private Empleados seleccionMostrar;
     //RASTROS
-    private BigInteger secRegistro;
     //LISTA QUE NO ES LISTA - 1 SOLO ELEMENTO
     private List<Empleados> listaFalsaEmpleados;
     private List<Empleados> filtradosListaFalsaEmpleados;
@@ -124,7 +122,7 @@ public class ControlNovedadesReemplazos implements Serializable {
         listaEncargaturasCrear = new ArrayList<Encargaturas>();
         listaEncargaturasModificar = new ArrayList<Encargaturas>();
         listaFalsaEmpleados = null;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
         guardado = true;
         tipoLista = 0;
         //Crear VC
@@ -189,49 +187,49 @@ public class ControlNovedadesReemplazos implements Serializable {
     }
 
     //AUTOCOMPLETAR
-    public void modificarEncargaturas(int indice, String confirmarCambio, String valorConfirmar) {
-        index = indice;
+    public void modificarEncargaturas(Encargaturas encargatura, String confirmarCambio, String valorConfirmar) {
+        encargaturaSeleccionada = encargatura;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("N")) {
             if (tipoLista == 0) {
-                if (!listaEncargaturasCrear.contains(listaEncargaturas.get(indice))) {
+                if (!listaEncargaturasCrear.contains(encargaturaSeleccionada)) {
 
                     if (listaEncargaturasModificar.isEmpty()) {
-                        listaEncargaturasModificar.add(listaEncargaturas.get(indice));
-                    } else if (!listaEncargaturasModificar.contains(listaEncargaturas.get(indice))) {
-                        listaEncargaturasModificar.add(listaEncargaturas.get(indice));
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
+                    } else if (!listaEncargaturasModificar.contains(encargaturaSeleccionada)) {
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                index = -1;
-                secRegistro = null;
+                encargaturaSeleccionada = null;
+                encargaturaSeleccionada = null;
 
             } else {
-                if (!listaEncargaturasCrear.contains(filtradosListaEncargaturas.get(indice))) {
+                if (!listaEncargaturasCrear.contains(encargaturaSeleccionada)) {
 
                     if (listaEncargaturasModificar.isEmpty()) {
-                        listaEncargaturasModificar.add(filtradosListaEncargaturas.get(indice));
-                    } else if (!listaEncargaturasModificar.contains(filtradosListaEncargaturas.get(indice))) {
-                        listaEncargaturasModificar.add(filtradosListaEncargaturas.get(indice));
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
+                    } else if (!listaEncargaturasModificar.contains(encargaturaSeleccionada)) {
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                index = -1;
+                encargaturaSeleccionada = null;
             }
             context.update("form:datosEncargaturasEmpleado");
         } else if (confirmarCambio.equalsIgnoreCase("REEMPLAZADO")) {
             if (tipoLista == 0) {
-                listaEncargaturas.get(indice).getReemplazado().getPersona().setNombreCompleto(Reemplazado);
+                encargaturaSeleccionada.getReemplazado().getPersona().setNombreCompleto(Reemplazado);
             } else {
-                filtradosListaEncargaturas.get(indice).getReemplazado().getPersona().setNombreCompleto(Reemplazado);
+                encargaturaSeleccionada.getReemplazado().getPersona().setNombreCompleto(Reemplazado);
             }
 
             for (int i = 0; i < listaEmpleados.size(); i++) {
@@ -242,9 +240,9 @@ public class ControlNovedadesReemplazos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaEncargaturas.get(indice).setReemplazado(listaEmpleados.get(indiceUnicoElemento));
+                    encargaturaSeleccionada.setReemplazado(listaEmpleados.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaEncargaturas.get(indice).setReemplazado(listaEmpleados.get(indiceUnicoElemento));
+                    encargaturaSeleccionada.setReemplazado(listaEmpleados.get(indiceUnicoElemento));
                 }
                 listaEmpleados.clear();
                 getListaEmpleados();
@@ -256,9 +254,9 @@ public class ControlNovedadesReemplazos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("TIPOREEMPLAZO")) {
             if (tipoLista == 0) {
-                listaEncargaturas.get(indice).getTiporeemplazo().setNombre(TipoReemplazo);
+                encargaturaSeleccionada.getTiporeemplazo().setNombre(TipoReemplazo);
             } else {
-                filtradosListaEncargaturas.get(indice).getTiporeemplazo().setNombre(TipoReemplazo);
+                encargaturaSeleccionada.getTiporeemplazo().setNombre(TipoReemplazo);
             }
             for (int i = 0; i < listaTiposReemplazos.size(); i++) {
                 if (listaTiposReemplazos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
@@ -268,9 +266,9 @@ public class ControlNovedadesReemplazos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaEncargaturas.get(indice).setTiporeemplazo(listaTiposReemplazos.get(indiceUnicoElemento));
+                    encargaturaSeleccionada.setTiporeemplazo(listaTiposReemplazos.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaEncargaturas.get(indice).setTiporeemplazo(listaTiposReemplazos.get(indiceUnicoElemento));
+                    encargaturaSeleccionada.setTiporeemplazo(listaTiposReemplazos.get(indiceUnicoElemento));
                 }
                 listaTiposReemplazos.clear();
                 getListaTiposReemplazos();
@@ -282,9 +280,9 @@ public class ControlNovedadesReemplazos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("MOTIVOREEMPLAZO")) {
             if (tipoLista == 0) {
-                listaEncargaturas.get(indice).getMotivoreemplazo().setNombre(MotivoReemplazo);
+                encargaturaSeleccionada.getMotivoreemplazo().setNombre(MotivoReemplazo);
             } else {
-                filtradosListaEncargaturas.get(indice).getMotivoreemplazo().setNombre(MotivoReemplazo);
+                encargaturaSeleccionada.getMotivoreemplazo().setNombre(MotivoReemplazo);
             }
             for (int i = 0; i < listaMotivosReemplazos.size(); i++) {
                 if (listaMotivosReemplazos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
@@ -294,9 +292,9 @@ public class ControlNovedadesReemplazos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaEncargaturas.get(indice).setMotivoreemplazo(listaMotivosReemplazos.get(indiceUnicoElemento));
+                    encargaturaSeleccionada.setMotivoreemplazo(listaMotivosReemplazos.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaEncargaturas.get(indice).setMotivoreemplazo(listaMotivosReemplazos.get(indiceUnicoElemento));
+                    encargaturaSeleccionada.setMotivoreemplazo(listaMotivosReemplazos.get(indiceUnicoElemento));
                 }
                 listaMotivosReemplazos.clear();
                 getListaMotivosReemplazos();
@@ -308,9 +306,9 @@ public class ControlNovedadesReemplazos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("ESTRUCTURAS")) {
             if (tipoLista == 0) {
-                listaEncargaturas.get(indice).getEstructura().setNombre(Estructura);
+                encargaturaSeleccionada.getEstructura().setNombre(Estructura);
             } else {
-                filtradosListaEncargaturas.get(indice).getEstructura().setNombre(Estructura);
+                encargaturaSeleccionada.getEstructura().setNombre(Estructura);
             }
             for (int i = 0; i < listaEstructuras.size(); i++) {
                 if (listaEstructuras.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
@@ -320,9 +318,9 @@ public class ControlNovedadesReemplazos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaEncargaturas.get(indice).setEstructura(listaEstructuras.get(indiceUnicoElemento));
+                    encargaturaSeleccionada.setEstructura(listaEstructuras.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaEncargaturas.get(indice).setEstructura(listaEstructuras.get(indiceUnicoElemento));
+                    encargaturaSeleccionada.setEstructura(listaEstructuras.get(indiceUnicoElemento));
                 }
                 listaEstructuras.clear();
                 getListaEstructuras();
@@ -334,9 +332,9 @@ public class ControlNovedadesReemplazos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("CARGOS")) {
             if (tipoLista == 0) {
-                listaEncargaturas.get(indice).getCargo().setNombre(Cargo);
+                encargaturaSeleccionada.getCargo().setNombre(Cargo);
             } else {
-                filtradosListaEncargaturas.get(indice).getCargo().setNombre(Cargo);
+                encargaturaSeleccionada.getCargo().setNombre(Cargo);
             }
             for (int i = 0; i < listaCargos.size(); i++) {
                 if (listaCargos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
@@ -346,9 +344,9 @@ public class ControlNovedadesReemplazos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaEncargaturas.get(indice).setCargo(listaCargos.get(indiceUnicoElemento));
+                    encargaturaSeleccionada.setCargo(listaCargos.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaEncargaturas.get(indice).setCargo(listaCargos.get(indiceUnicoElemento));
+                    encargaturaSeleccionada.setCargo(listaCargos.get(indiceUnicoElemento));
                 }
                 listaCargos.clear();
                 getListaCargos();
@@ -361,34 +359,34 @@ public class ControlNovedadesReemplazos implements Serializable {
         }
         if (coincidencias == 1) {
             if (tipoLista == 0) {
-                if (!listaEncargaturasCrear.contains(listaEncargaturas.get(indice))) {
+                if (!listaEncargaturasCrear.contains(encargaturaSeleccionada)) {
                     if (listaEncargaturasModificar.isEmpty()) {
-                        listaEncargaturasModificar.add(listaEncargaturas.get(indice));
-                    } else if (!listaEncargaturasModificar.contains(listaEncargaturas.get(indice))) {
-                        listaEncargaturasModificar.add(listaEncargaturas.get(indice));
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
+                    } else if (!listaEncargaturasModificar.contains(encargaturaSeleccionada)) {
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                index = -1;
-                secRegistro = null;
+                encargaturaSeleccionada = null;
+                encargaturaSeleccionada = null;
             } else {
-                if (!listaEncargaturasCrear.contains(filtradosListaEncargaturas.get(indice))) {
+                if (!listaEncargaturasCrear.contains(encargaturaSeleccionada)) {
 
                     if (listaEncargaturasModificar.isEmpty()) {
-                        listaEncargaturasModificar.add(filtradosListaEncargaturas.get(indice));
-                    } else if (!listaEncargaturasModificar.contains(filtradosListaEncargaturas.get(indice))) {
-                        listaEncargaturasModificar.add(filtradosListaEncargaturas.get(indice));
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
+                    } else if (!listaEncargaturasModificar.contains(encargaturaSeleccionada)) {
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                index = -1;
-                secRegistro = null;
+                encargaturaSeleccionada = null;
+                encargaturaSeleccionada = null;
             }
         }
         context.update("form:datosEncargaturasEmpleado");
@@ -403,60 +401,59 @@ public class ControlNovedadesReemplazos implements Serializable {
     }
 
     //Ubicacion Celda Indice Abajo.
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(Encargaturas encargatura, int celda) {
         if (permitirIndex == true) {
 
-            index = indice;
+            encargaturaSeleccionada = encargatura;
             cualCelda = celda;
             //tablaImprimir = ":formExportar:datosVigenciasFormalesExportar";
             //nombreArchivo = "VigenciasFormalesXML";
             //RequestContext context = RequestContext.getCurrentInstance();
             //context.update("form:exportarXML");
             if (tipoLista == 0) {
-                secRegistro = listaEncargaturas.get(index).getSecuencia();
+                encargaturaSeleccionada.getSecuencia();
                 if (cualCelda == 0) {
-                    Reemplazado = listaEncargaturas.get(index).getReemplazado().getPersona().getNombreCompleto();
+                    Reemplazado = encargaturaSeleccionada.getReemplazado().getPersona().getNombreCompleto();
                 } else if (cualCelda == 1) {
-                    TipoReemplazo = listaEncargaturas.get(index).getTiporeemplazo().getNombre();
+                    TipoReemplazo = encargaturaSeleccionada.getTiporeemplazo().getNombre();
                 } else if (cualCelda == 5) {
-                    Cargo = listaEncargaturas.get(index).getCargo().getNombre();
+                    Cargo = encargaturaSeleccionada.getCargo().getNombre();
                 } else if (cualCelda == 6) {
-                    MotivoReemplazo = listaEncargaturas.get(index).getMotivoreemplazo().getNombre();
+                    MotivoReemplazo = encargaturaSeleccionada.getMotivoreemplazo().getNombre();
                 } else if (cualCelda == 7) {
-                    Estructura = listaEncargaturas.get(index).getEstructura().getNombre();
+                    Estructura = encargaturaSeleccionada.getEstructura().getNombre();
                 }
             } else {
-                secRegistro = filtradosListaEncargaturas.get(index).getSecuencia();
+                 encargaturaSeleccionada.getSecuencia();
                 if (cualCelda == 0) {
-                    Reemplazado = filtradosListaEncargaturas.get(index).getReemplazado().getPersona().getNombreCompleto();
+                    Reemplazado = encargaturaSeleccionada.getReemplazado().getPersona().getNombreCompleto();
                 } else if (cualCelda == 1) {
-                    TipoReemplazo = filtradosListaEncargaturas.get(index).getTiporeemplazo().getNombre();
+                    TipoReemplazo = encargaturaSeleccionada.getTiporeemplazo().getNombre();
                 } else if (cualCelda == 5) {
-                    Cargo = filtradosListaEncargaturas.get(index).getCargo().getNombre();
+                    Cargo = encargaturaSeleccionada.getCargo().getNombre();
 
                 } else if (cualCelda == 6) {
-                    MotivoReemplazo = filtradosListaEncargaturas.get(index).getMotivoreemplazo().getNombre();
+                    MotivoReemplazo = encargaturaSeleccionada.getMotivoreemplazo().getNombre();
                 } else if (cualCelda == 7) {
-                    Estructura = filtradosListaEncargaturas.get(index).getEstructura().getNombre();
+                    Estructura = encargaturaSeleccionada.getEstructura().getNombre();
                 }
             }
         }
-        System.out.println("Index: " + index + " Celda: " + celda);
     }
 
-    public void asignarIndex(Integer indice, int dlg, int LND) {
-        index = indice;
+    public void asignarIndex(Encargaturas encargatura, int dlg, int LND) {
+        encargaturaSeleccionada= encargatura;
         RequestContext context = RequestContext.getCurrentInstance();
         if (LND == 0) {
             tipoActualizacion = 0;
         } else if (LND == 1) {
             tipoActualizacion = 1;
-            index = -1;
-            secRegistro = null;
+            encargaturaSeleccionada = null;
+            encargaturaSeleccionada = null;
             System.out.println("Tipo Actualizacion: " + tipoActualizacion);
         } else if (LND == 2) {
-            index = -1;
-            secRegistro = null;
+            encargaturaSeleccionada = null;
+            encargaturaSeleccionada = null;
             tipoActualizacion = 2;
         }
         if (dlg == 0) {
@@ -498,8 +495,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         context.update("form:datosEncargaturasEmpleado");
         filtradosListaFalsaEmpleados = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
         tipoActualizacion = -1;
         cualCelda = -1;
 
@@ -527,33 +524,32 @@ public class ControlNovedadesReemplazos implements Serializable {
         filtradosListaFalsaEmpleados = null;
         seleccionEmpleados = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
         tipoActualizacion = -1;
         cualCelda = -1;
     }
 
     public void actualizarEmpleados() {
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("Index: " + index + " Tipo Actualización: " + tipoActualizacion);
         if (tipoActualizacion == 0) {
             System.out.println("Tipo Lista: " + tipoLista);
             if (tipoLista == 0) {
-                listaEncargaturas.get(index).setReemplazado(seleccionEmpleadosReemplazados);
-                if (!listaEncargaturasCrear.contains(listaEncargaturas.get(index))) {
+                encargaturaSeleccionada.setReemplazado(seleccionEmpleadosReemplazados);
+                if (!listaEncargaturasCrear.contains(encargaturaSeleccionada)) {
                     if (listaEncargaturasModificar.isEmpty()) {
-                        listaEncargaturasModificar.add(listaEncargaturas.get(index));
-                    } else if (!listaEncargaturasModificar.contains(listaEncargaturas.get(index))) {
-                        listaEncargaturasModificar.add(listaEncargaturas.get(index));
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
+                    } else if (!listaEncargaturasModificar.contains(encargaturaSeleccionada)) {
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
                     }
                 }
             } else {
-                filtradosListaEncargaturas.get(index).setReemplazado(seleccionEmpleadosReemplazados);
-                if (!listaEncargaturasCrear.contains(filtradosListaEncargaturas.get(index))) {
+                encargaturaSeleccionada.setReemplazado(seleccionEmpleadosReemplazados);
+                if (!listaEncargaturasCrear.contains(encargaturaSeleccionada)) {
                     if (listaEncargaturasModificar.isEmpty()) {
-                        listaEncargaturasModificar.add(filtradosListaEncargaturas.get(index));
-                    } else if (!listaEncargaturasModificar.contains(filtradosListaEncargaturas.get(index))) {
-                        listaEncargaturasModificar.add(filtradosListaEncargaturas.get(index));
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
+                    } else if (!listaEncargaturasModificar.contains(encargaturaSeleccionada)) {
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
                     }
                 }
             }
@@ -578,8 +574,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         filtradoslistaEmpleados = null;
         seleccionEmpleadosReemplazados = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVEmpleadosAbajo:globalFilter");
@@ -592,21 +588,21 @@ public class ControlNovedadesReemplazos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaEncargaturas.get(index).setTiporeemplazo(seleccionTiposReemplazos);
-                if (!listaEncargaturasCrear.contains(listaEncargaturas.get(index))) {
+                encargaturaSeleccionada.setTiporeemplazo(seleccionTiposReemplazos);
+                if (!listaEncargaturasCrear.contains(encargaturaSeleccionada)) {
                     if (listaEncargaturasModificar.isEmpty()) {
-                        listaEncargaturasModificar.add(listaEncargaturas.get(index));
-                    } else if (!listaEncargaturasModificar.contains(listaEncargaturas.get(index))) {
-                        listaEncargaturasModificar.add(listaEncargaturas.get(index));
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
+                    } else if (!listaEncargaturasModificar.contains(encargaturaSeleccionada)) {
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
                     }
                 }
             } else {
-                filtradosListaEncargaturas.get(index).setTiporeemplazo(seleccionTiposReemplazos);
-                if (!listaEncargaturasCrear.contains(filtradosListaEncargaturas.get(index))) {
+                encargaturaSeleccionada.setTiporeemplazo(seleccionTiposReemplazos);
+                if (!listaEncargaturasCrear.contains(encargaturaSeleccionada)) {
                     if (listaEncargaturasModificar.isEmpty()) {
-                        listaEncargaturasModificar.add(filtradosListaEncargaturas.get(index));
-                    } else if (!listaEncargaturasModificar.contains(filtradosListaEncargaturas.get(index))) {
-                        listaEncargaturasModificar.add(filtradosListaEncargaturas.get(index));
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
+                    } else if (!listaEncargaturasModificar.contains(encargaturaSeleccionada)) {
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
                     }
                 }
             }
@@ -627,8 +623,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         filtradoslistaTiposReemplazos = null;
         seleccionTiposReemplazos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVTiposReemplazos:globalFilter");
@@ -639,25 +635,24 @@ public class ControlNovedadesReemplazos implements Serializable {
 
     public void actualizarCargos() {
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("Index: " + index + " Tipo Actualización: " + tipoActualizacion);
         if (tipoActualizacion == 0) {
             System.out.println("Tipo Lista: " + tipoLista);
             if (tipoLista == 0) {
-                listaEncargaturas.get(index).setCargo(seleccionCargos);
-                if (!listaEncargaturasCrear.contains(listaEncargaturas.get(index))) {
+                encargaturaSeleccionada.setCargo(seleccionCargos);
+                if (!listaEncargaturasCrear.contains(encargaturaSeleccionada)) {
                     if (listaEncargaturasModificar.isEmpty()) {
-                        listaEncargaturasModificar.add(listaEncargaturas.get(index));
-                    } else if (!listaEncargaturasModificar.contains(listaEncargaturas.get(index))) {
-                        listaEncargaturasModificar.add(listaEncargaturas.get(index));
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
+                    } else if (!listaEncargaturasModificar.contains(encargaturaSeleccionada)) {
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
                     }
                 }
             } else {
-                filtradosListaEncargaturas.get(index).setCargo(seleccionCargos);
-                if (!listaEncargaturasCrear.contains(filtradosListaEncargaturas.get(index))) {
+                encargaturaSeleccionada.setCargo(seleccionCargos);
+                if (!listaEncargaturasCrear.contains(encargaturaSeleccionada)) {
                     if (listaEncargaturasModificar.isEmpty()) {
-                        listaEncargaturasModificar.add(filtradosListaEncargaturas.get(index));
-                    } else if (!listaEncargaturasModificar.contains(filtradosListaEncargaturas.get(index))) {
-                        listaEncargaturasModificar.add(filtradosListaEncargaturas.get(index));
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
+                    } else if (!listaEncargaturasModificar.contains(encargaturaSeleccionada)) {
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
                     }
                 }
             }
@@ -682,8 +677,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         filtradoslistaCargos = null;
         seleccionCargos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVCargos:globalFilter");
@@ -696,21 +691,21 @@ public class ControlNovedadesReemplazos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaEncargaturas.get(index).setMotivoreemplazo(seleccionMotivosReemplazos);
-                if (!listaEncargaturasCrear.contains(listaEncargaturas.get(index))) {
+                encargaturaSeleccionada.setMotivoreemplazo(seleccionMotivosReemplazos);
+                if (!listaEncargaturasCrear.contains(encargaturaSeleccionada)) {
                     if (listaEncargaturasModificar.isEmpty()) {
-                        listaEncargaturasModificar.add(listaEncargaturas.get(index));
-                    } else if (!listaEncargaturasModificar.contains(listaEncargaturas.get(index))) {
-                        listaEncargaturasModificar.add(listaEncargaturas.get(index));
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
+                    } else if (!listaEncargaturasModificar.contains(encargaturaSeleccionada)) {
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
                     }
                 }
             } else {
-                filtradosListaEncargaturas.get(index).setMotivoreemplazo(seleccionMotivosReemplazos);
-                if (!listaEncargaturasCrear.contains(filtradosListaEncargaturas.get(index))) {
+                encargaturaSeleccionada.setMotivoreemplazo(seleccionMotivosReemplazos);
+                if (!listaEncargaturasCrear.contains(encargaturaSeleccionada)) {
                     if (listaEncargaturasModificar.isEmpty()) {
-                        listaEncargaturasModificar.add(filtradosListaEncargaturas.get(index));
-                    } else if (!listaEncargaturasModificar.contains(filtradosListaEncargaturas.get(index))) {
-                        listaEncargaturasModificar.add(filtradosListaEncargaturas.get(index));
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
+                    } else if (!listaEncargaturasModificar.contains(encargaturaSeleccionada)) {
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
                     }
                 }
             }
@@ -731,8 +726,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         filtradoslistaTiposReemplazos = null;
         seleccionTiposReemplazos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVMotivosReemplazos:globalFilter");
@@ -745,21 +740,21 @@ public class ControlNovedadesReemplazos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaEncargaturas.get(index).setEstructura(seleccionEstructuras);
-                if (!listaEncargaturasCrear.contains(listaEncargaturas.get(index))) {
+                encargaturaSeleccionada.setEstructura(seleccionEstructuras);
+                if (!listaEncargaturasCrear.contains(encargaturaSeleccionada)) {
                     if (listaEncargaturasModificar.isEmpty()) {
-                        listaEncargaturasModificar.add(listaEncargaturas.get(index));
-                    } else if (!listaEncargaturasModificar.contains(listaEncargaturas.get(index))) {
-                        listaEncargaturasModificar.add(listaEncargaturas.get(index));
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
+                    } else if (!listaEncargaturasModificar.contains(encargaturaSeleccionada)) {
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
                     }
                 }
             } else {
-                filtradosListaEncargaturas.get(index).setEstructura(seleccionEstructuras);
-                if (!listaEncargaturasCrear.contains(filtradosListaEncargaturas.get(index))) {
+                encargaturaSeleccionada.setEstructura(seleccionEstructuras);
+                if (!listaEncargaturasCrear.contains(encargaturaSeleccionada)) {
                     if (listaEncargaturasModificar.isEmpty()) {
-                        listaEncargaturasModificar.add(filtradosListaEncargaturas.get(index));
-                    } else if (!listaEncargaturasModificar.contains(filtradosListaEncargaturas.get(index))) {
-                        listaEncargaturasModificar.add(filtradosListaEncargaturas.get(index));
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
+                    } else if (!listaEncargaturasModificar.contains(encargaturaSeleccionada)) {
+                        listaEncargaturasModificar.add(encargaturaSeleccionada);
                     }
                 }
             }
@@ -780,8 +775,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         filtradoslistaEstructuras = null;
         seleccionEstructuras = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVEstructuras:globalFilter");
@@ -794,8 +789,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         filtradoslistaEstructuras = null;
         seleccionEstructuras = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -810,8 +805,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         seleccionEmpleados = null;
         seleccionEmpleadosReemplazados = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -826,8 +821,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         seleccionEmpleados = null;
         seleccionEmpleadosReemplazados = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -841,8 +836,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         filtradoslistaCargos = null;
         seleccionCargos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -856,8 +851,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         filtradoslistaMotivosReemplazos = null;
         seleccionMotivosReemplazos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -871,8 +866,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         filtradoslistaTiposReemplazos = null;
         seleccionTiposReemplazos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -953,8 +948,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "EncargaturasPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
     }
 
     public void exportXLS() throws IOException {
@@ -963,8 +958,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "EncargaturasXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
     }
 
     //CREAR ENCARGATURAS
@@ -1055,8 +1050,8 @@ public class ControlNovedadesReemplazos implements Serializable {
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("NuevaNovedadReemplazo.hide()");
-            index = -1;
-            secRegistro = null;
+            encargaturaSeleccionada = null;
+            encargaturaSeleccionada = null;
         } else {
 
         }
@@ -1066,9 +1061,9 @@ public class ControlNovedadesReemplazos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
         if (!listaEncargaturas.isEmpty()) {
-            if (secRegistro != null) {
+            if (encargaturaSeleccionada != null) {
                 System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "ENCARGATURAS");
+                int resultado = administrarRastros.obtenerTabla(encargaturaSeleccionada.getSecuencia(), "ENCARGATURAS");
                 System.out.println("resultado: " + resultado);
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
@@ -1092,7 +1087,7 @@ public class ControlNovedadesReemplazos implements Serializable {
             }
 
         }
-        index = -1;
+        encargaturaSeleccionada = null;
     }
 
     //LIMPIAR NUEVO REGISTRO ENCARGATURA
@@ -1108,8 +1103,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         nuevaEncargatura.getMotivoreemplazo().setNombre(" ");
         nuevaEncargatura.setEstructura(new Estructuras());
         nuevaEncargatura.getEstructura().setNombre(" ");
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
     }
 
     //GUARDAR
@@ -1178,49 +1173,34 @@ public class ControlNovedadesReemplazos implements Serializable {
         }
         System.out.println("Tamaño lista: " + listaEncargaturasCrear.size());
         System.out.println("Valor k: " + k);
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
     }
 
     //BORRAR ENCARGATURAS
     public void borrarEncargaturas() {
 
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                if (!listaEncargaturasModificar.isEmpty() && listaEncargaturasModificar.contains(listaEncargaturas.get(index))) {
-                    int modIndex = listaEncargaturasModificar.indexOf(listaEncargaturas.get(index));
+        if (encargaturaSeleccionada != null) {
+                if (!listaEncargaturasModificar.isEmpty() && listaEncargaturasModificar.contains(encargaturaSeleccionada)) {
+                    int modIndex = listaEncargaturasModificar.indexOf(encargaturaSeleccionada);
                     listaEncargaturasModificar.remove(modIndex);
-                    listaEncargaturasBorrar.add(listaEncargaturas.get(index));
-                } else if (!listaEncargaturasCrear.isEmpty() && listaEncargaturasCrear.contains(listaEncargaturas.get(index))) {
-                    int crearIndex = listaEncargaturasCrear.indexOf(listaEncargaturas.get(index));
+                    listaEncargaturasBorrar.add(encargaturaSeleccionada);
+                } else if (!listaEncargaturasCrear.isEmpty() && listaEncargaturasCrear.contains(encargaturaSeleccionada)) {
+                    int crearIndex = listaEncargaturasCrear.indexOf(encargaturaSeleccionada);
                     listaEncargaturasCrear.remove(crearIndex);
                 } else {
-                    listaEncargaturasBorrar.add(listaEncargaturas.get(index));
+                    listaEncargaturasBorrar.add(encargaturaSeleccionada);
                 }
-                listaEncargaturas.remove(index);
-            }
+                listaEncargaturas.remove(encargaturaSeleccionada);
 
             if (tipoLista == 1) {
-                if (!listaEncargaturasModificar.isEmpty() && listaEncargaturasModificar.contains(filtradosListaEncargaturas.get(index))) {
-                    int modIndex = listaEncargaturasModificar.indexOf(filtradosListaEncargaturas.get(index));
-                    listaEncargaturasModificar.remove(modIndex);
-                    listaEncargaturasBorrar.add(filtradosListaEncargaturas.get(index));
-                } else if (!listaEncargaturasCrear.isEmpty() && listaEncargaturasCrear.contains(filtradosListaEncargaturas.get(index))) {
-                    int crearIndex = listaEncargaturasCrear.indexOf(filtradosListaEncargaturas.get(index));
-                    listaEncargaturasCrear.remove(crearIndex);
-                } else {
-                    listaEncargaturasBorrar.add(filtradosListaEncargaturas.get(index));
-                }
-                int CIndex = listaEncargaturas.indexOf(filtradosListaEncargaturas.get(index));
-                listaEncargaturas.remove(CIndex);
-                filtradosListaEncargaturas.remove(index);
-                System.out.println("Realizado");
+                filtradosListaEncargaturas.remove(encargaturaSeleccionada);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosEncargaturasEmpleado");
-            index = -1;
-            secRegistro = null;
+            encargaturaSeleccionada = null;
+            encargaturaSeleccionada = null;
 
             if (guardado == true) {
                 guardado = false;
@@ -1468,8 +1448,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         listaEncargaturasBorrar.clear();
         listaEncargaturasCrear.clear();
         listaEncargaturasModificar.clear();
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
 //        k = 0;
         listaEncargaturas = null;
         guardado = true;
@@ -1509,8 +1489,8 @@ public class ControlNovedadesReemplazos implements Serializable {
         listaEncargaturasBorrar.clear();
         listaEncargaturasCrear.clear();
         listaEncargaturasModificar.clear();
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
 //        k = 0;
         listaEncargaturas = null;
         guardado = true;
@@ -1520,12 +1500,12 @@ public class ControlNovedadesReemplazos implements Serializable {
 
     //MOSTRAR DATOS CELDA
     public void editarCelda() {
-        if (index >= 0) {
+        if (encargaturaSeleccionada != null) {
             if (tipoLista == 0) {
-                editarEncargaturas = listaEncargaturas.get(index);
+                editarEncargaturas = encargaturaSeleccionada;
             }
             if (tipoLista == 1) {
-                editarEncargaturas = filtradosListaEncargaturas.get(index);
+                editarEncargaturas = encargaturaSeleccionada;
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1562,47 +1542,47 @@ public class ControlNovedadesReemplazos implements Serializable {
                 cualCelda = -1;
             }
         }
-        index = -1;
-        secRegistro = null;
+        encargaturaSeleccionada = null;
+        encargaturaSeleccionada = null;
     }
 
     //DUPLICAR ENCARGATURA
     public void duplicarNR() {
-        if (index >= 0) {
+        if (encargaturaSeleccionada != null) {
             duplicarEncargatura = new Encargaturas();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
                 duplicarEncargatura.setSecuencia(l);
-                duplicarEncargatura.setEmpleado(listaEncargaturas.get(index).getEmpleado());
-                duplicarEncargatura.setReemplazado(listaEncargaturas.get(index).getReemplazado());
-                duplicarEncargatura.setTiporeemplazo(listaEncargaturas.get(index).getTiporeemplazo());
-                duplicarEncargatura.setFechapago(listaEncargaturas.get(index).getFechapago());
-                duplicarEncargatura.setFechainicial(listaEncargaturas.get(index).getFechainicial());
-                duplicarEncargatura.setFechafinal(listaEncargaturas.get(index).getFechafinal());
-                duplicarEncargatura.setCargo(listaEncargaturas.get(index).getCargo());
-                duplicarEncargatura.setMotivoreemplazo(listaEncargaturas.get(index).getMotivoreemplazo());
-                duplicarEncargatura.setEstructura(listaEncargaturas.get(index).getEstructura());
+                duplicarEncargatura.setEmpleado(encargaturaSeleccionada.getEmpleado());
+                duplicarEncargatura.setReemplazado(encargaturaSeleccionada.getReemplazado());
+                duplicarEncargatura.setTiporeemplazo(encargaturaSeleccionada.getTiporeemplazo());
+                duplicarEncargatura.setFechapago(encargaturaSeleccionada.getFechapago());
+                duplicarEncargatura.setFechainicial(encargaturaSeleccionada.getFechainicial());
+                duplicarEncargatura.setFechafinal(encargaturaSeleccionada.getFechafinal());
+                duplicarEncargatura.setCargo(encargaturaSeleccionada.getCargo());
+                duplicarEncargatura.setMotivoreemplazo(encargaturaSeleccionada.getMotivoreemplazo());
+                duplicarEncargatura.setEstructura(encargaturaSeleccionada.getEstructura());
             }
             if (tipoLista == 1) {
                 duplicarEncargatura.setSecuencia(l);
-                duplicarEncargatura.setEmpleado(filtradosListaEncargaturas.get(index).getEmpleado());
-                duplicarEncargatura.setReemplazado(filtradosListaEncargaturas.get(index).getReemplazado());
-                duplicarEncargatura.setTiporeemplazo(filtradosListaEncargaturas.get(index).getTiporeemplazo());
-                duplicarEncargatura.setFechapago(filtradosListaEncargaturas.get(index).getFechapago());
-                duplicarEncargatura.setFechainicial(filtradosListaEncargaturas.get(index).getFechainicial());
-                duplicarEncargatura.setFechafinal(filtradosListaEncargaturas.get(index).getFechafinal());
-                duplicarEncargatura.setCargo(filtradosListaEncargaturas.get(index).getCargo());
-                duplicarEncargatura.setMotivoreemplazo(filtradosListaEncargaturas.get(index).getMotivoreemplazo());
-                duplicarEncargatura.setEstructura(filtradosListaEncargaturas.get(index).getEstructura());
+                duplicarEncargatura.setEmpleado(encargaturaSeleccionada.getEmpleado());
+                duplicarEncargatura.setReemplazado(encargaturaSeleccionada.getReemplazado());
+                duplicarEncargatura.setTiporeemplazo(encargaturaSeleccionada.getTiporeemplazo());
+                duplicarEncargatura.setFechapago(encargaturaSeleccionada.getFechapago());
+                duplicarEncargatura.setFechainicial(encargaturaSeleccionada.getFechainicial());
+                duplicarEncargatura.setFechafinal(encargaturaSeleccionada.getFechafinal());
+                duplicarEncargatura.setCargo(encargaturaSeleccionada.getCargo());
+                duplicarEncargatura.setMotivoreemplazo(encargaturaSeleccionada.getMotivoreemplazo());
+                duplicarEncargatura.setEstructura(encargaturaSeleccionada.getEstructura());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarEncargatura");
             context.execute("DuplicarRegistroEncargatura.show()");
-            index = -1;
-            secRegistro = null;
+            encargaturaSeleccionada = null;
+            encargaturaSeleccionada = null;
         }
     }
 
@@ -1623,7 +1603,7 @@ public class ControlNovedadesReemplazos implements Serializable {
             listaEncargaturasCrear.add(duplicarEncargatura);
 
             context.update("form:datosEncargaturasEmpleado");
-            index = -1;
+            encargaturaSeleccionada = null;
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1674,7 +1654,7 @@ public class ControlNovedadesReemplazos implements Serializable {
 
     //LISTA DE VALORES DINAMICA
     public void listaValoresBoton() {
-        if (index >= 0) {
+        if (encargaturaSeleccionada != null) {
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 0) {
                 context.update("formularioDialogos:empleadosAbajoDialogo");
@@ -1938,14 +1918,6 @@ public class ControlNovedadesReemplazos implements Serializable {
 
     public boolean isBotones() {
         return botones;
-    }
-
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
     }
 
     public Encargaturas getEncargaturaSeleccionada() {

@@ -78,9 +78,6 @@
                         <p:commandButton style=" position: absolute; left: 675px; top: 498px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" disabled="#{controlIdiomaPersona.guardado}" id="ACEPTAR" value=" " onclick="confirmarGuardar.show();" update=":form:datosIdiomas" process="@this" />
                         <p:commandButton style=" position: absolute; left: 765px; top: 498px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value=" "  actionListener="#{controlIdiomaPersona.salir()}" action="emplIndividual" process="@this" />
                         
-<!--                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red;font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlIdiomaPersona.empleadoActual.persona.primerapellido} #{controlIdiomaPersona.empleadoActual.persona.segundoapellido} #{controlIdiomaPersona.empleadoActual.persona.nombre}">
-                        </h:outputText>-->
-                        
                         <fieldset style="position: absolute; top: 73px; left: 10px; height: 18px; width: 833px; border-radius: 3px; text-align: left; border: solid #C7BFBF 1px">
                         <h:outputText value="#{msg['empleado']} " style="font-weight: bold; color: #14388B; position: relative; top: 5px; left: 0px" />
                         <h:outputText id="nombreEmpleado" value="#{controlIdiomaPersona.empleadoActual.persona.nombreCompleto}" 

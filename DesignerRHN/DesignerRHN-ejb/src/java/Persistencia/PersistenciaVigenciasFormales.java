@@ -40,7 +40,8 @@ public class PersistenciaVigenciasFormales implements PersistenciaVigenciasForma
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciasFormales);
+//            em.merge(vigenciasFormales);
+            em.persist(vigenciasFormales);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasFormales.crear: " + e);

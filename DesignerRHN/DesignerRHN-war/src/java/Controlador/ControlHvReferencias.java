@@ -107,22 +107,15 @@ public class ControlHvReferencias implements Serializable {
 
     public void recibirEmpleado(BigInteger secuencia) {
             
-//            if(listHvReferencias.isEmpty() || listHvReferencias == null){
-//            RequestContext.getCurrentInstance().execute("formularioDialogos:perfilVacio");
-//                
-//            } else{
             secuenciaPersona = secuencia;
             listHvReferencias = null;
             empleado = administrarHvReferencias.empleadoActual(secuencia);
             getListHvReferencias();
             contarRegistros();
             deshabilitarBotonLov();
-                
-           //}
-            
-//            if (listHvReferencias != null) {
-//                hvReferenciaSeleccionada = listHvReferencias.get(0);
-//            }
+            if(!listHvReferencias.isEmpty()){
+                hvReferenciaSeleccionada = listHvReferencias.get(0);
+            }
     }
 
     public void mostrarNuevo() {

@@ -146,7 +146,11 @@ public class ControlProyecto implements Serializable {
         listProyectos = null;
         getListProyectos();
         contarRegistros();
+       if(listProyectos == null || listProyectos.isEmpty()){
+         proyectoTablaSeleccionado = null;  
+       } else {
         proyectoTablaSeleccionado = listProyectos.get(0);
+       }
     }
 
     public String redirigir() {

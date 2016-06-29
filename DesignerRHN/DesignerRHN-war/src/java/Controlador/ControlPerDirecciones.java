@@ -125,7 +125,9 @@ public class ControlPerDirecciones implements Serializable {
         empleado = administrarDirecciones.empleadoActual(secuencia);
         getListaDirecciones();
         deshabilitarBotonLOV();
-        if (listaDirecciones != null) {
+        if (listaDirecciones == null || listaDirecciones.isEmpty()) {
+            direccionSeleccionada = null;
+        } else {
             direccionSeleccionada = listaDirecciones.get(0);
         }
         contarRegistros();
@@ -251,8 +253,8 @@ public class ControlPerDirecciones implements Serializable {
             listaDireccionesCrear.add(nuevaDireccion);
             if (listaDirecciones == null) {
                 listaDirecciones = new ArrayList<Direcciones>();
-                listaDirecciones.add(nuevaDireccion);
             }
+                listaDirecciones.add(nuevaDireccion);
             System.out.print("Lista direcciones");
             System.out.println(listaDirecciones.size());
 

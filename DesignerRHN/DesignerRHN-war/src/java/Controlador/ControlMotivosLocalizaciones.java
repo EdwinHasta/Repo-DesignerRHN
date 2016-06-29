@@ -101,7 +101,11 @@ public class ControlMotivosLocalizaciones implements Serializable {
         listMotivosLocalizaciones = null;
         getListMotivosLocalizaciones();
         contarRegistros();
-        motivoLocalizacionSeleccionado = listMotivosLocalizaciones.get(0);
+        if (listMotivosLocalizaciones == null || listMotivosLocalizaciones.isEmpty()) {
+            motivoLocalizacionSeleccionado = null;
+        } else {
+            motivoLocalizacionSeleccionado = listMotivosLocalizaciones.get(0);
+        }
     }
 
     public String retornarPagina() {

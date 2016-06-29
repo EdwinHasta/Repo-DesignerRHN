@@ -131,7 +131,9 @@ public class ControlPerTelefonos implements Serializable {
         listaTiposTelefonos = null;
         empleado = administrarTelefonos.empleadoActual(secuencia);
         getListaTelefonos();
-        if (listaTelefonos != null) {
+        if (listaTelefonos == null || listaTelefonos.isEmpty()) {
+            telefonoSeleccionado= null;
+        } else{
             telefonoSeleccionado = listaTelefonos.get(0);
         }
         contarRegistros();
@@ -1017,6 +1019,7 @@ public class ControlPerTelefonos implements Serializable {
             tipoActualizacion = 2;
         }
         if (dlg == 0) {
+            getListaTiposTelefonos();
             modificarInfoRegistroTT(listaTiposTelefonos.size());
             context.update("formularioDialogos:tiposTelefonosDialogo");
             context.execute("tiposTelefonosDialogo.show()");

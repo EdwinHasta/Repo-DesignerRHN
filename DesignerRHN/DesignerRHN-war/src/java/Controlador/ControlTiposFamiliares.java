@@ -49,13 +49,12 @@ public class ControlTiposFamiliares implements Serializable {
     private TiposFamiliares editarTiposFamiliares;
     private TiposFamiliares tiposFamiliaresSeleccionado;
     //otros
-    private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
+    private int cualCelda, tipoLista,tipoActualizacion, k, bandera;
     private BigInteger l;
-    private boolean aceptar, guardado;
+    private boolean aceptar, guardado, activarLov;
     //AutoCompletar
     private boolean permitirIndex;
     //RASTRO
-    private BigInteger secRegistro;
     private Column codigo, descripcion;
     //borrado
     private int registrosBorrados;
@@ -64,6 +63,9 @@ public class ControlTiposFamiliares implements Serializable {
     private int tamano;
     private Integer backUpCodigo;
     private String backUpDescripcion;
+    private DataTable tablaC;
+    private String infoRegistro;
+    private String paginaAnterior;
 
     public ControlTiposFamiliares() {
         listTiposFamiliares = null;
@@ -76,6 +78,7 @@ public class ControlTiposFamiliares implements Serializable {
         duplicarTiposFamiliares = new TiposFamiliares();
         guardado = true;
         tamano = 270;
+        activarLov = true;
         System.out.println("controlTiposFamiliares Constructor");
     }
 
@@ -92,61 +95,60 @@ public class ControlTiposFamiliares implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
-    private String paginaAnterior;
-public void recibirPagina(String pagina){paginaAnterior = pagina;}
-public String redirigirPaginaAnterior(){return paginaAnterior;}
 
-    public void eventoFiltrar() {
-        try {
-            System.out.println("\n ENTRE A ControlTiposFamiliares.eventoFiltrar \n");
-            if (tipoLista == 0) {
-                tipoLista = 1;
-            }
-            RequestContext context = RequestContext.getCurrentInstance();
-            infoRegistro = "Cantidad de registros: " + filtrarTiposFamiliares.size();
-            context.update("form:informacionRegistro");
-        } catch (Exception e) {
-            System.out.println("ERROR ControlTiposFamiliares eventoFiltrar ERROR===" + e.getMessage());
-        }
+    public void recibirPagina(String pagina) {
+        paginaAnterior = pagina;
+       listTiposFamiliares = null;
+       getListTiposFamiliares();
+       contarRegistros();
+       deshabilitarBotonLov();
+       if(listTiposFamiliares != null){
+           tiposFamiliaresSeleccionado = listTiposFamiliares.get(0);
+       }
+
     }
 
-    public void cambiarIndice(int indice, int celda) {
+    public String redirigirPaginaAnterior() {
+        return paginaAnterior;
+    }
+
+    public void cambiarIndice(TiposFamiliares tipoFamiliar, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
 
         if (permitirIndex == true) {
-            index = indice;
+           tiposFamiliaresSeleccionado = tipoFamiliar;
             cualCelda = celda;
             if (tipoLista == 0) {
+                deshabilitarBotonLov();
                 if (cualCelda == 0) {
-                    backUpCodigo = listTiposFamiliares.get(index).getCodigo();
+                    backUpCodigo = tiposFamiliaresSeleccionado.getCodigo();
                     System.out.println(" backUpCodigo : " + backUpCodigo);
                 } else if (cualCelda == 1) {
-                    backUpDescripcion = listTiposFamiliares.get(index).getTipo();
+                    backUpDescripcion = tiposFamiliaresSeleccionado.getTipo();
                     System.out.println(" backUpDescripcion : " + backUpDescripcion);
                 }
-                secRegistro = listTiposFamiliares.get(index).getSecuencia();
+                tiposFamiliaresSeleccionado.getSecuencia();
             } else {
+                deshabilitarBotonLov();
                 if (cualCelda == 0) {
-                    backUpCodigo = filtrarTiposFamiliares.get(index).getCodigo();
+                    backUpCodigo = tiposFamiliaresSeleccionado.getCodigo();
                     System.out.println(" backUpCodigo : " + backUpCodigo);
 
                 } else if (cualCelda == 1) {
-                    backUpDescripcion = filtrarTiposFamiliares.get(index).getTipo();
+                    backUpDescripcion = tiposFamiliaresSeleccionado.getTipo();
                     System.out.println(" backUpDescripcion : " + backUpDescripcion);
 
                 }
-                secRegistro = filtrarTiposFamiliares.get(index).getSecuencia();
+                tiposFamiliaresSeleccionado.getSecuencia();
             }
 
         }
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
 
-    public void asignarIndex(Integer indice, int LND, int dig) {
+    public void asignarIndex(TiposFamiliares tipoFamiliar, int LND, int dig) {
         try {
             System.out.println("\n ENTRE A ControlTiposFamiliares.asignarIndex \n");
-            index = indice;
+            tiposFamiliaresSeleccionado = tipoFamiliar;
             if (LND == 0) {
                 tipoActualizacion = 0;
             } else if (LND == 1) {
@@ -167,7 +169,6 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
 
     public void listaValoresBoton() {
     }
-    private String infoRegistro;
 
     public void cancelarModificacion() {
         if (bandera == 1) {
@@ -187,19 +188,15 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
         borrarTiposFamiliares.clear();
         crearTiposFamiliares.clear();
         modificarTiposFamiliares.clear();
-        index = -1;
-        secRegistro = null;
+        tiposFamiliaresSeleccionado = null;
+        tiposFamiliaresSeleccionado = null;
         k = 0;
         listTiposFamiliares = null;
         guardado = true;
         permitirIndex = true;
         getListTiposFamiliares();
         RequestContext context = RequestContext.getCurrentInstance();
-        if (listTiposFamiliares == null || listTiposFamiliares.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistro = "Cantidad de registros: " + listTiposFamiliares.size();
-        }
+        contarRegistros();
         context.update("form:informacionRegistro");
         context.update("form:datosTiposFamiliares");
         context.update("form:ACEPTAR");
@@ -223,10 +220,11 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
         borrarTiposFamiliares.clear();
         crearTiposFamiliares.clear();
         modificarTiposFamiliares.clear();
-        index = -1;
-        secRegistro = null;
+        tiposFamiliaresSeleccionado = null;
         k = 0;
         listTiposFamiliares = null;
+        getListTiposFamiliares();
+        contarRegistros();
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -239,9 +237,9 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
         if (bandera == 0) {
             tamano = 246;
             codigo = (Column) c.getViewRoot().findComponent("form:datosTiposFamiliares:codigo");
-            codigo.setFilterStyle("width: 170px");
+            codigo.setFilterStyle("width: 85%");
             descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposFamiliares:descripcion");
-            descripcion.setFilterStyle("width: 400px");
+            descripcion.setFilterStyle("width: 85%");
             RequestContext.getCurrentInstance().update("form:datosTiposFamiliares");
             System.out.println("Activar");
             bandera = 1;
@@ -259,9 +257,9 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
         }
     }
 
-    public void modificarTiposFamiliares(int indice, String confirmarCambio, String valorConfirmar) {
+    public void modificarTiposFamiliares(TiposFamiliares tipoFamiliar, String confirmarCambio, String valorConfirmar) {
         System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
-        index = indice;
+        tiposFamiliaresSeleccionado =tipoFamiliar;
 
         int contador = 0;
         boolean banderita = false;
@@ -272,44 +270,42 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
-                if (!crearTiposFamiliares.contains(listTiposFamiliares.get(indice))) {
-                    if (listTiposFamiliares.get(indice).getCodigo() == a) {
+                if (!crearTiposFamiliares.contains(tiposFamiliaresSeleccionado)) {
+                    if (tiposFamiliaresSeleccionado.getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        listTiposFamiliares.get(indice).setCodigo(backUpCodigo);
+                        tiposFamiliaresSeleccionado.setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listTiposFamiliares.size(); j++) {
-                            if (j != indice) {
-                                if (listTiposFamiliares.get(indice).getCodigo().equals(listTiposFamiliares.get(j).getCodigo())) {
+                                if (tiposFamiliaresSeleccionado.getCodigo().equals(listTiposFamiliares.get(j).getCodigo())) {
                                     contador++;
                                 }
-                            }
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            listTiposFamiliares.get(indice).setCodigo(backUpCodigo);
+                            tiposFamiliaresSeleccionado.setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
                         }
 
                     }
-                    if (listTiposFamiliares.get(indice).getTipo().isEmpty()) {
+                    if (tiposFamiliaresSeleccionado.getTipo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        listTiposFamiliares.get(indice).setTipo(backUpDescripcion);
+                        tiposFamiliaresSeleccionado.setTipo(backUpDescripcion);
                     }
-                    if (listTiposFamiliares.get(indice).getTipo().equals(" ")) {
+                    if (tiposFamiliaresSeleccionado.getTipo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        listTiposFamiliares.get(indice).setTipo(backUpDescripcion);
+                        tiposFamiliaresSeleccionado.setTipo(backUpDescripcion);
                     }
 
                     if (banderita == true) {
                         if (modificarTiposFamiliares.isEmpty()) {
-                            modificarTiposFamiliares.add(listTiposFamiliares.get(indice));
-                        } else if (!modificarTiposFamiliares.contains(listTiposFamiliares.get(indice))) {
-                            modificarTiposFamiliares.add(listTiposFamiliares.get(indice));
+                            modificarTiposFamiliares.add(tiposFamiliaresSeleccionado);
+                        } else if (!modificarTiposFamiliares.contains(tiposFamiliaresSeleccionado)) {
+                            modificarTiposFamiliares.add(tiposFamiliaresSeleccionado);
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -319,39 +315,37 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
                     }
-                    index = -1;
-                    secRegistro = null;
+                    tiposFamiliaresSeleccionado = null;
+                    tiposFamiliaresSeleccionado = null;
                 } else {
-                    if (listTiposFamiliares.get(indice).getCodigo() == a) {
+                    if (tiposFamiliaresSeleccionado.getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        listTiposFamiliares.get(indice).setCodigo(backUpCodigo);
+                        tiposFamiliaresSeleccionado.setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listTiposFamiliares.size(); j++) {
-                            if (j != indice) {
-                                if (listTiposFamiliares.get(indice).getCodigo().equals(listTiposFamiliares.get(j).getCodigo())) {
+                                if (tiposFamiliaresSeleccionado.getCodigo().equals(listTiposFamiliares.get(j).getCodigo())) {
                                     contador++;
                                 }
-                            }
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            listTiposFamiliares.get(indice).setCodigo(backUpCodigo);
+                            tiposFamiliaresSeleccionado.setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
                         }
 
                     }
-                    if (listTiposFamiliares.get(indice).getTipo().isEmpty()) {
+                    if (tiposFamiliaresSeleccionado.getTipo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        listTiposFamiliares.get(indice).setTipo(backUpDescripcion);
+                        tiposFamiliaresSeleccionado.setTipo(backUpDescripcion);
                     }
-                    if (listTiposFamiliares.get(indice).getTipo().equals(" ")) {
+                    if (tiposFamiliaresSeleccionado.getTipo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        listTiposFamiliares.get(indice).setTipo(backUpDescripcion);
+                        tiposFamiliaresSeleccionado.setTipo(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -364,28 +358,26 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
                     }
-                    index = -1;
-                    secRegistro = null;
+                    tiposFamiliaresSeleccionado = null;
+                    tiposFamiliaresSeleccionado = null;
                 }
             } else {
 
-                if (!crearTiposFamiliares.contains(filtrarTiposFamiliares.get(indice))) {
-                    if (filtrarTiposFamiliares.get(indice).getCodigo() == a) {
+                if (!crearTiposFamiliares.contains(tiposFamiliaresSeleccionado)) {
+                    if (tiposFamiliaresSeleccionado.getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        filtrarTiposFamiliares.get(indice).setCodigo(backUpCodigo);
+                        tiposFamiliaresSeleccionado.setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
 
                         for (int j = 0; j < filtrarTiposFamiliares.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarTiposFamiliares.get(indice).getCodigo().equals(filtrarTiposFamiliares.get(j).getCodigo())) {
+                                if (tiposFamiliaresSeleccionado.getCodigo().equals(filtrarTiposFamiliares.get(j).getCodigo())) {
                                     contador++;
                                 }
-                            }
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            filtrarTiposFamiliares.get(indice).setCodigo(backUpCodigo);
+                            tiposFamiliaresSeleccionado.setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -393,22 +385,22 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
 
                     }
 
-                    if (filtrarTiposFamiliares.get(indice).getTipo().isEmpty()) {
+                    if (tiposFamiliaresSeleccionado.getTipo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        filtrarTiposFamiliares.get(indice).setTipo(backUpDescripcion);
+                        tiposFamiliaresSeleccionado.setTipo(backUpDescripcion);
                     }
-                    if (filtrarTiposFamiliares.get(indice).getTipo().equals(" ")) {
+                    if (tiposFamiliaresSeleccionado.getTipo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        filtrarTiposFamiliares.get(indice).setTipo(backUpDescripcion);
+                        tiposFamiliaresSeleccionado.setTipo(backUpDescripcion);
                     }
 
                     if (banderita == true) {
                         if (modificarTiposFamiliares.isEmpty()) {
-                            modificarTiposFamiliares.add(filtrarTiposFamiliares.get(indice));
-                        } else if (!modificarTiposFamiliares.contains(filtrarTiposFamiliares.get(indice))) {
-                            modificarTiposFamiliares.add(filtrarTiposFamiliares.get(indice));
+                            modificarTiposFamiliares.add(tiposFamiliaresSeleccionado);
+                        } else if (!modificarTiposFamiliares.contains(tiposFamiliaresSeleccionado)) {
+                            modificarTiposFamiliares.add(tiposFamiliaresSeleccionado);
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -418,25 +410,23 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
                     }
-                    index = -1;
-                    secRegistro = null;
+                    tiposFamiliaresSeleccionado = null;
+                    tiposFamiliaresSeleccionado = null;
                 } else {
-                    if (filtrarTiposFamiliares.get(indice).getCodigo() == a) {
+                    if (tiposFamiliaresSeleccionado.getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        filtrarTiposFamiliares.get(indice).setCodigo(backUpCodigo);
+                        tiposFamiliaresSeleccionado.setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
 
-                         for (int j = 0; j < filtrarTiposFamiliares.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarTiposFamiliares.get(indice).getCodigo().equals(filtrarTiposFamiliares.get(j).getCodigo())) {
+                        for (int j = 0; j < filtrarTiposFamiliares.size(); j++) {
+                                if (tiposFamiliaresSeleccionado.getCodigo().equals(filtrarTiposFamiliares.get(j).getCodigo())) {
                                     contador++;
                                 }
-                            }
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            filtrarTiposFamiliares.get(indice).setCodigo(backUpCodigo);
+                            tiposFamiliaresSeleccionado.setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -444,15 +434,15 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
 
                     }
 
-                    if (filtrarTiposFamiliares.get(indice).getTipo().isEmpty()) {
+                    if (tiposFamiliaresSeleccionado.getTipo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        filtrarTiposFamiliares.get(indice).setTipo(backUpDescripcion);
+                        tiposFamiliaresSeleccionado.setTipo(backUpDescripcion);
                     }
-                    if (filtrarTiposFamiliares.get(indice).getTipo().equals(" ")) {
+                    if (tiposFamiliaresSeleccionado.getTipo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        filtrarTiposFamiliares.get(indice).setTipo(backUpDescripcion);
+                        tiposFamiliaresSeleccionado.setTipo(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -465,8 +455,8 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
                     }
-                    index = -1;
-                    secRegistro = null;
+                    tiposFamiliaresSeleccionado = null;
+                    tiposFamiliaresSeleccionado = null;
                 }
 
             }
@@ -478,52 +468,36 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
 
     public void borrandoTiposFamiliares() {
 
-        if (index >= 0) {
-            if (tipoLista == 0) {
+        if (tiposFamiliaresSeleccionado != null) {
                 System.out.println("Entro a borrandoTiposFamiliares");
-                if (!modificarTiposFamiliares.isEmpty() && modificarTiposFamiliares.contains(listTiposFamiliares.get(index))) {
-                    int modIndex = modificarTiposFamiliares.indexOf(listTiposFamiliares.get(index));
+                if (!modificarTiposFamiliares.isEmpty() && modificarTiposFamiliares.contains(tiposFamiliaresSeleccionado)) {
+                    int modIndex = modificarTiposFamiliares.indexOf(tiposFamiliaresSeleccionado);
                     modificarTiposFamiliares.remove(modIndex);
-                    borrarTiposFamiliares.add(listTiposFamiliares.get(index));
-                } else if (!crearTiposFamiliares.isEmpty() && crearTiposFamiliares.contains(listTiposFamiliares.get(index))) {
-                    int crearIndex = crearTiposFamiliares.indexOf(listTiposFamiliares.get(index));
+                    borrarTiposFamiliares.add(tiposFamiliaresSeleccionado);
+                } else if (!crearTiposFamiliares.isEmpty() && crearTiposFamiliares.contains(tiposFamiliaresSeleccionado)) {
+                    int crearIndex = crearTiposFamiliares.indexOf(tiposFamiliaresSeleccionado);
                     crearTiposFamiliares.remove(crearIndex);
                 } else {
-                    borrarTiposFamiliares.add(listTiposFamiliares.get(index));
+                    borrarTiposFamiliares.add(tiposFamiliaresSeleccionado);
                 }
-                listTiposFamiliares.remove(index);
-            }
+                listTiposFamiliares.remove(tiposFamiliaresSeleccionado);
+                
             if (tipoLista == 1) {
-                System.out.println("borrandoTiposFamiliares ");
-                if (!modificarTiposFamiliares.isEmpty() && modificarTiposFamiliares.contains(filtrarTiposFamiliares.get(index))) {
-                    int modIndex = modificarTiposFamiliares.indexOf(filtrarTiposFamiliares.get(index));
-                    modificarTiposFamiliares.remove(modIndex);
-                    borrarTiposFamiliares.add(filtrarTiposFamiliares.get(index));
-                } else if (!crearTiposFamiliares.isEmpty() && crearTiposFamiliares.contains(filtrarTiposFamiliares.get(index))) {
-                    int crearIndex = crearTiposFamiliares.indexOf(filtrarTiposFamiliares.get(index));
-                    crearTiposFamiliares.remove(crearIndex);
-                } else {
-                    borrarTiposFamiliares.add(filtrarTiposFamiliares.get(index));
-                }
-                int VCIndex = listTiposFamiliares.indexOf(filtrarTiposFamiliares.get(index));
-                listTiposFamiliares.remove(VCIndex);
-                filtrarTiposFamiliares.remove(index);
-
+                filtrarTiposFamiliares.remove(tiposFamiliaresSeleccionado);
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosTiposFamiliares");
-            infoRegistro = "Cantidad de registros: " + listTiposFamiliares.size();
+            modificarInfoRegistro(listTiposFamiliares.size());
             context.update("form:informacionRegistro");
-
-            index = -1;
-            secRegistro = null;
+            tiposFamiliaresSeleccionado = null;
 
             if (guardado == true) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
-        }
-
+        } else{
+            RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro.show()");
+        } 
     }
 
     public void verificarBorrado() {
@@ -533,9 +507,9 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
         try {
             System.err.println("Control Secuencia de ControlTiposFamiliares ");
             if (tipoLista == 0) {
-                contarHvReferenciasTipoFamiliar = administrarTiposFamiliares.contarHvReferenciasTipoFamiliar(listTiposFamiliares.get(index).getSecuencia());
+                contarHvReferenciasTipoFamiliar = administrarTiposFamiliares.contarHvReferenciasTipoFamiliar(tiposFamiliaresSeleccionado.getSecuencia());
             } else {
-                contarHvReferenciasTipoFamiliar = administrarTiposFamiliares.contarHvReferenciasTipoFamiliar(filtrarTiposFamiliares.get(index).getSecuencia());
+                contarHvReferenciasTipoFamiliar = administrarTiposFamiliares.contarHvReferenciasTipoFamiliar(tiposFamiliaresSeleccionado.getSecuencia());
             }
             if (contarHvReferenciasTipoFamiliar.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
@@ -546,7 +520,7 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
-                index = -1;
+                tiposFamiliaresSeleccionado = null;
                 contarHvReferenciasTipoFamiliar = new BigInteger("-1");
 
             }
@@ -588,6 +562,8 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
             }
             System.out.println("Se guardaron los datos con exito");
             listTiposFamiliares = null;
+            getListTiposFamiliares();
+            contarRegistros();
             context.update("form:datosTiposFamiliares");
             k = 0;
             guardado = true;
@@ -595,18 +571,18 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
         }
-        index = -1;
+        tiposFamiliaresSeleccionado = null;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
 
     public void editarCelda() {
-        if (index >= 0) {
+        if (tiposFamiliaresSeleccionado != null) {
             if (tipoLista == 0) {
-                editarTiposFamiliares = listTiposFamiliares.get(index);
+                editarTiposFamiliares = tiposFamiliaresSeleccionado;
             }
             if (tipoLista == 1) {
-                editarTiposFamiliares = filtrarTiposFamiliares.get(index);
+                editarTiposFamiliares = tiposFamiliaresSeleccionado;
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -621,9 +597,9 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
                 cualCelda = -1;
             }
 
+        } else{
+            RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro.show()");
         }
-        index = -1;
-        secRegistro = null;
     }
 
     public void agregarNuevoTiposFamiliares() {
@@ -691,13 +667,12 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
             k++;
             l = BigInteger.valueOf(k);
             nuevoTiposFamiliares.setSecuencia(l);
-
             crearTiposFamiliares.add(nuevoTiposFamiliares);
-
             listTiposFamiliares.add(nuevoTiposFamiliares);
+            tiposFamiliaresSeleccionado = nuevoTiposFamiliares;
             nuevoTiposFamiliares = new TiposFamiliares();
             context.update("form:datosTiposFamiliares");
-            infoRegistro = "Cantidad de registros: " + listTiposFamiliares.size();
+            modificarInfoRegistro(listTiposFamiliares.size());
             context.update("form:informacionRegistro");
 
             if (guardado == true) {
@@ -706,8 +681,6 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
             }
 
             context.execute("nuevoRegistroTiposFamiliares.hide()");
-            index = -1;
-            secRegistro = null;
 
         } else {
             context.update("form:validacionNuevaCentroCosto");
@@ -719,35 +692,33 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
     public void limpiarNuevoTiposFamiliares() {
         System.out.println("limpiarNuevoTiposFamiliares");
         nuevoTiposFamiliares = new TiposFamiliares();
-        secRegistro = null;
-        index = -1;
 
     }
 
     //------------------------------------------------------------------------------
     public void duplicandoTiposFamiliares() {
         System.out.println("duplicandoTiposFamiliares");
-        if (index >= 0) {
+        if (tiposFamiliaresSeleccionado != null) {
             duplicarTiposFamiliares = new TiposFamiliares();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
                 duplicarTiposFamiliares.setSecuencia(l);
-                duplicarTiposFamiliares.setCodigo(listTiposFamiliares.get(index).getCodigo());
-                duplicarTiposFamiliares.setTipo(listTiposFamiliares.get(index).getTipo());
+                duplicarTiposFamiliares.setCodigo(tiposFamiliaresSeleccionado.getCodigo());
+                duplicarTiposFamiliares.setTipo(tiposFamiliaresSeleccionado.getTipo());
             }
             if (tipoLista == 1) {
                 duplicarTiposFamiliares.setSecuencia(l);
-                duplicarTiposFamiliares.setCodigo(filtrarTiposFamiliares.get(index).getCodigo());
-                duplicarTiposFamiliares.setTipo(filtrarTiposFamiliares.get(index).getTipo());
+                duplicarTiposFamiliares.setCodigo(tiposFamiliaresSeleccionado.getCodigo());
+                duplicarTiposFamiliares.setTipo(tiposFamiliaresSeleccionado.getTipo());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTE");
             context.execute("duplicarRegistroTiposFamiliares.show()");
-            index = -1;
-            secRegistro = null;
+        } else{
+            RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro.show()");
         }
     }
 
@@ -802,14 +773,13 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
             }
             listTiposFamiliares.add(duplicarTiposFamiliares);
             crearTiposFamiliares.add(duplicarTiposFamiliares);
+            tiposFamiliaresSeleccionado = duplicarTiposFamiliares;
             context.update("form:datosTiposFamiliares");
-            index = -1;
-            secRegistro = null;
             if (guardado == true) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
-            infoRegistro = "Cantidad de registros: " + listTiposFamiliares.size();
+            modificarInfoRegistro(listTiposFamiliares.size());
             context.update("form:informacionRegistro");
 
             if (bandera == 1) {
@@ -844,8 +814,8 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "TIPOSFAMILIARES", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        tiposFamiliaresSeleccionado = null;
+        tiposFamiliaresSeleccionado = null;
     }
 
     public void exportXLS() throws IOException {
@@ -854,17 +824,17 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "TIPOSFAMILIARES", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        tiposFamiliaresSeleccionado = null;
+        tiposFamiliaresSeleccionado = null;
     }
 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
         if (!listTiposFamiliares.isEmpty()) {
-            if (secRegistro != null) {
+            if (tiposFamiliaresSeleccionado!= null) {
                 System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "TIPOSFAMILIARES"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+                int resultado = administrarRastros.obtenerTabla(tiposFamiliaresSeleccionado.getSecuencia(), "TIPOSFAMILIARES"); //En ENCARGATURAS lo cambia por el nombre de su tabla
                 System.out.println("resultado: " + resultado);
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
@@ -888,20 +858,59 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
             }
 
         }
-        index = -1;
+        tiposFamiliaresSeleccionado = null;
     }
+
+    public void eventoFiltrar() {
+        try {
+            System.out.println("\n ENTRE A ControlTiposFamiliares.eventoFiltrar \n");
+            if (tipoLista == 0) {
+                tipoLista = 1;
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            modificarInfoRegistro(filtrarTiposFamiliares.size());
+            context.update("form:informacionRegistro");
+        } catch (Exception e) {
+            System.out.println("ERROR ControlTiposFamiliares eventoFiltrar ERROR===" + e.getMessage());
+        }
+    }
+
+    public void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+    }
+
+    public void contarRegistros() {
+        if (listTiposFamiliares != null) {
+            modificarInfoRegistro(listTiposFamiliares.size());
+        } else {
+            modificarInfoRegistro(0);
+        }
+    }
+
+    public void habilitarBotonLov() {
+        activarLov = false;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+    }
+
+    public void deshabilitarBotonLov() {
+        activarLov = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+    }
+    
+public void recordarSeleccion(){
+    
+    if (tiposFamiliaresSeleccionado != null) {
+        FacesContext c = FacesContext.getCurrentInstance();
+        tablaC = (DataTable) c.getViewRoot().findComponent("form:datosTiposFamiliares");
+        tablaC.setSelection(tiposFamiliaresSeleccionado);
+    }
+}     
 
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<TiposFamiliares> getListTiposFamiliares() {
         if (listTiposFamiliares == null) {
             System.out.println("ControlTiposFamiliares getListTiposFamiliares");
             listTiposFamiliares = administrarTiposFamiliares.consultarTiposFamiliares();
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (listTiposFamiliares == null || listTiposFamiliares.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistro = "Cantidad de registros: " + listTiposFamiliares.size();
         }
         return listTiposFamiliares;
     }
@@ -940,14 +949,6 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
 
     public void setEditarTiposFamiliares(TiposFamiliares editarTiposFamiliares) {
         this.editarTiposFamiliares = editarTiposFamiliares;
-    }
-
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
     }
 
     public int getRegistrosBorrados() {
@@ -996,6 +997,14 @@ public String redirigirPaginaAnterior(){return paginaAnterior;}
 
     public void setInfoRegistro(String infoRegistro) {
         this.infoRegistro = infoRegistro;
+    }
+
+    public boolean isActivarLov() {
+        return activarLov;
+    }
+
+    public void setActivarLov(boolean activarLov) {
+        this.activarLov = activarLov;
     }
 
 }

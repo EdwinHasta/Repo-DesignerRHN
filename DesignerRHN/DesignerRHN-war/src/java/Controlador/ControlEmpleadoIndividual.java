@@ -499,7 +499,7 @@ public class ControlEmpleadoIndividual implements Serializable {
                 if (!modificacionPersona) {
                     modificacionPersona = true;
                 }
-                if (guardado ) {
+                if (guardado) {
                     guardado = false;
                     context.update("form:ACEPTAR");
                 }
@@ -666,7 +666,7 @@ public class ControlEmpleadoIndividual implements Serializable {
 
     //MODIFICACION
     public void eventoDataSelectFechaNacimiento(String tipoCampo) {
-        System.out.println(this.getClass().getName() +".eventoDataSelectFechaNacimiento");
+        System.out.println(this.getClass().getName() + ".eventoDataSelectFechaNacimiento");
         if (persona.getFechanacimiento() != null) {
             if (tipoCampo.equals("P")) {
                 if (modificacionPersona == false) {
@@ -725,7 +725,7 @@ public class ControlEmpleadoIndividual implements Serializable {
                     modificacionEmpleado = true;
                 }
             } else if (tipoCampo.equals("HV")) {
-                if (!modificacionHV ) {
+                if (!modificacionHV) {
                     modificacionHV = true;
                 }
             }
@@ -881,7 +881,19 @@ public class ControlEmpleadoIndividual implements Serializable {
         }
     }
 
+    public void validarRedirigirReferencias(String pagina) {
+
+        if (hojaDeVidaPersona != null) {
+            if (hojaDeVidaPersona.getPerfilprofesional() != null) {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                fc.getApplication().getNavigationHandler().handleNavigation(fc, null, pagina);
+            } else {
+                RequestContext.getCurrentInstance().execute("formDialogos:validarPerfilProfesional.show()");
+            }
+        }
+    }
 //GETTER AND SETTER
+
     public Empleados getEmpleado() {
         if (empleado == null) {
             empleado = administrarEmpleadoIndividual.buscarEmpleado(secuencia);

@@ -120,7 +120,6 @@ public class ControlIdiomaPersona implements Serializable {
     public void recibirEmpleado(BigInteger secuencia) {
         listIdiomasPersonas = null;
         listIdiomas = null;
-        System.out.println("administrarIdiomaPersona.empleadoActual(secuencia)" + administrarIdiomaPersona.empleadoActual(secuencia));
         empleadoActual = administrarIdiomaPersona.empleadoActual(secuencia);
         getListIdiomasPersonas();
         deshabilitarBotonLov();

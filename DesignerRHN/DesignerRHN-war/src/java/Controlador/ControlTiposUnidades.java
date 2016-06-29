@@ -96,6 +96,9 @@ public class ControlTiposUnidades implements Serializable {
 
     public void recibirPaginaEntrante(String pagina) {
         paginaAnterior = pagina;
+        listTiposUnidades= null;
+        getListTiposUnidades();
+        
     }
 
     public String redirigir() {

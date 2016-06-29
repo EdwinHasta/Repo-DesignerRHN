@@ -61,7 +61,7 @@ public class ControlEmplVigenciaIndicador implements Serializable {
     private boolean aceptar;
     //modificar
     private List<VigenciasIndicadores> listVigenciaIndicadorModificar;
-    private boolean guardado;
+    private boolean guardado, activarLov;
     //crear VP
     public VigenciasIndicadores nuevaVigencia;
     private BigInteger l;
@@ -75,11 +75,9 @@ public class ControlEmplVigenciaIndicador implements Serializable {
     private boolean permitirIndexV;
     //Variables Autompletar
     private String tipos, indicador;
-    private int index;
     private int cualCelda, tipoLista;
     private VigenciasIndicadores duplicarVigenciaIndicador;
     private List<VigenciasIndicadores> listVigenciaIndicadorCrear;
-    private BigInteger secRegistro;
     private BigInteger backUpSecRegistro;
     private Date fechaInic, fechaFin;
     private Empleados empleado;
@@ -88,6 +86,7 @@ public class ControlEmplVigenciaIndicador implements Serializable {
     private String infoRegistro;
     private String infoRegistroTipo, infoRegistroIndicador;
     private String altoTabla;
+    private DataTable tablaC;
 
     public ControlEmplVigenciaIndicador() {
         altoTabla = "310";
@@ -102,11 +101,11 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         editarVigenciaIndicador = new VigenciasIndicadores();
         tipoLista = 0;
         guardado = true;
-
+        activarLov = true;
+        empleado = new Empleados();
         banderaV = 0;
         permitirIndexV = true;
-        index = -1;
-        secRegistro = null;
+        vigenciaTablaSeleccionada = null;
         cualCelda = -1;
         listIndicadores = null;
         listTiposIndicadores = null;
@@ -130,14 +129,14 @@ public class ControlEmplVigenciaIndicador implements Serializable {
     }
 
     public void recibirEmpleado(BigInteger secuencia) {
-        empleado = new Empleados();
-        empleado = administrarEmplVigenciaIndicador.empleadoActual(secuencia);
         listVigenciasIndicadores = null;
+        empleado = administrarEmplVigenciaIndicador.empleadoActual(secuencia);
         getListVigenciasIndicadores();
-        if (listVigenciasIndicadores != null) {
-            infoRegistro = "Cantidad de registros : " + listVigenciasIndicadores.size();
-        } else {
-            infoRegistro = "Cantidad de registros : 0";
+        contarRegistros();
+        deshabilitarBotonLov();
+        if (!listVigenciasIndicadores.isEmpty()) {
+            vigenciaTablaSeleccionada = listVigenciasIndicadores.get(0);
+
         }
     }
 
@@ -150,10 +149,10 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         if (i == 0) {
             VigenciasIndicadores auxiliar = null;
             if (tipoLista == 0) {
-                auxiliar = listVigenciasIndicadores.get(index);
+                auxiliar = vigenciaTablaSeleccionada;
             }
             if (tipoLista == 1) {
-                auxiliar = filtrarListVigenciasIndicadores.get(index);
+                auxiliar = vigenciaTablaSeleccionada;
             }
             if (auxiliar.getFechafinal() != null) {
                 if (auxiliar.getFechainicial().after(fechaParametro) && auxiliar.getFechainicial().before(auxiliar.getFechafinal())) {
@@ -203,13 +202,13 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         return retorno;
     }
 
-    public void modificarFechas(int i, int c) {
+    public void modificarFechas(VigenciasIndicadores vigenciaIndicador, int c) {
         VigenciasIndicadores auxiliar = null;
         if (tipoLista == 0) {
-            auxiliar = listVigenciasIndicadores.get(i);
+            auxiliar = vigenciaTablaSeleccionada;
         }
         if (tipoLista == 1) {
-            auxiliar = filtrarListVigenciasIndicadores.get(i);
+            auxiliar = vigenciaTablaSeleccionada;
         }
         if (auxiliar.getFechainicial() != null) {
             boolean retorno = false;
@@ -217,20 +216,20 @@ public class ControlEmplVigenciaIndicador implements Serializable {
                 retorno = true;
             }
             if (auxiliar.getFechafinal() != null) {
-                index = i;
+                vigenciaTablaSeleccionada = vigenciaIndicador;
                 retorno = validarFechasRegistro(0);
             }
             if (retorno == true) {
-                cambiarIndiceV(i, c);
-                modificarVigencia(i);
+                cambiarIndiceV(vigenciaIndicador, c);
+                modificarVigencia(vigenciaIndicador);
             } else {
                 if (tipoLista == 0) {
-                    listVigenciasIndicadores.get(i).setFechafinal(fechaFin);
-                    listVigenciasIndicadores.get(i).setFechainicial(fechaInic);
+                    vigenciaTablaSeleccionada.setFechafinal(fechaFin);
+                    vigenciaTablaSeleccionada.setFechainicial(fechaInic);
                 }
                 if (tipoLista == 1) {
-                    filtrarListVigenciasIndicadores.get(i).setFechafinal(fechaFin);
-                    filtrarListVigenciasIndicadores.get(i).setFechainicial(fechaInic);
+                    vigenciaTablaSeleccionada.setFechafinal(fechaFin);
+                    vigenciaTablaSeleccionada.setFechainicial(fechaInic);
 
                 }
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -239,10 +238,10 @@ public class ControlEmplVigenciaIndicador implements Serializable {
             }
         } else {
             if (tipoLista == 0) {
-                listVigenciasIndicadores.get(i).setFechainicial(fechaInic);
+                vigenciaTablaSeleccionada.setFechainicial(fechaInic);
             }
             if (tipoLista == 1) {
-                filtrarListVigenciasIndicadores.get(i).setFechainicial(fechaInic);
+                vigenciaTablaSeleccionada.setFechainicial(fechaInic);
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
@@ -251,56 +250,52 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         }
     }
 
-    public void modificarVigencia(int indice) {
+    public void modificarVigencia(VigenciasIndicadores vigenciaIndicador) {
+        vigenciaTablaSeleccionada = vigenciaIndicador;
         if (tipoLista == 0) {
-            index = indice;
-            if (!listVigenciaIndicadorCrear.contains(listVigenciasIndicadores.get(indice))) {
+            if (!listVigenciaIndicadorCrear.contains(vigenciaTablaSeleccionada)) {
                 if (listVigenciaIndicadorModificar.isEmpty()) {
-                    listVigenciaIndicadorModificar.add(listVigenciasIndicadores.get(indice));
-                } else if (!listVigenciaIndicadorModificar.contains(listVigenciasIndicadores.get(indice))) {
-                    listVigenciaIndicadorModificar.add(listVigenciasIndicadores.get(indice));
+                    listVigenciaIndicadorModificar.add(vigenciaTablaSeleccionada);
+                } else if (!listVigenciaIndicadorModificar.contains(vigenciaTablaSeleccionada)) {
+                    listVigenciaIndicadorModificar.add(vigenciaTablaSeleccionada);
                 }
                 if (guardado == true) {
                     guardado = false;
                     RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
-            index = -1;
-            secRegistro = null;
         } else {
-            int ind = listVigenciasIndicadores.indexOf(filtrarListVigenciasIndicadores.get(indice));
-            index = ind;
+//            int ind = listVigenciasIndicadores.indexOf(vigenciaTablaSeleccionada);
+//            vigenciaTablaSeleccionada = ind;
 
-            if (!listVigenciaIndicadorCrear.contains(filtrarListVigenciasIndicadores.get(indice))) {
+            if (!listVigenciaIndicadorCrear.contains(vigenciaTablaSeleccionada)) {
                 if (listVigenciaIndicadorModificar.isEmpty()) {
-                    listVigenciaIndicadorModificar.add(filtrarListVigenciasIndicadores.get(indice));
-                } else if (!listVigenciaIndicadorModificar.contains(filtrarListVigenciasIndicadores.get(indice))) {
-                    listVigenciaIndicadorModificar.add(filtrarListVigenciasIndicadores.get(indice));
+                    listVigenciaIndicadorModificar.add(vigenciaTablaSeleccionada);
+                } else if (!listVigenciaIndicadorModificar.contains(vigenciaTablaSeleccionada)) {
+                    listVigenciaIndicadorModificar.add(vigenciaTablaSeleccionada);
                 }
                 if (guardado == true) {
                     guardado = false;
                     RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
-            index = -1;
-            secRegistro = null;
         }
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosVigencia");
 
     }
 
-    public void modificarVigencia(int indice, String confirmarCambio, String valorConfirmar) {
-        index = indice;
+    public void modificarVigencia(VigenciasIndicadores vigenciaIndicador, String confirmarCambio, String valorConfirmar) {
+        vigenciaTablaSeleccionada = vigenciaIndicador;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("TIPOS")) {
             if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listVigenciasIndicadores.get(indice).getTipoindicador().setDescripcion(tipos);
+                    vigenciaTablaSeleccionada.getTipoindicador().setDescripcion(tipos);
                 } else {
-                    filtrarListVigenciasIndicadores.get(indice).getTipoindicador().setDescripcion(tipos);
+                    vigenciaTablaSeleccionada.getTipoindicador().setDescripcion(tipos);
                 }
                 for (int i = 0; i < listTiposIndicadores.size(); i++) {
                     if (listTiposIndicadores.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
@@ -310,9 +305,9 @@ public class ControlEmplVigenciaIndicador implements Serializable {
                 }
                 if (coincidencias == 1) {
                     if (tipoLista == 0) {
-                        listVigenciasIndicadores.get(indice).setTipoindicador(listTiposIndicadores.get(indiceUnicoElemento));
+                        vigenciaTablaSeleccionada.setTipoindicador(listTiposIndicadores.get(indiceUnicoElemento));
                     } else {
-                        filtrarListVigenciasIndicadores.get(indice).setTipoindicador(listTiposIndicadores.get(indiceUnicoElemento));
+                        vigenciaTablaSeleccionada.setTipoindicador(listTiposIndicadores.get(indiceUnicoElemento));
                     }
                     listTiposIndicadores = null;
                     getListTiposIndicadores();
@@ -327,16 +322,16 @@ public class ControlEmplVigenciaIndicador implements Serializable {
                 listTiposIndicadores = null;
                 getListTiposIndicadores();
                 if (tipoLista == 0) {
-                    listVigenciasIndicadores.get(indice).setTipoindicador(new TiposIndicadores());
+                    vigenciaTablaSeleccionada.setTipoindicador(new TiposIndicadores());
                 } else {
-                    filtrarListVigenciasIndicadores.get(indice).setTipoindicador(new TiposIndicadores());
+                    vigenciaTablaSeleccionada.setTipoindicador(new TiposIndicadores());
                 }
             }
         } else if (confirmarCambio.equalsIgnoreCase("INDICADORES")) {
             if (tipoLista == 0) {
-                listVigenciasIndicadores.get(indice).getIndicador().setDescripcion(indicador);
+                vigenciaTablaSeleccionada.getIndicador().setDescripcion(indicador);
             } else {
-                filtrarListVigenciasIndicadores.get(indice).getIndicador().setDescripcion(indicador);
+                vigenciaTablaSeleccionada.getIndicador().setDescripcion(indicador);
             }
             for (int i = 0; i < listIndicadores.size(); i++) {
                 if (listIndicadores.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
@@ -346,9 +341,9 @@ public class ControlEmplVigenciaIndicador implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listVigenciasIndicadores.get(indice).setIndicador(listIndicadores.get(indiceUnicoElemento));
+                    vigenciaTablaSeleccionada.setIndicador(listIndicadores.get(indiceUnicoElemento));
                 } else {
-                    filtrarListVigenciasIndicadores.get(indice).setIndicador(listIndicadores.get(indiceUnicoElemento));
+                    vigenciaTablaSeleccionada.setIndicador(listIndicadores.get(indiceUnicoElemento));
                 }
                 listIndicadores = null;
                 getListIndicadores();
@@ -361,33 +356,29 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         }
         if (coincidencias == 1) {
             if (tipoLista == 0) {
-                if (!listVigenciaIndicadorCrear.contains(listVigenciasIndicadores.get(indice))) {
+                if (!listVigenciaIndicadorCrear.contains(vigenciaTablaSeleccionada)) {
                     if (listVigenciaIndicadorModificar.isEmpty()) {
-                        listVigenciaIndicadorModificar.add(listVigenciasIndicadores.get(indice));
-                    } else if (!listVigenciaIndicadorModificar.contains(listVigenciasIndicadores.get(indice))) {
-                        listVigenciaIndicadorModificar.add(listVigenciasIndicadores.get(indice));
+                        listVigenciaIndicadorModificar.add(vigenciaTablaSeleccionada);
+                    } else if (!listVigenciaIndicadorModificar.contains(vigenciaTablaSeleccionada)) {
+                        listVigenciaIndicadorModificar.add(vigenciaTablaSeleccionada);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                index = -1;
-                secRegistro = null;
             } else {
-                if (!listVigenciaIndicadorCrear.contains(filtrarListVigenciasIndicadores.get(indice))) {
+                if (!listVigenciaIndicadorCrear.contains(vigenciaTablaSeleccionada)) {
                     if (listVigenciaIndicadorModificar.isEmpty()) {
-                        listVigenciaIndicadorModificar.add(filtrarListVigenciasIndicadores.get(indice));
-                    } else if (!listVigenciaIndicadorModificar.contains(filtrarListVigenciasIndicadores.get(indice))) {
-                        listVigenciaIndicadorModificar.add(filtrarListVigenciasIndicadores.get(indice));
+                        listVigenciaIndicadorModificar.add(vigenciaTablaSeleccionada);
+                    } else if (!listVigenciaIndicadorModificar.contains(vigenciaTablaSeleccionada)) {
+                        listVigenciaIndicadorModificar.add(vigenciaTablaSeleccionada);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                index = -1;
-                secRegistro = null;
             }
         }
         context.update("form:datosVigencia");
@@ -494,23 +485,27 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         }
     }
 
-    public void cambiarIndiceV(int indice, int celda) {
+    public void cambiarIndiceV(VigenciasIndicadores vigenciaIndicador, int celda) {
         if (permitirIndexV == true) {
-            index = indice;
+            vigenciaTablaSeleccionada = vigenciaIndicador;
             cualCelda = celda;
             if (tipoLista == 0) {
-                fechaFin = listVigenciasIndicadores.get(index).getFechafinal();
-                fechaInic = listVigenciasIndicadores.get(index).getFechainicial();
-                secRegistro = listVigenciasIndicadores.get(index).getSecuencia();
-                //tipos = listVigenciasIndicadores.get(index).getTipoindicador().getDescripcion();
-                indicador = listVigenciasIndicadores.get(index).getIndicador().getDescripcion();
+                fechaFin = vigenciaTablaSeleccionada.getFechafinal();
+                fechaInic = vigenciaTablaSeleccionada.getFechainicial();
+                vigenciaTablaSeleccionada.getSecuencia();
+                //tipos = vigenciaTablaSeleccionada.getTipoindicador().getDescripcion();
+                indicador = vigenciaTablaSeleccionada.getIndicador().getDescripcion();
+                modificarInfoRegistroTipo(listTiposIndicadores.size());
+                modificarInfoRegistroIndicador(listIndicadores.size());
             }
             if (tipoLista == 1) {
-                fechaFin = filtrarListVigenciasIndicadores.get(index).getFechafinal();
-                fechaInic = filtrarListVigenciasIndicadores.get(index).getFechainicial();
-                secRegistro = filtrarListVigenciasIndicadores.get(index).getSecuencia();
-                tipos = filtrarListVigenciasIndicadores.get(index).getTipoindicador().getDescripcion();
-                indicador = filtrarListVigenciasIndicadores.get(index).getIndicador().getDescripcion();
+                fechaFin = vigenciaTablaSeleccionada.getFechafinal();
+                fechaInic = vigenciaTablaSeleccionada.getFechainicial();
+                vigenciaTablaSeleccionada.getSecuencia();
+                tipos = vigenciaTablaSeleccionada.getTipoindicador().getDescripcion();
+                indicador = vigenciaTablaSeleccionada.getIndicador().getDescripcion();
+                modificarInfoRegistroTipo(listTiposIndicadores.size());
+                modificarInfoRegistroIndicador(listIndicadores.size());
             }
         }
     }
@@ -537,16 +532,11 @@ public class ControlEmplVigenciaIndicador implements Serializable {
                 }
                 listVigenciasIndicadores = null;
                 getListVigenciasIndicadores();
-                if (listVigenciasIndicadores != null) {
-                    infoRegistro = "Cantidad de registros : " + listVigenciasIndicadores.size();
-                } else {
-                    infoRegistro = "Cantidad de registros : 0";
-                }
+                contarRegistros();
                 context.update("form:informacionRegistro");
                 context.update("form:datosVigencia");
                 k = 0;
-                index = -1;
-                secRegistro = null;
+                vigenciaTablaSeleccionada = null;
                 guardado = true;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
@@ -586,19 +576,14 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         listVigenciaIndicadorBorrar.clear();
         listVigenciaIndicadorCrear.clear();
         listVigenciaIndicadorModificar.clear();
-        index = -1;
-        secRegistro = null;
+        vigenciaTablaSeleccionada = null;
         k = 0;
         listVigenciasIndicadores = null;
         guardado = true;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
         RequestContext context = RequestContext.getCurrentInstance();
         getListVigenciasIndicadores();
-        if (listVigenciasIndicadores != null) {
-            infoRegistro = "Cantidad de registros : " + listVigenciasIndicadores.size();
-        } else {
-            infoRegistro = "Cantidad de registros : 0";
-        }
+        contarRegistros();
         context.update("form:informacionRegistro");
         context.update("form:datosVigencia");
         nuevaVigencia = new VigenciasIndicadores();
@@ -607,12 +592,12 @@ public class ControlEmplVigenciaIndicador implements Serializable {
     }
 
     public void editarCelda() {
-        if (index >= 0) {
+        if (vigenciaTablaSeleccionada != null) {
             if (tipoLista == 0) {
-                editarVigenciaIndicador = listVigenciasIndicadores.get(index);
+                editarVigenciaIndicador = vigenciaTablaSeleccionada;
             }
             if (tipoLista == 1) {
-                editarVigenciaIndicador = filtrarListVigenciasIndicadores.get(index);
+                editarVigenciaIndicador = vigenciaTablaSeleccionada;
             }
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 0) {
@@ -632,9 +617,9 @@ public class ControlEmplVigenciaIndicador implements Serializable {
                 context.execute("editarIndicadorVD.show()");
                 cualCelda = -1;
             }
+        } else {
+            RequestContext.getCurrentInstance().execute("form:seleccionarRegistro.show()");
         }
-        index = -1;
-        secRegistro = null;
     }
 
     public void agregarNuevaV() {
@@ -668,6 +653,7 @@ public class ControlEmplVigenciaIndicador implements Serializable {
                 nuevaVigencia.setEmpleado(empleado);
                 listVigenciasIndicadores.add(nuevaVigencia);
                 listVigenciaIndicadorCrear.add(nuevaVigencia);
+                vigenciaTablaSeleccionada = nuevaVigencia;
                 //
                 nuevaVigencia = new VigenciasIndicadores();
                 nuevaVigencia.setTipoindicador(new TiposIndicadores());
@@ -678,9 +664,7 @@ public class ControlEmplVigenciaIndicador implements Serializable {
                     guardado = false;
                     RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
-                index = -1;
-                secRegistro = null;
-                infoRegistro = "Cantidad de registros : " + listVigenciasIndicadores.size();
+                modificarInfoRegistro(listVigenciasIndicadores.size());
                 context.update("form:informacionRegistro");
                 context.update("form:datosVigencia");
                 context.execute("NuevoRegistroV.hide()");
@@ -697,8 +681,6 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         nuevaVigencia = new VigenciasIndicadores();
         nuevaVigencia.setTipoindicador(new TiposIndicadores());
         nuevaVigencia.setIndicador(new Indicadores());
-        index = -1;
-        secRegistro = null;
 
     }
 
@@ -706,37 +688,38 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         nuevaVigencia = new VigenciasIndicadores();
         nuevaVigencia.setTipoindicador(new TiposIndicadores());
         nuevaVigencia.setIndicador(new Indicadores());
-        index = -1;
-        secRegistro = null;
     }
 
     public void verificarDuplicarVigencia() {
-        if (index >= 0) {
+        if (vigenciaTablaSeleccionada != null) {
             duplicarVigenciaM();
         }
     }
 
     public void duplicarVigenciaM() {
         duplicarVigenciaIndicador = new VigenciasIndicadores();
-        if (tipoLista == 0) {
-            duplicarVigenciaIndicador.setFechafinal(listVigenciasIndicadores.get(index).getFechafinal());
-            duplicarVigenciaIndicador.setFechainicial(listVigenciasIndicadores.get(index).getFechainicial());
-            duplicarVigenciaIndicador.setEmpleado(empleado);
-            duplicarVigenciaIndicador.setIndicador(listVigenciasIndicadores.get(index).getIndicador());
-            duplicarVigenciaIndicador.setTipoindicador(listVigenciasIndicadores.get(index).getTipoindicador());
+        if (vigenciaTablaSeleccionada != null) {
+            if (tipoLista == 0) {
+                duplicarVigenciaIndicador.setFechafinal(vigenciaTablaSeleccionada.getFechafinal());
+                duplicarVigenciaIndicador.setFechainicial(vigenciaTablaSeleccionada.getFechainicial());
+                duplicarVigenciaIndicador.setEmpleado(empleado);
+                duplicarVigenciaIndicador.setIndicador(vigenciaTablaSeleccionada.getIndicador());
+                duplicarVigenciaIndicador.setTipoindicador(vigenciaTablaSeleccionada.getTipoindicador());
+            }
+            if (tipoLista == 1) {
+                duplicarVigenciaIndicador.setFechafinal(vigenciaTablaSeleccionada.getFechafinal());
+                duplicarVigenciaIndicador.setFechainicial(vigenciaTablaSeleccionada.getFechainicial());
+                duplicarVigenciaIndicador.setEmpleado(empleado);
+                duplicarVigenciaIndicador.setIndicador(vigenciaTablaSeleccionada.getIndicador());
+                duplicarVigenciaIndicador.setTipoindicador(vigenciaTablaSeleccionada.getTipoindicador());
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("formularioDialogos:duplicarV");
+            context.execute("DuplicarRegistroV.show()");
+        } else {
+            RequestContext.getCurrentInstance().execute("form:seleccionarRegistro.show()");
         }
-        if (tipoLista == 1) {
-            duplicarVigenciaIndicador.setFechafinal(filtrarListVigenciasIndicadores.get(index).getFechafinal());
-            duplicarVigenciaIndicador.setFechainicial(filtrarListVigenciasIndicadores.get(index).getFechainicial());
-            duplicarVigenciaIndicador.setEmpleado(empleado);
-            duplicarVigenciaIndicador.setIndicador(filtrarListVigenciasIndicadores.get(index).getIndicador());
-            duplicarVigenciaIndicador.setTipoindicador(filtrarListVigenciasIndicadores.get(index).getTipoindicador());
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("formularioDialogos:duplicarV");
-        context.execute("DuplicarRegistroV.show()");
-        index = -1;
-        secRegistro = null;
+
     }
 
     public void confirmarDuplicarV() {
@@ -749,8 +732,7 @@ public class ControlEmplVigenciaIndicador implements Serializable {
                 duplicarVigenciaIndicador.setSecuencia(l);
                 listVigenciasIndicadores.add(duplicarVigenciaIndicador);
                 listVigenciaIndicadorCrear.add(duplicarVigenciaIndicador);
-                index = -1;
-                secRegistro = null;
+                vigenciaTablaSeleccionada = duplicarVigenciaIndicador;
                 if (guardado == true) {
                     guardado = false;
                     RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -778,7 +760,7 @@ public class ControlEmplVigenciaIndicador implements Serializable {
                 duplicarVigenciaIndicador = new VigenciasIndicadores();
                 limpiarduplicarV();
                 getListVigenciasIndicadores();
-                infoRegistro = "Cantidad de registros : " + listVigenciasIndicadores.size();
+                modificarInfoRegistro(listVigenciasIndicadores.size());
                 context.update("form:informacionRegistro");
                 context.update("form:datosVigencia");
                 context.execute("DuplicarRegistroV.hide()");
@@ -800,54 +782,42 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         duplicarVigenciaIndicador = new VigenciasIndicadores();
         duplicarVigenciaIndicador.setTipoindicador(new TiposIndicadores());
         duplicarVigenciaIndicador.setIndicador(new Indicadores());
-        index = -1;
-        secRegistro = null;
     }
 
     public void validarBorradoVigencia() {
-        if (index >= 0) {
+        if (vigenciaTablaSeleccionada != null) {
             borrarV();
         }
     }
 
     public void borrarV() {
-        if (tipoLista == 0) {
-            if (!listVigenciaIndicadorModificar.isEmpty() && listVigenciaIndicadorModificar.contains(listVigenciasIndicadores.get(index))) {
-                int modIndex = listVigenciaIndicadorModificar.indexOf(listVigenciasIndicadores.get(index));
+        if (vigenciaTablaSeleccionada != null) {
+            if (!listVigenciaIndicadorModificar.isEmpty() && listVigenciaIndicadorModificar.contains(vigenciaTablaSeleccionada)) {
+                int modIndex = listVigenciaIndicadorModificar.indexOf(vigenciaTablaSeleccionada);
                 listVigenciaIndicadorModificar.remove(modIndex);
-                listVigenciaIndicadorBorrar.add(listVigenciasIndicadores.get(index));
-            } else if (!listVigenciaIndicadorCrear.isEmpty() && listVigenciaIndicadorCrear.contains(listVigenciasIndicadores.get(index))) {
-                int crearIndex = listVigenciaIndicadorCrear.indexOf(listVigenciasIndicadores.get(index));
+                listVigenciaIndicadorBorrar.add(vigenciaTablaSeleccionada);
+            } else if (!listVigenciaIndicadorCrear.isEmpty() && listVigenciaIndicadorCrear.contains(vigenciaTablaSeleccionada)) {
+                int crearIndex = listVigenciaIndicadorCrear.indexOf(vigenciaTablaSeleccionada);
                 listVigenciaIndicadorCrear.remove(crearIndex);
             } else {
-                listVigenciaIndicadorBorrar.add(listVigenciasIndicadores.get(index));
+                listVigenciaIndicadorBorrar.add(vigenciaTablaSeleccionada);
             }
-            listVigenciasIndicadores.remove(index);
-        }
-        if (tipoLista == 1) {
-            if (!listVigenciaIndicadorModificar.isEmpty() && listVigenciaIndicadorModificar.contains(filtrarListVigenciasIndicadores.get(index))) {
-                int modIndex = listVigenciaIndicadorModificar.indexOf(filtrarListVigenciasIndicadores.get(index));
-                listVigenciaIndicadorModificar.remove(modIndex);
-                listVigenciaIndicadorBorrar.add(filtrarListVigenciasIndicadores.get(index));
-            } else if (!listVigenciaIndicadorCrear.isEmpty() && listVigenciaIndicadorCrear.contains(filtrarListVigenciasIndicadores.get(index))) {
-                int crearIndex = listVigenciaIndicadorCrear.indexOf(filtrarListVigenciasIndicadores.get(index));
-                listVigenciaIndicadorCrear.remove(crearIndex);
-            } else {
-                listVigenciaIndicadorBorrar.add(filtrarListVigenciasIndicadores.get(index));
+            listVigenciasIndicadores.remove(vigenciaTablaSeleccionada);
+            if (tipoLista == 1) {
+                filtrarListVigenciasIndicadores.remove(vigenciaTablaSeleccionada);
             }
-            int VPIndex = listVigenciasIndicadores.indexOf(filtrarListVigenciasIndicadores.get(index));
-            listVigenciasIndicadores.remove(VPIndex);
-            filtrarListVigenciasIndicadores.remove(index);
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        infoRegistro = "Cantidad de registros : " + listVigenciasIndicadores.size();
-        context.update("form:informacionRegistro");
-        context.update("form:datosVigencia");
-        index = -1;
-        secRegistro = null;
-        if (guardado == true) {
-            guardado = false;
-            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            RequestContext context = RequestContext.getCurrentInstance();
+            modificarInfoRegistro(listVigenciasIndicadores.size());
+            context.update("form:informacionRegistro");
+            context.update("form:datosVigencia");
+            vigenciaTablaSeleccionada = null;
+            if (guardado == true) {
+                guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            }
+
+        } else {
+            RequestContext.getCurrentInstance().execute("form:seleccionarRegistro.show()");
         }
 
     }
@@ -861,16 +831,16 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         if (banderaV == 0) {
             altoTabla = "288";
             viFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigencia:viFechaInicial");
-            viFechaInicial.setFilterStyle("width: 50px");
+            viFechaInicial.setFilterStyle("width: 85%");
 
             viFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigencia:viFechaFinal");
-            viFechaFinal.setFilterStyle("width: 50px");
+            viFechaFinal.setFilterStyle("width: 85%");
 
             viTipoIndicador = (Column) c.getViewRoot().findComponent("form:datosVigencia:viTipoIndicador");
-            viTipoIndicador.setFilterStyle("width: 150px");
+            viTipoIndicador.setFilterStyle("width: 85%");
 
             viIndicador = (Column) c.getViewRoot().findComponent("form:datosVigencia:viIndicador");
-            viIndicador.setFilterStyle("width: 150px");
+            viIndicador.setFilterStyle("width: 85%");
 
             ///
             RequestContext.getCurrentInstance().update("form:datosVigencia");
@@ -920,8 +890,7 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         listVigenciaIndicadorBorrar.clear();
         listVigenciaIndicadorCrear.clear();
         listVigenciaIndicadorModificar.clear();
-        index = -1;
-        secRegistro = null;
+        vigenciaTablaSeleccionada = null;
         k = 0;
         listVigenciasIndicadores = null;
         guardado = true;
@@ -930,10 +899,11 @@ public class ControlEmplVigenciaIndicador implements Serializable {
     }
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO) (list = ESTRUCTURAS - MOTIVOSLOCALIZACIONES - PROYECTOS)
 
-    public void asignarIndex(Integer indice, int dlg, int LND) {
+    public void asignarIndex(VigenciasIndicadores vigenciaIndicador, int dlg, int LND) {
         RequestContext context = RequestContext.getCurrentInstance();
+        deshabilitarBotonLov();
         if (LND == 0) {
-            index = indice;
+            vigenciaTablaSeleccionada = vigenciaIndicador;
             tipoActualizacion = 0;
         } else if (LND == 1) {
             tipoActualizacion = 1;
@@ -941,9 +911,13 @@ public class ControlEmplVigenciaIndicador implements Serializable {
             tipoActualizacion = 2;
         }
         if (dlg == 0) {
+            modificarInfoRegistroTipo(listTiposIndicadores.size());
+            habilitarBotonLov();
             context.update("form:TiposDialogo");
             context.execute("TiposDialogo.show()");
         } else if (dlg == 1) {
+            modificarInfoRegistro(listIndicadores.size());
+            habilitarBotonLov();
             context.update("form:IndicadorDialogo");
             context.execute("IndicadorDialogo.show()");
         }
@@ -954,12 +928,12 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listVigenciasIndicadores.get(index).setTipoindicador(tipoIndicadorSeleccionado);
-                if (!listVigenciaIndicadorCrear.contains(listVigenciasIndicadores.get(index))) {
+                vigenciaTablaSeleccionada.setTipoindicador(tipoIndicadorSeleccionado);
+                if (!listVigenciaIndicadorCrear.contains(vigenciaTablaSeleccionada)) {
                     if (listVigenciaIndicadorModificar.isEmpty()) {
-                        listVigenciaIndicadorModificar.add(listVigenciasIndicadores.get(index));
-                    } else if (!listVigenciaIndicadorModificar.contains(listVigenciasIndicadores.get(index))) {
-                        listVigenciaIndicadorModificar.add(listVigenciasIndicadores.get(index));
+                        listVigenciaIndicadorModificar.add(vigenciaTablaSeleccionada);
+                    } else if (!listVigenciaIndicadorModificar.contains(vigenciaTablaSeleccionada)) {
+                        listVigenciaIndicadorModificar.add(vigenciaTablaSeleccionada);
                     }
                 }
                 if (guardado == true) {
@@ -969,12 +943,12 @@ public class ControlEmplVigenciaIndicador implements Serializable {
                 permitirIndexV = true;
 
             } else {
-                filtrarListVigenciasIndicadores.get(index).setTipoindicador(tipoIndicadorSeleccionado);
-                if (!listVigenciaIndicadorCrear.contains(filtrarListVigenciasIndicadores.get(index))) {
+                vigenciaTablaSeleccionada.setTipoindicador(tipoIndicadorSeleccionado);
+                if (!listVigenciaIndicadorCrear.contains(vigenciaTablaSeleccionada)) {
                     if (listVigenciaIndicadorModificar.isEmpty()) {
-                        listVigenciaIndicadorModificar.add(filtrarListVigenciasIndicadores.get(index));
-                    } else if (!listVigenciaIndicadorModificar.contains(filtrarListVigenciasIndicadores.get(index))) {
-                        listVigenciaIndicadorModificar.add(filtrarListVigenciasIndicadores.get(index));
+                        listVigenciaIndicadorModificar.add(vigenciaTablaSeleccionada);
+                    } else if (!listVigenciaIndicadorModificar.contains(vigenciaTablaSeleccionada)) {
+                        listVigenciaIndicadorModificar.add(vigenciaTablaSeleccionada);
                     }
                 }
                 if (guardado == true) {
@@ -994,8 +968,6 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         filtrarListTiposIndicadores = null;
         tipoIndicadorSeleccionado = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         /*
          context.update("form:TiposDialogo");
@@ -1010,8 +982,6 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         filtrarListTiposIndicadores = null;
         tipoIndicadorSeleccionado = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexV = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1024,21 +994,21 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listVigenciasIndicadores.get(index).setIndicador(indicadorSeleccionado);
-                if (!listVigenciaIndicadorCrear.contains(listVigenciasIndicadores.get(index))) {
+                vigenciaTablaSeleccionada.setIndicador(indicadorSeleccionado);
+                if (!listVigenciaIndicadorCrear.contains(vigenciaTablaSeleccionada)) {
                     if (listVigenciaIndicadorModificar.isEmpty()) {
-                        listVigenciaIndicadorModificar.add(listVigenciasIndicadores.get(index));
-                    } else if (!listVigenciaIndicadorModificar.contains(listVigenciasIndicadores.get(index))) {
-                        listVigenciaIndicadorModificar.add(listVigenciasIndicadores.get(index));
+                        listVigenciaIndicadorModificar.add(vigenciaTablaSeleccionada);
+                    } else if (!listVigenciaIndicadorModificar.contains(vigenciaTablaSeleccionada)) {
+                        listVigenciaIndicadorModificar.add(vigenciaTablaSeleccionada);
                     }
                 }
             } else {
-                filtrarListVigenciasIndicadores.get(index).setIndicador(indicadorSeleccionado);
-                if (!listVigenciaIndicadorCrear.contains(filtrarListVigenciasIndicadores.get(index))) {
+                vigenciaTablaSeleccionada.setIndicador(indicadorSeleccionado);
+                if (!listVigenciaIndicadorCrear.contains(vigenciaTablaSeleccionada)) {
                     if (listVigenciaIndicadorModificar.isEmpty()) {
-                        listVigenciaIndicadorModificar.add(filtrarListVigenciasIndicadores.get(index));
-                    } else if (!listVigenciaIndicadorModificar.contains(filtrarListVigenciasIndicadores.get(index))) {
-                        listVigenciaIndicadorModificar.add(filtrarListVigenciasIndicadores.get(index));
+                        listVigenciaIndicadorModificar.add(vigenciaTablaSeleccionada);
+                    } else if (!listVigenciaIndicadorModificar.contains(vigenciaTablaSeleccionada)) {
+                        listVigenciaIndicadorModificar.add(vigenciaTablaSeleccionada);
                     }
                 }
             }
@@ -1058,8 +1028,6 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         filtrarListIndicadores = null;
         indicadorSeleccionado = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         /*
          context.update("form:IndicadorDialogo");
@@ -1074,8 +1042,6 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         filtrarListIndicadores = null;
         indicadorSeleccionado = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         permitirIndexV = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1086,16 +1052,22 @@ public class ControlEmplVigenciaIndicador implements Serializable {
 
     public void listaValoresBoton() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index >= 0) {
+        if (vigenciaTablaSeleccionada != null) {
             if (cualCelda == 2) {
+                modificarInfoRegistroTipo(listTiposIndicadores.size());
+                modificarInfoRegistroIndicador(listIndicadores.size());
                 context.update("form:TiposDialogo");
                 context.execute("TiposDialogo.show()");
                 tipoActualizacion = 0;
+                habilitarBotonLov();
             }
             if (cualCelda == 3) {
+                modificarInfoRegistroTipo(listTiposIndicadores.size());
+                modificarInfoRegistroIndicador(listIndicadores.size());
                 context.update("form:IndicadorDialogo");
                 context.execute("IndicadorDialogo.show()");
                 tipoActualizacion = 0;
+                habilitarBotonLov();
             }
         }
     }
@@ -1114,8 +1086,7 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "CensosPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        vigenciaTablaSeleccionada = null;
     }
 
     public void verificarExportXLS() throws IOException {
@@ -1128,29 +1099,68 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "CensosXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        vigenciaTablaSeleccionada = null;
     }
 
     public void eventoFiltrar() {
-        if (index >= 0) {
+        if (vigenciaTablaSeleccionada != null) {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
             RequestContext context = RequestContext.getCurrentInstance();
-            infoRegistro = "Cantidad de registros : " + filtrarListVigenciasIndicadores.size();
+            modificarInfoRegistro(filtrarListVigenciasIndicadores.size());
             context.update("form:informacionRegistro");
         }
+    }
+
+    public void eventoFiltrarIndicador() {
+        modificarInfoRegistroIndicador(filtrarListIndicadores.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroIndicador");
+    }
+
+    public void eventoFiltrarTipo() {
+        modificarInfoRegistroTipo(filtrarListTiposIndicadores.size());
+        RequestContext.getCurrentInstance().update("form:infoRegistroTipo");
+    }
+
+    public void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+    }
+
+    public void modificarInfoRegistroIndicador(int valor) {
+        infoRegistroIndicador = String.valueOf(valor);
+    }
+
+    public void modificarInfoRegistroTipo(int valor) {
+        infoRegistroTipo = String.valueOf(valor);
+    }
+
+    public void contarRegistros() {
+        if (listVigenciasIndicadores != null) {
+            modificarInfoRegistro(listVigenciasIndicadores.size());
+        } else {
+            modificarInfoRegistro(0);
+        }
+    }
+
+    public void habilitarBotonLov() {
+        activarLov = false;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+    }
+
+    public void deshabilitarBotonLov() {
+        activarLov = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (listVigenciasIndicadores != null) {
-            if (secRegistro != null) {
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "VIGENCIASINDICADORES");
-                backUpSecRegistro = secRegistro;
-                secRegistro = null;
+            if (vigenciaTablaSeleccionada != null) {
+                int resultado = administrarRastros.obtenerTabla(vigenciaTablaSeleccionada.getSecuencia(), "VIGENCIASINDICADORES");
+                backUpSecRegistro = vigenciaTablaSeleccionada.getSecuencia();
+                vigenciaTablaSeleccionada = null;
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
                 } else if (resultado == 2) {
@@ -1163,17 +1173,23 @@ public class ControlEmplVigenciaIndicador implements Serializable {
                     context.execute("errorTablaSinRastro.show()");
                 }
             } else {
-                context.execute("seleccionarRegistro.show()");
+                if (administrarRastros.verificarHistoricosTabla("VIGENCIASINDICADORES")) {
+                    context.execute("confirmarRastroHistorico.show()");
+                } else {
+                    context.execute("errorRastroHistorico.show()");
+                }
+
             }
-        } else {
-            if (administrarRastros.verificarHistoricosTabla("VIGENCIASINDICADORES")) {
-                context.execute("confirmarRastroHistorico.show()");
-            } else {
-                context.execute("errorRastroHistorico.show()");
-            }
+        }
+    }
+
+    public void recordarSeleccion() {
+        if (vigenciaTablaSeleccionada != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tablaC = (DataTable) c.getViewRoot().findComponent("form:datosVigencia");
+            tablaC.setSelection(vigenciaTablaSeleccionada);
 
         }
-        index = -1;
     }
 
     //GET - SET 
@@ -1182,16 +1198,16 @@ public class ControlEmplVigenciaIndicador implements Serializable {
             if (listVigenciasIndicadores == null) {
                 if (empleado.getSecuencia() != null) {
                     listVigenciasIndicadores = administrarEmplVigenciaIndicador.listVigenciasIndicadoresEmpleado(empleado.getSecuencia());
-                    if (listVigenciasIndicadores != null) {
-                        for (int i = 0; i < listVigenciasIndicadores.size(); i++) {
-                            if (listVigenciasIndicadores.get(i).getTipoindicador() == null) {
-                                listVigenciasIndicadores.get(i).setTipoindicador(new TiposIndicadores());
-                            }
-                            if (listVigenciasIndicadores.get(i).getIndicador() == null) {
-                                listVigenciasIndicadores.get(i).setIndicador(new Indicadores());
-                            }
-                        }
-                    }
+//                    if (listVigenciasIndicadores != null) {
+//                        for (int i = 0; i < listVigenciasIndicadores.size(); i++) {
+//                            if (vigenciaTablaSeleccionada.getTipoindicador() == null) {
+//                                vigenciaTablaSeleccionada.setTipoindicador(new TiposIndicadores());
+//                            }
+//                            if (vigenciaTablaSeleccionada.getIndicador() == null) {
+//                                vigenciaTablaSeleccionada.setIndicador(new Indicadores());
+//                            }
+//                        }
+//                    }
                 }
             }
             return listVigenciasIndicadores;
@@ -1329,14 +1345,6 @@ public class ControlEmplVigenciaIndicador implements Serializable {
         this.aceptar = aceptar;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
-    }
-
     public BigInteger getBackUpSecRegistro() {
         return backUpSecRegistro;
     }
@@ -1350,13 +1358,13 @@ public class ControlEmplVigenciaIndicador implements Serializable {
     }
 
     public VigenciasIndicadores getVigenciaTablaSeleccionada() {
-        getListVigenciasIndicadores();
-        if (listVigenciasIndicadores != null) {
-            int tam = listVigenciasIndicadores.size();
-            if (tam > 0) {
-                vigenciaTablaSeleccionada = listVigenciasIndicadores.get(0);
-            }
-        }
+//        getListVigenciasIndicadores();
+//        if (listVigenciasIndicadores != null) {
+//            int tam = listVigenciasIndicadores.size();
+//            if (tam > 0) {
+//                vigenciaTablaSeleccionada = listVigenciasIndicadores.get(0);
+//            }
+//        }
         return vigenciaTablaSeleccionada;
     }
 
@@ -1381,12 +1389,6 @@ public class ControlEmplVigenciaIndicador implements Serializable {
     }
 
     public String getInfoRegistroTipo() {
-        getListTiposIndicadores();
-        if (listTiposIndicadores != null) {
-            infoRegistroTipo = "Cantidad de registros : " + listTiposIndicadores.size();
-        } else {
-            infoRegistroTipo = "Cantidad de registros : 0";
-        }
         return infoRegistroTipo;
     }
 
@@ -1395,12 +1397,6 @@ public class ControlEmplVigenciaIndicador implements Serializable {
     }
 
     public String getInfoRegistroIndicador() {
-        getListIndicadores();
-        if (listIndicadores != null) {
-            infoRegistroIndicador = "Cantidad de registros : " + listIndicadores.size();
-        } else {
-            infoRegistroIndicador = "Cantidad de registros : 0";
-        }
         return infoRegistroIndicador;
     }
 
@@ -1414,6 +1410,14 @@ public class ControlEmplVigenciaIndicador implements Serializable {
 
     public void setAltoTabla(String altoTabla) {
         this.altoTabla = altoTabla;
+    }
+
+    public boolean isActivarLov() {
+        return activarLov;
+    }
+
+    public void setActivarLov(boolean activarLov) {
+        this.activarLov = activarLov;
     }
 
 }

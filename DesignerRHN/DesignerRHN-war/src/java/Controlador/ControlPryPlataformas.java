@@ -100,7 +100,11 @@ public class ControlPryPlataformas implements Serializable {
         listPryPlataformas = null;
         getListPryPlataformas();
         contarRegistros();
+        if(listPryPlataformas == null || listPryPlataformas.isEmpty()){
+        pryPlataformaSeleccionada = null;
+        } else {
         pryPlataformaSeleccionada = listPryPlataformas.get(0);
+        }
     }
 
     public String redirigirPaginaAnterior() {

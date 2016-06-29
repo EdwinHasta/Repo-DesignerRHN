@@ -5,6 +5,7 @@
 package Administrar;
 
 import Entidades.AdiestramientosF;
+import Entidades.Empleados;
 import Entidades.Instituciones;
 import Entidades.Personas;
 import Entidades.Profesiones;
@@ -22,6 +23,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import InterfaceAdministrar.AdministrarSesionesInterface;
+import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import javax.persistence.EntityManager;
 
 @Stateful
@@ -39,6 +41,8 @@ public class AdministrarVigenciasFormales implements AdministrarVigenciasFormale
     PersistenciaInstitucionesInterface persistenciaInstituciones;
     @EJB
     PersistenciaAdiestramientosFInterface persistenciaAdiestramientosF;
+     @EJB
+    PersistenciaEmpleadoInterface persistenciaEmpleado;
     /**
      * Enterprise JavaBean.<br>
      * Atributo que representa todo lo referente a la conexión del usuario que
@@ -134,6 +138,17 @@ public class AdministrarVigenciasFormales implements AdministrarVigenciasFormale
     @Override
     public void crearVigenciaFormal(VigenciasFormales vigenciasFormales) {
         persistenciaVigenciasFormales.crear(em, vigenciasFormales);
+    }
+    
+    @Override
+    public Empleados empleadoActual(BigInteger secuenciaE){
+        try{
+        Empleados retorno = persistenciaEmpleado.buscarEmpleado(em, secuenciaE);
+        return retorno;
+        }catch(Exception  e){
+            System.out.println("Error empleadoActual Admi : "+e.toString());
+            return null;
+        }
     }
     
 }

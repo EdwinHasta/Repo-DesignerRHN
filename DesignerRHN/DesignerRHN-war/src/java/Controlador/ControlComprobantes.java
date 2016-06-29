@@ -12,9 +12,13 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -53,7 +57,7 @@ public class ControlComprobantes implements Serializable {
     private NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
     //SUBTOTALES
     private BigDecimal subtotalPago, subtotalDescuento, subtotalPasivo, subtotalGasto, neto;
-    private String Pago, Descuento, Pasivo, Gasto, netoTotal;
+    private String pago, descuento, pasivo, gasto, netoTotal;
     //FILTRADO
     private Column codigoSNE, descipcionSNE, unidadSNE, pagoSNE, descuentoSNE, terceroSNE, fechaHastaSNE, debitoSNE, centroCostoDSNE, creditoSNE, centroCostoCSNE, saldoSNE, fechaDesdeSNE, fechaPagoSNE, FechaModificacioSNE;
     private Column codigoSNER, descipcionSNER, unidadSNER, pasivoSNER, gastoSNER, terceroSNER, fechaHastaSNER, debitoSNER, centroCostoDSNER, creditoSNER, centroCostoCSNER, saldoSNER, fechaDesdeSNER, fechaPagoSNER, FechaModificacioSNER;
@@ -67,7 +71,7 @@ public class ControlComprobantes implements Serializable {
     private SimpleDateFormat formatoFecha;
     private boolean estadoBtnArriba, estadoBtnAbajo;
     //
-    private String infoRegistroEmpleado;
+    private String infoRegistroEmpleado,infoRegistroComprobante;
 
     public ControlComprobantes() {
         registroActual = 0;
@@ -85,8 +89,14 @@ public class ControlComprobantes implements Serializable {
         estadoBtnArriba = false;
         estadoBtnAbajo = false;
         parametroActual = null;
+        pasivo = "vacío";
+        gasto="vacío";
+        pago ="vacío";
+        descuento ="vacío";
+        netoTotal ="vacío";
+        listaParametrosLOV = new ArrayList<Parametros>();
     }
-
+    
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -163,9 +173,9 @@ public class ControlComprobantes implements Serializable {
         context.update("form:datosSolucionesNodosEmpleado");
         context.update("form:datosSolucionesNodosEmpleador");
 
-        //context.update("formularioDialogos:buscarEmpleadoDialogo");
-        //context.update("formularioDialogos:lovEmpleados");
-       // context.update("formularioDialogos:aceptarP");
+        context.update("formularioDialogos:buscarEmpleadoDialogo");
+        context.update("formularioDialogos:lovEmpleados");
+        context.update("formularioDialogos:aceptarP");
         context.reset("formularioDialogos:lovEmpleados:globalFilter");
         context.execute("lovEmpleados.clearFilters()");
         context.execute("buscarEmpleadoDialogo.hide()");
@@ -402,6 +412,76 @@ public class ControlComprobantes implements Serializable {
     public void activarAceptar() {
         aceptar = false;
     }
+    
+    
+    public void modificarInfoRegistroEmpleado(int valor){
+     infoRegistroEmpleado=String.valueOf(valor);              
+    }
+    
+    public void eventoFiltrarEmpleado(){
+        getListaParametrosLOV();
+        modificarInfoRegistroEmpleado(filtradoListaParametrosLOV.size());
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroEmpleado");
+    }
+    
+    public void editarCelda(){
+       if(parametroSeleccionado != null){
+       /*
+           if (vigenciaTablaSeleccionada != null) {
+            if (tipoLista == 0) {
+                editarVigenciaDeporte = vigenciaTablaSeleccionada;
+            }
+            if (tipoLista == 1) {
+                editarVigenciaDeporte = vigenciaTablaSeleccionada;
+            }
+
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (cualCelda == 0) {
+                context.update("formularioDialogos:editarFechaInicialD");
+                context.execute("editarFechaInicialD.show()");
+                deshabilitarBotonLov();
+                cualCelda = -1;
+            } else if (cualCelda == 1) {
+                context.update("formularioDialogos:editarFechaFinalD");
+                context.execute("editarFechaFinalD.show()");
+                deshabilitarBotonLov();
+                cualCelda = -1;
+            } else if (cualCelda == 2) {
+                context.update("formularioDialogos:editarDescripcionD");
+                context.execute("editarDescripcionD.show()");
+                habilitarBotonLov();
+                cualCelda = -1;
+            } else if (cualCelda == 3) {
+                context.update("formularioDialogos:editarIndividualD");
+                context.execute("editarIndividualD.show()");
+                deshabilitarBotonLov();
+                cualCelda = -1;
+            } else if (cualCelda == 4) {
+                context.update("formularioDialogos:editarCIndividualD");
+                context.execute("editarCIndividualD.show()");
+                cualCelda = -1;
+                deshabilitarBotonLov();
+            } else if (cualCelda == 5) {
+                context.update("formularioDialogos:editarGrupalD");
+                context.execute("editarGrupalD.show()");
+                cualCelda = -1;
+                deshabilitarBotonLov();
+            } else if (cualCelda == 6) {
+                context.update("formularioDialogos:editarCGrupalD");
+                context.execute("editarCGrupalD.show()");
+                cualCelda = -1;
+                deshabilitarBotonLov();
+            }
+           
+           */    
+       } else{
+        RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
+       }
+        
+        
+    }
+            
+    
     //GETTER AND SETTER
 
     public List<Parametros> getListaParametros() {
@@ -446,8 +526,9 @@ public class ControlComprobantes implements Serializable {
     }
 
     public List<Parametros> getListaParametrosLOV() {
-
-        listaParametrosLOV = administrarComprobantes.consultarParametrosComprobantesActualUsuario();
+        if(listaParametrosLOV == null || listaParametrosLOV.isEmpty()){
+           listaParametrosLOV = administrarComprobantes.consultarParametrosComprobantesActualUsuario();
+        }
 
         return listaParametrosLOV;
     }
@@ -495,8 +576,8 @@ public class ControlComprobantes implements Serializable {
                     }
                 }
                 neto = subtotalPago.subtract(subtotalDescuento);
-                Pago = nf.format(subtotalPago);
-                Descuento = nf.format(subtotalDescuento);
+                pago = nf.format(subtotalPago);
+                descuento = nf.format(subtotalDescuento);
                 netoTotal = nf.format(neto);
             }
         }
@@ -530,8 +611,8 @@ public class ControlComprobantes implements Serializable {
                             subtotalGasto = subtotalGasto.add(listaSolucionesNodosEmpleador.get(i).getValor());
                         }
                     }
-                    Pasivo = nf.format(subtotalPasivo);
-                    Gasto = nf.format(subtotalGasto);
+                    pasivo = nf.format(subtotalPasivo);
+                    gasto = nf.format(subtotalGasto);
                 }
             }
         }
@@ -551,19 +632,19 @@ public class ControlComprobantes implements Serializable {
     }
 
     public String getPago() {
-        return Pago;
+        return pago;
     }
 
     public String getDescuento() {
-        return Descuento;
+        return descuento;
     }
 
     public String getPasivo() {
-        return Pasivo;
+        return pasivo;
     }
 
     public String getGasto() {
-        return Gasto;
+        return gasto;
     }
 
     public String getNetoTotal() {
@@ -624,12 +705,12 @@ public class ControlComprobantes implements Serializable {
     }
 
     public String getInfoRegistroEmpleado() {
-        getListaParametrosLOV();
-        if (listaParametrosLOV != null) {
-            infoRegistroEmpleado = "Cantidad de registros : " + listaParametrosLOV.size();
-        } else {
-            infoRegistroEmpleado = "Cantidad de registros : 0";
-        }
+//        getListaParametrosLOV();
+//        if (listaParametrosLOV != null) {
+//            infoRegistroEmpleado = "Registros : " + listaParametrosLOV.size();
+//        } else {
+//            infoRegistroEmpleado = "Registros : 0";
+//        }
         return infoRegistroEmpleado;
     }
 
@@ -637,4 +718,14 @@ public class ControlComprobantes implements Serializable {
         this.infoRegistroEmpleado = infoRegistroEmpleado;
     }
 
+    public String getInfoRegistroComprobante() {
+        infoRegistroComprobante = "Reg. " + (registroActual + 1) + " de " + listaParametros.size();
+        return infoRegistroComprobante;
+    }
+
+    public void setInfoRegistroComprobante(String infoRegistroComprobante) {
+        this.infoRegistroComprobante = infoRegistroComprobante;
+    }
+
+    
 }

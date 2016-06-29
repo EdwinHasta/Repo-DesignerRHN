@@ -69,6 +69,7 @@ public class PersistenciaParametros implements PersistenciaParametrosInterface {
             query.setParameter("usuarioBD", usuarioBD);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Parametros> listaParametros = query.getResultList();
+            System.out.println("PersistenciaParametros ListaParametros: " +listaParametros);
             return listaParametros;
         } catch (Exception e) {
             System.out.println("Exepcion en PersistenciaParametros.parametrosComprobantes" + e);
