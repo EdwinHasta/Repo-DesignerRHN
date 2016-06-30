@@ -28,7 +28,6 @@ public class ControlBarra implements Serializable {
 
     @EJB
     AdministrarBarraInterface administrarBarra;
-
     private Integer totalEmpleadosParaLiquidar;
     private Integer totalEmpleadosLiquidados;
     private boolean permisoParaLiquidar;
@@ -46,6 +45,7 @@ public class ControlBarra implements Serializable {
     private String altoScrollLiquidacionesCerradas, altoScrollLiquidacionesAbiertas;
     private int banderaFiltros;
     private boolean liquifinalizada;
+    private String infoRegistroCerradas, infoRegistroEnProceso;
 
     public ControlBarra() {
         totalEmpleadosParaLiquidar = 0;
@@ -65,10 +65,12 @@ public class ControlBarra implements Serializable {
         cambioImagen = true;
         liquidacionesAbiertas = null;
         liquidacionesCerradas = null;
-        altoScrollLiquidacionesAbiertas = "139";
-        altoScrollLiquidacionesCerradas = "139";
+        altoScrollLiquidacionesAbiertas = "125";
+        altoScrollLiquidacionesCerradas = "125";
         banderaFiltros = 0;
-        liquifinalizada=false;
+        liquifinalizada = false;
+        infoRegistroCerradas = "0";
+        infoRegistroEnProceso = "0";
     }
 
     @PostConstruct
@@ -92,7 +94,7 @@ public class ControlBarra implements Serializable {
     public void liquidar() {
         RequestContext context = RequestContext.getCurrentInstance();
         empezar = true;
-        liquifinalizada=false;
+        liquifinalizada = false;
         usuarioBD = administrarBarra.consultarUsuarioBD();
         permisoParaLiquidar = administrarBarra.verificarPermisosLiquidar(usuarioBD);
         if (permisoParaLiquidar == true) {
@@ -122,13 +124,12 @@ public class ControlBarra implements Serializable {
 
     public void limpiarbarra() {
         barra = null;
-        empezar=!empezar;
-        liquifinalizada=false;
-        /*if (empezar == false) {
-            empezar = true;
-        } else if (empezar == true) {
-            empezar = false;
-        }*/
+        empezar = !empezar;
+        liquifinalizada = false;
+        /*
+         * if (empezar == false) { empezar = true; } else if (empezar == true) {
+         * empezar = false; }
+         */
     }
 
     public void liquidacionCompleta() {
@@ -139,7 +140,7 @@ public class ControlBarra implements Serializable {
         mensajeEstado = "Liquidación terminada con exito.";
         imagenEstado = "hand3.png";
         empezar = false;
-        liquifinalizada=true;
+        liquifinalizada = true;
         botonCancelar = true;
         botonLiquidar = false;
         totalEmpleadosLiquidados = administrarBarra.contarEmpleadosLiquidados();
@@ -165,7 +166,7 @@ public class ControlBarra implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("barra.cancel()");
         empezar = false;
-        liquifinalizada=true;
+        liquifinalizada = true;
         administrarBarra.cancelarLiquidacion(usuarioBD);
         Date horaFinal = new Date();
         horaFinalLiquidacion = formato.format(horaFinal);
@@ -185,6 +186,8 @@ public class ControlBarra implements Serializable {
         context.update("form:barra");
         context.update("form:growl");
         consultarEstadoDatos();
+        contarRegistrosCerrada(0);
+        contarRegistrosEnProceso(0);
     }
 
     public void salir() {
@@ -192,7 +195,7 @@ public class ControlBarra implements Serializable {
         totalEmpleadosLiquidados = 0;
         barra = 0;
         empezar = false;
-        liquifinalizada=false;
+        liquifinalizada = false;
         bandera = true;
         preparandoDatos = false;
         botonCancelar = true;
@@ -207,14 +210,20 @@ public class ControlBarra implements Serializable {
         liquidacionesCerradas = null;
         filtradoLiquidacionesAbiertas = null;
         filtradoLiquidacionesCerradas = null;
+        parametroEstructura = null;
+        contarRegistrosCerrada(0);
+        contarRegistrosEnProceso(0);
     }
 
     public void consultarDatos() {
         RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("Entro en consultarDatos() parametroEstructura : " + parametroEstructura);
         if (parametroEstructura != null) {
             liquidacionesCerradas = administrarBarra.liquidacionesCerradas(formatoFecha.format(parametroEstructura.getFechadesdecausado()), formatoFecha.format(parametroEstructura.getFechahastacausado()));
         }
         liquidacionesAbiertas = administrarBarra.consultarPreNomina();
+        contarRegistrosCerrada(0);
+        contarRegistrosEnProceso(0);
         context.update("form:datosLiquidacionesCerradas");
         context.update("form:datosLiquidacionesAbiertas");
     }
@@ -253,8 +262,8 @@ public class ControlBarra implements Serializable {
                 observacionLA = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesAbiertas:observacionLA");
                 observacionLA.setFilterStyle("width: 65px;");
 
-                altoScrollLiquidacionesCerradas = "116";
-                altoScrollLiquidacionesAbiertas = "116";
+                altoScrollLiquidacionesCerradas = "102";
+                altoScrollLiquidacionesAbiertas = "102";
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:datosLiquidacionesCerradas");
                 context.update("form:datosLiquidacionesAbiertas");
@@ -285,8 +294,8 @@ public class ControlBarra implements Serializable {
                 observacionLA = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosLiquidacionesAbiertas:observacionLA");
                 observacionLA.setFilterStyle("display: none; visibility: hidden;");
 
-                altoScrollLiquidacionesCerradas = "139";
-                altoScrollLiquidacionesAbiertas = "139";
+                altoScrollLiquidacionesCerradas = "125";
+                altoScrollLiquidacionesAbiertas = "125";
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:datosLiquidacionesCerradas");
                 context.update("form:datosLiquidacionesAbiertas");
@@ -325,8 +334,30 @@ public class ControlBarra implements Serializable {
 
         context.responseComplete();
     }
-    //GETTER AND SETTER
+    
+    public void contarRegistrosCerrada(int tipoLista) {
+        if (tipoLista == 1) {
+            infoRegistroCerradas = String.valueOf(filtradoLiquidacionesCerradas.size());
+        } else if (liquidacionesCerradas != null) {
+            infoRegistroCerradas = String.valueOf(liquidacionesCerradas.size());
+        } else {
+            infoRegistroCerradas = String.valueOf(0);
+        }
+        RequestContext.getCurrentInstance().update("form:infoRegistroCerradas");
+    }
 
+    public void contarRegistrosEnProceso(int tipoLista) {
+        if (tipoLista == 1) {
+            infoRegistroEnProceso = String.valueOf(filtradoLiquidacionesAbiertas.size());
+        } else if (liquidacionesAbiertas != null) {
+            infoRegistroEnProceso = String.valueOf(liquidacionesAbiertas.size());
+        } else {
+            infoRegistroEnProceso = String.valueOf(0);
+        }
+        RequestContext.getCurrentInstance().update("form:infoRegistroEnProceso");
+    }
+
+    //GETTER AND SETTER
     public Integer getTotalEmpleadosParaLiquidar() {
         totalEmpleadosParaLiquidar = administrarBarra.contarEmpleadosParaLiquidar();
         if (totalEmpleadosParaLiquidar == 0) {
@@ -401,7 +432,7 @@ public class ControlBarra implements Serializable {
                             System.out.println("Liquidacion Terminada Parcialmente");
                             context.execute("barra.cancel()");
                             empezar = false;
-                            liquifinalizada=true;
+                            liquifinalizada = true;
                             Date horaFinal = new Date();
                             horaFinalLiquidacion = formato.format(horaFinal);
                             mensajeBarra = "Liquidacion Finalizada (" + barra + "%)";
@@ -515,5 +546,20 @@ public class ControlBarra implements Serializable {
     public void setLiquifinalizada(boolean liquifinalizada) {
         this.liquifinalizada = liquifinalizada;
     }
-    
+
+    public String getInfoRegistroCerradas() {
+        return infoRegistroCerradas;
+    }
+
+    public void setInfoRegistroCerradas(String infoRegistroCerradas) {
+        this.infoRegistroCerradas = infoRegistroCerradas;
+    }
+
+    public String getInfoRegistroEnProceso() {
+        return infoRegistroEnProceso;
+    }
+
+    public void setInfoRegistroEnProceso(String infoRegistroEnProceso) {
+        this.infoRegistroEnProceso = infoRegistroEnProceso;
+    }
 }

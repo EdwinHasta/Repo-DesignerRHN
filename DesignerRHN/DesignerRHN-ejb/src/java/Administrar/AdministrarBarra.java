@@ -18,9 +18,11 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
+
 /**
- * Clase Stateful. <br>
- * Clase encargada de realizar las operaciones lógicas para la pantalla 'Barra'.
+ * Clase Stateful. <br> Clase encargada de realizar las operaciones lógicas para
+ * la pantalla 'Barra'.
+ *
  * @author betelgeuse
  */
 @Stateful
@@ -28,72 +30,72 @@ public class AdministrarBarra implements AdministrarBarraInterface {
     //--------------------------------------------------------------------------
     //ATRIBUTOS
     //--------------------------------------------------------------------------    
+
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaParametrosEstados'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaParametrosEstados'.
      */
     @EJB
     PersistenciaParametrosEstadosInterface persistenciaParametrosEstados;
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaCandados'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaCandados'.
      */
     @EJB
     PersistenciaCandadosInterface persistenciaCandados;
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaActualUsuario'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaActualUsuario'.
      */
     @EJB
     PersistenciaActualUsuarioInterface persistenciaActualUsuario;
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaParametrosEstructuras'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaParametrosEstructuras'.
      */
     @EJB
     PersistenciaParametrosEstructurasInterface persistenciaParametrosEstructuras;
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaConsultasLiquidaciones'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaConsultasLiquidaciones'.
      */
     @EJB
     PersistenciaConsultasLiquidacionesInterface persistenciaConsultasLiquidaciones;
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaEmpresas'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaEmpresas'.
      */
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
-    	/**
-     * Enterprise JavaBean.<br>
-     * Atributo que representa todo lo referente a la conexión del usuario que
-     * está usando el aplicativo.
+    /**
+     * Enterprise JavaBean.<br> Atributo que representa todo lo referente a la
+     * conexión del usuario que está usando el aplicativo.
      */
     @EJB
     AdministrarSesionesInterface administrarSesiones;
-
     private EntityManager em;
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
+
     @Override
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
     }
-    
+
     @Override
     public Integer contarEmpleadosParaLiquidar() {
-        return persistenciaParametrosEstados.empleadosParaLiquidar(em,consultarUsuarioBD());
+        return persistenciaParametrosEstados.empleadosParaLiquidar(em, consultarUsuarioBD());
     }
 
     @Override
     public Integer contarEmpleadosLiquidados() {
-        return persistenciaParametrosEstados.empleadosLiquidados(em,consultarUsuarioBD());
+        return persistenciaParametrosEstados.empleadosLiquidados(em, consultarUsuarioBD());
     }
 
     @Override
     public boolean verificarPermisosLiquidar(String usuarioBD) {
-        return persistenciaCandados.permisoLiquidar(em,usuarioBD);
+        return persistenciaCandados.permisoLiquidar(em, usuarioBD);
     }
 
     @Override
@@ -108,12 +110,12 @@ public class AdministrarBarra implements AdministrarBarraInterface {
 
     @Override
     public String consultarEstadoLiquidacion(String usuarioBD) {
-        return persistenciaCandados.estadoLiquidacion(em,usuarioBD);
+        return persistenciaCandados.estadoLiquidacion(em, usuarioBD);
     }
 
     @Override
     public ParametrosEstructuras consultarParametrosLiquidacion() {
-        return persistenciaParametrosEstructuras.buscarParametro(em,consultarUsuarioBD());
+        return persistenciaParametrosEstructuras.buscarParametro(em, consultarUsuarioBD());
     }
 
     @Override
@@ -123,17 +125,19 @@ public class AdministrarBarra implements AdministrarBarraInterface {
 
     @Override
     public Integer consultarProgresoLiquidacion(Integer totalEmpleadoALiquidar) {
-        return persistenciaCandados.progresoLiquidacion(em,totalEmpleadoALiquidar);
+        return persistenciaCandados.progresoLiquidacion(em, totalEmpleadoALiquidar);
     }
 
     @Override
     public void cancelarLiquidacion(String usuarioBD) {
-        persistenciaCandados.cancelarLiquidacion(em,usuarioBD);
+        persistenciaCandados.cancelarLiquidacion(em, usuarioBD);
     }
 
     @Override
     public List<ConsultasLiquidaciones> liquidacionesCerradas(String fechaInicial, String fechaFinal) {
-        return persistenciaConsultasLiquidaciones.liquidacionesCerradas(em,fechaInicial, fechaFinal);
+        System.out.println("AdministrarBarra liquidacionesCerradas() fechaInicial : " + fechaInicial);
+        System.out.println("AdministrarBarra liquidacionesCerradas() fechaFinal : " + fechaFinal);
+        return persistenciaConsultasLiquidaciones.liquidacionesCerradas(em, fechaInicial, fechaFinal);
     }
 
     @Override
@@ -143,6 +147,6 @@ public class AdministrarBarra implements AdministrarBarraInterface {
 
     @Override
     public String consultarEstadoConsultaDatos(BigInteger secuenciaEmpresa) {
-        return persistenciaEmpresas.estadoConsultaDatos(em,secuenciaEmpresa);
+        return persistenciaEmpresas.estadoConsultaDatos(em, secuenciaEmpresa);
     }
 }

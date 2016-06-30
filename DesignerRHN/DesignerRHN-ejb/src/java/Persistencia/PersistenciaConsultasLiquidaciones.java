@@ -12,21 +12,22 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless. <br>
- * Clase encargada de realizar operaciones de consulta para las liquidaciones.
- * <strong>Entidad Virtual</strong>
+ * Clase Stateless. <br> Clase encargada de realizar operaciones de consulta
+ * para las liquidaciones. <strong>Entidad Virtual</strong>
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaConsultasLiquidaciones implements PersistenciaConsultasLiquidacionesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+    /*
+     * @PersistenceContext(unitName = "DesignerRHN-ejbPU") private EntityManager em;
+     */
     @Override
-    public List<ConsultasLiquidaciones> liquidacionesCerradas(EntityManager em,String fechaInicial, String fechaFinal) {
+    public List<ConsultasLiquidaciones> liquidacionesCerradas(EntityManager em, String fechaInicial, String fechaFinal) {
         try {
             em.clear();
             String sqlQuery = "select rownum ID, T.EMPRESACODIGO, T.CORTE, T.PROCESO, T.CODIGO, T.TOTAL\n"
@@ -46,6 +47,7 @@ public class PersistenciaConsultasLiquidaciones implements PersistenciaConsultas
             query.setParameter(1, fechaInicial);
             query.setParameter(2, fechaFinal);
             List<ConsultasLiquidaciones> listaLiquidacionesCerradas = query.getResultList();
+            System.out.println("PersistenciaConsultasLiquidaciones liquidacionesCerradas() retorna : " + listaLiquidacionesCerradas);
             return listaLiquidacionesCerradas;
         } catch (Exception e) {
             System.out.println("Error PersistenciaConsultasLiquidaciones.liquidacionesCerradas. " + e);
