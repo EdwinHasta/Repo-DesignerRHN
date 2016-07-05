@@ -13,7 +13,6 @@ import Entidades.Periodicidades;
 import Entidades.PruebaEmpleados;
 import Entidades.Terceros;
 import Entidades.Usuarios;
-import Entidades.VWActualesTiposTrabajadores;
 import Exportar.ExportarPDF;
 import Exportar.ExportarPDFTablasAnchas;
 import Exportar.ExportarXLS;
@@ -56,33 +55,30 @@ public class ControlNovedadesEmpleados implements Serializable {
     @EJB
     AdministrarRastrosInterface administrarRastros;
     //SECUENCIA DE LA PERSONA
-    private BigInteger secuenciaEmpleado;
+//    private BigInteger secuenciaEmpleado;
     //LISTA NOVEDADES
     private List<Novedades> listaNovedades;
     private List<Novedades> filtradosListaNovedades;
     private Novedades novedadSeleccionada;
-    //LISTA QUE NO ES LISTA - 1 SOLO ELEMENTO
+    //LISTA QUE NO ES LISTA
     private List<PruebaEmpleados> listaEmpleadosNovedad;
-    private List<PruebaEmpleados> listaValEmpleados;
-    private List<PruebaEmpleados> filtradosListaEmpleadosNovedad;
-    private PruebaEmpleados seleccionMostrar; //Seleccion Mostrar
+    private List<PruebaEmpleados> filtrarListaEmpleadosNovedad;
+    private PruebaEmpleados empleadoSeleccionado; //Seleccion Mostrar
+    //LOV EMPLEADOS
+    private List<PruebaEmpleados> lovEmpleados;
+    private List<PruebaEmpleados> filtrarLovEmpleados;
+    private PruebaEmpleados empleadoSeleccionadoLov;
     //editar celda
     private Novedades editarNovedades;
-    private boolean cambioEditor, aceptarEditar;
     private int cualCelda, tipoLista;
     //OTROS
     private boolean aceptar;
-    private int index;
     private int tipoActualizacion; //Activo/Desactivo Crtl + F11
     private int bandera;
     private boolean permitirIndex;
     //RASTROS
-    private BigInteger secRegistro;
-    private boolean guardado, guardarOk;
-    //LOV EMPLEADOS
-    private List<VWActualesTiposTrabajadores> listaEmpleados;
-    private List<VWActualesTiposTrabajadores> filtradoslistaEmpleados;
-    private VWActualesTiposTrabajadores seleccionEmpleados;
+//    private BigInteger secRegistro;
+    private boolean guardado;
     //Crear Novedades
     private List<Novedades> listaNovedadesCrear;
     public Novedades nuevaNovedad;
@@ -142,7 +138,7 @@ public class ControlNovedadesEmpleados implements Serializable {
         activoBtnAcumulado = true;
         permitirIndex = true;
         listaNovedades = null;
-        listaEmpleados = null;
+        lovEmpleados = null;
         listaFormulas = null;
         listaConceptos = null;
         todas = false;
@@ -150,7 +146,8 @@ public class ControlNovedadesEmpleados implements Serializable {
         listaPeriodicidades = null;
         listaEmpleadosNovedad = null;
         aceptar = true;
-        secRegistro = null;
+        empleadoSeleccionado = null;
+        novedadSeleccionada = null;
         guardado = true;
         tipoLista = 0;
         listaNovedadesBorrar = new ArrayList<Novedades>();
@@ -176,6 +173,12 @@ public class ControlNovedadesEmpleados implements Serializable {
             administrarNovedadesEmpleados.obtenerConexion(ses.getId());
             administrarFormulaConcepto.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
+            getListaEmpleadosNovedad();
+            if (listaEmpleadosNovedad != null) {
+                if (!listaEmpleadosNovedad.isEmpty()) {
+                    empleadoSeleccionado = listaEmpleadosNovedad.get(0);
+                }
+            }
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -188,8 +191,8 @@ public class ControlNovedadesEmpleados implements Serializable {
         listaNovedadesBorrar.clear();
         listaNovedadesCrear.clear();
         listaNovedadesModificar.clear();
-        index = -1;
-        secRegistro = null;
+        empleadoSeleccionado = null;
+        novedadSeleccionada = null;
 //        k = 0;
         listaNovedades = null;
         guardado = true;
@@ -207,8 +210,10 @@ public class ControlNovedadesEmpleados implements Serializable {
         listaNovedadesBorrar.clear();
         listaNovedadesCrear.clear();
         listaNovedadesModificar.clear();
-        index = -1;
-        secRegistro = null;
+        empleadoSeleccionado = null;
+        novedadSeleccionada = null;
+        listaEmpleadosNovedad = null;
+        lovEmpleados = null;
         listaNovedades = null;
         resultado = 0;
         guardado = true;
@@ -264,9 +269,10 @@ public class ControlNovedadesEmpleados implements Serializable {
         //Si ninguna de las 3 listas (crear,modificar,borrar) tiene algo, hace esto
         //{
         if (listaNovedadesCrear.isEmpty() && listaNovedadesBorrar.isEmpty() && listaNovedadesModificar.isEmpty()) {
-            secuenciaEmpleado = seleccionMostrar.getId();
+//            secuenciaEmpleado = empleadoSeleccionado.getId();
             listaNovedades = null;
             getListaNovedades();
+            novedadSeleccionada = null;
             RequestContext context = RequestContext.getCurrentInstance();
             activoBtnAcumulado = true;
             context.update("form:ACUMULADOS");
@@ -283,7 +289,7 @@ public class ControlNovedadesEmpleados implements Serializable {
         listaNovedadesCrear.clear();
         listaNovedadesBorrar.clear();
         listaNovedadesModificar.clear();
-        secuenciaEmpleado = seleccionMostrar.getId();
+//        secuenciaEmpleado = empleadoSeleccionado.getId();
         listaNovedades = null;
         guardado = true;
         getListaNovedades();
@@ -313,43 +319,26 @@ public class ControlNovedadesEmpleados implements Serializable {
             }
             RequestContext.getCurrentInstance().update("formularioDialogos:duplicarTipo");
         }
-
     }
 
-    public void seleccionarTipo(String estadoTipo, int indice, int celda) {
-        if (tipoLista == 0) {
-            if (estadoTipo.equals("FIJA")) {
-                listaNovedades.get(indice).setTipo("FIJA");
-            } else if (estadoTipo.equals("OCASIONAL")) {
-                listaNovedades.get(indice).setTipo("OCASIONAL");
-            } else if (estadoTipo.equals("PAGO POR FUERA")) {
-                listaNovedades.get(indice).setTipo("PAGO POR FUERA");
-            }
+    public void seleccionarTipo(String estadoTipo, Novedades novedad, int celda) {
+        novedadSeleccionada = novedad;
+        if (estadoTipo.equals("FIJA")) {
+            novedadSeleccionada.setTipo("FIJA");
+        } else if (estadoTipo.equals("OCASIONAL")) {
+            novedadSeleccionada.setTipo("OCASIONAL");
+        } else if (estadoTipo.equals("PAGO POR FUERA")) {
+            novedadSeleccionada.setTipo("PAGO POR FUERA");
+        }
 
-            if (!listaNovedadesCrear.contains(listaNovedades.get(indice))) {
-                if (listaNovedadesModificar.isEmpty()) {
-                    listaNovedadesModificar.add(listaNovedades.get(indice));
-                } else if (!listaNovedadesModificar.contains(listaNovedades.get(indice))) {
-                    listaNovedadesModificar.add(listaNovedades.get(indice));
-                }
-            }
-        } else {
-            if (estadoTipo.equals("FIJA")) {
-                filtradosListaNovedades.get(indice).setTipo("FIJA");
-            } else if (estadoTipo.equals("OCASIONAL")) {
-                filtradosListaNovedades.get(indice).setTipo("OCASIONAL");
-            } else if (estadoTipo.equals("PAGO POR FUERA")) {
-                filtradosListaNovedades.get(indice).setTipo("PAGO POR FUERA");
-            }
-
-            if (!listaNovedadesCrear.contains(filtradosListaNovedades.get(indice))) {
-                if (listaNovedadesModificar.isEmpty()) {
-                    listaNovedadesModificar.add(filtradosListaNovedades.get(indice));
-                } else if (!listaNovedadesModificar.contains(filtradosListaNovedades.get(indice))) {
-                    listaNovedadesModificar.add(filtradosListaNovedades.get(indice));
-                }
+        if (!listaNovedadesCrear.contains(novedadSeleccionada)) {
+            if (listaNovedadesModificar.isEmpty()) {
+                listaNovedadesModificar.add(novedadSeleccionada);
+            } else if (!listaNovedadesModificar.contains(novedadSeleccionada)) {
+                listaNovedadesModificar.add(novedadSeleccionada);
             }
         }
+
         if (guardado) {
             guardado = false;
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -362,7 +351,7 @@ public class ControlNovedadesEmpleados implements Serializable {
 
     //GUARDAR
     public void guardarCambiosNovedades() {
-        Empleados emp = new Empleados();
+//        Empleados emp = new Empleados();
         int pasas = 0;
         if (guardado == false) {
             System.out.println("Realizando Operaciones Novedades");
@@ -448,8 +437,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         }
         System.out.println("Tamaño lista: " + listaNovedadesCrear.size());
         System.out.println("Valor k: " + k);
-        index = -1;
-        secRegistro = null;
     }
 
     //CREAR NOVEDADES
@@ -467,9 +454,9 @@ public class ControlNovedadesEmpleados implements Serializable {
             pasa++;
         }
 
-        for (int i = 0; i < listaEmpleados.size(); i++) {
-            if (seleccionMostrar.getId().compareTo(listaEmpleados.get(i).getEmpleado().getSecuencia()) == 0) {
-                emp2 = listaEmpleados.get(i).getEmpleado();
+        for (int i = 0; i < lovEmpleados.size(); i++) {
+            if (empleadoSeleccionado.getId().compareTo(lovEmpleados.get(i).getId()) == 0) {
+                emp2 = administrarNovedadesEmpleados.elEmpleado(lovEmpleados.get(i).getId());
                 if (nuevaNovedad.getFechainicial() != null) {
                     if (nuevaNovedad.getFechainicial().compareTo(emp2.getFechacreacion()) < 0) {
                         context.update("formularioDialogos:inconsistencia");
@@ -507,12 +494,6 @@ public class ControlNovedadesEmpleados implements Serializable {
             System.out.println("Entro a Tipo");
             mensajeValidacion = mensajeValidacion + " * Tipo\n";
             pasa++;
-        }
-
-        for (int i = 0; i < listaEmpleados.size(); i++) {
-            if (seleccionMostrar.getId().compareTo(listaEmpleados.get(i).getEmpleado().getSecuencia()) == 0) {
-                emp = listaEmpleados.get(i).getEmpleado();
-            }
         }
 
         System.out.println("Valor Pasa: " + pasa);
@@ -566,11 +547,14 @@ public class ControlNovedadesEmpleados implements Serializable {
             k++;
             l = BigInteger.valueOf(k);
             nuevaNovedad.setSecuencia(l);
-            for (int i = 0; i < listaEmpleados.size(); i++) {
-                if (seleccionMostrar.getId().compareTo(listaEmpleados.get(i).getEmpleado().getSecuencia()) == 0) {
-                    emp = listaEmpleados.get(i).getEmpleado();
-                }
-            }
+
+//            for (int i = 0; i < lovEmpleados.size(); i++) {
+//                if (empleadoSeleccionado.getId().compareTo(lovEmpleados.get(i).getId()) == 0) {
+//                    emp = administrarNovedadesEmpleados.elEmpleado(lovEmpleados.get(i).getId());
+            emp = administrarNovedadesEmpleados.elEmpleado(empleadoSeleccionado.getId());
+//                }
+//            }
+
             // OBTENER EL TERMINAL 
             HttpServletRequest request = (HttpServletRequest) (FacesContext.getCurrentInstance().getExternalContext().getRequest());
             String equipo = null;
@@ -592,10 +576,11 @@ public class ControlNovedadesEmpleados implements Serializable {
             nuevaNovedad.setEmpleado(emp); //Envia empleado
             System.out.println("Empleado enviado: " + emp.getPersona().getNombreCompleto());
             listaNovedadesCrear.add(nuevaNovedad);
-            System.out.println(listaNovedadesCrear.size());
-            System.out.println(listaNovedadesCrear.get(0).getTipo());
-            System.out.println(nuevaNovedad.getTipo());
+//            System.out.println(listaNovedadesCrear.size());
+//            System.out.println(listaNovedadesCrear.get(0).getTipo());
+//            System.out.println(nuevaNovedad.getTipo());
             listaNovedades.add(nuevaNovedad);
+            novedadSeleccionada = listaNovedades.get(listaNovedades.indexOf(nuevaNovedad));
             nuevaNovedad = new Novedades();
             nuevaNovedad.setFormula(new Formulas());
             nuevaNovedad.setTercero(new Terceros());
@@ -612,8 +597,6 @@ public class ControlNovedadesEmpleados implements Serializable {
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("NuevaNovedadEmpleado.hide()");
-            index = -1;
-            secRegistro = null;
         } else {
         }
     }
@@ -622,8 +605,8 @@ public class ControlNovedadesEmpleados implements Serializable {
 
         int pasa2 = 0;
         int pasa = 0;
-        Empleados emp = new Empleados();
-        Empleados emp2 = new Empleados();
+//        Empleados emp = new Empleados();
+//        Empleados emp2 = new Empleados();
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (duplicarNovedad.getFechainicial() == null) {
@@ -663,9 +646,9 @@ public class ControlNovedadesEmpleados implements Serializable {
         if (pasa2 == 0) {
             listaNovedades.add(duplicarNovedad);
             listaNovedadesCrear.add(duplicarNovedad);
+            novedadSeleccionada = listaNovedades.get(listaNovedades.indexOf(duplicarNovedad));
 
             context.update("form:datosNovedadesEmpleado");
-            index = -1;
             if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -734,41 +717,52 @@ public class ControlNovedadesEmpleados implements Serializable {
         }
     }
 
-    public void asignarIndex(Integer indice, int dlg, int LND) {
+    public void asignarIndex(int cualLista, int tipoAct) {
 
-        index = indice;
         RequestContext context = RequestContext.getCurrentInstance();
         activoBtnAcumulado = true;
         context.update("form:ACUMULADOS");
-        if (LND == 0) {
-            tipoActualizacion = 0;
-        } else if (LND == 1) {
-            tipoActualizacion = 1;
-            index = -1;
-            secRegistro = null;
-            System.out.println("Tipo Actualizacion: " + tipoActualizacion);
-        } else if (LND == 2) {
-            index = -1;
-            secRegistro = null;
-            tipoActualizacion = 2;
-        }
-        if (dlg == 0) {
+        tipoActualizacion = tipoAct;
+
+        if (cualLista == 0) {
             context.update("formularioDialogos:empleadosDialogo");
             context.execute("empleadosDialogo.show()");
-        } else if (dlg == 1) {
+        } else if (cualLista == 1) {
             context.update("formularioDialogos:conceptosDialogo");
             context.execute("conceptosDialogo.show()");
-        } else if (dlg == 2) {
+        } else if (cualLista == 2) {
             context.update("formularioDialogos:formulasDialogo");
             context.execute("formulasDialogo.show()");
-        } else if (dlg == 3) {
+        } else if (cualLista == 3) {
             context.update("formularioDialogos:periodicidadesDialogo");
             context.execute("periodicidadesDialogo.show()");
-        } else if (dlg == 4) {
+        } else if (cualLista == 4) {
             context.update("formularioDialogos:tercerosDialogo");
             context.execute("tercerosDialogo.show()");
         }
-//FALTAN MAS LOVS, OBVIAMENTE
+    }
+
+    public void asignarIndex(Novedades novedad, int cualLista, int tipoAct) {
+
+        novedadSeleccionada = novedad;
+        RequestContext context = RequestContext.getCurrentInstance();
+        activoBtnAcumulado = true;
+        context.update("form:ACUMULADOS");
+        tipoActualizacion = tipoAct;
+
+        if (cualLista == 1) {
+            context.update("formularioDialogos:conceptosDialogo");
+            context.execute("conceptosDialogo.show()");
+        } else if (cualLista == 2) {
+            context.update("formularioDialogos:formulasDialogo");
+            context.execute("formulasDialogo.show()");
+        } else if (cualLista == 3) {
+            context.update("formularioDialogos:periodicidadesDialogo");
+            context.execute("periodicidadesDialogo.show()");
+        } else if (cualLista == 4) {
+            context.update("formularioDialogos:tercerosDialogo");
+            context.execute("tercerosDialogo.show()");
+        }
     }
 
     public void activarAceptar() {
@@ -780,62 +774,35 @@ public class ControlNovedadesEmpleados implements Serializable {
         if (tipoLista == 0) {
             tipoLista = 1;
         }
+        novedadSeleccionada = null;
     }
 
     //AUTOCOMPLETAR
-    public void modificarNovedades(int indice, String confirmarCambio, String valorConfirmar) {
-        index = indice;
+    public void modificarNovedades(Novedades novedad, String confirmarCambio, String valorConfirmar) {
 
-        if (tipoLista == 0) {
-            novedadSeleccionada = listaNovedades.get(index);
-        } else {
-            novedadSeleccionada = filtradosListaNovedades.get(index);
-        }
+        novedadSeleccionada = novedad;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         activoBtnAcumulado = true;
         context.update("form:ACUMULADOS");
         if (confirmarCambio.equalsIgnoreCase("N")) {
-            if (tipoLista == 0) {
-                if (!listaNovedadesCrear.contains(listaNovedades.get(indice))) {
+            if (!listaNovedadesCrear.contains(novedadSeleccionada)) {
 
-                    if (listaNovedadesModificar.isEmpty()) {
-                        listaNovedadesModificar.add(listaNovedades.get(indice));
-                    } else if (!listaNovedadesModificar.contains(listaNovedades.get(indice))) {
-                        listaNovedadesModificar.add(listaNovedades.get(indice));
-                    }
-                    if (guardado) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                    }
+                if (listaNovedadesModificar.isEmpty()) {
+                    listaNovedadesModificar.add(novedadSeleccionada);
+                } else if (!listaNovedadesModificar.contains(novedadSeleccionada)) {
+                    listaNovedadesModificar.add(novedadSeleccionada);
                 }
-                index = -1;
-                secRegistro = null;
-
-            } else {
-                if (!listaNovedadesCrear.contains(filtradosListaNovedades.get(indice))) {
-
-                    if (listaNovedadesModificar.isEmpty()) {
-                        listaNovedadesModificar.add(filtradosListaNovedades.get(indice));
-                    } else if (!listaNovedadesModificar.contains(filtradosListaNovedades.get(indice))) {
-                        listaNovedadesModificar.add(filtradosListaNovedades.get(indice));
-                    }
-                    if (guardado) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                    }
+                if (guardado) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
-                index = -1;
             }
 
             context.update("form:datosNovedadesEmpleado");
         } else if (confirmarCambio.equalsIgnoreCase("FORMULA")) {
-            if (tipoLista == 0) {
-                listaNovedades.get(indice).getFormula().setNombresFormula(Formula);
-            } else {
-                filtradosListaNovedades.get(indice).getFormula().setNombresFormula(Formula);
-            }
+            novedadSeleccionada.getFormula().setNombresFormula(Formula);
 
             for (int i = 0; i < listaFormulas.size(); i++) {
                 if (listaFormulas.get(i).getNombresFormula().startsWith(valorConfirmar.toUpperCase())) {
@@ -844,12 +811,7 @@ public class ControlNovedadesEmpleados implements Serializable {
                 }
             }
             if (coincidencias == 1) {
-                if (tipoLista == 0) {
-                    listaNovedades.get(indice).setFormula(listaFormulas.get(indiceUnicoElemento));
-                } else {
-                    filtradosListaNovedades.get(indice).setFormula(listaFormulas.get(indiceUnicoElemento));
-                }
-
+                novedadSeleccionada.setFormula(listaFormulas.get(indiceUnicoElemento));
             } else {
                 permitirIndex = false;
                 context.update("formularioDialogos:formulasDialogo");
@@ -857,11 +819,7 @@ public class ControlNovedadesEmpleados implements Serializable {
                 tipoActualizacion = 0;
             }
         } else if (confirmarCambio.equalsIgnoreCase("NIT")) {
-            if (tipoLista == 0) {
-                listaNovedades.get(indice).getTercero().setNitalternativo(NitTercero);
-            } else {
-                filtradosListaNovedades.get(indice).getTercero().setNitalternativo(NitTercero);
-            }
+            novedadSeleccionada.getTercero().setNitalternativo(NitTercero);
 
             for (int i = 0; i < listaTerceros.size(); i++) {
                 if (listaTerceros.get(i).getNitalternativo().startsWith(valorConfirmar.toUpperCase())) {
@@ -870,11 +828,7 @@ public class ControlNovedadesEmpleados implements Serializable {
                 }
             }
             if (coincidencias == 1) {
-                if (tipoLista == 0) {
-                    listaNovedades.get(indice).setTercero(listaTerceros.get(indiceUnicoElemento));
-                } else {
-                    filtradosListaNovedades.get(indice).setTercero(listaTerceros.get(indiceUnicoElemento));
-                }
+                novedadSeleccionada.setTercero(listaTerceros.get(indiceUnicoElemento));
 
             } else {
                 permitirIndex = false;
@@ -885,11 +839,7 @@ public class ControlNovedadesEmpleados implements Serializable {
         } else if (confirmarCambio.equalsIgnoreCase("CONCEPTO")) {
         } else if (confirmarCambio.equalsIgnoreCase("CODIGOPERIODICIDAD")) {
 
-            if (tipoLista == 0) {
-                listaNovedades.get(indice).getPeriodicidad().setCodigoStr(CodigoPeriodicidad);
-            } else {
-                filtradosListaNovedades.get(indice).getPeriodicidad().setCodigoStr(CodigoPeriodicidad);
-            }
+            novedadSeleccionada.getPeriodicidad().setCodigoStr(CodigoPeriodicidad);
 
             for (int i = 0; i < listaPeriodicidades.size(); i++) {
                 if ((listaPeriodicidades.get(i).getCodigoStr()).startsWith(valorConfirmar.toString().toUpperCase())) {
@@ -899,11 +849,7 @@ public class ControlNovedadesEmpleados implements Serializable {
                 }
             }
             if (coincidencias == 1) {
-                if (tipoLista == 0) {
-                    listaNovedades.get(indice).setPeriodicidad(listaPeriodicidades.get(indiceUnicoElemento));
-                } else {
-                    filtradosListaNovedades.get(indice).setPeriodicidad(listaPeriodicidades.get(indiceUnicoElemento));
-                }
+                novedadSeleccionada.setPeriodicidad(listaPeriodicidades.get(indiceUnicoElemento));
 
             } else {
                 permitirIndex = false;
@@ -913,35 +859,16 @@ public class ControlNovedadesEmpleados implements Serializable {
             }
         }
         if (coincidencias == 1) {
-            if (tipoLista == 0) {
-                if (!listaNovedadesCrear.contains(listaNovedades.get(indice))) {
-                    if (listaNovedadesModificar.isEmpty()) {
-                        listaNovedadesModificar.add(listaNovedades.get(indice));
-                    } else if (!listaNovedadesModificar.contains(listaNovedades.get(indice))) {
-                        listaNovedadesModificar.add(listaNovedades.get(indice));
-                    }
-                    if (guardado) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                    }
+            if (!listaNovedadesCrear.contains(novedadSeleccionada)) {
+                if (listaNovedadesModificar.isEmpty()) {
+                    listaNovedadesModificar.add(novedadSeleccionada);
+                } else if (!listaNovedadesModificar.contains(novedadSeleccionada)) {
+                    listaNovedadesModificar.add(novedadSeleccionada);
                 }
-                index = -1;
-                secRegistro = null;
-            } else {
-                if (!listaNovedadesCrear.contains(filtradosListaNovedades.get(indice))) {
-
-                    if (listaNovedadesModificar.isEmpty()) {
-                        listaNovedadesModificar.add(filtradosListaNovedades.get(indice));
-                    } else if (!listaNovedadesModificar.contains(filtradosListaNovedades.get(indice))) {
-                        listaNovedadesModificar.add(filtradosListaNovedades.get(indice));
-                    }
-                    if (guardado) {
-                        guardado = false;
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                    }
+                if (guardado) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
-                index = -1;
-                secRegistro = null;
             }
         }
         context.update("form:datosNovedadesEmpleado");
@@ -999,10 +926,10 @@ public class ControlNovedadesEmpleados implements Serializable {
     //LISTA DE VALORES DINAMICA
     public void listaValoresBoton() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index < 0) {
+        if (novedadSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
-            if (index >= 0) {
+            if (novedadSeleccionada != null) {
                 activoBtnAcumulado = true;
                 context.update("form:ACUMULADOS");
                 if (cualCelda == 0) {
@@ -1026,79 +953,46 @@ public class ControlNovedadesEmpleados implements Serializable {
     }
     //Ubicacion Celda Indice Abajo. //Van los que no son NOT NULL.
 
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(Novedades novedad, int celda) {
+        novedadSeleccionada = novedad;
         if (permitirIndex == true) {
             RequestContext context = RequestContext.getCurrentInstance();
             activoBtnAcumulado = false;
             context.update("form:ACUMULADOS");
-            index = indice;
             cualCelda = celda;
-            if (tipoLista == 0) {
-                secRegistro = listaNovedades.get(index).getSecuencia();
-                actualNovedadTabla = listaNovedades.get(index);
-                if (cualCelda == 0) {
-                    CodigoConcepto = listaNovedades.get(index).getConcepto().getCodigoSTR();
-                } else if (cualCelda == 1) {
-                    DescripcionConcepto = listaNovedades.get(index).getConcepto().getDescripcion();
-                } else if (cualCelda == 3) {
-                    FechaFinal = listaNovedades.get(index).getFechafinal();
-                } else if (cualCelda == 5) {
-                    Saldo = listaNovedades.get(index).getSaldo();
-                } else if (cualCelda == 6) {
-                    CodigoPeriodicidad = listaNovedades.get(index).getPeriodicidad().getCodigoStr();
-                } else if (cualCelda == 7) {
-                    DescripcionPeriodicidad = listaNovedades.get(index).getPeriodicidad().getNombre();
-                } else if (cualCelda == 8) {
-                    NitTercero = listaNovedades.get(index).getTercero().getNitalternativo();
-                } else if (cualCelda == 9) {
-                    NombreTercero = listaNovedades.get(index).getTercero().getNombre();
-                } else if (cualCelda == 10) {
-                    HoraDia = listaNovedades.get(index).getUnidadesparteentera();
-                } else if (cualCelda == 11) {
-                    MinutoHora = listaNovedades.get(index).getUnidadespartefraccion();
-                }
-            } else {
-                secRegistro = filtradosListaNovedades.get(index).getSecuencia();
-                actualNovedadTabla = filtradosListaNovedades.get(index);
-                if (cualCelda == 0) {
-                    CodigoConcepto = filtradosListaNovedades.get(index).getConcepto().getCodigoSTR();
-                } else if (cualCelda == 1) {
-                    DescripcionConcepto = filtradosListaNovedades.get(index).getConcepto().getDescripcion();
-                } else if (cualCelda == 3) {
-                    FechaFinal = filtradosListaNovedades.get(index).getFechafinal();
-                } else if (cualCelda == 5) {
-                    Saldo = filtradosListaNovedades.get(index).getSaldo();
-                } else if (cualCelda == 6) {
-                    CodigoPeriodicidad = filtradosListaNovedades.get(index).getPeriodicidad().getCodigoStr();
-                } else if (cualCelda == 7) {
-                    DescripcionPeriodicidad = filtradosListaNovedades.get(index).getPeriodicidad().getNombre();
-                } else if (cualCelda == 8) {
-                    NitTercero = filtradosListaNovedades.get(index).getTercero().getNitalternativo();
-                } else if (cualCelda == 9) {
-                    NombreTercero = filtradosListaNovedades.get(index).getTercero().getNombre();
-                } else if (cualCelda == 10) {
-                    HoraDia = filtradosListaNovedades.get(index).getUnidadesparteentera();
-                } else if (cualCelda == 11) {
-                    MinutoHora = filtradosListaNovedades.get(index).getUnidadespartefraccion();
-                }
+            actualNovedadTabla = novedadSeleccionada;
+            if (cualCelda == 0) {
+                CodigoConcepto = novedadSeleccionada.getConcepto().getCodigoSTR();
+            } else if (cualCelda == 1) {
+                DescripcionConcepto = novedadSeleccionada.getConcepto().getDescripcion();
+            } else if (cualCelda == 3) {
+                FechaFinal = novedadSeleccionada.getFechafinal();
+            } else if (cualCelda == 5) {
+                Saldo = novedadSeleccionada.getSaldo();
+            } else if (cualCelda == 6) {
+                CodigoPeriodicidad = novedadSeleccionada.getPeriodicidad().getCodigoStr();
+            } else if (cualCelda == 7) {
+                DescripcionPeriodicidad = novedadSeleccionada.getPeriodicidad().getNombre();
+            } else if (cualCelda == 8) {
+                NitTercero = novedadSeleccionada.getTercero().getNitalternativo();
+            } else if (cualCelda == 9) {
+                NombreTercero = novedadSeleccionada.getTercero().getNombre();
+            } else if (cualCelda == 10) {
+                HoraDia = novedadSeleccionada.getUnidadesparteentera();
+            } else if (cualCelda == 11) {
+                MinutoHora = novedadSeleccionada.getUnidadespartefraccion();
             }
         }
-        System.out.println("Index: " + index + " Celda: " + celda);
     }
 
     //MOSTRAR DATOS CELDA
     public void editarCelda() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index < 0) {
+        if (novedadSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
-            if (index >= 0) {
-                if (tipoLista == 0) {
-                    editarNovedades = listaNovedades.get(index);
-                }
-                if (tipoLista == 1) {
-                    editarNovedades = filtradosListaNovedades.get(index);
-                }
+            if (novedadSeleccionada != null) {
+                editarNovedades = novedadSeleccionada;
 
                 activoBtnAcumulado = true;
                 context.update("form:ACUMULADOS");
@@ -1159,8 +1053,6 @@ public class ControlNovedadesEmpleados implements Serializable {
                     cualCelda = -1;
                 }
             }
-            index = -1;
-            secRegistro = null;
         }
     }
 
@@ -1346,42 +1238,36 @@ public class ControlNovedadesEmpleados implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         activoBtnAcumulado = true;
         context.update("form:ACUMULADOS");
-        PruebaEmpleados pe = administrarNovedadesEmpleados.novedadEmpleado(seleccionEmpleados.getSecuencia());
+//        PruebaEmpleados pe = administrarNovedadesEmpleados.novedadEmpleado(empleadoSeleccionadoLov.getId());
+//        if (pe != null) {
+//            listaEmpleadosNovedad.add(pe);
+//        } else {
+//            pe = new PruebaEmpleados();
+//            pe.setId(empleadoSeleccionadoLov.getId());
+//            pe.setCodigo(empleadoSeleccionadoLov.getCodigo());
+//            pe.setNombre(empleadoSeleccionadoLov.getNombre());
+//            pe.setValor(null);
+//            pe.setTipo(empleadoSeleccionadoLov.getTipo());
+//            listaEmpleadosNovedad.add(pe);
+//        }
+        System.out.println("empleadoSeleccionadoLov : " + empleadoSeleccionadoLov + "  " + empleadoSeleccionadoLov.getNombre());
+        listaEmpleadosNovedad.clear();
+        listaEmpleadosNovedad.add(empleadoSeleccionadoLov);
+        empleadoSeleccionado = listaEmpleadosNovedad.get(0);
 
-        if (pe != null) {
-            listaEmpleadosNovedad.add(pe);
-        } else {
-            pe = new PruebaEmpleados();
-            pe.setId(seleccionEmpleados.getEmpleado().getSecuencia());
-            pe.setCodigo(seleccionEmpleados.getEmpleado().getCodigoempleado());
-            pe.setNombre(seleccionEmpleados.getEmpleado().getPersona().getNombreCompleto());
-            pe.setValor(null);
-            pe.setTipo(seleccionEmpleados.getTipoTrabajador().getTipo());
-            listaEmpleadosNovedad.add(pe);
-        }
-        if (!listaEmpleadosNovedad.isEmpty()) {
-            listaEmpleadosNovedad.clear();
-            listaEmpleadosNovedad.add(pe);
-            seleccionMostrar = listaEmpleadosNovedad.get(0);
-        } else {
-            listaEmpleadosNovedad.add(pe);
-        }
-        secuenciaEmpleado = seleccionEmpleados.getSecuencia();
+//            secuenciaEmpleado = empleadoSeleccionadoLov.getId();
         listaNovedades = null;
         context.reset("formularioDialogos:LOVEmpleados:globalFilter");
         context.execute("empleadosDialogo.hide()");
         context.update("form:datosEmpleados");
         context.update("form:datosNovedadesEmpleado");
-        /*
-         * context.update("formularioDialogos:LOVEmpleados");
-         * context.update("form:datosEmpleados");
-         * context.update("form:datosNovedadesEmpleado");
-         */
-        filtradosListaEmpleadosNovedad = null;
-        seleccionEmpleados = null;
+        context.update("formularioDialogos:LOVEmpleados");
+        context.update("form:datosEmpleados");
+        context.update("form:datosNovedadesEmpleado");
+
+        filtrarListaEmpleadosNovedad = null;
+        empleadoSeleccionadoLov = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
     }
@@ -1390,23 +1276,12 @@ public class ControlNovedadesEmpleados implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("seleccionFormulas: " + seleccionFormulas);
         if (tipoActualizacion == 0) {
-            if (tipoLista == 0) {
-                listaNovedades.get(index).setFormula(seleccionFormulas);
-                if (!listaNovedadesCrear.contains(listaNovedades.get(index))) {
-                    if (listaNovedadesModificar.isEmpty()) {
-                        listaNovedadesModificar.add(listaNovedades.get(index));
-                    } else if (!listaNovedadesModificar.contains(listaNovedades.get(index))) {
-                        listaNovedadesModificar.add(listaNovedades.get(index));
-                    }
-                }
-            } else {
-                filtradosListaNovedades.get(index).setFormula(seleccionFormulas);
-                if (!listaNovedadesCrear.contains(filtradosListaNovedades.get(index))) {
-                    if (listaNovedadesModificar.isEmpty()) {
-                        listaNovedadesModificar.add(filtradosListaNovedades.get(index));
-                    } else if (!listaNovedadesModificar.contains(filtradosListaNovedades.get(index))) {
-                        listaNovedadesModificar.add(filtradosListaNovedades.get(index));
-                    }
+            novedadSeleccionada.setFormula(seleccionFormulas);
+            if (!listaNovedadesCrear.contains(novedadSeleccionada)) {
+                if (listaNovedadesModificar.isEmpty()) {
+                    listaNovedadesModificar.add(novedadSeleccionada);
+                } else if (!listaNovedadesModificar.contains(novedadSeleccionada)) {
+                    listaNovedadesModificar.add(novedadSeleccionada);
                 }
             }
             if (guardado) {
@@ -1429,8 +1304,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         filtradoslistaFormulas = null;
         seleccionFormulas = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVFormulas:globalFilter");
@@ -1443,30 +1316,15 @@ public class ControlNovedadesEmpleados implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         Formulas formula;
         if (tipoActualizacion == 0) {
-            if (tipoLista == 0) {
-                listaNovedades.get(index).setConcepto(seleccionConceptos);
-                formula = verificarFormulaConcepto(seleccionConceptos.getSecuencia());
-                listaNovedades.get(index).setFormula(formula);
+            novedadSeleccionada.setConcepto(seleccionConceptos);
+            formula = verificarFormulaConcepto(seleccionConceptos.getSecuencia());
+            novedadSeleccionada.setFormula(formula);
 
-                if (!listaNovedadesCrear.contains(listaNovedades.get(index))) {
-                    if (listaNovedadesModificar.isEmpty()) {
-                        listaNovedadesModificar.add(listaNovedades.get(index));
-                    } else if (!listaNovedadesModificar.contains(listaNovedades.get(index))) {
-                        listaNovedadesModificar.add(listaNovedades.get(index));
-                    }
-                }
-            } else {
-                filtradosListaNovedades.get(index).setConcepto(seleccionConceptos);
-                verificarFormulaConcepto(seleccionConceptos.getSecuencia());
-                formula = verificarFormulaConcepto(seleccionConceptos.getSecuencia());
-                filtradosListaNovedades.get(index).setFormula(formula);
-
-                if (!listaNovedadesCrear.contains(filtradosListaNovedades.get(index))) {
-                    if (listaNovedadesModificar.isEmpty()) {
-                        listaNovedadesModificar.add(filtradosListaNovedades.get(index));
-                    } else if (!listaNovedadesModificar.contains(filtradosListaNovedades.get(index))) {
-                        listaNovedadesModificar.add(filtradosListaNovedades.get(index));
-                    }
+            if (!listaNovedadesCrear.contains(novedadSeleccionada)) {
+                if (listaNovedadesModificar.isEmpty()) {
+                    listaNovedadesModificar.add(novedadSeleccionada);
+                } else if (!listaNovedadesModificar.contains(novedadSeleccionada)) {
+                    listaNovedadesModificar.add(novedadSeleccionada);
                 }
             }
 
@@ -1478,13 +1336,13 @@ public class ControlNovedadesEmpleados implements Serializable {
             activoBtnAcumulado = true;
             context.update("form:ACUMULADOS");
             context.update("form:datosNovedadesEmpleado");
-            
+
         } else if (tipoActualizacion == 1) {
             nuevaNovedad.setConcepto(seleccionConceptos);
             formula = verificarFormulaConcepto(seleccionConceptos.getSecuencia());
             nuevaNovedad.setFormula(formula);
             context.update("formularioDialogos:nuevaNovedad");
-            
+
         } else if (tipoActualizacion == 2) {
             duplicarNovedad.setConcepto(seleccionConceptos);
             formula = verificarFormulaConcepto(seleccionConceptos.getSecuencia());
@@ -1494,8 +1352,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         filtradoslistaConceptos = null;
         seleccionConceptos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVConceptos:globalFilter");
@@ -1507,7 +1363,7 @@ public class ControlNovedadesEmpleados implements Serializable {
         List<FormulasConceptos> formulasConceptoSel = administrarFormulaConcepto.cargarFormulasConcepto(secCon);
         Formulas formulaR = new Formulas();
         BigInteger autoFormula;
-        
+
         if (formulasConceptoSel != null) {
             if (!formulasConceptoSel.isEmpty()) {
                 autoFormula = formulasConceptoSel.get(0).getFormula().getSecuencia();
@@ -1517,7 +1373,7 @@ public class ControlNovedadesEmpleados implements Serializable {
         } else {
             autoFormula = new BigInteger("4621544");
         }
-        
+
         for (int i = 0; i < listaFormulas.size(); i++) {
             if (autoFormula.equals(listaFormulas.get(i).getSecuencia())) {
                 formulaR = listaFormulas.get(i);
@@ -1529,23 +1385,12 @@ public class ControlNovedadesEmpleados implements Serializable {
     public void actualizarPeriodicidades() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
-            if (tipoLista == 0) {
-                listaNovedades.get(index).setPeriodicidad(seleccionPeriodicidades);
-                if (!listaNovedadesCrear.contains(listaNovedades.get(index))) {
-                    if (listaNovedadesModificar.isEmpty()) {
-                        listaNovedadesModificar.add(listaNovedades.get(index));
-                    } else if (!listaNovedadesModificar.contains(listaNovedades.get(index))) {
-                        listaNovedadesModificar.add(listaNovedades.get(index));
-                    }
-                }
-            } else {
-                filtradosListaNovedades.get(index).setPeriodicidad(seleccionPeriodicidades);
-                if (!listaNovedadesCrear.contains(filtradosListaNovedades.get(index))) {
-                    if (listaNovedadesModificar.isEmpty()) {
-                        listaNovedadesModificar.add(filtradosListaNovedades.get(index));
-                    } else if (!listaNovedadesModificar.contains(filtradosListaNovedades.get(index))) {
-                        listaNovedadesModificar.add(filtradosListaNovedades.get(index));
-                    }
+            novedadSeleccionada.setPeriodicidad(seleccionPeriodicidades);
+            if (!listaNovedadesCrear.contains(novedadSeleccionada)) {
+                if (listaNovedadesModificar.isEmpty()) {
+                    listaNovedadesModificar.add(novedadSeleccionada);
+                } else if (!listaNovedadesModificar.contains(novedadSeleccionada)) {
+                    listaNovedadesModificar.add(novedadSeleccionada);
                 }
             }
             if (guardado) {
@@ -1566,8 +1411,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         filtradoslistaPeriodicidades = null;
         seleccionPeriodicidades = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVPeriodicidades:globalFilter");
@@ -1579,23 +1422,12 @@ public class ControlNovedadesEmpleados implements Serializable {
     public void actualizarTerceros() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
-            if (tipoLista == 0) {
-                listaNovedades.get(index).setTercero(seleccionTerceros);
-                if (!listaNovedadesCrear.contains(listaNovedades.get(index))) {
-                    if (listaNovedadesModificar.isEmpty()) {
-                        listaNovedadesModificar.add(listaNovedades.get(index));
-                    } else if (!listaNovedadesModificar.contains(listaNovedades.get(index))) {
-                        listaNovedadesModificar.add(listaNovedades.get(index));
-                    }
-                }
-            } else {
-                filtradosListaNovedades.get(index).setTercero(seleccionTerceros);
-                if (!listaNovedadesCrear.contains(filtradosListaNovedades.get(index))) {
-                    if (listaNovedadesModificar.isEmpty()) {
-                        listaNovedadesModificar.add(filtradosListaNovedades.get(index));
-                    } else if (!listaNovedadesModificar.contains(filtradosListaNovedades.get(index))) {
-                        listaNovedadesModificar.add(filtradosListaNovedades.get(index));
-                    }
+            novedadSeleccionada.setTercero(seleccionTerceros);
+            if (!listaNovedadesCrear.contains(novedadSeleccionada)) {
+                if (listaNovedadesModificar.isEmpty()) {
+                    listaNovedadesModificar.add(novedadSeleccionada);
+                } else if (!listaNovedadesModificar.contains(novedadSeleccionada)) {
+                    listaNovedadesModificar.add(novedadSeleccionada);
                 }
             }
             if (guardado) {
@@ -1616,8 +1448,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         filtradoslistaTerceros = null;
         seleccionTerceros = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVTerceros:globalFilter");
@@ -1629,25 +1459,22 @@ public class ControlNovedadesEmpleados implements Serializable {
     public void mostrarTodos() {
         System.out.println("controlNovedadesEmpleados.mostrarTodos...");
         RequestContext context = RequestContext.getCurrentInstance();
-        if (!listaEmpleadosNovedad.isEmpty()) {
-            listaEmpleadosNovedad.clear();
-            listaValEmpleados = getListaValEmpleados();
-        }
-        if (listaEmpleadosNovedad != null) {
+        listaEmpleadosNovedad.clear();
 
-            for (int i = 0; i < listaValEmpleados.size(); i++) {
-                listaEmpleadosNovedad.add(listaValEmpleados.get(i));
+        if (lovEmpleados != null) {
+            for (int i = 0; i < lovEmpleados.size(); i++) {
+                listaEmpleadosNovedad.add(lovEmpleados.get(i));
             }
         }
+
         listaNovedades = null;
         context.update("form:ACUMULADOS");
         context.update("form:datosEmpleados");
         context.update("form:datosNovedadesEmpleado");
         activoBtnAcumulado = true;
-        filtradosListaEmpleadosNovedad = null;
+        filtrarListaEmpleadosNovedad = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        empleadoSeleccionado = null;
         tipoActualizacion = -1;
         cualCelda = -1;
     }
@@ -1655,72 +1482,44 @@ public class ControlNovedadesEmpleados implements Serializable {
     //DUPLICAR ENCARGATURA
     public void duplicarEN() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index < 0) {
+        if (novedadSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
-            if (index >= 0) {
+            if (novedadSeleccionada != null) {
                 duplicarNovedad = new Novedades();
                 k++;
                 l = BigInteger.valueOf(k);
-                Empleados emple = new Empleados();
+                Empleados emple = administrarNovedadesEmpleados.elEmpleado(empleadoSeleccionado.getId());
 
-                for (int i = 0; i < listaEmpleados.size(); i++) {
-                    if (seleccionMostrar.getId().compareTo(listaEmpleados.get(i).getEmpleado().getSecuencia()) == 0) {
-                        emple = listaEmpleados.get(i).getEmpleado();
-                    }
-                }
-                if (tipoLista == 0) {
-                    duplicarNovedad.setSecuencia(l);
-                    duplicarNovedad.setEmpleado(emple);
-                    duplicarNovedad.setConcepto(listaNovedades.get(index).getConcepto());
-                    duplicarNovedad.setFechainicial(listaNovedades.get(index).getFechainicial());
-                    duplicarNovedad.setFechafinal(listaNovedades.get(index).getFechafinal());
-                    duplicarNovedad.setFechareporte(listaNovedades.get(index).getFechareporte());
-                    duplicarNovedad.setValortotal(listaNovedades.get(index).getValortotal());
-                    duplicarNovedad.setSaldo(listaNovedades.get(index).getSaldo());
-                    duplicarNovedad.setPeriodicidad(listaNovedades.get(index).getPeriodicidad());
-                    duplicarNovedad.setTercero(listaNovedades.get(index).getTercero());
-                    duplicarNovedad.setFormula(listaNovedades.get(index).getFormula());
-                    duplicarNovedad.setUnidadesparteentera(listaNovedades.get(index).getUnidadesparteentera());
-                    duplicarNovedad.setUnidadespartefraccion(listaNovedades.get(index).getUnidadespartefraccion());
-                    duplicarNovedad.setTipo(listaNovedades.get(index).getTipo());
-                    duplicarNovedad.setTerminal(listaNovedades.get(index).getTerminal());
-                    duplicarNovedad.setUsuarioreporta(listaNovedades.get(index).getUsuarioreporta());
-                }
-                if (tipoLista == 1) {
-                    duplicarNovedad.setSecuencia(l);
-                    duplicarNovedad.setEmpleado(emple);
-                    duplicarNovedad.setConcepto(filtradosListaNovedades.get(index).getConcepto());
-                    duplicarNovedad.setFechainicial(filtradosListaNovedades.get(index).getFechainicial());
-                    duplicarNovedad.setFechafinal(filtradosListaNovedades.get(index).getFechafinal());
-                    duplicarNovedad.setFechareporte(filtradosListaNovedades.get(index).getFechareporte());
-                    duplicarNovedad.setValortotal(filtradosListaNovedades.get(index).getValortotal());
-                    duplicarNovedad.setSaldo(filtradosListaNovedades.get(index).getSaldo());
-                    duplicarNovedad.setPeriodicidad(filtradosListaNovedades.get(index).getPeriodicidad());
-                    duplicarNovedad.setTercero(filtradosListaNovedades.get(index).getTercero());
-                    duplicarNovedad.setFormula(filtradosListaNovedades.get(index).getFormula());
-                    duplicarNovedad.setUnidadesparteentera(filtradosListaNovedades.get(index).getUnidadesparteentera());
-                    duplicarNovedad.setUnidadespartefraccion(filtradosListaNovedades.get(index).getUnidadespartefraccion());
-                    duplicarNovedad.setTipo(filtradosListaNovedades.get(index).getTipo());
-                    duplicarNovedad.setTerminal(filtradosListaNovedades.get(index).getTerminal());
-                    duplicarNovedad.setUsuarioreporta(filtradosListaNovedades.get(index).getUsuarioreporta());
-                }
+                duplicarNovedad.setSecuencia(l);
+                duplicarNovedad.setEmpleado(emple);
+                duplicarNovedad.setConcepto(novedadSeleccionada.getConcepto());
+                duplicarNovedad.setFechainicial(novedadSeleccionada.getFechainicial());
+                duplicarNovedad.setFechafinal(novedadSeleccionada.getFechafinal());
+                duplicarNovedad.setFechareporte(novedadSeleccionada.getFechareporte());
+                duplicarNovedad.setValortotal(novedadSeleccionada.getValortotal());
+                duplicarNovedad.setSaldo(novedadSeleccionada.getSaldo());
+                duplicarNovedad.setPeriodicidad(novedadSeleccionada.getPeriodicidad());
+                duplicarNovedad.setTercero(novedadSeleccionada.getTercero());
+                duplicarNovedad.setFormula(novedadSeleccionada.getFormula());
+                duplicarNovedad.setUnidadesparteentera(novedadSeleccionada.getUnidadesparteentera());
+                duplicarNovedad.setUnidadespartefraccion(novedadSeleccionada.getUnidadespartefraccion());
+                duplicarNovedad.setTipo(novedadSeleccionada.getTipo());
+                duplicarNovedad.setTerminal(novedadSeleccionada.getTerminal());
+                duplicarNovedad.setUsuarioreporta(novedadSeleccionada.getUsuarioreporta());
+
                 activoBtnAcumulado = true;
                 context.update("form:ACUMULADOS");
                 context.update("formularioDialogos:duplicarNovedad");
                 context.execute("DuplicarRegistroNovedad.show()");
-                index = -1;
-                secRegistro = null;
             }
         }
     }
 
     public void cancelarCambioEmpleados() {
-        filtradoslistaEmpleados = null;
-        seleccionEmpleados = null;
+        filtrarLovEmpleados = null;
+        empleadoSeleccionadoLov = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -1734,8 +1533,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         filtradoslistaFormulas = null;
         seleccionFormulas = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -1749,8 +1546,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         filtradoslistaConceptos = null;
         seleccionConceptos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -1764,8 +1559,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         filtradoslistaPeriodicidades = null;
         seleccionPeriodicidades = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -1779,8 +1572,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         filtradoslistaTerceros = null;
         seleccionTerceros = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -1793,7 +1584,7 @@ public class ControlNovedadesEmpleados implements Serializable {
     public void todasNovedades() {
         System.out.println("Ingrese a todasNovedades()");
         listaNovedades.clear();
-        listaNovedades = administrarNovedadesEmpleados.todasNovedades(seleccionMostrar.getId());
+        listaNovedades = administrarNovedadesEmpleados.todasNovedades(empleadoSeleccionado.getId());
         RequestContext context = RequestContext.getCurrentInstance();
         activoBtnAcumulado = true;
         context.update("form:ACUMULADOS");
@@ -1808,7 +1599,7 @@ public class ControlNovedadesEmpleados implements Serializable {
 
     public void actualesNovedades() {
         listaNovedades.clear();
-        listaNovedades = administrarNovedadesEmpleados.novedadesEmpleado(seleccionMostrar.getId());
+        listaNovedades = administrarNovedadesEmpleados.novedadesEmpleado(empleadoSeleccionado.getId());
         RequestContext context = RequestContext.getCurrentInstance();
         activoBtnAcumulado = true;
         context.update("form:ACUMULADOS");
@@ -1826,8 +1617,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         Exporter exporter = new ExportarPDFTablasAnchas();
         exporter.export(context, tabla, "NovedadesPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
         RequestContext contexto = RequestContext.getCurrentInstance();
         activoBtnAcumulado = true;
         contexto.update("form:ACUMULADOS");
@@ -1839,8 +1628,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "NovedadesXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
         RequestContext contexto = RequestContext.getCurrentInstance();
         activoBtnAcumulado = true;
         contexto.update("form:ACUMULADOS");
@@ -1859,8 +1646,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         nuevaNovedad.setUsuarioreporta(new Usuarios());
         nuevaNovedad.setTerminal(" ");
         nuevaNovedad.setFechareporte(new Date());
-        index = -1;
-        secRegistro = null;
         resultado = 0;
     }
 
@@ -1880,7 +1665,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         duplicarNovedad.setUsuarioreporta(new Usuarios());
         duplicarNovedad.setTerminal(" ");
         duplicarNovedad.setFechareporte(new Date());
-
     }
 
     //RASTROS 
@@ -1889,25 +1673,24 @@ public class ControlNovedadesEmpleados implements Serializable {
         activoBtnAcumulado = true;
         context.update("form:ACUMULADOS");
         System.out.println("lol");
-        if (!listaNovedades.isEmpty()) {
-            if (secRegistro != null) {
-                System.out.println("lol 2");
-                int result = administrarRastros.obtenerTabla(secRegistro, "NOVEDADES");
-                System.out.println("resultado: " + result);
-                if (result == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (result == 2) {
-                    context.execute("confirmarRastro.show()");
-                } else if (result == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (result == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (result == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
+        if (novedadSeleccionada != null) {
+            System.out.println("lol 2");
+            int result = administrarRastros.obtenerTabla(novedadSeleccionada.getSecuencia(), "NOVEDADES");
+            System.out.println("resultado: " + result);
+            if (result == 1) {
+                context.execute("errorObjetosDB.show()");
+            } else if (result == 2) {
+                context.execute("confirmarRastro.show()");
+            } else if (result == 3) {
+                context.execute("errorRegistroRastro.show()");
+            } else if (result == 4) {
+                context.execute("errorTablaConRastro.show()");
+            } else if (result == 5) {
+                context.execute("errorTablaSinRastro.show()");
             }
+//            } else {
+//                context.execute("seleccionarRegistro.show()");
+//            }
         } else {
             if (administrarRastros.verificarHistoricosTabla("NOVEDADES")) {
                 context.execute("confirmarRastroHistorico.show()");
@@ -1915,52 +1698,30 @@ public class ControlNovedadesEmpleados implements Serializable {
                 context.execute("errorRastroHistorico.show()");
             }
         }
-        index = -1;
     }
 
     //BORRAR NOVEDADES
     public void borrarNovedades() {
 
-        if (index >= 0) {
+        if (novedadSeleccionada != null) {
             RequestContext context = RequestContext.getCurrentInstance();
             activoBtnAcumulado = true;
             context.update("form:ACUMULADOS");
 
-            if (tipoLista == 0) {
-                if (!listaNovedadesModificar.isEmpty() && listaNovedadesModificar.contains(listaNovedades.get(index))) {
-                    int modIndex = listaNovedadesModificar.indexOf(listaNovedades.get(index));
-                    listaNovedadesModificar.remove(modIndex);
-                    listaNovedadesBorrar.add(listaNovedades.get(index));
-                } else if (!listaNovedadesCrear.isEmpty() && listaNovedadesCrear.contains(listaNovedades.get(index))) {
-                    int crearIndex = listaNovedadesCrear.indexOf(listaNovedades.get(index));
-                    listaNovedadesCrear.remove(crearIndex);
-                } else {
-                    listaNovedadesBorrar.add(listaNovedades.get(index));
-
-                }
-                listaNovedades.remove(index);
+            if (!listaNovedadesModificar.isEmpty() && listaNovedadesModificar.contains(novedadSeleccionada)) {
+                listaNovedadesModificar.remove(novedadSeleccionada);
+                listaNovedadesBorrar.add(novedadSeleccionada);
+            } else if (!listaNovedadesCrear.isEmpty() && listaNovedadesCrear.contains(novedadSeleccionada)) {
+                listaNovedadesCrear.remove(novedadSeleccionada);
+            } else {
+                listaNovedadesBorrar.add(novedadSeleccionada);
             }
+            listaNovedades.remove(novedadSeleccionada);
             if (tipoLista == 1) {
-                if (!listaNovedadesModificar.isEmpty() && listaNovedadesModificar.contains(filtradosListaNovedades.get(index))) {
-                    int modIndex = listaNovedadesModificar.indexOf(filtradosListaNovedades.get(index));
-                    listaNovedadesModificar.remove(modIndex);
-                    listaNovedadesBorrar.add(filtradosListaNovedades.get(index));
-                } else if (!listaNovedadesCrear.isEmpty() && listaNovedadesCrear.contains(filtradosListaNovedades.get(index))) {
-                    int crearIndex = listaNovedadesCrear.indexOf(filtradosListaNovedades.get(index));
-                    listaNovedadesCrear.remove(crearIndex);
-                } else {
-                    listaNovedadesBorrar.add(filtradosListaNovedades.get(index));
-                }
-                int CIndex = listaNovedades.indexOf(filtradosListaNovedades.get(index));
-                listaNovedades.remove(CIndex);
-                filtradosListaNovedades.remove(index);
-                System.out.println("Realizado");
+                filtradosListaNovedades.remove(novedadSeleccionada);
             }
             context.update("form:datosNovedadesEmpleado");
-
-            index = -1;
-            secRegistro = null;
-
+            novedadSeleccionada = null;
             if (guardado) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1968,36 +1729,17 @@ public class ControlNovedadesEmpleados implements Serializable {
         }
     }
 
-    //------------------------INICIO GET & SET-----------------------------
+    //------------------------INICIO GET's & SET's-----------------------------
     public void setListaEmpleadosNovedad(List<PruebaEmpleados> listaEmpleados) {
         this.listaEmpleadosNovedad = listaEmpleados;
     }
 
-    public List<PruebaEmpleados> getFiltradosListaEmpleadosNovedad() {
-        return filtradosListaEmpleadosNovedad;
+    public List<PruebaEmpleados> getFiltrarListaEmpleadosNovedad() {
+        return filtrarListaEmpleadosNovedad;
     }
 
-    public void setFiltradosListaEmpleadosNovedad(List<PruebaEmpleados> filtradosListaEmpleadosNovedad) {
-        this.filtradosListaEmpleadosNovedad = filtradosListaEmpleadosNovedad;
-    }
-
-    public List<VWActualesTiposTrabajadores> getListaEmpleados() {
-        if (listaEmpleados == null) {
-            listaEmpleados = administrarNovedadesEmpleados.tiposTrabajadores();
-        }
-        return listaEmpleados;
-    }
-
-    public void setListaEmpleados(List<VWActualesTiposTrabajadores> listaEmpleados) {
-        this.listaEmpleados = listaEmpleados;
-    }
-
-    public List<VWActualesTiposTrabajadores> getFiltradoslistaEmpleados() {
-        return filtradoslistaEmpleados;
-    }
-
-    public void setFiltradoslistaEmpleados(List<VWActualesTiposTrabajadores> filtradoslistaEmpleados) {
-        this.filtradoslistaEmpleados = filtradoslistaEmpleados;
+    public void setFiltrarListaEmpleadosNovedad(List<PruebaEmpleados> filtradosListaEmpleadosNovedad) {
+        this.filtrarListaEmpleadosNovedad = filtradosListaEmpleadosNovedad;
     }
 
     public boolean isAceptar() {
@@ -2008,34 +1750,18 @@ public class ControlNovedadesEmpleados implements Serializable {
         this.aceptar = aceptar;
     }
 
-    public BigInteger getSecuenciaEmpleado() {
-        return secuenciaEmpleado;
+    public PruebaEmpleados getEmpleadoSeleccionado() {
+        return empleadoSeleccionado;
     }
 
-    public void setSecuenciaEmpleado(BigInteger secuenciaEmpleado) {
-        this.secuenciaEmpleado = secuenciaEmpleado;
+    public void setEmpleadoSeleccionado(PruebaEmpleados empleadoSeleccionado) {
+        this.empleadoSeleccionado = empleadoSeleccionado;
     }
 
-    public PruebaEmpleados getSeleccionMostrar() {
-        return seleccionMostrar;
-    }
-
-    public void setSeleccionMostrar(PruebaEmpleados seleccionMostrar) {
-        this.seleccionMostrar = seleccionMostrar;
-    }
-
-    public VWActualesTiposTrabajadores getSeleccionEmpleados() {
-        return seleccionEmpleados;
-    }
-
-    public void setSeleccionEmpleados(VWActualesTiposTrabajadores seleccionEmpleados) {
-        this.seleccionEmpleados = seleccionEmpleados;
-    }
     //LISTA NOVEDADES
-
     public List<Novedades> getListaNovedades() {
-        if (listaNovedades == null || listaNovedades.isEmpty()) {
-            listaNovedades = administrarNovedadesEmpleados.novedadesEmpleado(seleccionMostrar.getId());
+        if (listaNovedades == null && empleadoSeleccionado != null) {
+            listaNovedades = administrarNovedadesEmpleados.novedadesEmpleado(empleadoSeleccionado.getId());
         }
         return listaNovedades;
     }
@@ -2180,14 +1906,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         this.editarNovedades = editarNovedades;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
-    }
-
     public Novedades getDuplicarNovedad() {
         return duplicarNovedad;
     }
@@ -2206,23 +1924,13 @@ public class ControlNovedadesEmpleados implements Serializable {
 
     public List<PruebaEmpleados> getListaEmpleadosNovedad() {
         if (listaEmpleadosNovedad == null) {
-            RequestContext context = RequestContext.getCurrentInstance();
             listaEmpleadosNovedad = administrarNovedadesEmpleados.empleadosNovedad();
-            seleccionMostrar = listaEmpleadosNovedad.get(0);
-            context.update("form:datosEmpleados");
+            lovEmpleados = new ArrayList<PruebaEmpleados>();
+            for (int i = 0; i < listaEmpleadosNovedad.size(); i++) {
+                lovEmpleados.add(listaEmpleadosNovedad.get(i));
+            }
         }
         return listaEmpleadosNovedad;
-    }
-
-    public List<PruebaEmpleados> getListaValEmpleados() {
-        if (listaValEmpleados == null) {
-            listaValEmpleados = administrarNovedadesEmpleados.empleadosNovedad();
-        }
-        return listaValEmpleados;
-    }
-
-    public void setListaValEmpleados(List<PruebaEmpleados> listaValEmpleados) {
-        this.listaValEmpleados = listaValEmpleados;
     }
 
     public String getAlias() {
@@ -2300,5 +2008,29 @@ public class ControlNovedadesEmpleados implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public PruebaEmpleados getEmpleadoSeleccionadoLov() {
+        return empleadoSeleccionadoLov;
+    }
+
+    public void setEmpleadoSeleccionadoLov(PruebaEmpleados empleadoSeleccionadoLov) {
+        this.empleadoSeleccionadoLov = empleadoSeleccionadoLov;
+    }
+
+    public List<PruebaEmpleados> getFiltrarLovEmpleados() {
+        return filtrarLovEmpleados;
+    }
+
+    public void setFiltrarLovEmpleados(List<PruebaEmpleados> filtrarLovEmpleados) {
+        this.filtrarLovEmpleados = filtrarLovEmpleados;
+    }
+
+    public List<PruebaEmpleados> getLovEmpleados() {
+        return lovEmpleados;
+    }
+
+    public void setLovEmpleados(List<PruebaEmpleados> lovEmpleados) {
+        this.lovEmpleados = lovEmpleados;
     }
 }

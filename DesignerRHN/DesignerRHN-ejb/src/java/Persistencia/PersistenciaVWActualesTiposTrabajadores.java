@@ -29,6 +29,7 @@ public class PersistenciaVWActualesTiposTrabajadores implements PersistenciaVWAc
     /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;
      */
+    @Override
     public VWActualesTiposTrabajadores buscarTipoTrabajador(EntityManager em, BigInteger secuencia) {
         try {
             em.clear();
@@ -132,6 +133,21 @@ public class PersistenciaVWActualesTiposTrabajadores implements PersistenciaVWAc
         } catch (Exception e) {
             System.out.println("Exepcion en PersistenciaVWActualesTiposTrabajadores.verificarTipoTrabajador");
             return false;
+        }
+    }
+
+    @Override
+    public String consultarTipoTrabajador(EntityManager em, BigInteger secEmpleado) {
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT vw.tipoTrabajador.tipo FROM VWActualesTiposTrabajadores vw WHERE vw.empleado.secuencia= :secuencia");
+            query.setParameter("secuencia", secEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            String tipoEmpleado = (String) query.getSingleResult();
+            return tipoEmpleado;
+        } catch (Exception e) {
+            System.out.println("Exepcion en PersistenciaVWActualesTiposTrabajadores.consultarTipoTrabajador");
+            return "";
         }
     }
 

@@ -51,4 +51,6 @@ public interface PersistenciaVWActualesTiposTrabajadoresInterface {
     
     public VWActualesTiposTrabajadores filtrarTipoTrabajadorPosicion(EntityManager em, String p_tipo, int posicion);
     public int obtenerTotalRegistrosTipoTrabajador(EntityManager em, String p_tipo);
+
+    public String consultarTipoTrabajador(EntityManager em, BigInteger secEmpleado);
 }

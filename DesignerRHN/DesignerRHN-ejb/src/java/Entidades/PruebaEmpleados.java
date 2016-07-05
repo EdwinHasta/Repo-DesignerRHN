@@ -9,19 +9,16 @@ import javax.persistence.*;
  * @author Viktor
  */
 @Entity
-@SqlResultSetMapping(
-        name = "PruebaEmpleadosAsignacionBasica",
-        entities = {
-            @EntityResult(
-                    entityClass = PruebaEmpleados.class,
-                    fields = {
-                        @FieldResult(name = "codigo", column = "CODIGO"),
-                        @FieldResult(name = "nombre", column = "NOMBRE"),
-                        @FieldResult(name = "valor", column = "VALOR"),
-                        @FieldResult(name = "tipo", column = "TIPO"),}
-            )
-        }
-)
+@SqlResultSetMapping(name = "PruebaEmpleadosAsignacionBasica",
+entities = {
+    @EntityResult(entityClass = PruebaEmpleados.class,
+    fields = {
+        @FieldResult(name = "codigo", column = "CODIGO"),
+        @FieldResult(name = "nombre", column = "NOMBRE"),
+        @FieldResult(name = "valor", column = "VALOR"),
+        @FieldResult(name = "tipo", column = "TIPO"),})
+})
+
 public class PruebaEmpleados implements Serializable {
 
     private static final long serialVersionUID = 1L;

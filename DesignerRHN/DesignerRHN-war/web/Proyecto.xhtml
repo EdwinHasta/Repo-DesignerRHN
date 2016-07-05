@@ -83,6 +83,7 @@
                                          filteredValue="#{controlProyecto.filtrarListProyectos}" editable="true" editMode="cell" 
                                          scrollable="true" scrollWidth="820" scrollHeight="#{controlProyecto.altoTabla}" emptyMessage="#{msg['vacio']}" style="border: 1px;width: 830px"
                                          liveScroll="true" scrollRows="25" selection="#{controlProyecto.proyectoTablaSeleccionado}" selectionMode="single">
+                                
                                 <p:ajax event="filter" listener="#{controlProyecto.eventoFiltrar()}"/>
                                 <f:event type="preRenderView" listener="#{controlProyecto.recordarSeleccionProyecto()}"/>
 

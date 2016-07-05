@@ -59,13 +59,11 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
     @EJB
     PersistenciaSolucionesFormulasInterface persistenciaSolucionesFormulas;
     /**
-     * Enterprise JavaBean.<br>
-     * Atributo que representa todo lo referente a la conexión del usuario que
-     * está usando el aplicativo.
+     * Enterprise JavaBean.<br> Atributo que representa todo lo referente a la
+     * conexión del usuario que está usando el aplicativo.
      */
     @EJB
     AdministrarSesionesInterface administrarSesiones;
-
     private EntityManager em;
 
     @Override
@@ -76,19 +74,24 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
 
     @Override
     public List<PruebaEmpleados> empleadosNovedad() {
-        
+
         List<Empleados> listaEmpleados = persistenciaEmpleados.empleadosNovedad(em);
         List<PruebaEmpleados> listaEmpleadosNovedad = new ArrayList<PruebaEmpleados>();
         for (int i = 0; i < listaEmpleados.size(); i++) {
+            //Traer los datos del empleado con sueldo actual
             PruebaEmpleados p = persistenciaPruebaEmpleados.empleadosAsignacion(em, listaEmpleados.get(i).getSecuencia());
+            //Traer el tipo de empleado de VWActualesTiposTrabajadores
+//            String tipo = persistenciaVWActualesTiposTrabajadores.consultarTipoTrabajador(em, listaEmpleados.get(i).getSecuencia());
 
             if (p != null) {
+//                p.setTipo(tipo);
                 listaEmpleadosNovedad.add(p);
             } else {
                 p = new PruebaEmpleados();
                 p.setCodigo(listaEmpleados.get(i).getCodigoempleado());
                 p.setId(listaEmpleados.get(i).getSecuencia());
                 p.setNombre(listaEmpleados.get(i).getPersona().getNombreCompleto());
+//                p.setTipo(tipo);
                 p.setValor(null);
                 listaEmpleadosNovedad.add(p);
             }
@@ -107,8 +110,9 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
             return null;
         }
     }
-    
-    public List<Novedades> todasNovedades(BigInteger secuenciaEmpleado){
+
+    @Override
+    public List<Novedades> todasNovedades(BigInteger secuenciaEmpleado) {
         try {
             return persistenciaNovedades.todasNovedadesEmpleado(em, secuenciaEmpleado);
         } catch (Exception e) {
@@ -116,20 +120,23 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
             return null;
         }
     }
-    
+
     //Ver si está en soluciones formulas y de ser asi no borrarlo
-    public int solucionesFormulas(BigInteger secuenciaNovedad){
+    @Override
+    public int solucionesFormulas(BigInteger secuenciaNovedad) {
         return persistenciaSolucionesFormulas.validarNovedadesNoLiquidadas(em, secuenciaNovedad);
     }
-    
-    public String alias(){
+
+    @Override
+    public String alias() {
         return persistenciaActualUsuario.actualAliasBD(em);
     }
-    
-    public Usuarios usuarioBD(String alias){
+
+    @Override
+    public Usuarios usuarioBD(String alias) {
         return persistenciaUsuarios.buscarUsuario(em, alias);
     }
-    
+
     //Procesa un solo empleado para volverlo Pruebaempleado
     @Override
     public PruebaEmpleados novedadEmpleado(BigInteger secuenciaEmpleado) {
@@ -183,8 +190,6 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
     public void crearNovedades(Novedades novedades) {
         persistenciaNovedades.crear(em, novedades);
     }
-    
-    
 
     @Override
     public void modificarNovedades(List<Novedades> listaNovedadesModificar) {

@@ -43,7 +43,7 @@ public class PersistenciaPruebaEmpleados implements PersistenciaPruebaEmpleadosI
                 Query query = em.createNativeQuery(sqlQuery, "PruebaEmpleadosAsignacionBasica");
                 query.setParameter(1, secEmpleado);
                 pruebaEmpleado = (PruebaEmpleados) query.getSingleResult();
-            } else {               
+            } else {
                 Query queryValidacion2 = em.createQuery("SELECT COUNT(vwp) FROM VWActualesPensiones vwp WHERE vwp.empleado.secuencia = :secEmpleado");
                 queryValidacion2.setParameter("secEmpleado", secEmpleado);
                 queryValidacion2.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -60,6 +60,13 @@ public class PersistenciaPruebaEmpleados implements PersistenciaPruebaEmpleadosI
                 pruebaEmpleado = (PruebaEmpleados) query.getSingleResult();
                 }
             }
+            //Ahora el tipo:
+            em.clear();
+            Query queryT = em.createQuery("SELECT vw.tipoTrabajador.tipo FROM VWActualesTiposTrabajadores vw WHERE vw.empleado.secuencia= :secuencia");
+            queryT.setParameter("secuencia", secEmpleado);
+            queryT.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            String tipoEmpleado = (String) queryT.getSingleResult();
+            pruebaEmpleado.setTipo(tipoEmpleado);
             return pruebaEmpleado;
         } catch (Exception e) {
             System.out.println("Error PersistenciaPruebaEmpleados.empleadosAsignacion. " + e);
