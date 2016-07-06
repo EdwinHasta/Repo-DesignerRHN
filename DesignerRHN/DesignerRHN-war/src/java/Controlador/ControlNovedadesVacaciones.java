@@ -84,7 +84,7 @@ public class ControlNovedadesVacaciones implements Serializable {
     //guardarOk;
     //LOV EMPLEADOS
     private List<Empleados> listaValEmpleados;
-    private List<Empleados> filtradoslistaEmpleados;
+    private List<Empleados> filtradoslistaValEmpleados;
     private Empleados empleadoSeleccionadoLOV;
     //LOV PERIODOS
     private List<Vacaciones> listaPeriodos;
@@ -106,6 +106,7 @@ public class ControlNovedadesVacaciones implements Serializable {
     private boolean activarMTodos;
     // fecha contratacion empleado
     private Date fechaContratacionE;
+    private String infoRegistroEmpleados, infoRegistroNovedades, infoRegistroEmpleadosLOV;
 
     public ControlNovedadesVacaciones() {
         cero = "0";
@@ -148,6 +149,10 @@ public class ControlNovedadesVacaciones implements Serializable {
 
     public void recibirPag(String pag) {
         paginaAnterior = pag;
+        contarRegistrosNovedades();
+//        if (!listaEmpleadosNovedad.isEmpty()) {
+//            empleadoSeleccionado = listaEmpleadosNovedad.get(0);
+//        }
     }
 
     public String volverPagAnterior() {
@@ -158,7 +163,6 @@ public class ControlNovedadesVacaciones implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (novedadSeleccionada != null) {
             editarNovedades = novedadSeleccionada;
-
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editFechaInicial");
                 context.execute("editFechaInicial.show()");
@@ -190,7 +194,6 @@ public class ControlNovedadesVacaciones implements Serializable {
                 context.update("formularioDialogos:editarDA");
                 context.execute("editarDA.show()");
             }
-            novedadSeleccionada = null;
         } else {
             context.execute("seleccionarRegistro.show()");
         }
@@ -262,7 +265,7 @@ public class ControlNovedadesVacaciones implements Serializable {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
-            context.execute("NuevaNovedadVacaciones.hide()");
+            context.execute("nuevanovedadVacaciones.hide()");
             novedadSeleccionada = null;
             context.update("form:datosNovedadesEmpleado");
         } else {
@@ -283,19 +286,19 @@ public class ControlNovedadesVacaciones implements Serializable {
                     emple = listaValEmpleados.get(i);
                 }
             }
-                duplicarNovedad.setSecuencia(nuevaNovedadSec);
-                duplicarNovedad.setEmpleado(emple);
-                duplicarNovedad.setFechainicialdisfrute(novedadSeleccionada.getFechainicialdisfrute());
-                duplicarNovedad.getVacacion().setPeriodo(novedadSeleccionada.getVacacion().getPeriodo());
-                duplicarNovedad.setDias(novedadSeleccionada.getDias());
-                duplicarNovedad.setFechasiguientefinvaca(novedadSeleccionada.getFechasiguientefinvaca());
-                duplicarNovedad.setSubtipo(novedadSeleccionada.getSubtipo());
-                duplicarNovedad.setAdelantapagohasta(novedadSeleccionada.getAdelantapagohasta());
-                duplicarNovedad.setFechapago(novedadSeleccionada.getFechapago());
-                duplicarNovedad.setVacadiasaplazados(novedadSeleccionada.getVacadiasaplazados());
-           
+            duplicarNovedad.setSecuencia(nuevaNovedadSec);
+            duplicarNovedad.setEmpleado(emple);
+            duplicarNovedad.setFechainicialdisfrute(novedadSeleccionada.getFechainicialdisfrute());
+            duplicarNovedad.getVacacion().setPeriodo(novedadSeleccionada.getVacacion().getPeriodo());
+            duplicarNovedad.setDias(novedadSeleccionada.getDias());
+            duplicarNovedad.setFechasiguientefinvaca(novedadSeleccionada.getFechasiguientefinvaca());
+            duplicarNovedad.setSubtipo(novedadSeleccionada.getSubtipo());
+            duplicarNovedad.setAdelantapagohasta(novedadSeleccionada.getAdelantapagohasta());
+            duplicarNovedad.setFechapago(novedadSeleccionada.getFechapago());
+            duplicarNovedad.setVacadiasaplazados(novedadSeleccionada.getVacadiasaplazados());
+
             context.update("formularioDialogos:duplicarNovedad");
-            context.execute("DuplicarRegistroNovedad.show()");
+            context.execute("duplicarregistroNovedad.show()");
             novedadSeleccionada = null;
         } else {
             context.execute("seleccionarRegistro.show()");
@@ -307,7 +310,7 @@ public class ControlNovedadesVacaciones implements Serializable {
         if (empleadoSeleccionado != null) {
             fechaContratacionE = administrarNovedadesVacaciones.obtenerFechaContratacionEmpleado(empleadoSeleccionado.getSecuencia());
             context.update(":formularioDialogos:nuevaNovedad");
-            context.execute("NuevaNovedadVacaciones.show()");
+            context.execute("nuevanovedadVacaciones.show()");
         } else {
             context.execute("seleccionarRegistro.show()");
         }
@@ -357,8 +360,8 @@ public class ControlNovedadesVacaciones implements Serializable {
             }
             context.update("form:datosNovedadesEmpleado");
             duplicarNovedad = new NovedadesSistema();
-            context.update("formularioDialogos:DuplicarRegistroNovedad");
-            context.execute("DuplicarRegistroNovedad.hide()");
+            context.update("formularioDialogos:duplicarregistroNovedad");
+            context.execute("duplicarregistroNovedad.hide()");
         }
     }
 
@@ -388,21 +391,21 @@ public class ControlNovedadesVacaciones implements Serializable {
         if (bandera == 0) {
             altoTabla = "101";
             nEFechaInicialDisfrute = (Column) c.getViewRoot().findComponent("form:datosNovedadesEmpleado:nEFechaInicialDisfrute");
-            nEFechaInicialDisfrute.setFilterStyle("width: 60px");
+            nEFechaInicialDisfrute.setFilterStyle("width: 85%");
             nEPeriodo = (Column) c.getViewRoot().findComponent("form:datosNovedadesEmpleado:nEPeriodo");
             nEPeriodo.setFilterStyle("");
             nEDias = (Column) c.getViewRoot().findComponent("form:datosNovedadesEmpleado:nEDias");
-            nEDias.setFilterStyle("width: 15px");
+            nEDias.setFilterStyle("width: 85%");
             nEFechaSiguiente = (Column) c.getViewRoot().findComponent("form:datosNovedadesEmpleado:nEFechaSiguiente");
-            nEFechaSiguiente.setFilterStyle("width: 60px");
+            nEFechaSiguiente.setFilterStyle("width: 85%");
             nESubTipo = (Column) c.getViewRoot().findComponent("form:datosNovedadesEmpleado:nESubTipo");
-            nESubTipo.setFilterStyle("width: 60px");
+            nESubTipo.setFilterStyle("width: 85%");
             nEAdelantoHasta = (Column) c.getViewRoot().findComponent("form:datosNovedadesEmpleado:nEAdelantoHasta");
-            nEAdelantoHasta.setFilterStyle("width: 60px");
+            nEAdelantoHasta.setFilterStyle("width: 85%");
             nEFechaPago = (Column) c.getViewRoot().findComponent("form:datosNovedadesEmpleado:nEFechaPago");
-            nEFechaPago.setFilterStyle("width: 60px");
+            nEFechaPago.setFilterStyle("width: 85%");
             nEDiasAplazados = (Column) c.getViewRoot().findComponent("form:datosNovedadesEmpleado:nEDiasAplazados");
-            nEDiasAplazados.setFilterStyle("width: 15px");
+            nEDiasAplazados.setFilterStyle("width: 85%");
             RequestContext.getCurrentInstance().update("form:datosNovedadesEmpleado");
             bandera = 1;
             tipoLista = 1;
@@ -447,8 +450,25 @@ public class ControlNovedadesVacaciones implements Serializable {
         if (permitirIndex == true) {
             novedadSeleccionada = novedadS;
             cualCelda = celda;
+            novedadSeleccionada.getSecuencia();
+            if(cualCelda == 0){
+                novedadSeleccionada.getFechainicialdisfrute();
+            } else if(cualCelda == 1){
+                novedadSeleccionada.getVacacion().getPeriodo();
+            } else if(cualCelda == 2){
+                novedadSeleccionada.getDias();
+            } else if( cualCelda == 3){
+                novedadSeleccionada.getFechasiguientefinvaca();
+            } else if(cualCelda == 4){
+                novedadSeleccionada.getSubtipo();
+            } else if(cualCelda == 5){
+                novedadSeleccionada.getAdelantapagohasta();
+            } else if(cualCelda == 6){
+                novedadSeleccionada.getFechapago();
+            } else if(cualCelda == 7){
+                novedadSeleccionada.getVacadiasaplazados();
+            }
         }
-
     }
 
     //Ubicacion Celda Arriba 
@@ -459,7 +479,10 @@ public class ControlNovedadesVacaciones implements Serializable {
             secuenciaEmpleado = empleadoSeleccionado.getSecuencia();
             //Se recargan las novedades para el empleado
             listaNovedades = administrarNovedadesSistema.vacacionesEmpleado(empleadoSeleccionado.getSecuencia());
-
+            if (listaNovedades == null) {
+                listaNovedades = new ArrayList<NovedadesSistema>();
+            }
+            contarRegistrosNovedades();
             getDiasTotales();
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosNovedadesEmpleado");
@@ -478,6 +501,7 @@ public class ControlNovedadesVacaciones implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (listaV == 0) {
             empleadoSeleccionadoLOV = null;
+            modificarInfoRegistroEmpleadosLOV(listaValEmpleados.size());
             context.update("formularioDialogos:empleadosDialogo");
             context.execute("empleadosDialogo.show()");
         }
@@ -501,10 +525,11 @@ public class ControlNovedadesVacaciones implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         activarMTodos = false;
+        modificarInfoRegistroEmpleados(listaValEmpleados.size());
         context.reset("formularioDialogos:LOVEmpleados:globalFilter");
         context.execute("LOVEmpleados.clearFilters()");
         context.execute("empleadosDialogo.hide()");
-        //context.update("formularioDialogos:LOVEmpleados");
+        context.update("formularioDialogos:LOVEmpleados");
         context.update("form:datosEmpleados");
         context.update("form:datosNovedadesEmpleado");
 
@@ -517,15 +542,15 @@ public class ControlNovedadesVacaciones implements Serializable {
 
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
-                novedadSeleccionada.getVacacion().setPeriodo(periodoSeleccionado.getPeriodo());
-                if (!listaNovedadesCrear.contains(novedadSeleccionada)) {
-                    if (listaNovedadesModificar.isEmpty()) {
-                        listaNovedadesModificar.add(novedadSeleccionada);
-                    } else if (!listaNovedadesModificar.contains(novedadSeleccionada)) {
-                        listaNovedadesModificar.add(novedadSeleccionada);
-                    }
+            novedadSeleccionada.getVacacion().setPeriodo(periodoSeleccionado.getPeriodo());
+            if (!listaNovedadesCrear.contains(novedadSeleccionada)) {
+                if (listaNovedadesModificar.isEmpty()) {
+                    listaNovedadesModificar.add(novedadSeleccionada);
+                } else if (!listaNovedadesModificar.contains(novedadSeleccionada)) {
+                    listaNovedadesModificar.add(novedadSeleccionada);
                 }
-           
+            }
+
             if (guardado == true) {
                 guardado = false;
                 context.update("form:ACEPTAR");
@@ -558,17 +583,17 @@ public class ControlNovedadesVacaciones implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (novedadSeleccionada != null) {
-                if (!listaNovedadesModificar.isEmpty() && listaNovedadesModificar.contains(novedadSeleccionada)) {
-                    int modIndex = listaNovedadesModificar.indexOf(novedadSeleccionada);
-                    listaNovedadesModificar.remove(modIndex);
-                    listaNovedadesBorrar.add(novedadSeleccionada);
-                } else if (!listaNovedadesCrear.isEmpty() && listaNovedadesCrear.contains(novedadSeleccionada)) {
-                    int crearIndex = listaNovedadesCrear.indexOf(novedadSeleccionada);
-                    listaNovedadesCrear.remove(crearIndex);
-                } else {
-                    listaNovedadesBorrar.add(novedadSeleccionada);
-                }
-                listaNovedades.remove(novedadSeleccionada);
+            if (!listaNovedadesModificar.isEmpty() && listaNovedadesModificar.contains(novedadSeleccionada)) {
+                int modIndex = listaNovedadesModificar.indexOf(novedadSeleccionada);
+                listaNovedadesModificar.remove(modIndex);
+                listaNovedadesBorrar.add(novedadSeleccionada);
+            } else if (!listaNovedadesCrear.isEmpty() && listaNovedadesCrear.contains(novedadSeleccionada)) {
+                int crearIndex = listaNovedadesCrear.indexOf(novedadSeleccionada);
+                listaNovedadesCrear.remove(crearIndex);
+            } else {
+                listaNovedadesBorrar.add(novedadSeleccionada);
+            }
+            listaNovedades.remove(novedadSeleccionada);
 
             context.update("form:datosNovedadesEmpleado");
             novedadSeleccionada = null;
@@ -763,19 +788,12 @@ public class ControlNovedadesVacaciones implements Serializable {
         context.execute("periodosDialogo.show()");
     }
 
-    //EVENTO FILTRAR
-    public void eventoFiltrar() {
-        if (tipoLista == 0) {
-            tipoLista = 1;
-        }
-    }
-
     public void activarAceptar() {
         aceptar = false;
     }
 
     public void cancelarCambioEmpleados() {
-        filtradoslistaEmpleados = null;
+        filtradoslistaValEmpleados = null;
         empleadoSeleccionadoLOV = null;
         aceptar = true;
         novedadSeleccionada = null;
@@ -829,10 +847,10 @@ public class ControlNovedadesVacaciones implements Serializable {
                 listaEmpleadosNovedad.add(listaValEmpleados.get(i));
             }
         }
+        contarRegistrosNovedades();
         aceptar = true;
         guardado = true;
         tipoLista = 0;
-        listaValEmpleados = null;
         permitirIndex = true;
         nuevaNovedad = new NovedadesSistema();
         nuevaNovedad.setSubtipo("TIEMPO");
@@ -846,6 +864,7 @@ public class ControlNovedadesVacaciones implements Serializable {
         listaNovedadesCrear.clear();
         listaNovedadesModificar.clear();
         listaNovedades = null;
+        listaValEmpleados = null;
         activarMTodos = true;
         empleadoSeleccionado = null;
         novedadSeleccionada = null;
@@ -906,12 +925,67 @@ public class ControlNovedadesVacaciones implements Serializable {
         RequestContext.getCurrentInstance().update("form:datosNovedadesEmpleado");
     }
 
+    //EVENTO FILTRAR
+    public void eventoFiltrar() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
+        novedadSeleccionada = null;
+        modificarInfoRegistroNovedades(filtradosListaNovedades.size());
+    }
+
+    public void modificarInfoRegistroEmpleados(int valor) {
+        infoRegistroEmpleados = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroEmpleados");
+    }
+
+    public void modificarInfoRegistroNovedades(int valor) {
+
+        infoRegistroNovedades = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroNovedades");
+
+    }
+
+    public void contarRegistrosNovedades() {
+        try {
+            if (listaNovedades != null && empleadoSeleccionado != null) {
+                modificarInfoRegistroNovedades(listaNovedades.size());
+            } else {
+                modificarInfoRegistroNovedades(0);
+            }
+        } catch (Exception e) {
+            System.out.println("excepcion " + e.getMessage());
+        }
+    }
+
+    public void modificarInfoRegistroEmpleadosLOV(int valor) {
+        infoRegistroEmpleadosLOV = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroEmpleadosLOV");
+
+    }
+
+    public void eventoFiltrarLovEmpleados() {
+        modificarInfoRegistroEmpleadosLOV(filtradoslistaValEmpleados.size());
+    }
+
+    public void posicionOtro() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String celda = map.get("celda"); // name attribute of node 
+        String registro = map.get("registro"); // type attribute of node 
+        int indice = Integer.parseInt(registro);
+        int columna = Integer.parseInt(celda);
+        novedadSeleccionada = listaNovedades.get(indice);
+        cambiarIndice(novedadSeleccionada, columna);
+    }
+
 //GETTER & SETTER
     public List<Empleados> getListaEmpleadosNovedad() {
         if (listaEmpleadosNovedad == null) {
             listaEmpleadosNovedad = administrarNovedadesVacaciones.empleadosVacaciones();
             empleadoSeleccionado = listaEmpleadosNovedad.get(0);
         }
+        modificarInfoRegistroEmpleados(listaEmpleadosNovedad.size());
         return listaEmpleadosNovedad;
     }
 
@@ -940,6 +1014,7 @@ public class ControlNovedadesVacaciones implements Serializable {
         if (listaValEmpleados == null) {
             listaValEmpleados = administrarNovedadesVacaciones.empleadosVacaciones();
         }
+        modificarInfoRegistroEmpleadosLOV(listaValEmpleados.size());
         return listaValEmpleados;
     }
 
@@ -947,12 +1022,12 @@ public class ControlNovedadesVacaciones implements Serializable {
         this.listaValEmpleados = listaEmpleados;
     }
 
-    public List<Empleados> getFiltradoslistaEmpleados() {
-        return filtradoslistaEmpleados;
+    public List<Empleados> getFiltradoslistaValEmpleados() {
+        return filtradoslistaValEmpleados;
     }
 
-    public void setFiltradoslistaEmpleados(List<Empleados> filtradoslistaEmpleados) {
-        this.filtradoslistaEmpleados = filtradoslistaEmpleados;
+    public void setFiltradoslistaValEmpleados(List<Empleados> filtradoslistaValEmpleados) {
+        this.filtradoslistaValEmpleados = filtradoslistaValEmpleados;
     }
 
     public Empleados getSeleccionEmpleados() {
@@ -972,8 +1047,10 @@ public class ControlNovedadesVacaciones implements Serializable {
     }
 
     public List<NovedadesSistema> getListaNovedades() {
-        if (listaNovedades == null && empleadoSeleccionado != null) {
-            listaNovedades = administrarNovedadesSistema.vacacionesEmpleado(empleadoSeleccionado.getSecuencia());
+        if (listaNovedades == null) {
+            if (empleadoSeleccionado != null) {
+                listaNovedades = administrarNovedadesSistema.vacacionesEmpleado(empleadoSeleccionado.getSecuencia());
+            }
         }
         return listaNovedades;
     }
@@ -1075,6 +1152,8 @@ public class ControlNovedadesVacaciones implements Serializable {
                     diasAplazadosTotal = (short) (diasAplazadosTotal + listaNovedades.get(i).getVacadiasaplazados());
                 }
             }
+        } else if (listaNovedades == null) {
+            modificarInfoRegistroNovedades(0);
         }
         return diasTotales;
     }
@@ -1134,4 +1213,29 @@ public class ControlNovedadesVacaciones implements Serializable {
     public void setActivarMTodos(boolean activarMTodos) {
         this.activarMTodos = activarMTodos;
     }
+
+    public String getInfoRegistroEmpleados() {
+        return infoRegistroEmpleados;
+    }
+
+    public void setInfoRegistroEmpleados(String infoRegistroEmpleados) {
+        this.infoRegistroEmpleados = infoRegistroEmpleados;
+    }
+
+    public String getInfoRegistroNovedades() {
+        return infoRegistroNovedades;
+    }
+
+    public void setInfoRegistroNovedades(String infoRegistroNovedades) {
+        this.infoRegistroNovedades = infoRegistroNovedades;
+    }
+
+    public String getInfoRegistroEmpleadosLOV() {
+        return infoRegistroEmpleadosLOV;
+    }
+
+    public void setInfoRegistroEmpleadosLOV(String infoRegistroEmpleadosLOV) {
+        this.infoRegistroEmpleadosLOV = infoRegistroEmpleadosLOV;
+    }
+
 }

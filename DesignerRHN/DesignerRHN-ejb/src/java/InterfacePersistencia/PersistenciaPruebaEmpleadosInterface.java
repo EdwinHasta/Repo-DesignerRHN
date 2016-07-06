@@ -16,6 +16,7 @@ public interface PersistenciaPruebaEmpleadosInterface {
     /**
      * Método encargado de mostrar la información referente a un empleado que se encuentra almacenada
      * en varias tablas de la base de datos.
+     * @param em
      * @param secEmpleado Secuencia del empleado del que se quiere la información.
      * @return Retorna una PruebaEmpleado con la informacion del empleado.
      */

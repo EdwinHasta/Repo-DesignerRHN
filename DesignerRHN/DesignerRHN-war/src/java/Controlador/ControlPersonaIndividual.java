@@ -279,6 +279,7 @@ public class ControlPersonaIndividual implements Serializable {
     private boolean errorDesdeNominaF;
     //unidad PESOS
     private Unidades unidadPesos;
+    private String tituloTercero;
 
     public ControlPersonaIndividual() {
         nuevoEmpleado = new Empleados();
@@ -516,7 +517,6 @@ public class ControlPersonaIndividual implements Serializable {
             context.execute("CiudadNacimientoInformacionPersonalDialogo.show()");
             idInformacionPersonal = -1;
         }
-
     }
 
     public void listaValoresCargoDesempenado() {
@@ -717,6 +717,7 @@ public class ControlPersonaIndividual implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idAfiliacionEPS == 0) {
             cargarLovTercerosSucursales();
+            tituloTercero = "E.P.S";
             context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
             modificarInfoR_TerceroAfSuc(lovTercerosSucursales.size());
             context.execute("TerceroAfiliacionDialogo.show()");
@@ -727,6 +728,7 @@ public class ControlPersonaIndividual implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idAfiliacionARP == 0) {
             cargarLovTercerosSucursales();
+            tituloTercero = "A.R.P";
             context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
             modificarInfoR_TerceroAfSuc(lovTercerosSucursales.size());
             context.execute("TerceroAfiliacionDialogo.show()");
@@ -737,6 +739,7 @@ public class ControlPersonaIndividual implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idAfiliacionAFP == 0) {
             cargarLovTercerosSucursales();
+            tituloTercero = "A.F.P";
             context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
             modificarInfoR_TerceroAfSuc(lovTercerosSucursales.size());
             context.execute("TerceroAfiliacionDialogo.show()");
@@ -747,6 +750,7 @@ public class ControlPersonaIndividual implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idAfiliacionCaja == 0) {
             cargarLovTercerosSucursales();
+            tituloTercero = "C.C.F";
             context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
             modificarInfoR_TerceroAfSuc(lovTercerosSucursales.size());
             context.execute("TerceroAfiliacionDialogo.show()");
@@ -757,6 +761,7 @@ public class ControlPersonaIndividual implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idAfiliacionFondo == 0) {
             cargarLovTercerosSucursales();
+            tituloTercero = "Fondo de Cesantías";
             context.update("formLovs:formDAfiliacion:TerceroAfiliacionDialogo");
             modificarInfoR_TerceroAfSuc(lovTercerosSucursales.size());
             context.execute("TerceroAfiliacionDialogo.show()");
@@ -1766,7 +1771,7 @@ public class ControlPersonaIndividual implements Serializable {
         if (validarCamposObligatoriosEmpleado()) {
             if (validarFechasEmpleado()) {
                 if (validarCamposAlternativosEmpleado()) {
-                    
+
                     k++;
                     l = BigInteger.valueOf(k);
                     String checkIntegral = administrarPersonaIndividual.obtenerCheckIntegralReformaLaboral(nuevaVigenciaReformaLaboral.getReformalaboral().getSecuencia());
@@ -2795,6 +2800,7 @@ public class ControlPersonaIndividual implements Serializable {
                 nuevaPersona.setNumerodocumento(null);
                 context.update("form:numeroDocumentoModPersonal");
                 context.execute("errorPersonaRepetida.show()");
+//                context.execute("CiudadDocumentoInformacionPersonalDialogo.hide()");
             }
             String contabilidad = administrarPersonaIndividual.obtenerPreValidadContabilidad();
             String bloqueAIngreso = administrarPersonaIndividual.obtenerPreValidaBloqueAIngreso();
@@ -5074,7 +5080,6 @@ public class ControlPersonaIndividual implements Serializable {
 //        calcularControlEmpleadosEmpresa();
 //        modificacionesEmpresaFechaIngresoInformacionPersonal();
 //    }
-    
     public void actualizarParametroEmpresaInformacionPersonalVisible(Empresas empresaS) {
         empresaSeleccionada = empresaS;
         System.out.println("empresaSeleccionada : " + empresaSeleccionada);
@@ -5983,6 +5988,25 @@ public class ControlPersonaIndividual implements Serializable {
         RequestContext.getCurrentInstance().update("formLovs:formDJornadaLaboral:infoRegistroJornadaJornadaLaboral");
     }
 
+        
+//    public void titulosTercero(int tercero) {
+//        if (tercero == 0) {
+//            tituloTercero= "eps";
+//        } else if (tercero == 1) {
+//            tituloTercero= "arp";
+//        } else if (tercero == 2) {
+//            tituloTercero= "cesantias";
+//        } else if (tercero == 3) {
+//            tituloTercero= "afp";
+//        } else if (tercero == 4) {
+//            tituloTercero= "cajacompen";
+//        } else {
+//            tituloTercero= "seleccionetecero";
+//        }
+//
+//    }
+
+    //////////////////////GETS Y SETS///////////////
     public Personas getNuevaPersona() {
         return nuevaPersona;
     }
@@ -7252,4 +7276,13 @@ public class ControlPersonaIndividual implements Serializable {
     public void setFiltrarLovEstructurasCentroCosto(List<Estructuras> filtrarLovEstructurasCentroCosto) {
         this.filtrarLovEstructurasCentroCosto = filtrarLovEstructurasCentroCosto;
     }
+
+    public String getTituloTercero() {
+        return tituloTercero;
+    }
+
+    public void setTituloTercero(String tituloTercero) {
+        this.tituloTercero = tituloTercero;
+    }
+    
 }

@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -46,11 +47,14 @@ public class ControlComprobantes implements Serializable {
     //SOLUCIONES NODOS EMPLEADO
     private List<SolucionesNodos> listaSolucionesNodosEmpleado;
     private List<SolucionesNodos> filtradolistaSolucionesNodosEmpleado;
+    private SolucionesNodos solucionNodoSeleccionada;
+    private SolucionesNodos editarSolucionNodo;
     //SOLUCIONES NODOS EMPLEADOR
     private List<SolucionesNodos> listaSolucionesNodosEmpleador;
     private List<SolucionesNodos> filtradolistaSolucionesNodosEmpleador;
+    private SolucionesNodos solucionNodoEmpleadorSeleccionada;
     //REGISTRO ACTUAL
-    private int registroActual, index, tablaActual;
+    private int registroActual, tablaActual;
     //OTROS
     private boolean aceptar, mostrarTodos;
     private Locale locale = new Locale("es", "CO");
@@ -71,7 +75,9 @@ public class ControlComprobantes implements Serializable {
     private SimpleDateFormat formatoFecha;
     private boolean estadoBtnArriba, estadoBtnAbajo;
     //
-    private String infoRegistroEmpleado,infoRegistroComprobante;
+    private String infoRegistroEmpleado, infoRegistroComprobante;
+    private Parametros editarParametros;
+    private int tipoLista, cualCelda;
 
     public ControlComprobantes() {
         registroActual = 0;
@@ -90,23 +96,43 @@ public class ControlComprobantes implements Serializable {
         estadoBtnAbajo = false;
         parametroActual = null;
         pasivo = "vacío";
-        gasto="vacío";
-        pago ="vacío";
-        descuento ="vacío";
-        netoTotal ="vacío";
+        gasto = "vacío";
+        pago = "vacío";
+        descuento = "vacío";
+        netoTotal = "vacío";
         listaParametrosLOV = new ArrayList<Parametros>();
+        editarParametros = new Parametros();
+        tipoLista = 0;
+        solucionNodoSeleccionada = null;
+        solucionNodoEmpleadorSeleccionada = null;
+        editarSolucionNodo = new SolucionesNodos();
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarComprobantes.obtenerConexion(ses.getId());
+
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
+    }
+
+    public void refrescar() {
+        solucionNodoSeleccionada = null;
+        solucionNodoEmpleadorSeleccionada = null;
+        listaParametros = null;
+        listaSolucionesNodosEmpleado = null;
+        listaSolucionesNodosEmpleador = null;
+        getListaSolucionesNodosEmpleado();
+        getListaSolucionesNodosEmpleador();
+        getListaParametros();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosSolucionesNodosEmpleado");
+        context.update("form:datosSolucionesNodosEmpleadoR");
     }
 
     public void anteriorEmpleado() {
@@ -354,6 +380,7 @@ public class ControlComprobantes implements Serializable {
             context.update("form:datosSolucionesNodosEmpleador");
             bandera = 0;
             filtradolistaSolucionesNodosEmpleado = null;
+            filtradolistaSolucionesNodosEmpleador = null;
         }
     }
 
@@ -379,17 +406,102 @@ public class ControlComprobantes implements Serializable {
     }
 
     //PARCIALES CONCEPTO
-    public void parcialSolucionNodo(int indice, int tabla) {
-        index = indice;
-        tablaActual = tabla;
-        if (tabla == 0) {
-            parcialesSolucionNodos = listaSolucionesNodosEmpleado.get(indice).getParciales();
-        } else if (tabla == 1) {
-            parcialesSolucionNodos = listaSolucionesNodosEmpleador.get(indice).getParciales();
+    public void parcialSolucionNodo(SolucionesNodos solucionNodo, int celda) {
+        solucionNodoSeleccionada = solucionNodo;
+        cualCelda = celda;
+        solucionNodoSeleccionada.getSecuencia();
+        if (cualCelda == 0) {
+            parcialesSolucionNodos = solucionNodoSeleccionada.getParciales();
         }
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:parcialesConcepto");
         context.execute("parcialesConcepto.show();");
+    }
+
+    public void parcialSolucionNodoEmpleador(SolucionesNodos solucionNodoEmpleador, int celda) {
+        solucionNodoEmpleadorSeleccionada = solucionNodoEmpleador;
+        cualCelda = celda;
+        solucionNodoEmpleadorSeleccionada.getSecuencia();
+        if (cualCelda == 0) {
+            parcialesSolucionNodos = solucionNodoEmpleadorSeleccionada.getParciales();
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:parcialesConcepto");
+        context.execute("parcialesConcepto.show();");
+    }
+
+    public void cambiarIndiceEmpleador(SolucionesNodos solucionNodoEmpleador, int celda) {
+        solucionNodoEmpleadorSeleccionada = solucionNodoEmpleador;
+        cualCelda = celda;
+        solucionNodoEmpleadorSeleccionada.getSecuencia();
+        if (cualCelda == 1) {
+            solucionNodoEmpleadorSeleccionada.getConcepto().getCodigo();
+        } else if (cualCelda == 2) {
+            solucionNodoEmpleadorSeleccionada.getConcepto().getDescripcion();
+        } else if (cualCelda == 3) {
+            solucionNodoEmpleadorSeleccionada.getUnidades();
+        } else if (cualCelda == 4) {
+            solucionNodoEmpleadorSeleccionada.getPasivo();
+        } else if (cualCelda == 5) {
+            solucionNodoEmpleadorSeleccionada.getGasto();
+        } else if (cualCelda == 6) {
+            solucionNodoEmpleadorSeleccionada.getNit().getNombre();
+        } else if (cualCelda == 7) {
+            solucionNodoEmpleadorSeleccionada.getFechahasta();
+        } else if (cualCelda == 8) {
+            solucionNodoEmpleadorSeleccionada.getCuentad().getCodigo();
+        } else if (cualCelda == 9) {
+            solucionNodoEmpleadorSeleccionada.getCentrocostod().getNombre();
+        } else if (cualCelda == 10) {
+            solucionNodoEmpleadorSeleccionada.getCuentac().getCodigo();
+        } else if (cualCelda == 11) {
+            solucionNodoEmpleadorSeleccionada.getCentrocostoc().getNombre();
+        } else if (cualCelda == 12) {
+            solucionNodoEmpleadorSeleccionada.getSaldo();
+        } else if (cualCelda == 13) {
+            solucionNodoEmpleadorSeleccionada.getFechadesde();
+        } else if (cualCelda == 14) {
+            solucionNodoEmpleadorSeleccionada.getFechapago();
+        } else if (cualCelda == 15) {
+            solucionNodoEmpleadorSeleccionada.getUltimamodificacion();
+        }
+    }
+
+    public void cambiarIndice(SolucionesNodos solucionNodo, int celda) {
+        solucionNodoSeleccionada = solucionNodo;
+        cualCelda = celda;
+        solucionNodoSeleccionada.getSecuencia();
+        if (cualCelda == 1) {
+            solucionNodoSeleccionada.getConcepto().getCodigo();
+        } else if (cualCelda == 2) {
+            solucionNodoSeleccionada.getConcepto().getDescripcion();
+        } else if (cualCelda == 3) {
+            solucionNodoSeleccionada.getUnidades();
+        } else if (cualCelda == 4) {
+            solucionNodoSeleccionada.getPago();
+        } else if (cualCelda == 5) {
+            solucionNodoSeleccionada.getDescuento();
+        } else if (cualCelda == 6) {
+            solucionNodoSeleccionada.getNit().getNombre();
+        } else if (cualCelda == 7) {
+            solucionNodoSeleccionada.getFechahasta();
+        } else if (cualCelda == 8) {
+            solucionNodoSeleccionada.getCuentad().getCodigo();
+        } else if (cualCelda == 9) {
+            solucionNodoSeleccionada.getCentrocostod().getNombre();
+        } else if (cualCelda == 10) {
+            solucionNodoSeleccionada.getCuentac().getCodigo();
+        } else if (cualCelda == 11) {
+            solucionNodoSeleccionada.getCentrocostoc().getNombre();
+        } else if (cualCelda == 12) {
+            solucionNodoSeleccionada.getSaldo();
+        } else if (cualCelda == 13) {
+            solucionNodoSeleccionada.getFechadesde();
+        } else if (cualCelda == 14) {
+            solucionNodoSeleccionada.getFechapago();
+        } else if (cualCelda == 15) {
+            solucionNodoSeleccionada.getUltimamodificacion();
+        }
     }
 
     public void verDetallesFormula() {
@@ -412,78 +524,193 @@ public class ControlComprobantes implements Serializable {
     public void activarAceptar() {
         aceptar = false;
     }
-    
-    
-    public void modificarInfoRegistroEmpleado(int valor){
-     infoRegistroEmpleado=String.valueOf(valor);              
+
+    public void modificarInfoRegistroEmpleado(int valor) {
+        infoRegistroEmpleado = String.valueOf(valor);
     }
-    
-    public void eventoFiltrarEmpleado(){
+
+    public void eventoFiltrarEmpleado() {
         getListaParametrosLOV();
         modificarInfoRegistroEmpleado(filtradoListaParametrosLOV.size());
         RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroEmpleado");
     }
-    
-    public void editarCelda(){
-       if(parametroSeleccionado != null){
-       /*
-           if (vigenciaTablaSeleccionada != null) {
-            if (tipoLista == 0) {
-                editarVigenciaDeporte = vigenciaTablaSeleccionada;
-            }
-            if (tipoLista == 1) {
-                editarVigenciaDeporte = vigenciaTablaSeleccionada;
-            }
 
+    public void contarRegistrosEmpleado(){
+        modificarInfoRegistroEmpleado(listaParametrosLOV.size());
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroEmpleado");
+    }
+    
+    public void editarCelda() {
+//        System.out.println("cualcelda: " + cualCelda);
+//        System.out.println("solucionNodoSeleccionada: " + solucionNodoSeleccionada);
+        if (tablaActual == 0) {
+            if (solucionNodoSeleccionada != null) {
+                //editarSolucionNodo = solucionNodoSeleccionada;
+//            if (solucionNodoSeleccionada != null) {
+//                if (tipoLista == 0) {
+//                    editarParametros = parametroSeleccionado;
+//                }
+//                if (tipoLista == 1) {
+//                    editarParametros = parametroSeleccionado;
+//                }
+
+                RequestContext context = RequestContext.getCurrentInstance();
+                if (cualCelda == 1) {
+                    context.update("formularioDialogos:editarCodEmpleado");
+                    context.execute("editarCodEmpleado.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 2) {
+                    context.update("formularioDialogos:editarDescConcepto");
+                    context.execute("editarDescConcepto.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 3) {
+                    context.update("formularioDialogos:editarUnd");
+                    context.execute("editarUnd.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 4) {
+                    context.update("formularioDialogos:editarPago");
+                    context.execute("editarPago.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 5) {
+                    context.update("formularioDialogos:editarDescuento");
+                    context.execute("editarDescuento.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 6) {
+                    context.update("formularioDialogos:editarTercero");
+                    context.execute("editarTercero.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 7) {
+                    context.update("formularioDialogos:editarFechaHasta");
+                    context.execute("editarFechaHasta.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 8) {
+                    context.update("formularioDialogos:editarDebito");
+                    context.execute("editarDebito.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 9) {
+                    context.update("formularioDialogos:editarCCDebito");
+                    context.execute("editarCCDebito.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 10) {
+                    context.update("formularioDialogos:editarCredito");
+                    context.execute("editarCredito.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 11) {
+                    context.update("formularioDialogos:editarCCCredito");
+                    context.execute("editarCCCredito.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 12) {
+                    context.update("formularioDialogos:editarSaldo");
+                    context.execute("editarSaldo.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 13) {
+                    context.update("formularioDialogos:editarFechaDesde");
+                    context.execute("editarFechaDesde.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 14) {
+                    context.update("formularioDialogos:editarFechaPago");
+                    context.execute("editarFechaPago.show()");
+                    cualCelda = -1;
+                } else if (cualCelda == 15) {
+                    context.update("formularioDialogos:editarFechaModificacion");
+                    context.execute("formularioDialogos:editarFechaModificacion.show()");
+                    cualCelda = -1;
+                } // } 
+            } else {
+                RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro.show()");
+            }
+        } else if (tablaActual == 1) {
             RequestContext context = RequestContext.getCurrentInstance();
-            if (cualCelda == 0) {
-                context.update("formularioDialogos:editarFechaInicialD");
-                context.execute("editarFechaInicialD.show()");
-                deshabilitarBotonLov();
-                cualCelda = -1;
-            } else if (cualCelda == 1) {
-                context.update("formularioDialogos:editarFechaFinalD");
-                context.execute("editarFechaFinalD.show()");
-                deshabilitarBotonLov();
+            if (cualCelda == 1) {
+                context.update("formularioDialogos:editarCodEmpleadoEmpleador");
+                context.execute("editarCodEmpleadoEmpleador.show()");
                 cualCelda = -1;
             } else if (cualCelda == 2) {
-                context.update("formularioDialogos:editarDescripcionD");
-                context.execute("editarDescripcionD.show()");
-                habilitarBotonLov();
+                context.update("formularioDialogos:editarDescConceptoEmpleador");
+                context.execute("editarDescConceptoEmpleador.show()");
                 cualCelda = -1;
             } else if (cualCelda == 3) {
-                context.update("formularioDialogos:editarIndividualD");
-                context.execute("editarIndividualD.show()");
-                deshabilitarBotonLov();
+                context.update("formularioDialogos:editarUndEmpleador");
+                context.execute("editarUndEmpleador.show()");
                 cualCelda = -1;
             } else if (cualCelda == 4) {
-                context.update("formularioDialogos:editarCIndividualD");
-                context.execute("editarCIndividualD.show()");
+                context.update("formularioDialogos:editarPasivo");
+                context.execute("editarPasivo.show()");
                 cualCelda = -1;
-                deshabilitarBotonLov();
             } else if (cualCelda == 5) {
-                context.update("formularioDialogos:editarGrupalD");
-                context.execute("editarGrupalD.show()");
+                context.update("formularioDialogos:editarGasto");
+                context.execute("editarGasto.show()");
                 cualCelda = -1;
-                deshabilitarBotonLov();
             } else if (cualCelda == 6) {
-                context.update("formularioDialogos:editarCGrupalD");
-                context.execute("editarCGrupalD.show()");
+                context.update("formularioDialogos:editarTerceroEmpleador");
+                context.execute("editarTerceroEmpleador.show()");
                 cualCelda = -1;
-                deshabilitarBotonLov();
-            }
-           
-           */    
-       } else{
-        RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
-       }
-        
-        
+            } else if (cualCelda == 7) {
+                context.update("formularioDialogos:editarFechaHastaEmpleador");
+                context.execute("editarFechaHastaEmpleador.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 8) {
+                context.update("formularioDialogos:editarDebitoEmpleador");
+                context.execute("editarDebitoEmpleador.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 9) {
+                context.update("formularioDialogos:editarCCDebitoEmpleador");
+                context.execute("editarCCDebitoEmpleador.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 10) {
+                context.update("formularioDialogos:editarCreditoEmpleador");
+                context.execute("editarCreditoEmpleador.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 11) {
+                context.update("formularioDialogos:editarCCCreditoEmpleador");
+                context.execute("editarCCCreditoEmpleador.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 12) {
+                context.update("formularioDialogos:editarSaldoEmpleador");
+                context.execute("editarSaldoEmpleador.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 13) {
+                context.update("formularioDialogos:editarFechaDesdeEmpleador");
+                context.execute("editarFechaDesdeEmpleador.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 14) {
+                context.update("formularioDialogos:editarFechaPagoEmpleador");
+                context.execute("editarFechaPagoEmpleador.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 15) {
+                context.update("formularioDialogos:editarFechaModificacionEmpleador");
+                context.execute("formularioDialogos:editarFechaModificacionEmpleador.show()");
+                cualCelda = -1;
+            } // } 
+        } else {
+            RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro.show()");
+        }
     }
-            
-    
-    //GETTER AND SETTER
 
+    public void posicionOtro() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String celda = map.get("celda"); // name attribute of node 
+        String registro = map.get("registro"); // type attribute of node 
+        int indice = Integer.parseInt(registro);
+        int columna = Integer.parseInt(celda);
+        solucionNodoSeleccionada = listaSolucionesNodosEmpleado.get(indice);
+        cambiarIndice(solucionNodoSeleccionada, columna);
+    }
+
+    public void posicionOtroEmpleador() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> mapEm = context.getExternalContext().getRequestParameterMap();
+        String celda = mapEm.get("celda"); // name attribute of node 
+        String registro = mapEm.get("registro"); // type attribute of node 
+        int indice = Integer.parseInt(registro);
+        int columna = Integer.parseInt(celda);
+        solucionNodoEmpleadorSeleccionada = listaSolucionesNodosEmpleador.get(indice);
+        cambiarIndice(solucionNodoEmpleadorSeleccionada, columna);
+
+    }
+
+    //GETTER AND SETTER
     public List<Parametros> getListaParametros() {
         listaParametros = administrarComprobantes.consultarParametrosComprobantesActualUsuario();
         if (listaParametros == null || listaParametros.isEmpty() || listaParametros.size() == 1) {
@@ -526,10 +753,10 @@ public class ControlComprobantes implements Serializable {
     }
 
     public List<Parametros> getListaParametrosLOV() {
-        if(listaParametrosLOV == null || listaParametrosLOV.isEmpty()){
-           listaParametrosLOV = administrarComprobantes.consultarParametrosComprobantesActualUsuario();
+        if (listaParametrosLOV == null || listaParametrosLOV.isEmpty()) {
+            listaParametrosLOV = administrarComprobantes.consultarParametrosComprobantesActualUsuario();
         }
-
+        contarRegistrosEmpleado();
         return listaParametrosLOV;
     }
 
@@ -669,19 +896,19 @@ public class ControlComprobantes implements Serializable {
             String fechaDesde = null, fechaHasta = null;
             if (tablaActual == 0) {
                 if (listaSolucionesNodosEmpleado != null && !listaSolucionesNodosEmpleado.isEmpty()) {
-                    secFormula = listaSolucionesNodosEmpleado.get(index).getFormula().getSecuencia();
-                    fechaDesde = formatoFecha.format(listaSolucionesNodosEmpleado.get(index).getFechadesde());
-                    fechaHasta = formatoFecha.format(listaSolucionesNodosEmpleado.get(index).getFechahasta());
-                    secEmpleado = listaSolucionesNodosEmpleado.get(index).getEmpleado().getSecuencia();
-                    secProceso = listaSolucionesNodosEmpleado.get(index).getProceso().getSecuencia();
+                    secFormula = solucionNodoSeleccionada.getFormula().getSecuencia();//listaSolucionesNodosEmpleado.get(index)
+                    fechaDesde = formatoFecha.format(solucionNodoSeleccionada.getFechadesde()); //listaSolucionesNodosEmpleado.get(index)
+                    fechaHasta = formatoFecha.format(solucionNodoSeleccionada.getFechahasta()); //listaSolucionesNodosEmpleado.get(index)
+                    secEmpleado = solucionNodoSeleccionada.getEmpleado().getSecuencia(); //listaSolucionesNodosEmpleado.get(index)
+                    secProceso = solucionNodoSeleccionada.getProceso().getSecuencia();//listaSolucionesNodosEmpleado.get(index)
                 }
             } else if (tablaActual == 1) {
                 if (listaSolucionesNodosEmpleador != null && !listaSolucionesNodosEmpleador.isEmpty()) {
-                    secFormula = listaSolucionesNodosEmpleador.get(index).getFormula().getSecuencia();
-                    fechaDesde = formatoFecha.format(listaSolucionesNodosEmpleador.get(index).getFechadesde());
-                    fechaHasta = formatoFecha.format(listaSolucionesNodosEmpleador.get(index).getFechahasta());
-                    secEmpleado = listaSolucionesNodosEmpleador.get(index).getEmpleado().getSecuencia();
-                    secProceso = listaSolucionesNodosEmpleador.get(index).getProceso().getSecuencia();
+                    secFormula = solucionNodoEmpleadorSeleccionada.getFormula().getSecuencia();  //listaSolucionesNodosEmpleador.get(index)
+                    fechaDesde = formatoFecha.format(solucionNodoEmpleadorSeleccionada.getFechadesde()); // listaSolucionesNodosEmpleador.get(index)
+                    fechaHasta = formatoFecha.format(solucionNodoEmpleadorSeleccionada.getFechahasta()); //listaSolucionesNodosEmpleador.get(index)
+                    secEmpleado = solucionNodoEmpleadorSeleccionada.getEmpleado().getSecuencia(); //listaSolucionesNodosEmpleador.get(index)
+                    secProceso = solucionNodoEmpleadorSeleccionada.getProceso().getSecuencia(); //listaSolucionesNodosEmpleador.get(index)
                 }
             }
             if (secFormula != null && fechaDesde != null) {
@@ -705,12 +932,6 @@ public class ControlComprobantes implements Serializable {
     }
 
     public String getInfoRegistroEmpleado() {
-//        getListaParametrosLOV();
-//        if (listaParametrosLOV != null) {
-//            infoRegistroEmpleado = "Registros : " + listaParametrosLOV.size();
-//        } else {
-//            infoRegistroEmpleado = "Registros : 0";
-//        }
         return infoRegistroEmpleado;
     }
 
@@ -719,7 +940,7 @@ public class ControlComprobantes implements Serializable {
     }
 
     public String getInfoRegistroComprobante() {
-        infoRegistroComprobante = "Reg. " + (registroActual + 1) + " de " + listaParametros.size();
+        infoRegistroComprobante = "Reg. " + (registroActual ) + " de " + listaParametros.size();
         return infoRegistroComprobante;
     }
 
@@ -727,5 +948,36 @@ public class ControlComprobantes implements Serializable {
         this.infoRegistroComprobante = infoRegistroComprobante;
     }
 
-    
+    public Parametros getEditarParametros() {
+        return editarParametros;
+    }
+
+    public void setEditarParametros(Parametros editarParametros) {
+        this.editarParametros = editarParametros;
+    }
+
+    public SolucionesNodos getSolucionNodoSeleccionada() {
+        return solucionNodoSeleccionada;
+    }
+
+    public void setSolucionNodoSeleccionada(SolucionesNodos solucionNodoSeleccionada) {
+        this.solucionNodoSeleccionada = solucionNodoSeleccionada;
+    }
+
+    public SolucionesNodos getEditarSolucionNodo() {
+        return editarSolucionNodo;
+    }
+
+    public void setEditarSolucionNodo(SolucionesNodos editarSolucionNodo) {
+        this.editarSolucionNodo = editarSolucionNodo;
+    }
+
+    public SolucionesNodos getSolucionNodoEmpleadorSeleccionada() {
+        return solucionNodoEmpleadorSeleccionada;
+    }
+
+    public void setSolucionNodoEmpleadorSeleccionada(SolucionesNodos solucionNodoEmpleadorSeleccionada) {
+        this.solucionNodoEmpleadorSeleccionada = solucionNodoEmpleadorSeleccionada;
+    }
+
 }

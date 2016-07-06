@@ -34,12 +34,14 @@ public class PersistenciaPruebaEmpleados implements PersistenciaPruebaEmpleadosI
             queryValidacion.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) queryValidacion.getSingleResult();
             if (resultado > 0) {
-                String sqlQuery = "SELECT E.secuencia ID, E.codigoempleado CODIGO, P.PRIMERAPELLIDO||' '||P.SEGUNDOAPELLIDO||' '||P.NOMBRE NOMBRE, SUM(VWA.valor) VALOR\n"
-                        + "       FROM EMPLEADOS E, VWACTUALESSUELDOS VWA, PERSONAS P\n"
+                String sqlQuery = "SELECT E.secuencia ID, E.codigoempleado CODIGO, P.PRIMERAPELLIDO||' '||P.SEGUNDOAPELLIDO||' '||P.NOMBRE NOMBRE, SUM(VWA.valor) VALOR, tt.tipo TIPO\n"
+                        + "       FROM EMPLEADOS E, VWACTUALESSUELDOS VWA, PERSONAS P, VWActualesTiposTrabajadores vwtt, TiposTrabajadores tt\n"
                         + "       WHERE E.persona = P.secuencia \n"
                         + "       AND VWA.empleado = E.secuencia\n"
+                        + "       AND vwtt.empleado = E.secuencia\n"
+                        + "       AND tt.secuencia = vwtt.tipotrabajador\n"
                         + "       AND VWA.empleado = ?\n"
-                        + "       GROUP BY E.secuencia, E.codigoempleado, P.PRIMERAPELLIDO||' '||P.SEGUNDOAPELLIDO||' '||P.NOMBRE";
+                        + "       GROUP BY E.secuencia, E.codigoempleado, P.PRIMERAPELLIDO||' '||P.SEGUNDOAPELLIDO||' '||P.NOMBRE, tt.tipo";
                 Query query = em.createNativeQuery(sqlQuery, "PruebaEmpleadosAsignacionBasica");
                 query.setParameter(1, secEmpleado);
                 pruebaEmpleado = (PruebaEmpleados) query.getSingleResult();
@@ -49,24 +51,27 @@ public class PersistenciaPruebaEmpleados implements PersistenciaPruebaEmpleadosI
                 queryValidacion2.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 Long resultado2 = (Long) queryValidacion2.getSingleResult();
                 if(resultado2 > 0){
-                String sqlQuery = "SELECT E.secuencia ID, E.codigoempleado CODIGO, P.nombre NOMBRE, SUM(VWP.valor) VALOR\n"
-                        + "       FROM EMPLEADOS E, VWACTUALESPENSIONES VWP, PERSONAS P\n"
+                String sqlQuery = "SELECT E.secuencia ID, E.codigoempleado CODIGO, P.nombre NOMBRE, SUM(VWP.valor) VALOR, tt.tipo TIPO\n"
+                        + "       FROM EMPLEADOS E, VWACTUALESPENSIONES VWP, PERSONAS P, VWActualesTiposTrabajadores vwtt, TiposTrabajadores tt\n"
                         + "       WHERE E.persona = P.secuencia \n"
                         + "       AND VWP.empleado = E.secuencia\n"
+                        + "       AND vwtt.empleado = E.secuencia\n"
+                        + "       AND tt.secuencia = vwtt.tipotrabajador\n"
                         + "       AND VWP.empleado = ?\n"
-                        + "       GROUP BY E.secuencia, E.codigoempleado, P.nombre";
+                        + "       GROUP BY E.secuencia, E.codigoempleado, P.nombre, tt.tipo";
                 Query query = em.createNativeQuery(sqlQuery, "PruebaEmpleadosAsignacionBasica");
                 query.setParameter(1, secEmpleado);
                 pruebaEmpleado = (PruebaEmpleados) query.getSingleResult();
                 }
             }
-            //Ahora el tipo:
-            em.clear();
-            Query queryT = em.createQuery("SELECT vw.tipoTrabajador.tipo FROM VWActualesTiposTrabajadores vw WHERE vw.empleado.secuencia= :secuencia");
-            queryT.setParameter("secuencia", secEmpleado);
-            queryT.setHint("javax.persistence.cache.storeMode", "REFRESH");
-            String tipoEmpleado = (String) queryT.getSingleResult();
-            pruebaEmpleado.setTipo(tipoEmpleado);
+//            //Ahora el tipo:
+//            em.clear();
+//            Query queryT = em.createQuery("SELECT vw.tipoTrabajador.tipo FROM VWActualesTiposTrabajadores vw WHERE vw.empleado.secuencia= :secuencia");
+//            queryT.setParameter("secuencia", secEmpleado);
+//            queryT.setHint("javax.persistence.cache.storeMode", "REFRESH");
+//            String tipoEmpleado = (String) queryT.getSingleResult();
+//            pruebaEmpleado.setTipo(tipoEmpleado);
+            
             return pruebaEmpleado;
         } catch (Exception e) {
             System.out.println("Error PersistenciaPruebaEmpleados.empleadosAsignacion. " + e);

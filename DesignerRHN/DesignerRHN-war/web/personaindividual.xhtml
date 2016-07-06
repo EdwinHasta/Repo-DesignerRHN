@@ -135,8 +135,7 @@
                                         <p:ajax event="focus" listener="#{controlPersonaIndividual.cambiarItemInformacionPersonal(0)}" process="@this"/>
                                         <p:ajax event="dblclick" listener="#{controlPersonaIndividual.listaValoresInformacionPersonal()}" process="@this"/>
                                     </p:inputText>
-
-
+           
                                     <h:outputText  value="#{msg['primerApellido']}*" style="position: absolute; top: 55px; left: 15px; font-weight: bold"/>
                                     <p:inputText maxlength="20" onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.primerapellido}" id="primerApellidoModPersonal" style="position: absolute; top: 50px; left: 140px;width: 130px;text-transform: uppercase">
                                         <p:ajax event="focus" listener="#{controlPersonaIndividual.cambiarItemInformacionPersonal(1)}" process="@this"/>
@@ -505,7 +504,7 @@
                                     <h:outputText value="" style="position: absolute; background-image: url(Imagenes/Iconos/afiliaciones.png); background-repeat: no-repeat; border: none;
                                                   width: 50px; height: 50px; top: 22px; left: 5px;  background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
 
-                                    <h:outputText id="infoAfiliacionEPS" value="#{msg['eps']}*"  style="position: absolute; top: 22px; left: 65px;font-weight: bold"/>
+                                    <h:outputText id="infoAfiliacionEPS" value="#{msg['eps']}*" style="position: absolute; top: 22px; left: 65px;font-weight: bold"/>
                                     <p:inputText id="epsModAfiliaciones" disabled="#{controlPersonaIndividual.disableAfiliaciones}" onclick="select();" value="#{controlPersonaIndividual.nuevaVigenciaAfiliacionEPS.tercerosucursal.descripcion}" 
                                                  style="position: absolute; top: 17px; left: 400px;width: 350px;text-transform: uppercase">
                                         <p:ajax event="focus" listener="#{controlPersonaIndividual.cambiarItemAfiliacionEPS(0)}" process="@this"/>
@@ -701,7 +700,7 @@
                         </h:form>
 
                         <h:form id="infoP_tipoD">
-                            <p:dialog header="#{msg['tipoDocumentoM']}" widgetVar="TipoDocumentoInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="TipoDocumentoInformacionPersonalDialogo"  
+                            <p:dialog header="#{msg['ingresetd']}" widgetVar="TipoDocumentoInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="TipoDocumentoInformacionPersonalDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" height="340" >
                                 <p:dataTable id="lovTipoDocumentoInformacionPersonal" style=" width: 370px" var="tipoDIP" value="#{controlPersonaIndividual.lovTiposDocumentos}" rowKey="#{tipoDIP.secuencia}"
                                              selection="#{controlPersonaIndividual.tipoDocumentoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovTipoDocumentoInformacionPersonal" scrollable="true" scrollHeight="200"
@@ -738,7 +737,7 @@
                         </h:form>
 
                         <h:form id="infoP_ciudadD">
-                            <p:dialog header="#{msg['ciudadDocumentoM']}" widgetVar="CiudadDocumentoInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="CiudadDocumentoInformacionPersonalDialogo"  
+                            <p:dialog header="#{msg['ingreseciudadtd']}" widgetVar="CiudadDocumentoInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="CiudadDocumentoInformacionPersonalDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="390" >
                                 <p:dataTable id="lovCiudadDocumentoInformacionPersonal" style=" width: 370px" var="ciudadDIP" value="#{controlPersonaIndividual.lovCiudades}" rowKey="#{ciudadDIP.secuencia}"
                                              selection="#{controlPersonaIndividual.ciudadSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovCiudadDocumentoInformacionPersonal" scrollable="true" scrollHeight="250"
@@ -774,7 +773,7 @@
                         </h:form>
 
                         <h:form id="infoP_ciudadN">
-                            <p:dialog header="#{msg['ciudadNacimientoM']}" widgetVar="CiudadNacimientoInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="CiudadNacimientoInformacionPersonalDialogo"  
+                            <p:dialog header="#{msg['ingreseciudadna']}" widgetVar="CiudadNacimientoInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="CiudadNacimientoInformacionPersonalDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="390">
                                 <p:dataTable id="lovCiudadNacimientoInformacionPersonal" style=" width: 370px" var="ciudadDIP" value="#{controlPersonaIndividual.lovCiudades}" rowKey="#{ciudadDIP.secuencia}"
                                              selection="#{controlPersonaIndividual.ciudadSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovCiudadNacimientoInformacionPersonal" scrollable="true" scrollHeight="250"
@@ -815,7 +814,7 @@
                     <h:form id="formDCargoDesempenado">
 
                         <h:form id="formCargo">
-                            <p:dialog header="#{msg['cargoM']}" widgetVar="CargoCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="CargoCargoDesempeñadoDialogo"  
+                            <p:dialog header="#{msg['nombrecargo']}" widgetVar="CargoCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="CargoCargoDesempeñadoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="390">
                                 <p:dataTable id="lovCargoCargoDesempeñado" style=" width: 370px" var="cargoCD" value="#{controlPersonaIndividual.lovCargos}" rowKey="#{cargoCD.secuencia}"
                                              selection="#{controlPersonaIndividual.cargoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovCargoCargoDesempeñado" scrollable="true" scrollHeight="250"
@@ -846,7 +845,7 @@
                         </h:form>
 
                         <h:form id="formMotcargo">
-                            <p:dialog header="#{msg['motivoCambioCargoM']}" widgetVar="MotivoCambioCargoCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="MotivoCambioCargoCargoDesempeñadoDialogo"  
+                            <p:dialog header="#{msg['motivocargo']}" widgetVar="MotivoCambioCargoCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="MotivoCambioCargoCargoDesempeñadoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="390">
                                 <p:dataTable id="lovMotivoCambioCargoCargoDesempeñado" style=" width: 370px" var="motivoCambioCD" value="#{controlPersonaIndividual.lovMotivosCargos}" rowKey="#{motivoCambioCD.secuencia}"
                                              selection="#{controlPersonaIndividual.motivoCambioCargoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovMotivoCambioCargoCargoDesempeñado" scrollable="true" scrollHeight="250"
@@ -878,7 +877,7 @@
                         </h:form>
 
                         <h:form id="formEstruCargo">
-                            <p:dialog header="#{msg['estructuraM']}" widgetVar="EstructuraCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="EstructuraCargoDesempeñadoDialogo"  
+                            <p:dialog header="#{msg['estructuracargo']}" widgetVar="EstructuraCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="EstructuraCargoDesempeñadoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="390">
                                 <p:dataTable id="lovEstructuraCargoDesempeñado" style=" width: 370px" var="estructuraCD" value="#{controlPersonaIndividual.lovEstructuras}" rowKey="#{estructuraCD.secuencia}"
                                              selection="#{controlPersonaIndividual.estructuraSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovEstructuraCargoDesempeñado" scrollable="true" scrollHeight="250"
@@ -910,7 +909,7 @@
                         </h:form>
 
                         <h:form id="formPapelD">
-                            <p:dialog header="#{msg['papelM']}" widgetVar="PapelCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="PapelCargoDesempeñadoDialogo"  
+                            <p:dialog header="#{msg['papeldesem']}" widgetVar="PapelCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="PapelCargoDesempeñadoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="390">
                                 <p:dataTable id="lovPapelCargoDesempeñado" style=" width: 370px" var="papelCD" value="#{controlPersonaIndividual.lovPapeles}" rowKey="#{papelCD.secuencia}"
                                              selection="#{controlPersonaIndividual.papelSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovPapelCargoDesempeñado" scrollable="true" scrollHeight="250"
@@ -941,7 +940,7 @@
                         </h:form>
 
                         <h:form id="formjefe">
-                            <p:dialog header="#{msg['jefeM']}" widgetVar="EmpleadoJefeCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="EmpleadoJefeCargoDesempeñadoDialogo"  
+                            <p:dialog header="#{msg['empleadojefe']}" widgetVar="EmpleadoJefeCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="EmpleadoJefeCargoDesempeñadoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="390">
                                 <p:dataTable id="lovEmpleadoJefeCargoDesempeñado" style=" width: 370px" var="jefeCD" value="#{controlPersonaIndividual.lovEmpleados}" rowKey="#{jefeCD.secuencia}"
                                              selection="#{controlPersonaIndividual.empleadoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovEmpleadoJefeCargoDesempeñado" scrollable="true" scrollHeight="250"
@@ -975,7 +974,7 @@
                     <h:form id="formDCentroCosto">
 
                         <h:form id="formCentroC">
-                            <p:dialog header="#{msg['motivoLocalizacionM']}" widgetVar="MotivoLocalizacionCentroCostoDialogo" draggable="false" resizable="false" closable="false" id="MotivoLocalizacionCentroCostoDialogo"  
+                            <p:dialog header="#{msg['motivolocalizacion']}" widgetVar="MotivoLocalizacionCentroCostoDialogo" draggable="false" resizable="false" closable="false" id="MotivoLocalizacionCentroCostoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="390">
                                 <p:dataTable id="lovMotivoLocalizacionCentroCosto" style=" width: 370px" var="motivoLCC" value="#{controlPersonaIndividual.lovMotivosLocalizaciones}" rowKey="#{motivoLCC.secuencia}"
                                              selection="#{controlPersonaIndividual.motivoLocalizacionSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovMotivoLocalizacionCentroCosto" scrollable="true" scrollHeight="250"
@@ -1007,7 +1006,7 @@
                         </h:form>
 
                         <h:form id="formEstrucCC">
-                            <p:dialog header="#{msg['estructuraM2']}" widgetVar="EstructuraCentroCostoDialogo" draggable="false" resizable="false" closable="false" id="EstructuraCentroCostoDialogo"  
+                            <p:dialog header="#{msg['estructuracc']}" widgetVar="EstructuraCentroCostoDialogo" draggable="false" resizable="false" closable="false" id="EstructuraCentroCostoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="510" modal="true" height="390">
                                 <p:dataTable id="lovEstructuraCentroCosto" style=" width: 470px" var="estructuraCC" value="#{controlPersonaIndividual.lovEstructurasCentroCosto}" rowKey="#{estructuraCC.secuencia}"
                                              selection="#{controlPersonaIndividual.estructuraCentroCostoSeleccionada}" scrollWidth="488" selectionMode="single" widgetVar="lovEstructuraCentroCosto" scrollable="true" scrollHeight="250"
@@ -1052,7 +1051,7 @@
 
                     <h:form id="formDTipoTrabajador">
 
-                        <p:dialog header="#{msg['tipoTrabajadorM']}" widgetVar="TipoTrabajadorTipoTrabajadorDialogo" draggable="false" resizable="false" closable="false" id="TipoTrabajadorTipoTrabajadorDialogo"  
+                        <p:dialog header="#{msg['tipotrabajador']}" widgetVar="TipoTrabajadorTipoTrabajadorDialogo" draggable="false" resizable="false" closable="false" id="TipoTrabajadorTipoTrabajadorDialogo"  
                                   showEffect="fade" hideEffect="fade" width="410" modal="true" height="390">
                             <p:dataTable id="lovTipoTrabajadorTipoTrabajador" style=" width: 370px" var="tipoTTT" value="#{controlPersonaIndividual.lovTiposTrabajadores}" rowKey="#{tipoTTT.secuencia}"
                                          selection="#{controlPersonaIndividual.tipoTrabajadorSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovTipoTrabajadorTipoTrabajador" scrollable="true" scrollHeight="250"
@@ -1085,7 +1084,7 @@
 
                     <h:form id="formDTipoSalario">
 
-                        <p:dialog header="#{msg['reformaLaboralM']}" widgetVar="ReformaLaboralTipoSalarioDialogo" draggable="false" resizable="false" closable="false" id="ReformaLaboralTipoSalarioDialogo"  
+                        <p:dialog header="#{msg['tiposalarios']}" widgetVar="ReformaLaboralTipoSalarioDialogo" draggable="false" resizable="false" closable="false" id="ReformaLaboralTipoSalarioDialogo"  
                                   showEffect="fade" hideEffect="fade" width="410" modal="true" height="390">
                             <p:dataTable id="lovReformaLaboralTipoSalario" style=" width: 370px" var="reformaLTS" value="#{controlPersonaIndividual.lovReformasLaborales}" rowKey="#{reformaLTS.secuencia}"
                                          selection="#{controlPersonaIndividual.reformaLaboralSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovReformaLaboralTipoSalario" scrollable="true" scrollHeight="250"
@@ -1119,7 +1118,7 @@
 
                     <h:form id="formDSueldo">
                         <h:form id="formMotivoSu">
-                            <p:dialog header="#{msg['motivoCambioSueldoM']}" widgetVar="MotivoCambioSueldoSueldoDialogo" draggable="false" resizable="false" closable="false" id="MotivoCambioSueldoSueldoDialogo"  
+                            <p:dialog header="#{msg['motivosueldo']}" widgetVar="MotivoCambioSueldoSueldoDialogo" draggable="false" resizable="false" closable="false" id="MotivoCambioSueldoSueldoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="390">
                                 <p:dataTable id="lovMotivoCambioSueldoSueldo" style=" width: 370px" var="motivoCambioSS" value="#{controlPersonaIndividual.lovMotivosCambiosSueldos}" rowKey="#{motivoCambioSS.secuencia}"
                                              selection="#{controlPersonaIndividual.motivoCambioSueldoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovMotivoCambioSueldoSueldo" scrollable="true" scrollHeight="250"
@@ -1151,7 +1150,7 @@
                         </h:form>
 
                         <h:form id="formTipoSueldo">
-                            <p:dialog header="#{msg['tipoSueldoM']}" widgetVar="TipoSueldoSueldoDialogo" draggable="false" resizable="false" closable="false" id="TipoSueldoSueldoDialogo"  
+                            <p:dialog header="#{msg['tipocompensacion']}" widgetVar="TipoSueldoSueldoDialogo" draggable="false" resizable="false" closable="false" id="TipoSueldoSueldoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="390">
                                 <p:dataTable id="lovTipoSueldoSueldo" style=" width: 370px" var="tipoSueldoS" value="#{controlPersonaIndividual.lovTiposSueldos}" rowKey="#{tipoSueldoS.secuencia}"
                                              selection="#{controlPersonaIndividual.tipoSueldoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovTipoSueldoSueldo" scrollable="true" scrollHeight="250"
@@ -1183,7 +1182,7 @@
                         </h:form>
 
                         <h:form id="formUnidadS">
-                            <p:dialog header="#{msg['unidadM']}" widgetVar="UnidadSueldoDialogo" draggable="false" resizable="false" closable="false" id="UnidadSueldoDialogo"  
+                            <p:dialog header="#{msg['ingreseunidad']}" widgetVar="UnidadSueldoDialogo" draggable="false" resizable="false" closable="false" id="UnidadSueldoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="340">
                                 <p:dataTable id="lovUnidadSueldo" style=" width: 370px" var="unidadS" value="#{controlPersonaIndividual.lovUnidades}" rowKey="#{unidadS.secuencia}"
                                              selection="#{controlPersonaIndividual.unidadSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovUnidadSueldo" scrollable="true" scrollHeight="200"
@@ -1206,10 +1205,10 @@
 
                                 <h:outputText id="infoRegistroUnidadSueldo" value="#{msg['infoRegistro']} #{controlPersonaIndividual.infoRegistroUnidadSueldo}" style="position: relative; left: 10px; top: 5px; font-weight: bold"/>
 
-                                                 <p:commandButton id="aceptarUS" style="position: relative; left: 120px; top: 20px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="UnidadSueldoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroUnidadSueldo()}" process="@this" icon="ui-icon-check"/>
-                                                 <p:commandButton id="atrasUS" style="position: relative; left: 120px; top: 20px" value="#{msg['atras']}" onclick="UnidadSueldoDialogo.hide();
-                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroUnidadSueldo()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
+                                <p:commandButton id="aceptarUS" style="position: relative; left: 120px; top: 20px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="UnidadSueldoDialogo.hide();
+                                        operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroUnidadSueldo()}" process="@this" icon="ui-icon-check"/>
+                                <p:commandButton id="atrasUS" style="position: relative; left: 120px; top: 20px" value="#{msg['atras']}" onclick="UnidadSueldoDialogo.hide();
+                                        operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroUnidadSueldo()}" process="@this" icon="ui-icon-arrowreturnthick-1-w"/>
                             </p:dialog>
                         </h:form>
                     </h:form>
@@ -1217,7 +1216,7 @@
                     <h:form id="formDTipoContrato">
 
                         <h:form id="formTipoContrat">
-                            <p:dialog header="#{msg['motivoContratoM']}" widgetVar="MotivoContratoTipoContratoDialogo" draggable="false" resizable="false" closable="false" id="MotivoContratoTipoContratoDialogo"  
+                            <p:dialog header="#{msg['motivocontrato']}" widgetVar="MotivoContratoTipoContratoDialogo" draggable="false" resizable="false" closable="false" id="MotivoContratoTipoContratoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="390">
                                 <p:dataTable id="lovMotivoContratoTipoContrato" style=" width: 370px" var="motivoContratoTC" value="#{controlPersonaIndividual.lovMotivosContratos}" rowKey="#{motivoContratoTC.secuencia}"
                                              selection="#{controlPersonaIndividual.motivoContratoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovMotivoContratoTipoContrato" scrollable="true" scrollHeight="250"
@@ -1248,7 +1247,7 @@
                         </h:form>
 
                         <h:form id="formTipoContrato">
-                            <p:dialog header="#{msg['tipoContratoM']}" widgetVar="TipoContratoTipoContratoDialogo" draggable="false" resizable="false" closable="false" id="TipoContratoTipoContratoDialogo"  
+                            <p:dialog header="#{msg['tipocontrato']}" widgetVar="TipoContratoTipoContratoDialogo" draggable="false" resizable="false" closable="false" id="TipoContratoTipoContratoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="390">
                                 <p:dataTable id="lovTipoContratoTipoContrato" style=" width: 370px" var="tipoContratoTC" value="#{controlPersonaIndividual.lovTiposContratos}" rowKey="#{tipoContratoTC.secuencia}"
                                              selection="#{controlPersonaIndividual.tipoContratoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovTipoContratoTipoContrato" scrollable="true" scrollHeight="250"
@@ -1281,7 +1280,7 @@
 
                     <h:form id="formDNormaLaboral">
 
-                        <p:dialog header="#{msg['normaLaboralM']}" widgetVar="NormaLaboralNormaLaboralDialogo" draggable="false" resizable="false" closable="false" id="NormaLaboralNormaLaboralDialogo"  
+                        <p:dialog header="#{msg['normalaboral']}" widgetVar="NormaLaboralNormaLaboralDialogo" draggable="false" resizable="false" closable="false" id="NormaLaboralNormaLaboralDialogo"  
                                   showEffect="fade" hideEffect="fade" width="410" modal="true" height="390">
                             <p:dataTable id="lovNormaLaboralNormaLaboral" style=" width: 370px" var="normaLaboralNL" value="#{controlPersonaIndividual.lovNormasLaborales}" rowKey="#{normaLaboralNL.secuencia}"
                                          selection="#{controlPersonaIndividual.normaLaboralSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovNormaLaboralNormaLaboral" scrollable="true" scrollHeight="250"
@@ -1316,7 +1315,7 @@
 
                     <h:form id="formDLegislacionLaboral">
 
-                        <p:dialog header="#{msg['contratoM']}" widgetVar="ContratoLegislacionLaboralDialogo" draggable="false" resizable="false" closable="false" id="ContratoLegislacionLaboralDialogo"  
+                        <p:dialog header="#{msg['legislaboral']}" widgetVar="ContratoLegislacionLaboralDialogo" draggable="false" resizable="false" closable="false" id="ContratoLegislacionLaboralDialogo"  
                                   showEffect="fade" hideEffect="fade" width="410" modal="true" height="390">
                             <p:dataTable id="lovContratoLegislacionLaboral" style=" width: 370px" var="contratoLL" value="#{controlPersonaIndividual.lovContratos}" rowKey="#{contratoLL.secuencia}"
                                          selection="#{controlPersonaIndividual.contratoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovContratoLegislacionLaboral" scrollable="true" scrollHeight="250"
@@ -1350,7 +1349,7 @@
 
                     <h:form id="formDUbicacion">
 
-                        <p:dialog header="#{msg['ubicacionGeograficaM']}" widgetVar="UbicacionUbicacionGeograficaDialogo" draggable="false" resizable="false" closable="false" id="UbicacionUbicacionGeograficaDialogo"  
+                        <p:dialog header="#{msg['ubgeografica']}" widgetVar="UbicacionUbicacionGeograficaDialogo" draggable="false" resizable="false" closable="false" id="UbicacionUbicacionGeograficaDialogo"  
                                   showEffect="fade" hideEffect="fade" width="810" modal="true" height="390">
                             <p:dataTable id="lovUbicacionUbicacionGeografica" style=" width: 770px" var="ubicacionGUG" value="#{controlPersonaIndividual.lovUbicacionesGeograficas}" rowKey="#{ubicacionGUG.secuencia}"
                                          selection="#{controlPersonaIndividual.ubicacionGeograficaSeleccionada}" scrollWidth="788" selectionMode="single" widgetVar="lovUbicacionUbicacionGeografica" scrollable="true" scrollHeight="250"
@@ -1414,7 +1413,7 @@
 
                     <h:form id="formDJornadaLaboral">
 
-                        <p:dialog header="#{msg['jornadaLaboralM']}" widgetVar="JornadaJornadaLaboralDialogo" draggable="false" resizable="false" closable="false" id="JornadaJornadaLaboralDialogo"  
+                        <p:dialog header="#{msg['jornadala']}" widgetVar="JornadaJornadaLaboralDialogo" draggable="false" resizable="false" closable="false" id="JornadaJornadaLaboralDialogo"  
                                   showEffect="fade" hideEffect="fade" width="410" modal="true" height="340">
                             <p:dataTable id="lovJornadaJornadaLaboral" style=" width: 370px" var="jornadaLJL" value="#{controlPersonaIndividual.lovJornadasLaborales}" rowKey="#{jornadaLJL.secuencia}"
                                          selection="#{controlPersonaIndividual.jornadaLaboralSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovJornadaJornadaLaboral" scrollable="true" scrollHeight="200"
@@ -1449,7 +1448,7 @@
                     <h:form id="formDFormaPago">   
 
                         <h:form id="formPeriodicidad">
-                            <p:dialog header="#{msg['periodicidadM']}" widgetVar="PeriodicidadFormaPagoDialogo" draggable="false" resizable="false" closable="false" id="PeriodicidadFormaPagoDialogo"  
+                            <p:dialog header="#{msg['formapago']}" widgetVar="PeriodicidadFormaPagoDialogo" draggable="false" resizable="false" closable="false" id="PeriodicidadFormaPagoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="390" >
                                 <p:dataTable id="lovPeriodicidadFormaPago" style=" width: 370px" var="periodicidadFP" value="#{controlPersonaIndividual.lovPeriodicidades}" rowKey="#{periodicidadFP.secuencia}"
                                              selection="#{controlPersonaIndividual.periodicidadSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovPeriodicidadFormaPago" scrollable="true" scrollHeight="250"
@@ -1481,7 +1480,7 @@
                         </h:form>
 
                         <h:form id="formSucursal">
-                            <p:dialog header="#{msg['sucursalM']}" widgetVar="SucursalFormaPagoDialogo" draggable="false" resizable="false" closable="false" id="SucursalFormaPagoDialogo"  
+                            <p:dialog header="#{msg['sucursalPago']}" widgetVar="SucursalFormaPagoDialogo" draggable="false" resizable="false" closable="false" id="SucursalFormaPagoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="390" >
                                 <p:dataTable id="lovSucursalPagoFormaPago" style=" width: 370px" var="sucursalFP" value="#{controlPersonaIndividual.lovSucursales}" rowKey="#{sucursalFP.secuencia}"
                                              selection="#{controlPersonaIndividual.sucursalSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovSucursalPagoFormaPago" scrollable="true" scrollHeight="250"
@@ -1512,7 +1511,7 @@
                         </h:form>
 
                         <h:form id="formMetodo">
-                            <p:dialog header="#{msg['metodoPagoM']}" widgetVar="MetodoPagoFormaPagoDialogo" draggable="false" resizable="false" closable="false" id="MetodoPagoFormaPagoDialogo"  
+                            <p:dialog header="#{msg['metodopago']}" widgetVar="MetodoPagoFormaPagoDialogo" draggable="false" resizable="false" closable="false" id="MetodoPagoFormaPagoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="340" >
                                 <p:dataTable id="lovMetodoPagoFormaPago" style=" width: 370px" var="metodoPFP" value="#{controlPersonaIndividual.lovMetodosPagos}" rowKey="#{metodoPFP.secuencia}"
                                              selection="#{controlPersonaIndividual.metodoPagoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovMetodoPagoFormaPago" scrollable="true" scrollHeight="200"
@@ -1544,7 +1543,7 @@
 
                     <h:form id="formDAfiliacion">
 
-                        <p:dialog header="#{msg['terceroM']}" widgetVar="TerceroAfiliacionDialogo" draggable="false" resizable="false" closable="false" id="TerceroAfiliacionDialogo"  
+                        <p:dialog header="#{msg['selecciontercero']} #{controlPersonaIndividual.tituloTercero}" widgetVar="TerceroAfiliacionDialogo" draggable="false" resizable="false" closable="false" id="TerceroAfiliacionDialogo"  
                                   showEffect="fade" hideEffect="fade" width="610" modal="true" height="390" >
                             <p:dataTable id="lovTerceroAfiliacion" style=" width: 570px" var="terceroSA" value="#{controlPersonaIndividual.lovTercerosSucursales}" rowKey="#{terceroSA.secuencia}"
                                          selection="#{controlPersonaIndividual.terceroSucursalSeleccionado}" scrollWidth="588" selectionMode="single" widgetVar="lovTerceroAfiliacion" scrollable="true" scrollHeight="250"
@@ -1591,7 +1590,7 @@
                     <h:form id="formDTelefono">
 
                         <h:form id="formTel">
-                            <p:dialog header="#{msg['tipoTTelefonoM']}" widgetVar="TipoTelefonoTelefonoDialogo" draggable="false" resizable="false" closable="false" id="TipoTelefonoTelefonoDialogo"  
+                            <p:dialog header="#{msg['tipotelefono']}" widgetVar="TipoTelefonoTelefonoDialogo" draggable="false" resizable="false" closable="false" id="TipoTelefonoTelefonoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="340" >
                                 <p:dataTable id="lovTipoTelefonoTelefono" style=" width: 370px" var="tipoTT" value="#{controlPersonaIndividual.lovTiposTelefonos}" rowKey="#{tipoTT.secuencia}"
                                              selection="#{controlPersonaIndividual.tipoTelefonoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovTipoTelefonoTelefono" scrollable="true" scrollHeight="200"
@@ -1622,7 +1621,7 @@
                         </h:form>
 
                         <h:form id="formCiudadTel">
-                            <p:dialog header="#{msg['ciudadTelefonoM']}" widgetVar="CiudadTelefonoDialogo" draggable="false" resizable="false" closable="false" id="CiudadTelefonoDialogo"  
+                            <p:dialog header="#{msg['ciudadtelefono']}" widgetVar="CiudadTelefonoDialogo" draggable="false" resizable="false" closable="false" id="CiudadTelefonoDialogo"  
                                       showEffect="fade" hideEffect="fade" width="410" modal="true" height="390" >
                                 <p:dataTable id="lovCiudadTelefono" style=" width: 370px" var="ciudadT" value="#{controlPersonaIndividual.lovCiudades}" rowKey="#{ciudadT.secuencia}"
                                              selection="#{controlPersonaIndividual.ciudadSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovCiudadTelefono" scrollable="true" scrollHeight="250"
@@ -1661,7 +1660,7 @@
 
                     <h:form id="formDDireccion">
 
-                        <p:dialog header="#{msg['ciudadDireccionM']}" widgetVar="CiudadDireccionDialogo" draggable="false" resizable="false" closable="false" id="CiudadDireccionDialogo"  
+                        <p:dialog header="#{msg['ciudadresidencia']}" widgetVar="CiudadDireccionDialogo" draggable="false" resizable="false" closable="false" id="CiudadDireccionDialogo"  
                                   showEffect="fade" hideEffect="fade" width="410" modal="true" height="390" >
                             <p:dataTable id="lovCiudadDireccion" style=" width: 370px" var="ciudadD" value="#{controlPersonaIndividual.lovCiudades}" rowKey="#{ciudadD.secuencia}"
                                          selection="#{controlPersonaIndividual.ciudadSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovCiudadDireccion" scrollable="true" scrollHeight="250"
@@ -1700,7 +1699,7 @@
 
                     <h:form id="formDEstadoCivil">
 
-                        <p:dialog header="#{msg['estadoCivilM']}" widgetVar="EstadoCivilEstadoCivilDialogo" draggable="false" resizable="false" closable="false" id="EstadoCivilEstadoCivilDialogo"  
+                        <p:dialog header="#{msg['estadocivil']}" widgetVar="EstadoCivilEstadoCivilDialogo" draggable="false" resizable="false" closable="false" id="EstadoCivilEstadoCivilDialogo"  
                                   showEffect="fade" hideEffect="fade" width="410" modal="true" height="340" >
                             <p:dataTable id="lovEstadoCivilEstadoCivil" style=" width: 370px" var="estadoCivilEC" value="#{controlPersonaIndividual.lovEstadosCiviles}" rowKey="#{estadoCivilEC.secuencia}"
                                          selection="#{controlPersonaIndividual.estadoCivilSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovEstadoCivilEstadoCivil" scrollable="true" scrollHeight="200"
@@ -1799,7 +1798,7 @@
                         <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="errorTopeEmpleadosEmpresa.hide();" style="position: absolute; top: 65px; left: 320px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorEmpleadoRegistrado" header="#{msg['atencion']}" widgetVar="errorEmpleadoRegistrado"  resizable="false" draggable="false" modal="true" height="88" width="308px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorEmpleadoRegistrado" header="#{msg['atencion']}" widgetVar="errorEmpleadoRegistrado"  resizable="false" draggable="false" modal="true" height="88" width="308px" style="font-size: 12px; z-index: 999; " closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/alerta.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorEmpleadoRegistrado']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                         <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="errorEmpleadoRegistrado.hide();" style="position: absolute; top: 55px; left: 200px" process="@this" />

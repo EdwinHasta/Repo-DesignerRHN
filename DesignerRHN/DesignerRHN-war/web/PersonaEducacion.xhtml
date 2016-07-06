@@ -959,7 +959,7 @@
                                       rowKey="#{adiestramientosNF.secuencia}" selection="#{controlPersonaEducacion.seleccionAdiestramientosNoFormales}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlPersonaEducacion.activarAceptar()}" update=":formularioDialogos:aceptarANF"/>
                             <p:ajax event="rowDblselect" listener="#{controlPersonaEducacion.actualizarAdiestramientoNF()}" process="@this" />
-                            <p:ajax event="filter" listener="#{controlPersonaEducacion.eventoFiltrarAdientramientoNF()}"/>
+                            <p:ajax event="filter" listener="#{controlPersonaEducacion.eventoFiltrarAdiestramientoNF()}"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarA']}"  style="position: absolute; left: 27px; top: 15px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVAdiestramientosNF.filter();" style="width:100px; position: relative; left: 60px;" />  

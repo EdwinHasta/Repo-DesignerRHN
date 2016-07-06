@@ -106,7 +106,7 @@ public class CargarArchivoPlano implements Serializable {
     private int index, cualCelda;
 
     public CargarArchivoPlano() {
-        index = -1;
+        novedadTablaSeleccionada = null;
         cualCelda = -1;
         editarNovedad = new TempNovedades();
         bandera = 0;
@@ -139,11 +139,7 @@ public class CargarArchivoPlano implements Serializable {
             administrarCargueArchivos.obtenerConexion(ses.getId());
             listTempNovedades = null;
             getListTempNovedades();
-            if (listTempNovedades != null) {
-                infoRegistro = "Cantidad de registros : " + listTempNovedades.size();
-            } else {
-                infoRegistro = "Cantidad de registros : 0";
-            }
+            contarRegistros();
         } catch (Exception e) {
             System.out.println("Error postconstruct CargarArchivoPlano: " + e);
             System.out.println("Causa: " + e.getCause());
@@ -151,12 +147,12 @@ public class CargarArchivoPlano implements Serializable {
     }
 
     public void editarCelda() {
-        if (index >= 0) {
+        if (novedadTablaSeleccionada != null) {
             RequestContext context = RequestContext.getCurrentInstance();
             if (tipoLista == 0) {
-                editarNovedad = listTempNovedades.get(index);
+                editarNovedad = novedadTablaSeleccionada;
             } else {
-                editarNovedad = filtrarListTempNovedades.get(index);
+                editarNovedad = novedadTablaSeleccionada;
             }
             if (cualCelda == 0) {//Concepto
                 context.update("formDialogos:editarConcepto");
@@ -211,10 +207,11 @@ public class CargarArchivoPlano implements Serializable {
         if (event.getFile().getFileName().substring(event.getFile().getFileName().lastIndexOf(".") + 1).equalsIgnoreCase("prn")) {
             nombreArchivoPlano = event.getFile().getFileName();
             transformarArchivo(event.getFile().getSize(), event.getFile().getInputstream(), event.getFile().getFileName());
+            modificarInfoRegistro(listTempNovedades.size());
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:errorExtencionArchivo");
-            context.execute("errorExtencionArchivo.show()");
+            context.update("form:errorExtensionArchivo");
+            context.execute("errorExtensionArchivo.show()");
         }
     }
 
@@ -510,16 +507,6 @@ public class CargarArchivoPlano implements Serializable {
         }
     }
 
-    public void eventoFiltrar() {
-        if (tipoLista == 0) {
-            tipoLista = 1;
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        infoRegistro = "Cantidad de Registros: " + filtrarListTempNovedades.size();
-
-        context.update("form:informacionRegistro");
-    }
-
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
@@ -581,7 +568,7 @@ public class CargarArchivoPlano implements Serializable {
             filtrarListTempNovedades = null;
             tipoLista = 0;
         }
-        index = -1;
+        novedadTablaSeleccionada = null;
         cualCelda = -1;
     }
 
@@ -898,13 +885,13 @@ public class CargarArchivoPlano implements Serializable {
         aceptar = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:formula");
-        /*
-        context.update("formDialogos:formulasDialogo");
-        context.update("formDialogos:lovFormulas");
-        context.update("formDialogos:aceptarF");*/
+        
         context.reset("formDialogos:lovFormulas:globalFilter");
         context.execute("lovFormulas.clearFilters()");
         context.execute("formulasDialogo.hide()");
+        context.update("formDialogos:formulasDialogo");
+        context.update("formDialogos:lovFormulas");
+        context.update("formDialogos:aceptarF");
     }
 
     public void cancelarSeleccionFormula() {
@@ -924,6 +911,7 @@ public class CargarArchivoPlano implements Serializable {
 
     public void botonListaValores() {
         RequestContext context = RequestContext.getCurrentInstance();
+        modificarInfoRegistroFormulas(listaFormulas.size());
         context.update("formDialogos:formulasDialogo");
         context.execute("formulasDialogo.show()");
     }
@@ -991,16 +979,12 @@ public class CargarArchivoPlano implements Serializable {
         usarFormulaConcepto = "S";
         listTempNovedades = null;
         getListTempNovedades();
-        if (listTempNovedades != null) {
-            infoRegistro = "Cantidad de registros : " + listTempNovedades.size();
-        } else {
-            infoRegistro = "Cantidad de registros : 0";
-        }
-        index = -1;
+        contarRegistros();
+        novedadTablaSeleccionada = null;
         cualCelda = -1;
         subTotal = new BigDecimal("0");
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:informacionRegistro");
+        //context.update("form:infoRegistro");
         context.update("form:nombreArchivo");
         context.update("form:formula");
         context.update("form:usoFormulaC");
@@ -1116,6 +1100,7 @@ public class CargarArchivoPlano implements Serializable {
         subTotal = new BigDecimal(0);
         botones = false;
         cargue = true;
+        modificarInfoRegistro(listTempNovedades.size());
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:subtotal");
         context.update("form:FileUp");
@@ -1222,6 +1207,36 @@ public class CargarArchivoPlano implements Serializable {
         context.responseComplete();
     }
 
+       public void eventoFiltrar() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
+           modificarInfoRegistro(filtrarListTempNovedades.size());
+    }
+    
+    public void modificarInfoRegistro(int valor){
+        infoRegistro = String.valueOf(valor);
+    }
+    
+    public void modificarInfoRegistroFormulas(int valor){
+        infoRegistroFormula = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formDialogos:infoRegistroFormula");
+        
+    }
+    
+    public void modificarInfoRegistroDocumentos(int valor){
+        infoRegistroDocumento = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formDialogos:infoRegistroDocumento");
+    }
+    
+    public void contarRegistros(){
+        if(listTempNovedades != null){
+            modificarInfoRegistro(listTempNovedades.size());
+        } else{
+            modificarInfoRegistro(0);
+        }
+        RequestContext.getCurrentInstance().update("form:infoRegistro");
+    }
     //GETTER AND SETTER
     public List<TempNovedades> getListTempNovedades() {
         if (UsuarioBD == null) {
@@ -1419,13 +1434,7 @@ public class CargarArchivoPlano implements Serializable {
     }
 
     public TempNovedades getNovedadTablaSeleccionada() {
-        getListTempNovedades();
-        if (listTempNovedades != null) {
-            int tam = listTempNovedades.size();
-            if (tam > 0) {
-                novedadTablaSeleccionada = listTempNovedades.get(0);
-            }
-        }
+        //getListTempNovedades();
         return novedadTablaSeleccionada;
     }
 
@@ -1434,12 +1443,7 @@ public class CargarArchivoPlano implements Serializable {
     }
 
     public String getInfoRegistroFormula() {
-        getListaFormulas();
-        if (listaFormulas != null) {
-            infoRegistroFormula = "Cantidad de registros : " + listaFormulas.size();
-        } else {
-            infoRegistroFormula = "Cantidad de registros : 0";
-        }
+      //  getListaFormulas();
         return infoRegistroFormula;
     }
 
@@ -1448,12 +1452,7 @@ public class CargarArchivoPlano implements Serializable {
     }
 
     public String getInfoRegistroDocumento() {
-        getDocumentosSoporteCargados();
-        if (documentosSoporteCargados != null) {
-            infoRegistroDocumento = "Cantidad de registros : " + documentosSoporteCargados.size();
-        } else {
-            infoRegistroDocumento = "Cantidad de registros : 0";
-        }
+       // getDocumentosSoporteCargados();
         return infoRegistroDocumento;
     }
 

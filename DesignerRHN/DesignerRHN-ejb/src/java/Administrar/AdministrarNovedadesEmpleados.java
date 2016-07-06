@@ -103,6 +103,7 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
     //Trae las novedades del empleado cuya secuencia se envía como parametro//
     @Override
     public List<Novedades> novedadesEmpleado(BigInteger secuenciaEmpleado) {
+        System.out.println("novedadesEmpleado() secuenciaEmpleado: " +secuenciaEmpleado);
         try {
             return persistenciaNovedades.novedadesEmpleado(em, secuenciaEmpleado);
         } catch (Exception e) {
