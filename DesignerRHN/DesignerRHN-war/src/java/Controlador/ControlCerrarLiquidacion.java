@@ -69,11 +69,7 @@ public class ControlCerrarLiquidacion implements Serializable {
             administrarCerrarLiquidacion.obtenerConexion(ses.getId());
             listaParametros = null;
             getListaParametros();
-            if (listaParametros != null) {
-                infoRegistro = "Cantidad de registros : " + listaParametros.size();
-            } else {
-                infoRegistro = "Cantidad de registros : 0";
-            }
+            contarRegistros();
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -142,20 +138,10 @@ public class ControlCerrarLiquidacion implements Serializable {
         exporter.export(context, tabla, "EmpleadosLiqudacion_XLS", false, false, "UTF-8", null, null);
         context.responseComplete();
     }
-    
+
     public void salir() {
         parametroEstructura = null;
         listaParametros = null;
-    }
-
-    public void eventoFiltrar() {
-        if (tipoLista == 0) {
-            tipoLista = 1;
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        infoRegistro = "Cantidad de Registros: " + filtradoListaParametros.size();
-
-        context.update("form:informacionRegistro");
     }
 
     public void activarCtrlF11() {
@@ -181,6 +167,27 @@ public class ControlCerrarLiquidacion implements Serializable {
         }
     }
 
+    public void eventoFiltrar() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
+        modificarInfoRegistro(filtradoListaParametros.size());
+
+    }
+
+    public void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:informacionRegistro");
+    }
+
+    public void contarRegistros(){
+        if(listaParametros != null){
+            modificarInfoRegistro(listaParametros.size());
+        } else {
+            modificarInfoRegistro(0);
+        }
+    }
+    
     //GETTER AND SETTER
     public Integer getTotalEmpleadosParaLiquidar() {
         totalEmpleadosParaLiquidar = administrarCerrarLiquidacion.contarEmpleadosParaLiquidar();
