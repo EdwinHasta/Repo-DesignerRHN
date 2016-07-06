@@ -79,6 +79,7 @@ public class AdministrarNovedadesTerceros implements AdministrarNovedadesTercero
     }
 
     //Listas de Conceptos, Formulas, Periodicidades, Terceros
+    @Override
     public List<Terceros> Terceros() {
         return persistenciaTerceros.todosTerceros(em);
     }
