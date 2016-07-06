@@ -89,8 +89,8 @@ public class IniciarReporte implements IniciarReporteInterface, Serializable {
                 //exporter.setParameter(JRDocxExporterParameter., Boolean.FALSE);
             }
             if (exporter != null) {
-                exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
                 exporter.setParameter(JRExporterParameter.JASPER_PRINT, imprimir);
+                exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outFileName);
                 exporter.exportReport();
             }
             System.out.println("fin. " + outFileName);

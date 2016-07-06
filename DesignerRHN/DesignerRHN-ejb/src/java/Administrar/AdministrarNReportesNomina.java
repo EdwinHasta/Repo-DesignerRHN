@@ -31,6 +31,7 @@ import InterfacePersistencia.PersistenciaTercerosInterface;
 import InterfacePersistencia.PersistenciaTiposAsociacionesInterface;
 import InterfacePersistencia.PersistenciaTiposTrabajadoresInterface;
 import InterfacePersistencia.PersistenciaUbicacionesGeograficasInterface;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
@@ -216,9 +217,10 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
     }
 
     @Override
-    public List<Terceros> listTerceros() {
+    public List<Terceros> listTerceros(BigInteger secEmpresa) {
         try {
-            listTerceros = persistenciaTerceros.buscarTerceros(em);
+            //listTerceros = persistenciaTerceros.buscarTerceros(em);
+            listTerceros = persistenciaTerceros.lovTerceros(em, secEmpresa);
             return listTerceros;
         } catch (Exception e) {
             System.out.println("Error listTerceros : " + e.toString());

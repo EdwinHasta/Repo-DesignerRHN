@@ -17,6 +17,7 @@ import Entidades.Terceros;
 import Entidades.TiposAsociaciones;
 import Entidades.TiposTrabajadores;
 import Entidades.UbicacionesGeograficas;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -72,7 +73,7 @@ public interface AdministrarNReportesNominaInterface {
      *
      * @return
      */
-    public List<Terceros> listTerceros();
+    public List<Terceros> listTerceros(BigInteger secEmpresa);
 
     /**
      *

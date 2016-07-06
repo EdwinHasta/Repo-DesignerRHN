@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "GENERALESINN")
 public class Generales implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -420,6 +420,8 @@ public class Generales implements Serializable {
     }
 
     public String getPathreportes() {
+        System.out.println(this.getClass().getName() + ".getPathreportes()");
+        System.out.println("pathreportes: " + pathreportes);
         return pathreportes;
     }
 
@@ -612,6 +614,8 @@ public class Generales implements Serializable {
     }
 
     public String getUbicareportes() {
+        System.out.println(this.getClass().getName() + ".getUbicareportes()");
+        System.out.println("ubicareportes: " + ubicareportes);
         return ubicareportes;
     }
 
@@ -779,5 +783,4 @@ public class Generales implements Serializable {
     public String toString() {
         return "Entidades.Generales[ secuencia=" + secuencia + " ]";
     }
-    
 }

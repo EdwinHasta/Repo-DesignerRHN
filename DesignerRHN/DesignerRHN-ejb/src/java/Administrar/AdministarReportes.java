@@ -10,6 +10,7 @@ import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaGeneralesInterface;
 import Reportes.IniciarReporteInterface;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -21,8 +22,8 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.fill.AsynchronousFilllListener;
 
 /**
- * Clase Stateful. <br>
- * Clase encargada de realizar las operaciones lógicas para los reportes.
+ * Clase Stateful. <br> Clase encargada de realizar las operaciones lógicas para
+ * los reportes.
  *
  * @author betelgeuse
  */
@@ -33,30 +34,26 @@ public class AdministarReportes implements AdministarReportesInterface {
     //ATRIBUTOS
     //--------------------------------------------------------------------------    
     /**
-     * Enterprise JavaBean.<br>
-     * Atributo que representa todo lo referente a la conexión del usuario que
-     * está usando el aplicativo.
+     * Enterprise JavaBean.<br> Atributo que representa todo lo referente a la
+     * conexión del usuario que está usando el aplicativo.
      */
     @EJB
     AdministrarSesionesInterface administrarSesiones;
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia
-     * 'persistenciaEmpleado'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaEmpleado'.
      */
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia
-     * 'persistenciaGenerales'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaGenerales'.
      */
     @EJB
     PersistenciaGeneralesInterface persistenciaGenerales;
     /**
-     * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia
-     * 'persistenciaActualUsuario'.
+     * Enterprise JavaBeans.<br> Atributo que representa la comunicación con la
+     * persistencia 'persistenciaActualUsuario'.
      */
     @EJB
     PersistenciaActualUsuarioInterface persistenciaActualUsuario;
@@ -125,14 +122,16 @@ public class AdministarReportes implements AdministarReportesInterface {
             return pathReporteGenerado;
         }
         return pathReporteGenerado;
-        /* } catch (SQLException ex) {
-         System.out.println("PUM PUM xD");
-         return null;
-         }*/
+        /*
+         * } catch (SQLException ex) { System.out.println("PUM PUM xD"); return
+         * null;
+         }
+         */
     }
 
     @Override
     public String generarReporte(String nombreReporte, String tipoReporte) {
+        System.out.println(this.getClass().getName() + ".generarReporte()");
         try {
             general = persistenciaGenerales.obtenerRutas(em);
             String nombreUsuario = persistenciaActualUsuario.actualAliasBD(em);
@@ -140,11 +139,11 @@ public class AdministarReportes implements AdministarReportesInterface {
             if (general != null && nombreUsuario != null) {
                 SimpleDateFormat formato = new SimpleDateFormat("ddMMyyyyhhmmss");
                 String fechaActual = formato.format(new Date());
-                String nombreArchivo = "JR" + nombreUsuario + fechaActual;
+                String nombreArchivo = "JR" + nombreReporte + nombreUsuario + fechaActual;
                 String rutaReporte = general.getPathreportes();
                 String rutaGenerado = general.getUbicareportes();
-                System.err.println("general.getPathreportes() : "+general.getPathreportes());
-                System.err.println("general.getUbicareportes() : "+general.getUbicareportes());
+                System.out.println("general.getPathreportes() : " + general.getPathreportes());
+                System.out.println("general.getUbicareportes() : " + general.getUbicareportes());
                 if (tipoReporte.equals("PDF")) {
                     nombreArchivo = nombreArchivo + ".pdf";
                 } else if (tipoReporte.equals("XLSX")) {
@@ -159,13 +158,16 @@ public class AdministarReportes implements AdministarReportesInterface {
                     nombreArchivo = nombreArchivo + ".rtf";
                 }
                 consultarDatosConexion();
+                System.out.println("conexion: " + conexion);
                 if (conexion != null && !conexion.isClosed()) {
                     pathReporteGenerado = reporte.ejecutarReporte(nombreReporte, rutaReporte, rutaGenerado, nombreArchivo, tipoReporte, conexion);
-                    conexion.close();
+                    //conexion.close();
                     return pathReporteGenerado;
                 }
                 return pathReporteGenerado;
             }
+            System.out.println("pathReporteGenerado: " + pathReporteGenerado);
+            System.out.println("Sali sin Errores");
             return pathReporteGenerado;
         } catch (SQLException ex) {
             System.out.println("Error AdministrarReporte.generarReporte: " + ex);

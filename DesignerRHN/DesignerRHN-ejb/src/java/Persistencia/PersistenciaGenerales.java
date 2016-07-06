@@ -17,6 +17,7 @@ public class PersistenciaGenerales implements PersistenciaGeneralesInterface {
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
     public Generales obtenerRutas(EntityManager em) {
+        System.out.println(this.getClass().getName() + ".obtenerRutas()");
         try {
             em.clear();
             Query query = em.createQuery("SELECT g FROM Generales g");
@@ -24,7 +25,7 @@ public class PersistenciaGenerales implements PersistenciaGeneralesInterface {
             List<Generales> listaGenerales = query.getResultList();
             if (listaGenerales != null && !listaGenerales.isEmpty()) {
                 //System.out.println("PersistenciaGenerales obtenerRutas Tamaño listaGenerales : " + listaGenerales.size());
-                //System.out.println("PersistenciaGenerales obtenerRutas Tamaño listaGenerales.getPathreportes : " + listaGenerales.get(0).getPathreportes());
+                System.out.println("PersistenciaGenerales obtenerRutas Tamaño listaGenerales.getPathreportes : " + listaGenerales.get(0).getPathreportes());
                 return listaGenerales.get(0);
             }
             return null;
