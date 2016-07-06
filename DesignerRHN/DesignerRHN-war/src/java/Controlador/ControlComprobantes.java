@@ -54,7 +54,7 @@ public class ControlComprobantes implements Serializable {
     private List<SolucionesNodos> filtradolistaSolucionesNodosEmpleador;
     private SolucionesNodos solucionNodoEmpleadorSeleccionada;
     //REGISTRO ACTUAL
-    private int registroActual, tablaActual;
+    private int registroActual, tablaActual,index;
     //OTROS
     private boolean aceptar, mostrarTodos;
     private Locale locale = new Locale("es", "CO");
@@ -896,19 +896,19 @@ public class ControlComprobantes implements Serializable {
             String fechaDesde = null, fechaHasta = null;
             if (tablaActual == 0) {
                 if (listaSolucionesNodosEmpleado != null && !listaSolucionesNodosEmpleado.isEmpty()) {
-                    secFormula = solucionNodoSeleccionada.getFormula().getSecuencia();//listaSolucionesNodosEmpleado.get(index)
-                    fechaDesde = formatoFecha.format(solucionNodoSeleccionada.getFechadesde()); //listaSolucionesNodosEmpleado.get(index)
-                    fechaHasta = formatoFecha.format(solucionNodoSeleccionada.getFechahasta()); //listaSolucionesNodosEmpleado.get(index)
-                    secEmpleado = solucionNodoSeleccionada.getEmpleado().getSecuencia(); //listaSolucionesNodosEmpleado.get(index)
-                    secProceso = solucionNodoSeleccionada.getProceso().getSecuencia();//listaSolucionesNodosEmpleado.get(index)
+                    secFormula = listaSolucionesNodosEmpleado.get(index).getFormula().getSecuencia();//
+                    fechaDesde = formatoFecha.format(listaSolucionesNodosEmpleado.get(index).getFechadesde()); //
+                    fechaHasta = formatoFecha.format(listaSolucionesNodosEmpleado.get(index).getFechahasta()); //
+                    secEmpleado = listaSolucionesNodosEmpleado.get(index).getEmpleado().getSecuencia(); //
+                    secProceso = listaSolucionesNodosEmpleado.get(index).getProceso().getSecuencia();//
                 }
             } else if (tablaActual == 1) {
                 if (listaSolucionesNodosEmpleador != null && !listaSolucionesNodosEmpleador.isEmpty()) {
-                    secFormula = solucionNodoEmpleadorSeleccionada.getFormula().getSecuencia();  //listaSolucionesNodosEmpleador.get(index)
-                    fechaDesde = formatoFecha.format(solucionNodoEmpleadorSeleccionada.getFechadesde()); // listaSolucionesNodosEmpleador.get(index)
-                    fechaHasta = formatoFecha.format(solucionNodoEmpleadorSeleccionada.getFechahasta()); //listaSolucionesNodosEmpleador.get(index)
-                    secEmpleado = solucionNodoEmpleadorSeleccionada.getEmpleado().getSecuencia(); //listaSolucionesNodosEmpleador.get(index)
-                    secProceso = solucionNodoEmpleadorSeleccionada.getProceso().getSecuencia(); //listaSolucionesNodosEmpleador.get(index)
+                    secFormula = listaSolucionesNodosEmpleador.get(index).getFormula().getSecuencia();  //
+                    fechaDesde = formatoFecha.format(listaSolucionesNodosEmpleador.get(index).getFechadesde()); // 
+                    fechaHasta = formatoFecha.format(listaSolucionesNodosEmpleador.get(index).getFechahasta()); //
+                    secEmpleado = listaSolucionesNodosEmpleador.get(index).getEmpleado().getSecuencia(); //
+                    secProceso = listaSolucionesNodosEmpleador.get(index).getProceso().getSecuencia(); //
                 }
             }
             if (secFormula != null && fechaDesde != null) {
@@ -940,7 +940,11 @@ public class ControlComprobantes implements Serializable {
     }
 
     public String getInfoRegistroComprobante() {
-        infoRegistroComprobante = "Reg. " + (registroActual ) + " de " + listaParametros.size();
+        if(listaParametros != null){
+        infoRegistroComprobante = "Reg. " + (registroActual + 1 ) + " de " + listaParametros.size();
+        } else{
+            infoRegistroComprobante = "Reg. " + (registroActual) + " de " + listaParametros.size();
+        }
         return infoRegistroComprobante;
     }
 

@@ -149,11 +149,7 @@ public class CargarArchivoPlano implements Serializable {
     public void editarCelda() {
         if (novedadTablaSeleccionada != null) {
             RequestContext context = RequestContext.getCurrentInstance();
-            if (tipoLista == 0) {
                 editarNovedad = novedadTablaSeleccionada;
-            } else {
-                editarNovedad = novedadTablaSeleccionada;
-            }
             if (cualCelda == 0) {//Concepto
                 context.update("formDialogos:editarConcepto");
                 context.execute("editarConcepto.show()");
@@ -201,13 +197,46 @@ public class CargarArchivoPlano implements Serializable {
         String type = map.get("t"); // type attribute of node
         index = Integer.parseInt(type);
         cualCelda = Integer.parseInt(name);
+        novedadTablaSeleccionada = listTempNovedades.get(index);
+        cambiarIndice(novedadTablaSeleccionada, cualCelda);
     }
 
+    public void cambiarIndice(TempNovedades novedadT,int celda){
+        novedadTablaSeleccionada= novedadT;
+        cualCelda = celda;
+        novedadTablaSeleccionada.getSecuencia();
+        if(cualCelda == 0){
+            novedadTablaSeleccionada.getConcepto();
+        } else if( cualCelda == 1){
+            novedadTablaSeleccionada.getEmpleado();
+        } else if(cualCelda == 2){
+            novedadTablaSeleccionada.getFechainicial();
+        } else if (cualCelda == 3){
+            novedadTablaSeleccionada.getFechafinal();
+        } else if(cualCelda == 4){
+            novedadTablaSeleccionada.getFechareporte();
+        } else if(cualCelda == 5){
+            novedadTablaSeleccionada.getDocumentosoporte();
+        } else if(cualCelda == 6){
+            novedadTablaSeleccionada.getValortotal();
+        } else if(cualCelda == 7){
+            novedadTablaSeleccionada.getPeriodicidad();
+        } else if(cualCelda == 8){
+            novedadTablaSeleccionada.getTercero();
+        } else if(cualCelda == 9){
+            novedadTablaSeleccionada.getSaldo();
+        } else if(cualCelda == 10){
+            novedadTablaSeleccionada.getUnidadesparteentera();
+        } else if(cualCelda == 11){
+            novedadTablaSeleccionada.getUnidadespartefraccion();
+        }
+    }
+    
     public void cargarArchivo(FileUploadEvent event) throws IOException {
         if (event.getFile().getFileName().substring(event.getFile().getFileName().lastIndexOf(".") + 1).equalsIgnoreCase("prn")) {
             nombreArchivoPlano = event.getFile().getFileName();
             transformarArchivo(event.getFile().getSize(), event.getFile().getInputstream(), event.getFile().getFileName());
-            modificarInfoRegistro(listTempNovedades.size());
+            contarRegistros();
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:errorExtensionArchivo");
@@ -422,7 +451,8 @@ public class CargarArchivoPlano implements Serializable {
                         break;
                     }
                 } else {
-                    tNovedades.setUnidadesparteentera(null);
+                   // tNovedades.setUnidadesparteentera(null);
+                    tNovedades.setUnidadesparteentera(0);
                 }
                 //UNIDAD FRACCIONADA
                 String unF = sCadena.substring(128, 133).trim();
@@ -437,7 +467,8 @@ public class CargarArchivoPlano implements Serializable {
                         break;
                     }
                 } else {
-                    tNovedades.setUnidadespartefraccion(null);
+                    //tNovedades.setUnidadespartefraccion(null);
+                    tNovedades.setUnidadespartefraccion(0);
                 }
                 //TIPO
                 String sTipo = sCadena.substring(133).trim();
@@ -511,29 +542,29 @@ public class CargarArchivoPlano implements Serializable {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             columnaConcepto = (Column) c.getViewRoot().findComponent("form:tempNovedades:columnaConcepto");
-            columnaConcepto.setFilterStyle("width: 60px");
+            columnaConcepto.setFilterStyle("width: 85%");
             columnaDocumentoSoporte = (Column) c.getViewRoot().findComponent("form:tempNovedades:columnaDocumentoSoporte");
-            columnaDocumentoSoporte.setFilterStyle("width: 60px");
+            columnaDocumentoSoporte.setFilterStyle("width: 85%");
             columnaEmpleado = (Column) c.getViewRoot().findComponent("form:tempNovedades:columnaEmpleado");
-            columnaEmpleado.setFilterStyle("width: 60px");
+            columnaEmpleado.setFilterStyle("width: 85%");
             columnaFechaFinal = (Column) c.getViewRoot().findComponent("form:tempNovedades:columnaFechaFinal");
-            columnaFechaFinal.setFilterStyle("width: 60px");
+            columnaFechaFinal.setFilterStyle("width: 85%");
             columnaFechaInicial = (Column) c.getViewRoot().findComponent("form:tempNovedades:columnaFechaInicial");
-            columnaFechaInicial.setFilterStyle("width: 60px");
+            columnaFechaInicial.setFilterStyle("width: 85%");
             columnaFechaReporte = (Column) c.getViewRoot().findComponent("form:tempNovedades:columnaFechaReporte");
-            columnaFechaReporte.setFilterStyle("width: 60px");
+            columnaFechaReporte.setFilterStyle("width: 85%");
             columnaPeriodicidad = (Column) c.getViewRoot().findComponent("form:tempNovedades:columnaPeriodicidad");
-            columnaPeriodicidad.setFilterStyle("width: 60px");
+            columnaPeriodicidad.setFilterStyle("width: 85%");
             columnaSaldo = (Column) c.getViewRoot().findComponent("form:tempNovedades:columnaSaldo");
-            columnaSaldo.setFilterStyle("width: 60px");
+            columnaSaldo.setFilterStyle("width: 85%");
             columnaTercero = (Column) c.getViewRoot().findComponent("form:tempNovedades:columnaTercero");
-            columnaTercero.setFilterStyle("width: 60px");
+            columnaTercero.setFilterStyle("width: 85%");
             columnaUnidadEntera = (Column) c.getViewRoot().findComponent("form:tempNovedades:columnaUnidadEntera");
-            columnaUnidadEntera.setFilterStyle("width: 60px");
+            columnaUnidadEntera.setFilterStyle("width: 85%");
             columnaUnidadFraccion = (Column) c.getViewRoot().findComponent("form:tempNovedades:columnaUnidadFraccion");
-            columnaUnidadFraccion.setFilterStyle("width: 60px");
+            columnaUnidadFraccion.setFilterStyle("width: 85%");
             columnaValorTotal = (Column) c.getViewRoot().findComponent("form:tempNovedades:columnaValorTotal");
-            columnaValorTotal.setFilterStyle("width: 60px");
+            columnaValorTotal.setFilterStyle("width: 85%");
             altoTabla = "108";
             RequestContext.getCurrentInstance().update("form:tempNovedades");
             bandera = 1;
@@ -1096,11 +1127,12 @@ public class CargarArchivoPlano implements Serializable {
         administrarCargueArchivos.borrarRegistrosTempNovedades(UsuarioBD.getAlias());
         listTempNovedades = null;
         listTempNovedades = administrarCargueArchivos.consultarTempNovedades(UsuarioBD.getAlias());
+        //modificarInfoRegistro(listTempNovedades.size());
+        contarRegistros();
         nombreArchivoPlano = null;
         subTotal = new BigDecimal(0);
         botones = false;
         cargue = true;
-        modificarInfoRegistro(listTempNovedades.size());
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:subtotal");
         context.update("form:FileUp");
@@ -1214,6 +1246,10 @@ public class CargarArchivoPlano implements Serializable {
            modificarInfoRegistro(filtrarListTempNovedades.size());
     }
     
+      public void eventoFiltrarFormulas(){
+          modificarInfoRegistroFormulas(filtradoFormulas.size());
+      } 
+       
     public void modificarInfoRegistro(int valor){
         infoRegistro = String.valueOf(valor);
     }
@@ -1244,6 +1280,14 @@ public class CargarArchivoPlano implements Serializable {
         }
         if (UsuarioBD.getAlias() != null) {
             listTempNovedades = administrarCargueArchivos.consultarTempNovedades(UsuarioBD.getAlias());
+        }
+        if(listTempNovedades != null){
+            if(!listTempNovedades.isEmpty()){
+               subTotal = new BigDecimal(0);
+                for(int i =0; i<listTempNovedades.size();i++){
+                    subTotal = subTotal.add(listTempNovedades.get(i).getValortotal());
+                }
+            }
         }
 
         return listTempNovedades;
