@@ -126,7 +126,8 @@
                         </fieldset>
 
                         <p:commandButton id="btnBuscarEmpleados" style="position: absolute; left: 630px; top: 120px; height: 30px; width: 180px; background-image: url(Imagenes/Iconos/buscardbL.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=" " actionListener="#{controlNovedadesEmpleados.asignarIndex( 0, 0)}" process="@this"/>
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=" " actionListener="#{controlNovedadesEmpleados.asignarIndex( 0, 0)}" 
+                                         onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" process="@this"/>
                         <p:commandButton id="btnMostrarTodos" style="position: absolute; left: 630px; top: 160px; height: 30px; width: 180px; background-image: url(Imagenes/Iconos/todosdbL.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=" " actionListener="#{controlNovedadesEmpleados.mostrarTodos()}" process="@this"/>
 
@@ -954,6 +955,11 @@
                     <p:dialog id="errorObjetosDB" header="#{msg['error']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="70" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 5px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+                     
+                    <p:dialog id="operacionEnProceso" header="#{msg['informacion']}" widgetVar="operacionEnProceso"  resizable="false" draggable="false" modal="true" height="65" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/cargando.gif" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['operacionProceso']}" style="font-size: 12px; position: absolute; left: 95px; top: 20px; width: 240px; font-weight:bold;" />
                     </p:dialog>
 
                     <!--HotKey-->

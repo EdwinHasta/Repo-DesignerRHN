@@ -134,6 +134,9 @@ public class ControlNovedadesEmpleados implements Serializable {
     private String altoTabla;
     BigDecimal valor = new BigDecimal(Integer.toString(0));
     private String infoRegistro, infoRegistroConceptos, infoRegistroPeriodicidad, infoRegistroFormulas, infoRegistroTerceros, infoRegistrosEmpleadosNovedades, infoRegistroEmpleadosLOV;
+    //Controlar el cargue de muchos empleados
+    private boolean cargarTodos;
+    private int cantidadEmpleadosNov;
 
     public ControlNovedadesEmpleados() {
         actualNovedadTabla = new Novedades();
@@ -165,6 +168,8 @@ public class ControlNovedadesEmpleados implements Serializable {
         nuevaNovedad.setTipo("FIJA");
         altoTabla = "155";
         nuevaNovedad.setValortotal(valor);
+        cargarTodos = false;
+        cantidadEmpleadosNov = 0;
     }
 
     @PostConstruct
@@ -179,6 +184,11 @@ public class ControlNovedadesEmpleados implements Serializable {
             if (listaEmpleadosNovedad != null) {
                 if (!listaEmpleadosNovedad.isEmpty()) {
                     empleadoSeleccionado = listaEmpleadosNovedad.get(0);
+                }
+                if (cargarTodos) {
+                    modificarInfoRegistroEmpleados(cantidadEmpleadosNov);
+                } else {
+                    modificarInfoRegistroEmpleados(listaEmpleadosNovedad.size());
                 }
             }
             contarRegistros();
@@ -272,11 +282,11 @@ public class ControlNovedadesEmpleados implements Serializable {
         //Si ninguna de las 3 listas (crear,modificar,borrar) tiene algo, hace esto
         //{
         if (listaNovedadesCrear.isEmpty() && listaNovedadesBorrar.isEmpty() && listaNovedadesModificar.isEmpty()) {
-         //secuenciaEmpleado = empleadoSeleccionado.getId();
+            //secuenciaEmpleado = empleadoSeleccionado.getId();
             listaNovedades = null;
             getListaNovedades();
             contarRegistros();
-           // novedadSeleccionada = null;
+            // novedadSeleccionada = null;
             RequestContext context = RequestContext.getCurrentInstance();
             activoBtnAcumulado = true;
             context.update("form:ACUMULADOS");
@@ -728,6 +738,10 @@ public class ControlNovedadesEmpleados implements Serializable {
         tipoActualizacion = tipoAct;
 
         if (cualLista == 0) {
+            if (cargarTodos) {
+                cargarTodosEmpleados();
+                cargarTodos = false;
+            }
             modificarInfoRegistroLovEmpleados(lovEmpleados.size());
             context.update("formularioDialogos:empleadosDialogo");
             context.execute("empleadosDialogo.show()");
@@ -1084,7 +1098,7 @@ public class ControlNovedadesEmpleados implements Serializable {
             } else if (tipoNuevo == 2) {
                 CodigoConcepto = duplicarNovedad.getConcepto().getCodigoSTR();
             }
-            System.out.println("tipoNuevo: "+tipoNuevo);
+            System.out.println("tipoNuevo: " + tipoNuevo);
             System.out.println("campo:" + Campo);
         } else if (Campo.equals("CODIGO")) {
             if (tipoNuevo == 1) {
@@ -1486,15 +1500,17 @@ public class ControlNovedadesEmpleados implements Serializable {
                 listaEmpleadosNovedad.add(lovEmpleados.get(i));
             }
         }
-        modificarInfoRegistro(listaNovedades.size());
         listaNovedades = null;
+        empleadoSeleccionado = null;
+        modificarInfoRegistroEmpleados(listaEmpleadosNovedad.size());
+        getListaNovedades();
+        modificarInfoRegistro(0);
         context.update("form:ACUMULADOS");
         context.update("form:datosEmpleados");
         context.update("form:datosNovedadesEmpleado");
         activoBtnAcumulado = true;
         filtrarListaEmpleadosNovedad = null;
         aceptar = true;
-        empleadoSeleccionado = null;
         tipoActualizacion = -1;
         cualCelda = -1;
     }
@@ -1547,11 +1563,11 @@ public class ControlNovedadesEmpleados implements Serializable {
         context.reset("formularioDialogos:LOVEmpleados:globalFilter");
         context.execute("LOVEmpleados.clearFilters()");
         context.execute("empleadosDialogo.hide()");
-        
+
         context.update("formularioDialogos:empleadosDialogo");
         context.update("formularioDialogos:LOVEmpleados");
         context.update("formularioDialogos:aceptarE");
-        
+
     }
 
     public void cancelarCambioFormulas() {
@@ -1754,7 +1770,7 @@ public class ControlNovedadesEmpleados implements Serializable {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
-        } else{
+        } else {
             RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
     }
@@ -1780,6 +1796,15 @@ public class ControlNovedadesEmpleados implements Serializable {
     public void cargarLOVTerceros() {
         if (listaTerceros == null || listaTerceros.isEmpty()) {
             listaTerceros = administrarNovedadesEmpleados.lovTerceros();
+        }
+    }
+
+    public void cargarTodosEmpleados() {
+        listaEmpleadosNovedad = null;
+        listaEmpleadosNovedad = administrarNovedadesEmpleados.empleadosNovedad();
+        lovEmpleados = new ArrayList<PruebaEmpleados>();
+        for (int i = 0; i < listaEmpleadosNovedad.size(); i++) {
+            lovEmpleados.add(listaEmpleadosNovedad.get(i));
         }
     }
 
@@ -2050,13 +2075,19 @@ public class ControlNovedadesEmpleados implements Serializable {
 
     public List<PruebaEmpleados> getListaEmpleadosNovedad() {
         if (listaEmpleadosNovedad == null) {
-            listaEmpleadosNovedad = administrarNovedadesEmpleados.empleadosNovedad();
-            lovEmpleados = new ArrayList<PruebaEmpleados>();
-            for (int i = 0; i < listaEmpleadosNovedad.size(); i++) {
-                lovEmpleados.add(listaEmpleadosNovedad.get(i));
+
+            cantidadEmpleadosNov = administrarNovedadesEmpleados.cuantosEmpleadosNovedad();
+            System.out.println("getListaEmpleadosNovedad() cantidadEmpleadosNov : " + cantidadEmpleadosNov);
+
+            if (cantidadEmpleadosNov > 150) {
+                listaEmpleadosNovedad = administrarNovedadesEmpleados.empleadosNovedadSoloAlgunos();
+                cargarTodos = true;
+            } else if (cantidadEmpleadosNov == -1) {
+                System.err.println("ERROR EN getListaEmpleadosNovedad() NO TRAE EL CONTEO DE LOS EMPLEADOS");
+            } else {
+                cargarTodosEmpleados();
             }
         }
-        modificarInfoRegistroEmpleados(listaEmpleadosNovedad.size());
         return listaEmpleadosNovedad;
     }
 
@@ -2216,5 +2247,4 @@ public class ControlNovedadesEmpleados implements Serializable {
     public void setInfoRegistroEmpleadosLOV(String infoRegistroEmpleadosLOV) {
         this.infoRegistroEmpleadosLOV = infoRegistroEmpleadosLOV;
     }
-
 }

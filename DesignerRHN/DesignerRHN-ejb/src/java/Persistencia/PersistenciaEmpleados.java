@@ -13,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import org.omg.CORBA.INTERNAL;
 //import org.apache.log4j.Logger;
 //import org.apache.log4j.PropertyConfigurator;
 
@@ -30,7 +31,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     //private final SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
 
     /*
-     * @PersistenceContext(unitName = "DesignerRHN-ejbPU") private EntityManager em;
+     * @PersistenceContext(unitName = "DesignerRHN-ejbPU") private EntityManager
+     * em;
      */
     @Override
     public void crear(EntityManager em, Empleados empleados) {
@@ -106,8 +108,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
      * System.out.println(this.getClass().getName() + ".buscarEmpleados()");
      * em.clear(); List<Empleados> empleadosLista = (List<Empleados>)
      * em.createQuery("SELECT e FROM Empleados e").getResultList(); return
-     * empleadosLista;
-     }
+     * empleadosLista; }
      */
     @Override
     public List<Empleados> buscarEmpleados(EntityManager em) {
@@ -302,6 +303,51 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
                     + "and tt.tipo IN ('ACTIVO','PENSIONADO','RETIRADO'))";
             Query query = em.createNativeQuery(sqlQuery, Empleados.class);
             List<Empleados> listaEmpleados = query.getResultList();
+            return listaEmpleados;
+        } catch (Exception e) {
+            //PropertyConfigurator.configure("log4j.properties");
+            //logger.error("Metodo: empleadosNovedad - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public int contarEmpleadosNovedad(EntityManager em) {
+        try {
+            em.clear();
+            String sqlQuery = "select count(*) \n"
+                    + "from empleados v where EXISTS (SELECT 'X' from  VWACTUALESTIPOSTRABAJADORES vtt, tipostrabajadores  tt\n"
+                    + "where tt.secuencia = vtt.tipotrabajador\n"
+                    + "and   vtt.empleado = v.secuencia\n"
+                    + "and tt.tipo IN ('ACTIVO','PENSIONADO','RETIRADO'))";
+            Query query = em.createNativeQuery(sqlQuery);
+            Long resultado = new Long(query.getSingleResult().toString());
+            System.out.println("contarEmpleadosNovedad resultado : " + resultado);
+
+            int N = new Integer(query.getSingleResult().toString());
+            System.out.println("contarEmpleadosNovedad retorno : " + N);
+            return N;
+        } catch (Exception e) {
+            System.out.println("Error contarEmpleadosNovedad() : " + e);
+            return -1;
+        }
+    }
+
+    @Override
+    public List<Empleados> empleadosNovedadSoloAlgunos(EntityManager em) {
+        try {
+            em.clear();
+            String sqlQuery = "select "
+                    + "SECUENCIA, CODIGOEMPLEADO, RUTATRANSPORTE, PARQUEADERO, FECHACREACION, "
+                    + "CODIGOALTERNATIVO, PAGASUBSIDIOTRANSPORTELEGAL, "
+                    + "PERSONA, EMPRESA, USUARIOBD "
+                    + "from empleados v where EXISTS (SELECT 'X' from  VWACTUALESTIPOSTRABAJADORES vtt, tipostrabajadores  tt\n"
+                    + "where tt.secuencia = vtt.tipotrabajador\n"
+                    + "and   vtt.empleado = v.secuencia\n"
+                    + "and tt.tipo IN ('ACTIVO','PENSIONADO','RETIRADO')) and ROWNUM < 50";
+            Query query = em.createNativeQuery(sqlQuery, Empleados.class);
+            List<Empleados> listaEmpleados = query.getResultList();
+            System.out.println("");
             return listaEmpleados;
         } catch (Exception e) {
             //PropertyConfigurator.configure("log4j.properties");

@@ -121,6 +121,10 @@ public interface PersistenciaEmpleadoInterface {
      */
     public List<Empleados> empleadosNovedad(EntityManager em);
 
+    public List<Empleados> empleadosNovedadSoloAlgunos(EntityManager em);
+    
+    public int contarEmpleadosNovedad(EntityManager em);
+
     /**
      * Método encargado de buscar todos los Empleados existentes en la base de
      * datos, ordenados por código.

@@ -73,15 +73,22 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
     //Trae los empleados con Novedades dependiendo el Tipo de Trabajador que sea.
 
     @Override
-    public List<PruebaEmpleados> empleadosNovedad() {
+    public int cuantosEmpleadosNovedad() {
+        try {
+            return persistenciaEmpleados.contarEmpleadosNovedad(em);
+        } catch (Exception e) {
+            System.err.println("Error AdministrarNovedadesEmpleados.cuantosEmpleadosNovedad : " + e);
+            return -1;
+        }
+    }
 
-        List<Empleados> listaEmpleados = persistenciaEmpleados.empleadosNovedad(em);
+    @Override
+    public List<PruebaEmpleados> empleadosNovedadSoloAlgunos() {
+        List<Empleados> listaEmpleados = persistenciaEmpleados.empleadosNovedadSoloAlgunos(em);
         List<PruebaEmpleados> listaEmpleadosNovedad = new ArrayList<PruebaEmpleados>();
         for (int i = 0; i < listaEmpleados.size(); i++) {
             //Traer los datos del empleado con sueldo actual
             PruebaEmpleados p = persistenciaPruebaEmpleados.empleadosAsignacion(em, listaEmpleados.get(i).getSecuencia());
-            //Traer el tipo de empleado de VWActualesTiposTrabajadores
-//            String tipo = persistenciaVWActualesTiposTrabajadores.consultarTipoTrabajador(em, listaEmpleados.get(i).getSecuencia());
 
             if (p != null) {
 //                p.setTipo(tipo);
@@ -95,7 +102,31 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
                 p.setValor(null);
                 listaEmpleadosNovedad.add(p);
             }
+        }
+        return listaEmpleadosNovedad;
+    }
 
+    @Override
+    public List<PruebaEmpleados> empleadosNovedad() {
+
+        List<Empleados> listaEmpleados = persistenciaEmpleados.empleadosNovedad(em);
+        List<PruebaEmpleados> listaEmpleadosNovedad = new ArrayList<PruebaEmpleados>();
+        for (int i = 0; i < listaEmpleados.size(); i++) {
+            //Traer los datos del empleado con sueldo actual
+            PruebaEmpleados p = persistenciaPruebaEmpleados.empleadosAsignacion(em, listaEmpleados.get(i).getSecuencia());
+
+            if (p != null) {
+//                p.setTipo(tipo);
+                listaEmpleadosNovedad.add(p);
+            } else {
+                p = new PruebaEmpleados();
+                p.setCodigo(listaEmpleados.get(i).getCodigoempleado());
+                p.setId(listaEmpleados.get(i).getSecuencia());
+                p.setNombre(listaEmpleados.get(i).getPersona().getNombreCompleto());
+//                p.setTipo(tipo);
+                p.setValor(null);
+                listaEmpleadosNovedad.add(p);
+            }
         }
         return listaEmpleadosNovedad;
     }
@@ -103,7 +134,7 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
     //Trae las novedades del empleado cuya secuencia se envía como parametro//
     @Override
     public List<Novedades> novedadesEmpleado(BigInteger secuenciaEmpleado) {
-        System.out.println("novedadesEmpleado() secuenciaEmpleado: " +secuenciaEmpleado);
+        System.out.println("novedadesEmpleado() secuenciaEmpleado: " + secuenciaEmpleado);
         try {
             return persistenciaNovedades.novedadesEmpleado(em, secuenciaEmpleado);
         } catch (Exception e) {

@@ -95,6 +95,7 @@ public class PersistenciaClasesAusentismos implements PersistenciaClasesAusentis
         }
     }
 
+    @Override
     public BigInteger contadorSoAusentismosClaseAusentismo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {

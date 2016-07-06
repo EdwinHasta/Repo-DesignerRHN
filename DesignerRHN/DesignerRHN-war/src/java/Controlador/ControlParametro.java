@@ -127,14 +127,17 @@ public class ControlParametro implements Serializable {
         Map<String, String> map = contexto.getExternalContext().getRequestParameterMap();
         String LOV = map.get("LOV");
         if (LOV.equals("ESTRUCTURA")) {
+            cargarLovEstrucuras();
             contarRegistrosLovEstr(0);
             context.update("formularioDialogos:estructurasDialogo");
             context.execute("estructurasDialogo.show()");
         } else if (LOV.equals("TIPO TRABAJADOR")) {
+            cargarLovTiposTrabajadores();
             contarRegistrosLovTT(0);
             context.update("formularioDialogos:TipoTrabajadorDialogo");
             context.execute("TipoTrabajadorDialogo.show()");
         } else if (LOV.equals("PROCESO")) {
+            cargarLovProcesos();
             contarRegistrosLovProc(0);
             context.update("formularioDialogos:ProcesosDialogo");
             context.execute("ProcesosDialogo.show()");
@@ -394,9 +397,7 @@ public class ControlParametro implements Serializable {
         if (confirmarCambio.equalsIgnoreCase("ESTRUCTURA")) {
             if (!valorConfirmar.isEmpty()) {
                 parametroLiquidacion.getEstructura().setNombre(nombreEstructura);
-                if (lovEstructuras == null) {
-                    getLovEstructuras();
-                }
+                cargarLovEstrucuras();
                 if (lovEstructuras != null) {
                     for (int i = 0; i < lovEstructuras.size(); i++) {
                         if (lovEstructuras.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
@@ -409,12 +410,11 @@ public class ControlParametro implements Serializable {
                         context.update("form:Estructura");
                         context.update("form:codigoCC");
                         context.update("form:nombreCC");
-//                        lovEstructuras.clear();
-//                        getLovEstructuras();
                         guardado = false;
                         cambiosParametros = true;
                         context.update("form:ACEPTAR");
                     } else {
+                        cargarLovEstrucuras();
                         contarRegistrosLovEstr(0);
                         context.update("formularioDialogos:estructurasDialogo");
                         context.execute("estructurasDialogo.show()");
@@ -437,9 +437,7 @@ public class ControlParametro implements Serializable {
         } else if (confirmarCambio.equalsIgnoreCase("TIPO TRABAJADOR")) {
             if (!valorConfirmar.isEmpty()) {
                 parametroLiquidacion.getTipotrabajador().setNombre(nombreTipoTrabajador);
-                if (lovTiposTrabajadores == null) {
-                    getLovTiposTrabajadores();
-                }
+                cargarLovTiposTrabajadores();
                 if (lovTiposTrabajadores != null) {
                     for (int i = 0; i < lovTiposTrabajadores.size(); i++) {
                         if (lovTiposTrabajadores.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
@@ -450,12 +448,11 @@ public class ControlParametro implements Serializable {
                     if (coincidencias == 1) {
                         parametroLiquidacion.setTipotrabajador(lovTiposTrabajadores.get(indiceUnicoElemento));
                         context.update("form:tipoTrabajador");
-//                        lovTiposTrabajadores.clear();
-//                        getLovTiposTrabajadores();
                         guardado = false;
                         cambiosParametros = true;
                         context.update("form:ACEPTAR");
                     } else {
+                        cargarLovTiposTrabajadores();
                         contarRegistrosLovTT(0);
                         context.update("formularioDialogos:TipoTrabajadorDialogo");
                         context.execute("TipoTrabajadorDialogo.show()");
@@ -474,9 +471,7 @@ public class ControlParametro implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("PROCESO")) {
             parametroLiquidacion.getProceso().setDescripcion(nombreProceso);
-            if (lovProcesos == null) {
-                getLovProcesos();
-            }
+            cargarLovProcesos();
             if (lovProcesos != null) {
                 for (int i = 0; i < lovProcesos.size(); i++) {
                     if (lovProcesos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
@@ -487,12 +482,11 @@ public class ControlParametro implements Serializable {
                 if (coincidencias == 1) {
                     parametroLiquidacion.setProceso(lovProcesos.get(indiceUnicoElemento));
                     context.update("form:proceso");
-//                    lovProcesos.clear();
-//                    getLovProcesos();
                     guardado = false;
                     cambiosParametros = true;
                     context.update("form:ACEPTAR");
                 } else {
+                    cargarLovProcesos();
                     contarRegistrosLovProc(0);
                     context.update("formularioDialogos:ProcesosDialogo");
                     context.execute("ProcesosDialogo.show()");
@@ -738,14 +732,17 @@ public class ControlParametro implements Serializable {
     public void listaValoresBoton() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualCelda == 3) {
+            cargarLovEstrucuras();
             contarRegistrosLovEstr(0);
             context.update("formularioDialogos:estructurasDialogo");
             context.execute("estructurasDialogo.show()");
         } else if (cualCelda == 6) {
+            cargarLovTiposTrabajadores();
             contarRegistrosLovTT(0);
             context.update("formularioDialogos:TipoTrabajadorDialogo");
             context.execute("TipoTrabajadorDialogo.show()");
         } else if (cualCelda == 7) {
+            cargarLovProcesos();
             contarRegistrosLovProc(0);
             context.update("formularioDialogos:ProcesosDialogo");
             context.execute("ProcesosDialogo.show()");
@@ -1061,7 +1058,37 @@ public class ControlParametro implements Serializable {
             infoRegistroEmpleado = String.valueOf(0);
         }
         RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroEmpleado");
+        RequestContext.getCurrentInstance().update("formularioDialogos:buscarEmpleadoDialogo");
+        RequestContext.getCurrentInstance().update("formularioDialogos:lovEmpleados");
     }
+    
+///////////  Cargar listas de valores:  //////////
+    
+    public void cargarLovEmpleados() {
+        if (lovEmpleados == null) {
+            lovEmpleados = administrarParametros.empleadosLov();
+        }
+        contarRegistrosLovEmpl(0);
+    }
+
+    public void cargarLovProcesos() {
+        if (lovProcesos == null) {
+            lovProcesos = administrarParametros.lovProcesos();
+        }
+    }
+
+    public void cargarLovTiposTrabajadores() {
+        if (lovTiposTrabajadores == null) {
+            lovTiposTrabajadores = administrarParametros.lovTiposTrabajadores();
+        }
+    }
+
+    public void cargarLovEstrucuras() {
+        if (lovEstructuras == null) {
+            lovEstructuras = administrarParametros.lovEstructuras();
+        }
+    }
+
 
     //GETTER AND SETTER
     public ParametrosEstructuras getParametroLiquidacion() {
@@ -1083,9 +1110,6 @@ public class ControlParametro implements Serializable {
     }
 
     public List<Estructuras> getLovEstructuras() {
-        if (lovEstructuras == null) {
-            lovEstructuras = administrarParametros.lovEstructuras();
-        }
         return lovEstructuras;
     }
 
@@ -1115,9 +1139,6 @@ public class ControlParametro implements Serializable {
 
     //GETS & SETS DE LOVTIPOSTRABAJADORES
     public List<TiposTrabajadores> getLovTiposTrabajadores() {
-        if (lovTiposTrabajadores == null) {
-            lovTiposTrabajadores = administrarParametros.lovTiposTrabajadores();
-        }
         return lovTiposTrabajadores;
     }
 
@@ -1144,9 +1165,6 @@ public class ControlParametro implements Serializable {
 
     //GETS & SETS DE LovProcesos
     public List<Procesos> getLovProcesos() {
-        if (lovProcesos == null) {
-            lovProcesos = administrarParametros.lovProcesos();
-        }
         return lovProcesos;
     }
 
@@ -1252,15 +1270,6 @@ public class ControlParametro implements Serializable {
     }
 
     public List<Empleados> getLovEmpleados() {
-//        
-//          if (lovEmpleados == null) { 
-//          lovEmpleados = administrarParametros.empleadosLov(); 
-//          } 
-//         return lovEmpleados;
-//        
-        if (lovEmpleados == null) {
-            lovEmpleados = administrarParametros.empleadosLov();
-        }
         return lovEmpleados;
     }
 

@@ -29,6 +29,8 @@ public interface AdministrarNovedadesEmpleadosInterface {
     public void obtenerConexion(String idSesion);
     public int solucionesFormulas(BigInteger secuenciaNovedad);
 
+    public int cuantosEmpleadosNovedad();
+    public List<PruebaEmpleados> empleadosNovedadSoloAlgunos();
     public List<PruebaEmpleados> empleadosNovedad();
 
     public List<Empleados> lovEmpleados();
