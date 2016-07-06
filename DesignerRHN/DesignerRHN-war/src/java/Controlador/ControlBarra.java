@@ -120,6 +120,7 @@ public class ControlBarra implements Serializable {
         } else {
             context.execute("permisoLiquidacion.show()");
         }
+        System.err.println("Termino la funcion liquidar()");
     }
 
     public void limpiarbarra() {
@@ -133,7 +134,7 @@ public class ControlBarra implements Serializable {
     }
 
     public void liquidacionCompleta() {
-        System.out.println("Liquidación Completada");
+        System.err.println("Liquidación Completada");
         FacesMessage msg = new FacesMessage("Información", "Liquidación terminada con Éxito.");
         FacesContext.getCurrentInstance().addMessage(null, msg);
         mensajeBarra = "Liquidación Completa (" + barra + "%)";
@@ -188,6 +189,7 @@ public class ControlBarra implements Serializable {
         consultarEstadoDatos();
         contarRegistrosCerrada(0);
         contarRegistrosEnProceso(0);
+        empezar = false;
     }
 
     public void salir() {

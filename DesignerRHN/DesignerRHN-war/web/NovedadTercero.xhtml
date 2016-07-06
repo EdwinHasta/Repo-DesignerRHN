@@ -722,7 +722,7 @@
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlNovedadesTerceros.secRegistro, 'Novedades', 'novedadtercero')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlNovedadesTerceros.novedadSeleccionada.secuencia, 'Novedades', 'novedadtercero')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
@@ -746,7 +746,7 @@
                     <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlNovedadesTerceros.secRegistro, 'Novedades', 'novedadtercero')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlNovedadesTerceros.novedadSeleccionada.secuencia, 'Novedades', 'novedadtercero')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
@@ -937,7 +937,6 @@
                                          actionListener="#{controlNovedadesTerceros.actualizarPeriodicidades()}" process="@this"/>
                         <p:commandButton id="atrasP" style=" position: absolute; left: 270px; top: 305px;"  value="#{msg['cancelar']}" icon="ui-icon-close" 
                                          actionListener="#{controlNovedadesTerceros.cancelarCambioPeriodicidades()}" process="@this"/>
-
                     </p:dialog>
 
 
@@ -988,7 +987,6 @@
                         <p:commandButton id="aceptarT" style="position: absolute; left: 325px; top: 315px;"  value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlNovedadesTerceros.aceptar}" 
                                          actionListener="#{controlNovedadesTerceros.actualizarTercerosNovedad()}" process="@this"/>
                         <p:commandButton id="atrasT" style=" position: absolute; left: 430px; top: 315px;"  value="#{msg['cancelar']}" icon="ui-icon-close" actionListener="#{controlNovedadesTerceros.cancelarCambioTerceros()}" process="@this"/>
-
                     </p:dialog>
 
                 </h:form>

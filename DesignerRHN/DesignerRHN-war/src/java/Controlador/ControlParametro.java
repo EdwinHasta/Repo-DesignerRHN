@@ -938,6 +938,7 @@ public class ControlParametro implements Serializable {
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
         getEmpleadosParametros();
         contarRegistros();
+        guardado = true;
     }
 
     private void cerrarFiltrado() {

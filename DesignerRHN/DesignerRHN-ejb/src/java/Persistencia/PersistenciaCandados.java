@@ -12,9 +12,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'Candados' de la base
- * de datos
+ * Clase Stateless. <br> Clase encargada de realizar operaciones sobre la tabla
+ * 'Candados' de la base de datos
  *
  * @author betelgeuse
  */
@@ -24,8 +23,9 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-     private EntityManager em;*/
+    /*
+     * @PersistenceContext(unitName = "DesignerRHN-ejbPU") private EntityManager em;
+     */
     @Override
     public boolean permisoLiquidar(EntityManager em, String usuarioBD) {
         try {
@@ -79,8 +79,8 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
     public Integer progresoLiquidacion(EntityManager em, Integer totalEmpleadosALiquidar) {
         try {
             em.clear();
-            //String sqlQuery = "select conteoliquidados(?) from dual";
-            String sqlQuery = "call liquidar_pkg.conteoLiquidados(?)";
+            String sqlQuery = "select liquidar_pkg.conteoliquidados(?) from dual";
+//            String sqlQuery = "call liquidar_pkg.conteoLiquidados(?)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, totalEmpleadosALiquidar);
             BigDecimal progreso = (BigDecimal) query.getSingleResult();

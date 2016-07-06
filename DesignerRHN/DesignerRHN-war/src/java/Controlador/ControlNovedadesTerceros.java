@@ -943,13 +943,13 @@ public class ControlNovedadesTerceros implements Serializable {
         listaNovedades = null;
         getListaNovedades();
         contarRegistrosNove();
-        context.update("form:datosTerceros");
-        context.update("form:datosNovedadesTercero");
         filtradosListaTercerosNovedad = null;
         aceptar = true;
         novedadSeleccionada = null;
         tipoActualizacion = -1;
         cualCelda = -1;
+        context.update("form:datosTerceros");
+        context.update("form:datosNovedadesTercero");
     }
 
     public void activarAceptar() {
@@ -1634,6 +1634,7 @@ public class ControlNovedadesTerceros implements Serializable {
             altoTabla = "165";
             cerrarFiltrado();
         }
+        mostrarTodos();
         terceroSeleccionado = null;
         listaNovedadesBorrar.clear();
         listaNovedadesCrear.clear();
