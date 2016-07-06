@@ -155,6 +155,7 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
             String sqlQuery = "call UTL_FORMS.ELIMINARLIQUIDACION()";
             Query query = em.createNativeQuery(sqlQuery);
             int resultado = query.executeUpdate();
+            System.out.println("resultado del borrado: "+resultado);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error cerrarLiquidacion. " + e);

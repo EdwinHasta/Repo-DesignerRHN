@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -203,8 +203,8 @@ public class ControlRemoto implements Serializable {
             actualizarInformacionTipoTrabajador();
             llenarBannerDefault();
             lovEmpresas = administrarCarpetaPersonal.consultarEmpresas();
-            RequestContext.getCurrentInstance().update("form:tabmenu:LovEmpresasDialogo");
-            RequestContext.getCurrentInstance().update("form:tabmenu:LovEmpresasTabla");
+            RequestContext.getCurrentInstance().update("form:tabmenu:lovempresasdialogo");
+            RequestContext.getCurrentInstance().update("form:tabmenu:lovempresastabla");
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -1591,18 +1591,18 @@ public class ControlRemoto implements Serializable {
 
     public void anularBotonEmpresas() {
         activarAceptarEmpresas = true;
-        RequestContext.getCurrentInstance().update("form:tabmenu:aceptarEmp");
+        RequestContext.getCurrentInstance().update("form:tabmenu:aceptaremp");
     }
 
     public void eventoFiltrarEmpresas() {
         anularBotonEmpresas();
         infoRegistroEmpresas = String.valueOf(filtradoLOVEmpresas.size());
-        RequestContext.getCurrentInstance().update("form:tabmenu:infoRegistroEmpresas");
+        RequestContext.getCurrentInstance().update("form:tabmenu:inforegistroempresas");
     }
 
     public void activarAceptarEmp() {
         activarAceptarEmpresas = false;
-        RequestContext.getCurrentInstance().update("form:tabmenu:aceptarEmp");
+        RequestContext.getCurrentInstance().update("form:tabmenu:aceptaremp");
     }
 
     public void asignarUnicaEmpresa() {
@@ -1625,10 +1625,10 @@ public class ControlRemoto implements Serializable {
                 redireccionPersonaIndividual();
             } else {
                 infoRegistroEmpresas = String.valueOf(lovEmpresas.size());
-                context.update("form:tabmenu:LovEmpresasDialogo");
-                context.update("form:tabmenu:LovEmpresasTabla");
-                context.update("form:tabmenu:infoRegistroEmpresas");
-                context.execute("LovEmpresasDialogo.show()");
+                context.update("form:tabmenu:lovempresasdialogo");
+                context.update("form:tabmenu:lovempresastabla");
+                context.update("form:tabmenu:inforegistroempresas");
+                context.execute("lovempresasdialogo.show()");
             }
         }
     }
