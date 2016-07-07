@@ -5697,7 +5697,7 @@ public class ControlPersonaIndividual implements Serializable {
             aceptar = true;
         }
         modificarInfoR_MetodoFormaP(filtrarLovMetodosPagos.size());
-        RequestContext.getCurrentInstance().update("formLovs:formDFormaPago:infoRegistroMetodoFormaPago");
+        RequestContext.getCurrentInstance().update("formLovs:formMetodo:infoRegistroMetodoFormaPago");
     }
 
     private void modificarInfoR_SucursalFormaP(int valor) {

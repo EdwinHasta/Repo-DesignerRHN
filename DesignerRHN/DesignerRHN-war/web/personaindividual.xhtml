@@ -242,7 +242,7 @@
                                 <fieldset style="position: absolute; font-size: 12px;top: 240px; width: 380px; height: 170px; border-radius: 10px; text-align: left">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['modCargo']}</strong></legend>
 
-                                    <h:outputText value="" style="position: absolute; background-image: url(Imagenes/Iconos/cargoDesempleñado.png); width: 50px; height: 50px; top: 25px; left: 5px; background-repeat: no-repeat; border: none; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
+                                    <h:outputText value="" style="position: absolute; background-image: url(Imagenes/Iconos/cargoDesempenado.png); width: 50px; height: 50px; top: 25px; left: 5px; background-repeat: no-repeat; border: none; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
 
                                     <h:outputText  value="#{msg['nombreCargo']}*" style="position: absolute; top: 25px; left: 65px;font-weight: bold"/>
                                     <p:inputText id="cargoModCargoDesempeñado" onclick="select();" value="#{controlPersonaIndividual.nuevaVigenciaCargo.cargo.nombre}" style="position: absolute; top: 20px; left: 230px;width: 150px;text-transform: uppercase">
@@ -556,7 +556,7 @@
                                     <fieldset style="position: absolute;font-size: 12px; top: 20px; width: 370px; height: 70px; border-radius: 10px; text-align: left">
                                         <legend style="font-size: 12px; color: blue"><strong>#{msg['modFactorRH']}</strong></legend>
 
-                                        <h:outputText value="" style="position: absolute; background-image: url(Imagenes/Iconos/tipotrabajador.png); width: 50px; height: 50px; top: 15px; left: 5px; background-repeat: no-repeat; border: none; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
+                                        <h:outputText value="" style="position: absolute; background-image: url(Imagenes/Iconos/tipoTrabajador.png); width: 50px; height: 50px; top: 15px; left: 5px; background-repeat: no-repeat; border: none; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
 
                                         <h:outputText  value="#{msg['grupoSanguineo']}" style="position: absolute; top: 20px; left: 65px;font-weight: bold"/>
                                         <p:selectOneMenu id="grupoSanguineoModFactorRH" value="#{controlPersonaIndividual.nuevaPersona.gruposanguineo}" 
@@ -1019,9 +1019,10 @@
                                         <h:outputText value="#{msg['buscarECC']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                         <p:inputText id="globalFilter" onkeyup="lovEstructuraCentroCosto.filter();" style="width:150px; position: relative; left: 5px;" />  
                                     </f:facet>
-                                    <p:column filterBy="#{estructuraCC.centrocosto.codigo}" filterMatchMode="contains" filterStyle="width: 85%" >
+                                    <p:column filterBy="#{estructuraCC.centrocosto.codigo}" width="80" filterMatchMode="contains" filterStyle="width: 85%" >
                                         <f:facet name="header">
-                                            <h:outputText style="text-align: center" value="#{msg['codigoCentroCosto']}" />
+                                            <h:outputText id="codCCLOV" style="text-align: center;" value="#{msg['codigo']}"/>
+                                             <p:tooltip for="codCCLOV" value="#{msg['codigoCentroCosto']}"/>
                                         </f:facet>
                                         <h:outputText  value="#{estructuraCC.centrocosto.codigo}" />
                                     </p:column>

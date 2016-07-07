@@ -852,6 +852,7 @@ public class ControlParametro implements Serializable {
             msg = new FacesMessage("Información", "No hay empleados que cumplan con los criterios parametrizados.");
             contexto.addMessage(null, msg);
         }
+        contarRegistros();
         context.update("form:growl");
         context.update("form:empleadosParametros");
         context.update("form:quitarTodos");
@@ -975,6 +976,11 @@ public class ControlParametro implements Serializable {
         } else {
             guardado = true;
         }
+        parametroLiquidacion = null;
+        getEmpleadosParametros();
+        getParametroLiquidacion();
+        empleadosParametros = null;
+        contarRegistros();
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:empleadosParametros");
         context.update("form:quitarTodos");

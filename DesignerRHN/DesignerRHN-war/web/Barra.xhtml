@@ -137,18 +137,18 @@
                             </fieldset>
                         </fieldset>
 
-                        <p:commandButton value="#{msg['consultar']}" icon="ui-icon-extlink" actionListener="#{controlBarra.consultarDatos()}" style="position: absolute; left: 690px; top: 38px; width: 160px; height: 28px; 
-                                         background-image: url(Imagenes/Iconos/botonL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; color: white;"/>
+                        <p:commandButton value="#{msg['consultar']}" icon="ui-icon-extlink" actionListener="#{controlBarra.consultarDatos()}" style="position: absolute; left: 700px; top: 77px; width: 160px; height: 28px; 
+                                         background-image: url(Imagenes/Iconos/botonL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; color: white; z-index: 999;"/>
 
                         <fieldset style="position: absolute; left: 510px; top: 75px; width: 340px; height: 407px; border-radius: 10px; padding-left: 10px; z-index: 1; font-size: 11px;">
-                            <h:outputText value="#{msg['liquidacionescerradas']}" style="font-weight: bold; color: blue; ; position: absolute; top: 10px; left: 10px"/>
-                            <fieldset style="padding: 0px; position: absolute; top: 25px; border: none">
+                        <h:outputText value="#{msg['liquidacionescerradas']}" style="font-weight: bold; color: blue; ; position: absolute; top: 20px; left: 12px"/>
+                            <fieldset style="padding: 0px; position: absolute; top: 35px; border: none">
                                 <p:dataTable id="datosLiquidacionesCerradas" var="liquidacionCerrada" style="width: 322px;" value="#{controlBarra.liquidacionesCerradas}"
                                              scrollable="true" scrollWidth="340" editable="true" editMode="cell"  
                                              scrollHeight="#{controlBarra.altoScrollLiquidacionesCerradas}" filteredValue="#{controlBarra.filtradoLiquidacionesCerradas}" emptyMessage="#{msg['sinregistro']}">
 
                                     <p:ajax event="filter" listener="#{controlBarra.contarRegistrosCerrada(1)}"/>
-                                    
+
                                     <p:column id="corte" headerText="#{msg['corte']}" sortBy="#{liquidacionCerrada.corte}" width="60" filterBy="#{liquidacionCerrada.corte}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding-left: 3px" > 
                                         <f:facet name="header">
                                             <h:outputText id="headCorte" value="#{msg['corte']}"/>
@@ -251,18 +251,19 @@
                                         </f:facet>
                                     </p:column>
                                 </p:dataTable>
-                                
+
                                 <h:outputText id="infoRegistroCerradas" value="#{msg['infoRegistro']} #{controlBarra.infoRegistroCerradas}" style="position: relative; left: 10px; top: 0px; font-weight: bold"/>
                             </fieldset>
-                            
-                            <h:outputText value="#{msg['liquidacionesenproceso']}" style="font-weight: bold; color: blue; ; position: absolute; top: 217px; left: 10px; margin: 0px;"/>
-                            <fieldset style="padding: 0px; position: absolute; top: 232px; border: none; margin: 0px;">
+
+                            <h:outputText value="#{msg['liquidacionesenproceso']}" style="font-weight: bold; color: blue; ; position: absolute; top: 222px; left: 10px; margin: 0px;"/>
+
+                            <fieldset style="padding: 0px; position: absolute; top: 237px; border: none; margin: 0px;">
                                 <p:dataTable id="datosLiquidacionesAbiertas" var="liquidacionAbierta" style="width: 322px;" value="#{controlBarra.liquidacionesAbiertas}"
                                              scrollable="true" scrollWidth="340"
                                              editable="true" editMode="cell" scrollHeight="#{controlBarra.altoScrollLiquidacionesAbiertas}" filteredValue="#{controlBarra.filtradoLiquidacionesAbiertas}" emptyMessage="#{msg['sinregistro']}">
 
                                     <p:ajax event="filter" listener="#{controlBarra.contarRegistrosEnProceso(1)}"/>
-                                    
+
                                     <p:column id="corteLA" headerText="#{msg['corte']}" sortBy="#{liquidacionAbierta.corte}" width="60" filterBy="#{liquidacionAbierta.corte}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding-left: 3px"> 
                                         <f:facet name="header">
                                             <h:outputText id="headcorteLA" value="#{msg['corte']}"/>

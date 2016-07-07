@@ -191,6 +191,8 @@ public class ControlNovedadesEmpleados implements Serializable {
                     modificarInfoRegistroEmpleados(listaEmpleadosNovedad.size());
                 }
             }
+            listaNovedades = null;
+            getListaNovedades();
             contarRegistros();
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
@@ -1288,8 +1290,10 @@ public class ControlNovedadesEmpleados implements Serializable {
         empleadoSeleccionado = listaEmpleadosNovedad.get(0);
         modificarInfoRegistroEmpleados(listaEmpleadosNovedad.size());
 //            secuenciaEmpleado = empleadoSeleccionadoLov.getId();
-        modificarInfoRegistro(listaNovedades.size());
         listaNovedades = null;
+        getListaNovedades();
+        modificarInfoRegistro(listaNovedades.size());
+        
         context.reset("formularioDialogos:LOVEmpleados:globalFilter");
         context.execute("LOVEmpleados.clearFilters()");
         context.execute("empleadosDialogo.hide()");
@@ -1817,6 +1821,14 @@ public class ControlNovedadesEmpleados implements Serializable {
         modificarInfoRegistro(filtradosListaNovedades.size());
     }
 
+    public void contarRegistros() {
+        if (listaNovedades != null) {
+            modificarInfoRegistro(listaNovedades.size());
+        } else {
+            modificarInfoRegistro(0);
+        }
+    }
+
     public void modificarInfoRegistro(int valor) {
         infoRegistro = String.valueOf(valor);
         RequestContext.getCurrentInstance().update("form:infoRegistro");
@@ -1850,14 +1862,6 @@ public class ControlNovedadesEmpleados implements Serializable {
     public void modificarInfoRegistroPeriodicidad(int valor) {
         infoRegistroPeriodicidad = String.valueOf(valor);
         RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroPeriodicidad");
-    }
-
-    public void contarRegistros() {
-        if (listaNovedades != null) {
-            modificarInfoRegistro(listaNovedades.size());
-        } else {
-            modificarInfoRegistro(0);
-        }
     }
 
     public void eventoFiltrarFormulas() {
