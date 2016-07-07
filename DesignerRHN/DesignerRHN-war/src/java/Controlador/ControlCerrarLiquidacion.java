@@ -84,8 +84,9 @@ public class ControlCerrarLiquidacion implements Serializable {
         Integer conteo = administrarCerrarLiquidacion.consultarConteoProcesoSN(parametroEstructura.getProceso().getSecuencia());
         if (conteo == totalEmpleadosParaLiquidar) {
             cerrarLiquidacion();
+            RequestContext.getCurrentInstance().execute("formularioDialogos:liquidacionRealizada.show()");
         } else {
-            RequestContext.getCurrentInstance().execute("confirmarCerrarConteoFallo.show();");
+            RequestContext.getCurrentInstance().execute("confirmarCerrarConteoFallo.show()");
         }
     }
 

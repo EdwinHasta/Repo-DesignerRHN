@@ -54,7 +54,7 @@ public class ControlComprobantes implements Serializable {
     private List<SolucionesNodos> filtradolistaSolucionesNodosEmpleador;
     private SolucionesNodos solucionNodoEmpleadorSeleccionada;
     //REGISTRO ACTUAL
-    private int registroActual, tablaActual,index;
+    private int registroActual, tablaActual, index;
     //OTROS
     private boolean aceptar, mostrarTodos;
     private Locale locale = new Locale("es", "CO");
@@ -527,19 +527,24 @@ public class ControlComprobantes implements Serializable {
 
     public void modificarInfoRegistroEmpleado(int valor) {
         infoRegistroEmpleado = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroEmpleado");
     }
 
     public void eventoFiltrarEmpleado() {
-        getListaParametrosLOV();
         modificarInfoRegistroEmpleado(filtradoListaParametrosLOV.size());
-        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroEmpleado");
+        System.out.println("eventoFiltrarEmpleado infoRegistroEmpleado : " + infoRegistroEmpleado);
+        System.out.println("listaFiltrado: " + filtradoListaParametrosLOV.size());
     }
 
-    public void contarRegistrosEmpleado(){
-        modificarInfoRegistroEmpleado(listaParametrosLOV.size());
-        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroEmpleado");
+    public void contarRegistrosEmpleado() {
+        if (listaParametrosLOV != null) {
+            modificarInfoRegistroEmpleado(listaParametrosLOV.size());
+        } else {
+            modificarInfoRegistroEmpleado(0);
+        }
+
     }
-    
+
     public void editarCelda() {
 //        System.out.println("cualcelda: " + cualCelda);
 //        System.out.println("solucionNodoSeleccionada: " + solucionNodoSeleccionada);
@@ -755,8 +760,13 @@ public class ControlComprobantes implements Serializable {
     public List<Parametros> getListaParametrosLOV() {
         if (listaParametrosLOV == null || listaParametrosLOV.isEmpty()) {
             listaParametrosLOV = administrarComprobantes.consultarParametrosComprobantesActualUsuario();
+            if(listaParametrosLOV != null){
+                modificarInfoRegistroEmpleado(listaParametrosLOV.size());
+            } else{
+                modificarInfoRegistroEmpleado(0);
+            }
         }
-        contarRegistrosEmpleado();
+        
         return listaParametrosLOV;
     }
 
@@ -940,9 +950,9 @@ public class ControlComprobantes implements Serializable {
     }
 
     public String getInfoRegistroComprobante() {
-        if(listaParametros != null){
-        infoRegistroComprobante = "Reg. " + (registroActual + 1 ) + " de " + listaParametros.size();
-        } else{
+        if (listaParametros != null) {
+            infoRegistroComprobante = "Reg. " + (registroActual + 1) + " de " + listaParametros.size();
+        } else {
             infoRegistroComprobante = "Reg. " + (registroActual) + " de " + listaParametros.size();
         }
         return infoRegistroComprobante;

@@ -203,8 +203,8 @@ public class ControlRemoto implements Serializable {
             actualizarInformacionTipoTrabajador();
             llenarBannerDefault();
             lovEmpresas = administrarCarpetaPersonal.consultarEmpresas();
-            RequestContext.getCurrentInstance().update("form:tabmenu:lovempresasdialogo");
-            RequestContext.getCurrentInstance().update("form:tabmenu:lovempresastabla");
+            RequestContext.getCurrentInstance().update("form:tabmenu:LovEmpresasDialogo");
+            RequestContext.getCurrentInstance().update("form:tabmenu:LovEmpresasTabla");
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -705,6 +705,8 @@ public class ControlRemoto implements Serializable {
         mostrarT = false;
         totalRegistros = 1;
         posicion = 0;
+        context.update("form:tabmenu:contenedor");
+        context.update("form:tabmenu:contenedor:mostrartodos");
         context.reset("form:lvbuscarempleado:globalfilter");
         context.execute("lvbuscarempleado.clearfilters()");
         context.execute("lvbe.hide()");
@@ -877,11 +879,7 @@ public class ControlRemoto implements Serializable {
         if (busquedaRapida == null) {
             filterBusquedaRapida = null;
             busquedaRapida = administrarCarpetaPersonal.consultarRapidaEmpleados();
-            if (busquedaRapida == null || busquedaRapida.isEmpty()) {
-                infoRegistroBusquedaRapida = "Registros: 0 ";
-            } else {
-                infoRegistroBusquedaRapida = "Registros: " + busquedaRapida.size();
-            }
+            contarRegistrosBR();
             context.update("form:lvbr");
         }
         context.execute("lvbr.show();");
@@ -892,11 +890,7 @@ public class ControlRemoto implements Serializable {
         if (buscarEmplTipo == null || buscarEmplTipo.isEmpty()) {
             filterBuscarEmpleado = null;
             buscarEmplTipo = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
-            if (buscarEmplTipo == null || buscarEmplTipo.isEmpty()) {
-                infoRegistroBuscarEmpleados = "Registros: 0 ";
-            } else {
-                infoRegistroBuscarEmpleados = "Registros: " + buscarEmplTipo.size();
-            }
+            contarRegistrosBE();
             context.update("form:lvbe");
         }
         context.execute("lvbe.show()");
@@ -1597,7 +1591,41 @@ public class ControlRemoto implements Serializable {
     public void eventoFiltrarEmpresas() {
         anularBotonEmpresas();
         infoRegistroEmpresas = String.valueOf(filtradoLOVEmpresas.size());
-        RequestContext.getCurrentInstance().update("form:tabmenu:inforegistroempresas");
+        RequestContext.getCurrentInstance().update("form:tabmenu:infoRegistroEmpresas");
+    }
+
+    public void eventoFiltrarBusquedaRapida() {
+        modificarInfoRegistroBR(filterBusquedaRapida.size());
+    }
+
+    public void modificarInfoRegistroBR(int valor) {
+        infoRegistroBusquedaRapida = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:inforegistrobusquedarapida");
+    }
+
+    public void modificarInfoRegistroBE(int valor) {
+        infoRegistroBuscarEmpleados = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:inforegistrobuscarempleados");
+    }
+
+    public void eventoFiltrarBusquedaEmpleado() {
+        modificarInfoRegistroBE(filterBuscarEmpleado.size());
+    }
+
+    public void contarRegistrosBE() {
+        if (buscarEmplTipo == null || buscarEmplTipo.isEmpty()) {
+            modificarInfoRegistroBE(0);
+        } else {
+            modificarInfoRegistroBE(buscarEmplTipo.size());
+        }
+    }
+
+    public void contarRegistrosBR() {
+        if (busquedaRapida == null || busquedaRapida.isEmpty()) {
+            modificarInfoRegistroBR(0);
+        } else {
+            modificarInfoRegistroBR(busquedaRapida.size());
+        }
     }
 
     public void activarAceptarEmp() {
@@ -1625,10 +1653,10 @@ public class ControlRemoto implements Serializable {
                 redireccionPersonaIndividual();
             } else {
                 infoRegistroEmpresas = String.valueOf(lovEmpresas.size());
-                context.update("form:tabmenu:lovempresasdialogo");
-                context.update("form:tabmenu:lovempresastabla");
-                context.update("form:tabmenu:inforegistroempresas");
-                context.execute("lovempresasdialogo.show()");
+                context.update("form:tabmenu:LovEmpresasDialogo");
+                context.update("form:tabmenu:LovEmpresasTabla");
+                context.update("form:tabmenu:infoRegistroEmpresas");
+                context.execute("LovEmpresasDialogo.show()");
             }
         }
     }

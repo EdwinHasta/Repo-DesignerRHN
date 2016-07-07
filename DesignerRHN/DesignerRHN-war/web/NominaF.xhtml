@@ -341,26 +341,26 @@
                                             #{msg['ingresodepersonal1']}<br/>#{msg['ingresodepersonal2']}
                                         </p:tooltip>
 
-                                        <p:dialog id="lovempresasdialogo" widgetVar="lovempresasdialogo" header="#{msg['empresaM']}" draggable="false" resizable="false" closable="false" onShow="lovempresastabla.filter();"
+                                        <p:dialog header="#{msg['empresaM']}" widgetVar="LovEmpresasDialogo" id="LovEmpresasDialogo" draggable="false" resizable="false" closable="false" onShow="LovEmpresasTabla.filter();"
                                                   showEffect="fade" hideEffect="fade" width="464" height="250">
-                                            <p:dataTable id="lovempresastabla" widgetVar="lovempresastabla" style=" width: 420px" var="empresaIPV" value="#{controlRemoto.lovEmpresas}" rowKey="#{empresaIPV.secuencia}"
+                                            <p:dataTable id="LovEmpresasTabla" widgetVar="LovEmpresasTabla" style=" width: 420px" var="empresaIPV" value="#{controlRemoto.lovEmpresas}" rowKey="#{empresaIPV.secuencia}"
                                                          selection="#{controlRemoto.empresaSeleccionada}" scrollWidth="440" selectionMode="single" scrollable="true" scrollHeight="120"
                                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlRemoto.filtradoLOVEmpresas}">
 
                                                 <p:ajax event="filter" listener="#{controlRemoto.eventoFiltrarEmpresas()}"/>
-                                                <p:ajax event="rowSelect" process="@this" immediate="true" listener="#{controlRemoto.activarAceptarEmp()}" update=":form:tabmenu:aceptaremp"/>
+                                                <p:ajax event="rowSelect" process="@this" immediate="true" listener="#{controlRemoto.activarAceptarEmp()}" update=":form:tabmenu:aceptarEmp"/>
                                                 <p:ajax event="rowDblselect" listener="#{controlRemoto.redireccionPersonaIndividual()}"
                                                         immediate="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible(controlRemoto.empresaSeleccionada)}" process="@this" />
 
                                                 <f:facet name="header">  
                                                     <h:outputText value="#{msg['buscarEIP']} :" style="position: absolute; left: 27px; top: 14px"/>  
-                                                    <p:inputText id="globalfilter" onkeyup="lovempresastabla.filter();" style="width: 240px; position: relative; left: 40px; height: 12px; text-transform: uppercase;"/>  
+                                                    <p:inputText id="globalFilter" onkeyup="LovEmpresasTabla.filter();" style="width: 240px; position: relative; left: 40px; height: 12px; text-transform: uppercase;"/>  
                                                 </f:facet>
                                                 <p:column filterBy="#{empresaIPV.nombre}" filterMatchMode="contains" filterStyle="width: 85%; height: 12px; text-transform: uppercase;">
                                                     <f:facet name="header">
                                                         <h:outputText style="text-align: center" value="#{msg['nombreEmpresa']}" />
                                                     </f:facet>
-                                                    <h:outputText value="#{empresaIPV.nombre}" />
+                                                    <h:outputText  value="#{empresaIPV.nombre}" />
                                                 </p:column>
                                                 <p:column style="text-align: center" filterBy="#{empresaIPV.nit}" width="80" filterMatchMode="contains" filterStyle="width: 85%; height: 12px; text-transform: uppercase;">
                                                     <f:facet name="header">
@@ -370,14 +370,14 @@
                                                 </p:column>
                                             </p:dataTable>
 
-                                            <h:outputText id="inforegistroempresas" value="#{msg['infoRegistro']} #{controlRemoto.infoRegistroEmpresas}" 
+                                            <h:outputText id="infoRegistroEmpresas" value="#{msg['infoRegistro']} #{controlRemoto.infoRegistroEmpresas}" 
                                                           style="position: relative; left: 10px; top: 0px; font-weight: bold"/>
 
-                                            <p:commandButton id="aceptaremp" widgetVar="aceptaremp" style="position: relative; left: 185px; top: 15px;" value="#{msg['aceptar']}" disabled="#{controlRemoto.activarAceptarEmpresas}" 
-                                                             actionListener="#{controlRemoto.redireccionPersonaIndividual()}" 
+                                            <p:commandButton id="aceptarEmp" style="position: relative; left: 185px; top: 15px" value="#{msg['aceptar']}" disabled="#{controlRemoto.activarAceptarEmpresas}" 
+                                                             actionListener="#{controlRemoto.redireccionPersonaIndividual()}" widgetVar="aceptarEmp"
                                                              process="@this" immediate="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible(controlRemoto.empresaSeleccionada)}" icon="ui-icon-check"/>
 
-                                            <p:commandButton id="atrasemp" style="position: relative; left: 185px; top: 15px;" value="#{msg['atras']}" oncomplete="lovempresasdialogo.hide()"
+                                            <p:commandButton id="atrasEmp" style="position: relative; left: 185px; top: 15px" value="#{msg['atras']}" oncomplete="LovEmpresasDialogo.hide()"
                                                              process="@this" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlRemoto.anularBotonEmpresas()}"/>
                                         </p:dialog>
 
@@ -755,44 +755,45 @@
                         <p:commandButton value="#{msg['atras']}" onclick="VentanaTab.hide();" style="position: absolute; top: 60px; left: 200px" />
                     </p:dialog>
 
-                    <p:dialog id="lvbr" widgetVar="lvbr" header="#{msg['busquedarapida']}" resizable="false" draggable="false" modal="true" height="300"  width="735"  closable="false">  
-                        <p:dataTable  id="lvbusquedarapida" widgetVar="lvbusquedarapida" style="width: 700px;" var="item" value="#{controlRemoto.busquedaRapida}"
+                    <p:dialog id="lvbr" widgetVar="lvbr" header="#{msg['busquedarapida']}" resizable="false" draggable="false" modal="true" height="300"  width="735" closable="false">  
+                        <p:dataTable  id="lvbusquedarapida" widgetVar="lvbusquedarapida" style=" width: 700px" var="item" value="#{controlRemoto.busquedaRapida}"
                                       scrollable="true" scrollHeight="162" scrollWidth="717"  
                                       filteredValue="#{controlRemoto.filterBusquedaRapida}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{item.rfEmpleado}" selection="#{controlRemoto.emplSeleccionado}" selectionMode="single">
 
-                            <p:ajax event="rowSelect" listener="#{controlRemoto.activarBuscar()}"  update=":form:buscarrap"/>
+                            <p:ajax event="rowSelect" listener="#{controlRemoto.activarBuscar()}" update=":form:buscarrap"/>
                             <p:ajax event="rowDblselect" listener="#{controlRemoto.busquedaRapida()}" process="@this" />
+                            <p:ajax event="filter" listener="#{controlRemoto.eventoFiltrarBusquedaRapida()}"/>
 
-                            <f:facet name="header" >  
+                            <f:facet name="header"> 
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 22px; top: 18px"/>  
-                                <p:inputText id="globalfilterrap" onkeyup="lvbusquedarapida.filter()" style="width:150px; position: relative; left: -150px;" />  
-                                <p:watermark for="globalfilterrap" value="#{msg['ingresarvalor']}" />
+                                <p:inputText id="globalfilter" onkeyup="lvbusquedarapida.filter();" style="width: 200px; position: relative; left: -120px;" />  
+                                <p:watermark for="globalfilter" value="#{msg['ingresarvalor']}" />
                             </f:facet>
 
-                            <p:column  headerText="#{msg['codigoE']}" filterOptions="" filterBy="#{item.codigoEmpleado}" filterMatchMode="contains">  
+                            <p:column  headerText="#{msg['codigoE']}" filterOptions="" filterBy="#{item.codigoEmpleado}" filterStyle="width: 85%;" filterMatchMode="contains">  
                                 <h:outputText value="#{item.codigoEmpleado}" />
                             </p:column>  
 
-                            <p:column headerText="#{msg['primerapellidoE']}" filterBy="#{item.primerApellido}" filterMatchMode="contains">  
+                            <p:column headerText="#{msg['primerapellidoE']}" filterBy="#{item.primerApellido}" filterStyle="width: 85%;" filterMatchMode="contains">  
                                 <h:outputText value="#{item.primerApellido}" />  
                             </p:column>  
 
-                            <p:column headerText="#{msg['segundoapellidoE']}" filterBy="#{item.segundoApellido}" filterMatchMode="contains" >  
+                            <p:column headerText="#{msg['segundoapellidoE']}" filterBy="#{item.segundoApellido}" filterStyle="width: 85%;" filterMatchMode="contains" >  
                                 <h:outputText value="#{item.segundoApellido}" />  
                             </p:column>  
 
-                            <p:column headerText="#{msg['nombre']}" width="160" filterBy="#{item.nombre}" filterMatchMode="contains">  
+                            <p:column headerText="#{msg['nombre']}" width="160" filterBy="#{item.nombre}" filterStyle="width: 85%;" filterMatchMode="contains">  
                                 <h:outputText value="#{item.nombre}" />  
                             </p:column>  
 
-                            <p:column headerText="#{msg['tipo']}" filterBy="#{item.tipo}" filterMatchMode="contains">  
+                            <p:column headerText="#{msg['tipo']}" filterBy="#{item.tipo}" filterStyle="width: 85%;" filterMatchMode="contains">  
                                 <h:outputText value="#{item.tipo}" />  
                             </p:column>
                         </p:dataTable> 
-                        <h:outputText id="inforegistrobusquedarapida" value="#{controlRemoto.infoRegistroBusquedaRapida}" style="position: absolute; left: 15px; top: 270px; font-weight: bold"/>
-                        <p:commandButton id="buscarrap" value="#{msg['aceptar']}" actionListener="#{controlRemoto.busquedaRapida}" icon="ui-icon-check"  style="position: absolute; top: 260px; left: 565px"  disabled="#{controlRemoto.buscar}"/>
-                        <p:commandButton value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w"  style="position: absolute; top: 260px; left: 653px" onclick="lvBr.hide()" />
+                        <h:outputText id="inforegistrobusquedarapida" value="#{msg['infoRegistro']} #{controlRemoto.infoRegistroBusquedaRapida}" style="position: relative; left: 10px; top: 5px; font-weight: bold"/>
+                        <p:commandButton id="buscarrap" value="#{msg['aceptar']}" actionListener="#{controlRemoto.busquedaRapida}" icon="ui-icon-check"  style="position: absolute; top: 270px; left: 530px"  disabled="#{controlRemoto.buscar}"/>
+                        <p:commandButton value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w"  style="position: absolute; top: 270px; left: 630px" onclick="lvBr.hide()" />
                     </p:dialog>
 
                     <p:dialog id="lvbe" widgetVar="lvbe" header="#{msg['empleadosE']}" resizable="false" draggable="false" modal="true" height="300"  width="735"  closable="false">  
@@ -803,32 +804,33 @@
 
                             <p:ajax event="rowSelect" listener="#{controlRemoto.activarBuscar()}"  update=":form:buscarempl"/>
                             <p:ajax event="rowDblselect" listener="#{controlRemoto.buscarEmpleado()}" process="@this" />
+                            <p:ajax event="filter" listener="#{controlRemoto.eventoFiltrarBusquedaEmpleado()}"/>
                             <f:facet name="header" >  
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 22px; top: 18px;"/>  
-                                <p:inputText id="globalfilter" onkeyup="buscarE.filter();" style="width:150px; position: relative; left: -150px;"/>
+                                <p:inputText id="globalfilter" onkeyup="lvbuscarempleado.filter();" style="width: 200px; position: relative; left: -120px;"/>
                                 <p:watermark for="globalfilter" value="#{msg['ingresarvalor']}" />
                             </f:facet>
 
-                            <p:column  headerText="#{msg['codigoE']}" filterOptions="" filterBy="#{item.codigoEmpleado}" filterMatchMode="contains">  
+                            <p:column  headerText="#{msg['codigoE']}" filterOptions="" filterBy="#{item.codigoEmpleado}" filterStyle="width: 85%;" filterMatchMode="contains">  
                                 <h:outputText value="#{item.codigoEmpleado}" />  
                             </p:column>  
 
-                            <p:column headerText="#{msg['primerapellidoE']}" filterBy="#{item.primerApellido}" filterMatchMode="contains">  
+                            <p:column headerText="#{msg['primerapellidoE']}" filterBy="#{item.primerApellido}" filterStyle="width: 85%;" filterMatchMode="contains">  
                                 <h:outputText value="#{item.primerApellido}" />  
                             </p:column>  
 
-                            <p:column headerText="#{msg['segundoapellidoE']}" filterBy="#{item.segundoApellido}" filterMatchMode="contains" >  
+                            <p:column headerText="#{msg['segundoapellidoE']}" filterBy="#{item.segundoApellido}" filterStyle="width: 85%;" filterMatchMode="contains" >  
                                 <h:outputText value="#{item.segundoApellido}" />  
                             </p:column>  
 
-                            <p:column headerText="#{msg['nombre']}" width="160" filterBy="#{item.nombre}" filterMatchMode="contains">  
+                            <p:column headerText="#{msg['nombre']}" width="160" filterBy="#{item.nombre}"  filterStyle="width: 85%;" filterMatchMode="contains">  
                                 <h:outputText value="#{item.nombre}" />  
                             </p:column>  
                         </p:dataTable> 
 
-                        <h:outputText id="inforegistrobuscarempleados" value="#{controlRemoto.infoRegistroBuscarEmpleados}" style="position: absolute; left: 15px; top: 270px; font-weight: bold"/>
-                        <p:commandButton id="buscarempl" value="#{msg['aceptar']}" icon="ui-icon-check" actionListener="#{controlRemoto.buscarEmpleado()}" disabled="#{controlRemoto.buscar}" style="position: absolute; top: 260px; left: 565px;"/>
-                        <p:commandButton value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" onclick="lvbe.hide()" style="position: absolute; top: 260px; left: 653px"/>
+                        <h:outputText id="inforegistrobuscarempleados" value="#{msg['infoRegistro']} #{controlRemoto.infoRegistroBuscarEmpleados}" style="position: relative; left: 10px; top: 5px; font-weight: bold"/>
+                        <p:commandButton id="buscarempl" value="#{msg['aceptar']}" icon="ui-icon-check" actionListener="#{controlRemoto.buscarEmpleado()}" disabled="#{controlRemoto.buscar}" style="position: absolute; top: 270px; left: 530px;"/>
+                        <p:commandButton value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" onclick="lvbe.hide()" style="position: absolute; top: 270px; left: 630px"/>
                     </p:dialog>
 
                     <!-- LOV TABLAS-->
