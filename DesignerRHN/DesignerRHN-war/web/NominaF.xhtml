@@ -275,7 +275,7 @@
 
                                         <!-- Cajas de Texto -->
 
-                                        <p:inputText id="vcargodesempeñado" style="position: absolute; left: 50px; top: 20px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.actualCargo}"  /> 
+                                        <p:inputText id="vcargodesempenhado" style="position: absolute; left: 50px; top: 20px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.actualCargo}"  /> 
                                         <p:inputText id="vfechacontratacion" style="position: absolute; left: 50px; top: 65px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="Fecha: #{controlRemoto.fechaActualesTiposContratos} - #{controlRemoto.vwActualesTiposContratos.tipoContrato.nombre}"/>
                                         <p:inputText id="vnormalaboral" style="position: absolute; left: 50px; top: 110px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesNormasEmpleados.normaLaboral.nombre}" />
                                         <p:inputText id="vafiliaciones" style="position: absolute; left: 50px; top: 155px; width: 210px; height: 12px; box-shadow: none; border: none; font-size:0.9em;" readonly="true" value="#{controlRemoto.vwActualesAfiliacionesSalud.tiposEntidades.nombre} - #{controlRemoto.vwActualesAfiliacionesSalud.tercerosSucursales.tercero.nombre} - #{controlRemoto.vwActualesAfiliacionesPension.tiposEntidades.nombre} - #{controlRemoto.vwActualesAfiliacionesPension.tercerosSucursales.tercero.nombre}" />
@@ -334,52 +334,12 @@
                                         </p:tooltip>
                                         <p:spacer styleClass="separador"/>
                                         <!-- Panel Ingresos Act. Pen. y Asp.--> 
-                                        <p:commandButton id="ingresopersonal" value="" disabled="#{controlRemoto.activo}" actionListener="#{controlRemoto.actualizarLOVEmpresas()}" widgetVar="IngresoPersonal" process="@this" 
+                                        <p:commandButton id="ingresopersonal" widgetVar="ingresopersonal" value="" disabled="#{controlRemoto.activo}" actionListener="#{controlRemoto.actualizarLOVEmpresas()}"  process="@this" 
                                                          onstart="#{controlRemoto.asignarUnicaEmpresa()}" oncomplete="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible(controlRemoto.unicaEmpresa)}"
                                                          styleClass="bticon" style="background-image: url(Imagenes/Iconos/ingreso.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; border: none;"/>                            
                                         <p:tooltip  for="ingresopersonal">
                                             #{msg['ingresodepersonal1']}<br/>#{msg['ingresodepersonal2']}
                                         </p:tooltip>
-
-                                        <p:dialog header="#{msg['empresaM']}" widgetVar="LovEmpresasDialogo" id="LovEmpresasDialogo" draggable="false" resizable="false" closable="false" onShow="LovEmpresasTabla.filter();"
-                                                  showEffect="fade" hideEffect="fade" width="464" height="250">
-                                            <p:dataTable id="LovEmpresasTabla" widgetVar="LovEmpresasTabla" style=" width: 420px" var="empresaIPV" value="#{controlRemoto.lovEmpresas}" rowKey="#{empresaIPV.secuencia}"
-                                                         selection="#{controlRemoto.empresaSeleccionada}" scrollWidth="440" selectionMode="single" scrollable="true" scrollHeight="120"
-                                                         emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlRemoto.filtradoLOVEmpresas}">
-
-                                                <p:ajax event="filter" listener="#{controlRemoto.eventoFiltrarEmpresas()}"/>
-                                                <p:ajax event="rowSelect" process="@this" immediate="true" listener="#{controlRemoto.activarAceptarEmp()}" update=":form:tabmenu:aceptarEmp"/>
-                                                <p:ajax event="rowDblselect" listener="#{controlRemoto.redireccionPersonaIndividual()}"
-                                                        immediate="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible(controlRemoto.empresaSeleccionada)}" process="@this" />
-
-                                                <f:facet name="header">  
-                                                    <h:outputText value="#{msg['buscarEIP']} :" style="position: absolute; left: 27px; top: 14px"/>  
-                                                    <p:inputText id="globalFilter" onkeyup="LovEmpresasTabla.filter();" style="width: 240px; position: relative; left: 40px; height: 12px; text-transform: uppercase;"/>  
-                                                </f:facet>
-                                                <p:column filterBy="#{empresaIPV.nombre}" filterMatchMode="contains" filterStyle="width: 85%; height: 12px; text-transform: uppercase;">
-                                                    <f:facet name="header">
-                                                        <h:outputText style="text-align: center" value="#{msg['nombreEmpresa']}" />
-                                                    </f:facet>
-                                                    <h:outputText  value="#{empresaIPV.nombre}" />
-                                                </p:column>
-                                                <p:column style="text-align: center" filterBy="#{empresaIPV.nit}" width="80" filterMatchMode="contains" filterStyle="width: 85%; height: 12px; text-transform: uppercase;">
-                                                    <f:facet name="header">
-                                                        <h:outputText value="#{msg['nitEmpresa']}" />
-                                                    </f:facet>
-                                                    <h:outputText value="#{empresaIPV.nit}"/>
-                                                </p:column>
-                                            </p:dataTable>
-
-                                            <h:outputText id="infoRegistroEmpresas" value="#{msg['infoRegistro']} #{controlRemoto.infoRegistroEmpresas}" 
-                                                          style="position: relative; left: 10px; top: 0px; font-weight: bold"/>
-
-                                            <p:commandButton id="aceptarEmp" style="position: relative; left: 185px; top: 15px" value="#{msg['aceptar']}" disabled="#{controlRemoto.activarAceptarEmpresas}" 
-                                                             actionListener="#{controlRemoto.redireccionPersonaIndividual()}" widgetVar="aceptarEmp"
-                                                             process="@this" immediate="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible(controlRemoto.empresaSeleccionada)}" icon="ui-icon-check"/>
-
-                                            <p:commandButton id="atrasEmp" style="position: relative; left: 185px; top: 15px" value="#{msg['atras']}" oncomplete="LovEmpresasDialogo.hide()"
-                                                             process="@this" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlRemoto.anularBotonEmpresas()}"/>
-                                        </p:dialog>
 
                                         <p:commandButton id="informacionjubilados" value="" disabled="#{controlRemoto.pensionado}" style="background-image: url(Imagenes/Iconos/pensionado.png); width: 40px; height: 40px; background-repeat: no-repeat; background-size: 100% 100%; border: none;" 
                                                          styleClass="bticon"/>
@@ -462,7 +422,7 @@
 
                                     <p:commandButton id="legislacionlaboral2"  value="" style="position: absolute; left: 670px; top: 7px; width: 95px; height: 95px; background-image: url(Imagenes/Iconos/nom_legislacion.png);  background-repeat: no-repeat; background-size: 100% 100%; border: none;" actionListener="#{controlLegislacion.recibirPaginaEntrante('nomina')}" action="contrato"
                                                      styleClass="bticon"/>
-                                    <p:tooltip  for="legislacionlaboral2">
+                                    <p:tooltip for="legislacionlaboral2">
                                         #{msg['toolTipLegislacion1']}<br/>#{msg['toolTipLegislacion2']}
                                     </p:tooltip>
                                 </fieldset>
@@ -549,22 +509,22 @@
                                     <h:graphicImage value="Imagenes/Iconos/alerta.png" width="100" height="80" style="position: absolute; left: 10px; top: 10px;"  />
                                     <h:outputText value="#{msg['antesdeliquidar']}" style="position: absolute; left: 120px; top: 10px; width: 280px; font-weight:bold; text-align: center" />
                                     <h:outputText value="#{msg['confirmarLiquidacion']}" style="position: absolute; left: 120px; top: 60px; width: 300px; font-weight:bold" />
-                                    <p:commandButton value="#{msg['si']}" onclick="confirmarliquidacion.hide();" action="liquidacion" style="position: absolute; top: 80px; left: 270px " process="@this" icon="ui-icon-check" />
-                                    <p:commandButton value="#{msg['no']}" onclick="confirmarliquidacion.hide();" style="position: absolute; top: 80px; left: 330px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                    <p:commandButton value="#{msg['si']}" onclick="confirmarliquidacion.hide();" action="liquidacion" style="position: absolute; top: 80px; left: 285px; " process="@this" icon="ui-icon-check" />
+                                    <p:commandButton value="#{msg['no']}" onclick="confirmarliquidacion.hide();" style="position: absolute; top: 80px; left: 345px;" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                                 </p:dialog>
 
                                 <p:dialog id="confirmarborrarliquidacion" widgetVar="confirmarborrarliquidacion" header="#{msg['atencion']}" resizable="false" draggable="false" modal="true" height="100" width="420px" closable="false">  
                                     <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 10px; top: 15px;"  />
                                     <h:outputText value="#{msg['msgborrarLiquidacion']}" style="position: absolute; left: 100px; top: 20px; width: 320px; font-weight: bold; " />
-                                    <p:commandButton value="#{msg['si']}" onclick="confirmarBorrarLiquidacion.hide();" actionListener="#{controlRemoto.borrarLiquidacion()}" style="position: absolute; top: 60px; left: 290px " process="@this" icon="ui-icon-check" />
-                                    <p:commandButton value="#{msg['no']}" onclick="confirmarBorrarLiquidacion.hide();" style="position: absolute; top: 60px; left: 345px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                    <p:commandButton value="#{msg['si']}" onclick="confirmarborrarliquidacion.hide();" actionListener="#{controlRemoto.borrarLiquidacion()}" style="position: absolute; top: 60px; left: 285px; " process="@this" icon="ui-icon-check" />
+                                    <p:commandButton value="#{msg['no']}" onclick="confirmarborrarliquidacion.hide();" style="position: absolute; top: 60px; left: 345px;" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                                 </p:dialog>
 
                                 <p:dialog id="confirmarborrarliquidacionporfuera" widgetVar="confirmarborrarliquidacionporfuera" header="#{msg['atencion']}" resizable="false" draggable="false" modal="true" height="100" width="420px"  closable="false">  
                                     <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 10px; top: 15px;"  />
                                     <h:outputText value="#{msg['msgborrarLiquidacionPorFuera']}" style="position: absolute; left: 100px; top: 20px; width: 320px; font-weight:bold;" />
-                                    <p:commandButton value="#{msg['si']}" onclick="confirmarBorrarLiquidacionPorFuera.hide();" actionListener="#{controlRemoto.borrarLiquidacionPorFuera()}" style="position: absolute; top: 60px; left: 290px " process="@this" icon="ui-icon-check" />
-                                    <p:commandButton value="#{msg['no']}" onclick="confirmarBorrarLiquidacionPorFuera.hide();" style="position: absolute; top: 60px; left: 345px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                    <p:commandButton value="#{msg['si']}" onclick="confirmarborrarliquidacionporfuera.hide();" actionListener="#{controlRemoto.borrarLiquidacionPorFuera()}" style="position: absolute; top: 60px; left: 285px; " process="@this" icon="ui-icon-check" />
+                                    <p:commandButton value="#{msg['no']}" onclick="confirmarborrarliquidacionporfuera.hide();" style="position: absolute; top: 60px; left: 345px;" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                                 </p:dialog>
                             </p:tab>  
 
@@ -590,7 +550,7 @@
                                     <p:commandButton id="btnpila" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 20px; background-image: url(Imagenes/Iconos/IntPILA.png); background-repeat: no-repeat; background-size: 100% 100%; border: none;" action="parametroautoliq" actionListener="#{controlParametroAutoliq.recibirPagina('nomina')}" styleClass="bticon"/>
                                     <p:commandButton id="btnpresup" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 115px; background-image: url(Imagenes/Iconos/IntPresupuesto.png); background-repeat: no-repeat; background-size: 100% 100%; border: none;" styleClass="bticon"/>
                                     <p:commandButton id="btntersoreria" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 213px; background-image: url(Imagenes/Iconos/IntTesoreria.png); background-repeat: no-repeat; background-size: 100% 100%; border: none;" action="ReporteBanco" actionListener="#{controlReportesBancos.iniciarPagina}" styleClass="bticon"/>
-                                    <p:commandButton id="btncontabi" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 310px; background-image: url(Imagenes/Iconos/IntContabilidad.png); background-repeat: no-repeat; background-size: 100% 100%; border: none;" onclick="confirmarProcesoInterfaceContableTotal.show()" styleClass="bticon"/>
+                                    <p:commandButton id="btncontabi" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 310px; background-image: url(Imagenes/Iconos/IntContabilidad.png); background-repeat: no-repeat; background-size: 100% 100%; border: none;" onclick="confirmarprocesointerfacecontable.show()" styleClass="bticon"/>
                                     <h:outputText value="#{msg['integracionconpila']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 15px; color: #14388B;  font-weight: bold" />
                                     <h:outputText value="#{msg['textointegracionconpila']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 32px;  text-align: justify" />
                                     <h:outputText value="#{msg['integracionconpresupuesto']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 120px; color: #14388B;  font-weight: bold"/>
@@ -601,11 +561,11 @@
                                     <h:outputText value="#{msg['textointegracionconcontabilidad']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 330px;  text-align: justify" />
                                 </fieldset>
 
-                                <p:dialog id="confirmarprocesointerfacecontabletotal" widgetVar="confirmarprocesointerfacecontabletotal" header="#{msg['atencion']}" resizable="false" draggable="false" modal="true" height="100" width="420px"  closable="false">  
+                                <p:dialog id="confirmarprocesointerfacecontable" widgetVar="confirmarprocesointerfacecontable" header="#{msg['atencion']}" resizable="false" draggable="false" modal="true" height="100" width="420px"  closable="false">  
                                     <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 10px; top: 15px;"  />
-                                    <h:outputText value="#{msg['confirmarProcesoInterfaceContableTotal']}" style="position: absolute; left: 100px; top: 15px; width: 320px; font-weight:bold;" />
-                                    <p:commandButton value="#{msg['si']}" onclick="confirmarProcesoInterfaceContableTotal.hide();" action="interfasecontabletotal" actionListener="#{controlInterfaseContableTotal.recibirPagina('nomina')}" style="position: absolute; top: 60px; left: 290px " process="@this" icon="ui-icon-check" />
-                                    <p:commandButton value="#{msg['no']}" onclick="confirmarProcesoInterfaceContableTotal.hide();" style="position: absolute; top: 60px; left: 345px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                    <h:outputText value="#{msg['confirmarProcesoInterfaceContable']}" style="position: absolute; left: 100px; top: 15px; width: 320px; font-weight:bold;" />
+                                    <p:commandButton value="#{msg['si']}" onclick="confirmarprocesointerfacecontable.hide();" action="interfasecontabletotal" actionListener="#{controlInterfaseContableTotal.recibirPagina('nomina')}" style="position: absolute; top: 60px; left: 285px " process="@this" icon="ui-icon-check" />
+                                    <p:commandButton value="#{msg['no']}" onclick="confirmarprocesointerfacecontable.hide();" style="position: absolute; top: 60px; left: 345px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                                 </p:dialog>
                             </p:tab> 
 
@@ -696,8 +656,6 @@
                                         </p:dataTable> 
                                     </div>
                                 </fieldset>
-
-
 
                                 <fieldset id="conttablas"  style="position:absolute; border-radius: 10px; top: 195px; width: 795px; height: 233px;">
                                     <h:outputText value="#{msg['tablasdelsistema']}" styleClass="outputTextFielset" />
@@ -792,8 +750,8 @@
                             </p:column>
                         </p:dataTable> 
                         <h:outputText id="inforegistrobusquedarapida" value="#{msg['infoRegistro']} #{controlRemoto.infoRegistroBusquedaRapida}" style="position: relative; left: 10px; top: 5px; font-weight: bold"/>
-                        <p:commandButton id="buscarrap" value="#{msg['aceptar']}" actionListener="#{controlRemoto.busquedaRapida}" icon="ui-icon-check"  style="position: absolute; top: 270px; left: 530px"  disabled="#{controlRemoto.buscar}"/>
-                        <p:commandButton value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w"  style="position: absolute; top: 270px; left: 630px" onclick="lvBr.hide()" />
+                        <p:commandButton id="buscarrap" value="#{msg['aceptar']}" actionListener="#{controlRemoto.busquedaRapida}" icon="ui-icon-check"  style="position: absolute; top: 270px; left: 530px;"  disabled="#{controlRemoto.buscar}"/>
+                        <p:commandButton value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w"  style="position: absolute; top: 270px; left: 630px" onclick="lvbr.hide()" />
                     </p:dialog>
 
                     <p:dialog id="lvbe" widgetVar="lvbe" header="#{msg['empleadosE']}" resizable="false" draggable="false" modal="true" height="300"  width="735"  closable="false">  
@@ -836,20 +794,21 @@
                     <!-- LOV TABLAS-->
                     <p:dialog id="buscartablasdialogo" widgetVar="buscartablasdialogo" header="Tablas"  draggable="false" resizable="false" closable="false"   
                               showEffect="fade" hideEffect="fade" width="548" modal="true">
-                        <p:dataTable id="lovtablas" widgetVar="lovtablas" style="width: 510px" var="tabla" value="#{controlRemoto.listTablasLOV}" rowKey="#{tabla.secuencia}"
+                        <p:dataTable id="lovtablas" widgetVar="lovtablas" style="width: 510px;" var="tabla" value="#{controlRemoto.listTablasLOV}" rowKey="#{tabla.secuencia}"
                                      selection="#{controlRemoto.seleccionTablaLOV}" selectionMode="single" scrollable="true" scrollWidth="527" scrollHeight="250"
                                      filteredValue="#{controlRemoto.filtradoListTablasLOV}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlRemoto.activarBuscar()}" update=":form:aceptart"/>
                             <p:ajax event="rowDblselect" listener="#{controlRemoto.seleccionTabla()}" process="@this" />
+                            <p:ajax event="filter" listener="#{controlRemoto.eventoFiltrarBusquedaTablas()}"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalfilter" onkeyup="lovTablas.filter();" style="width:200px; position: relative; left: -50px;" />  
+                                <p:inputText id="globalfilter" onkeyup="lovtablas.filter();" style="width:200px; position: relative; left: -50px;" />  
                             </f:facet>
                             <p:column filterBy="#{tabla.nombre}" sortBy="#{tabla.nombre}" filterMatchMode="contains" filterStyle="width: 150px">
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['nombre']}" />
                                 </f:facet>
-                                <h:outputText  value="#{tabla.nombre}" />
+                                <h:outputText value="#{tabla.nombre}" />
                             </p:column>
                             <p:column filterBy="#{tabla.descripcion}" sortBy="#{tabla.descripcion}" filterMatchMode="contains" filterStyle="width: 150px">
                                 <f:facet name="header">
@@ -858,8 +817,48 @@
                                 <h:outputText  value="#{tabla.descripcion}" />
                             </p:column>
                         </p:dataTable>
+                        <h:outputText id="inforegistrobuscartablas" value="#{msg['infoRegistro']} #{controlRemoto.infoRegistroBuscarTablas}" style="position: relative; left: 10px; top: 5px; font-weight: bold"/>
                         <p:commandButton id="aceptart" style="position: relative; left: 365px" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlRemoto.buscar}" actionListener="#{controlRemoto.seleccionTabla()}"  process="@this"/>
-                        <p:commandButton id="atrasf" style="position: relative; left: 365px" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlRemoto.cancelarSeleccionTabla()}"  process="@this"/>
+                        <p:commandButton id="atrasf" style="position: relative; left: 365px" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" onclick="buscartablasdialogo.hide()" actionListener="#{controlRemoto.cancelarSeleccionTabla()}"  process="@this"/>
+                    </p:dialog>
+                    <p:dialog id="LovEmpresasDialogo" widgetVar="LovEmpresasDialogo" header="#{msg['empresaM']}" draggable="false" resizable="false" closable="false" onShow="LovEmpresasTabla.filter();"
+                              showEffect="fade" hideEffect="fade" width="464" height="250">
+                        <p:dataTable id="LovEmpresasTabla" widgetVar="LovEmpresasTabla" style=" width: 420px" var="empresaIPV" value="#{controlRemoto.lovEmpresas}" rowKey="#{empresaIPV.secuencia}"
+                                     selection="#{controlRemoto.empresaSeleccionada}" scrollWidth="440" selectionMode="single" scrollable="true" scrollHeight="120"
+                                     emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlRemoto.filtradoLOVEmpresas}">
+
+                            <p:ajax event="filter" listener="#{controlRemoto.eventoFiltrarEmpresas()}"/>
+                            <p:ajax event="rowSelect" process="@this" immediate="true" listener="#{controlRemoto.activarAceptarEmp()}" update=":form:aceptarEmp"/>
+                            <p:ajax event="rowDblselect" listener="#{controlRemoto.redireccionPersonaIndividual()}"
+                                    immediate="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible(controlRemoto.empresaSeleccionada)}" process="@this" />
+
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarEIP']} :" style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="LovEmpresasTabla.filter();" style="width: 240px; position: relative; left: 40px; height: 12px; text-transform: uppercase;"/>  
+                            </f:facet>
+                            <p:column filterBy="#{empresaIPV.nombre}" filterMatchMode="contains" filterStyle="width: 85%; height: 12px; text-transform: uppercase;">
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['nombreEmpresa']}" />
+                                </f:facet>
+                                <h:outputText  value="#{empresaIPV.nombre}" />
+                            </p:column>
+                            <p:column style="text-align: center" filterBy="#{empresaIPV.nit}" width="80" filterMatchMode="contains" filterStyle="width: 85%; height: 12px; text-transform: uppercase;">
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['nitEmpresa']}" />
+                                </f:facet>
+                                <h:outputText value="#{empresaIPV.nit}"/>
+                            </p:column>
+                        </p:dataTable>
+
+                        <h:outputText id="infoRegistroEmpresas" value="#{msg['infoRegistro']} #{controlRemoto.infoRegistroEmpresas}" 
+                                      style="position: relative; left: 10px; top: 0px; font-weight: bold"/>
+
+                        <p:commandButton id="aceptarEmp" style="position: relative; left: 185px; top: 15px" value="#{msg['aceptar']}" disabled="#{controlRemoto.activarAceptarEmpresas}" 
+                                         actionListener="#{controlRemoto.redireccionPersonaIndividual()}" widgetVar="aceptarEmp"
+                                         process="@this" immediate="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible(controlRemoto.empresaSeleccionada)}" icon="ui-icon-check"/>
+
+                        <p:commandButton id="atrasEmp" style="position: relative; left: 185px; top: 15px" value="#{msg['atras']}" oncomplete="LovEmpresasDialogo.hide()"
+                                         process="@this" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlRemoto.anularBotonEmpresas()}"/>
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlRemoto.lab()}"/> 
                     <p:hotkey bind="ctrl+f12" actionListener="#{controlRemoto.lab2()}"/> 

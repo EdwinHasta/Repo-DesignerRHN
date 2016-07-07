@@ -117,6 +117,7 @@ public class ControlRemoto implements Serializable {
     private String accion;
     private String redirigir;
     private String infoRegistroBuscarEmpleados;
+    private String infoRegistroBuscarTablas;
     private String infoRegistroBusquedaRapida;
     private int posicion;
     private int totalRegistros;
@@ -203,8 +204,8 @@ public class ControlRemoto implements Serializable {
             actualizarInformacionTipoTrabajador();
             llenarBannerDefault();
             lovEmpresas = administrarCarpetaPersonal.consultarEmpresas();
-            RequestContext.getCurrentInstance().update("form:tabmenu:LovEmpresasDialogo");
-            RequestContext.getCurrentInstance().update("form:tabmenu:LovEmpresasTabla");
+            RequestContext.getCurrentInstance().update("form:LovEmpresasDialogo");
+            RequestContext.getCurrentInstance().update("form:LovEmpresasTabla");
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -753,7 +754,7 @@ public class ControlRemoto implements Serializable {
             filtrosActivos = true;
         } else if (tablaExportar.equals("data1")) {
             moduloCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:data1:modulocodigo");
-            moduloCodigo.setFilterStyle("width: 40px");
+            moduloCodigo.setFilterStyle("width: 40px;");
             moduloNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:data1:modulonombre");
             moduloNombre.setFilterStyle("");
             moduloObs = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabmenu:data1:moduloobs");
@@ -840,7 +841,7 @@ public class ControlRemoto implements Serializable {
             moduloObs.setFilterStyle("display: none; visibility: hidden;");
             filtradolistModulos = null;
             RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("data1.clearFilters()");
+            context.execute("data1.clearfilters()");
             altoModulos = "93";
             context.update("form:tabmenu:data1");
             filtrosActivos = false;
@@ -1522,8 +1523,8 @@ public class ControlRemoto implements Serializable {
         filtradoListTablasLOV = null;
         seleccionTablaLOV = null;
         buscar = true;
-        context.reset("form:lovtablas:globalFilter");
-        context.execute("lovtablas.clearFilters()");
+        context.reset("form:lovtablas:globalfilter");
+        context.execute("lovtablas.clearfilters()");
         context.execute("buscartablasdialogo.hide()");
         //context.update("form:lovTablas");
         context.update("form:mostrartodastablas");
@@ -1537,8 +1538,8 @@ public class ControlRemoto implements Serializable {
         buscar = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.reset("form:lovtablas:globalfilter");
-        context.execute("lovtablas.clearFilters()");
-        context.execute("buscarTablasDialogo.hide()");
+        context.execute("lovtablas.clearfilters()");
+        context.execute("buscartablasdialogo.hide()");
     }
 
     public void mostrarTodo_Tablas() {
@@ -1611,6 +1612,13 @@ public class ControlRemoto implements Serializable {
     public void eventoFiltrarBusquedaEmpleado() {
         modificarInfoRegistroBE(filterBuscarEmpleado.size());
     }
+    public void modificarInfoRegistroBT(int valor){
+        infoRegistroBuscarTablas = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:inforegistrobuscartablas");
+    }
+    public void eventoFiltrarBusquedaTablas() {
+        modificarInfoRegistroBT(filtradoListTablasLOV.size());
+    }
 
     public void contarRegistrosBE() {
         if (buscarEmplTipo == null || buscarEmplTipo.isEmpty()) {
@@ -1653,9 +1661,9 @@ public class ControlRemoto implements Serializable {
                 redireccionPersonaIndividual();
             } else {
                 infoRegistroEmpresas = String.valueOf(lovEmpresas.size());
-                context.update("form:tabmenu:LovEmpresasDialogo");
-                context.update("form:tabmenu:LovEmpresasTabla");
-                context.update("form:tabmenu:infoRegistroEmpresas");
+                context.update("form:LovEmpresasDialogo");
+                context.update("form:LovEmpresasTabla");
+                context.update("form:infoRegistroEmpresas");
                 context.execute("LovEmpresasDialogo.show()");
             }
         }
