@@ -5,7 +5,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.validator.FacesValidator;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import javax.validation.executable.ExecutableValidator;
+//import javax.validation.executable.ExecutableValidator;
 import javax.validation.metadata.BeanDescriptor;
 
 @ManagedBean
@@ -15,6 +15,13 @@ public class Validar implements Validator {
     public Validar() {
     }
 
+    /**
+     *
+     * @param <T>
+     * @param arg0
+     * @param arg1
+     * @return
+     */
     @Override
     public <T> Set<ConstraintViolation<T>> validate(T arg0, Class<?>... arg1) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -46,10 +53,8 @@ public class Validar implements Validator {
 //    }
 // 
 
-    @Override
-    public ExecutableValidator forExecutables() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    public ExecutableValidator forExecutables() {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
   
-    
 }

@@ -18,12 +18,12 @@
         <from-view-id>/emplvigenciascargos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasC</from-outcome>
             <to-view-id>/emplvigenciascargos.xhtml</to-view-id>
@@ -31,12 +31,12 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>vigenciasUG</from-outcome>
-            <to-view-id>/EmplUbicacionGeografica.xhtml</to-view-id>
+            <to-view-id>/emplubicaciongeografica.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>liquidacion</from-outcome>
-            <to-view-id>/Barra.xhtml</to-view-id>
+            <to-view-id>/barra.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
@@ -61,35 +61,35 @@
         </navigation-case>
     </navigation-rule>    
     <navigation-rule>
-        <from-view-id>/EmplVigenciaTipoContrato.xhtml</from-view-id>
+        <from-view-id>/emplvigenciatipocontrato.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasTC</from-outcome>
-            <to-view-id>/EmplVigenciaTipoContrato.xhtml</to-view-id>
+            <to-view-id>/emplvigenciatipocontrato.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Tercero.xhtml</from-view-id>
+        <from-view-id>/tercero.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>tercero</from-outcome>
-            <to-view-id>/Tercero.xhtml</to-view-id>
+            <to-view-id>/tercero.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -98,12 +98,12 @@
         <from-view-id>/personaindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>personaIndividual</from-outcome>
             <to-view-id>/personaindividual.xhtml</to-view-id>
@@ -115,12 +115,12 @@
         <from-view-id>/interfasecontabletotal.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfasecontabletotal</from-outcome>
             <to-view-id>/interfasecontabletotal.xhtml</to-view-id>
@@ -132,12 +132,12 @@
         <from-view-id>/interfasecontablesapbov8.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfasecontablesapbov8</from-outcome>
             <to-view-id>/interfasecontablesapbov8.xhtml</to-view-id>
@@ -149,12 +149,12 @@
         <from-view-id>/interfasecontablesapbovca.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfasecontablesapbovca</from-outcome>
             <to-view-id>/interfasecontablesapbovca.xhtml</to-view-id>
@@ -166,12 +166,12 @@
         <from-view-id>/interfasecontablesapbopq.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfasecontablesapbopq</from-outcome>
             <to-view-id>/interfasecontablesapbopq.xhtml</to-view-id>
@@ -183,12 +183,12 @@
         <from-view-id>/interfasecontablesapbope.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfasecontablesapbope</from-outcome>
             <to-view-id>/interfasecontablesapbope.xhtml</to-view-id>
@@ -200,12 +200,12 @@
         <from-view-id>/interfasecontablesapbohp.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfasecontablesapbohp</from-outcome>
             <to-view-id>/interfasecontablesapbohp.xhtml</to-view-id>
@@ -217,12 +217,12 @@
         <from-view-id>/interfasecontabledynamicsro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfasecontabledynamicsro</from-outcome>
             <to-view-id>/interfasecontabledynamicsro.xhtml</to-view-id>
@@ -234,12 +234,12 @@
         <from-view-id>/interfasecontabledynamicspl.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfasecontabledynamicspl</from-outcome>
             <to-view-id>/interfasecontabledynamicspl.xhtml</to-view-id>
@@ -251,12 +251,12 @@
         <from-view-id>/interfasecontabledynamicsmt.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfasecontabledynamicsmt</from-outcome>
             <to-view-id>/interfasecontabledynamicsmt.xhtml</to-view-id>
@@ -268,12 +268,12 @@
         <from-view-id>/interfasecontabledynamicsps.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfasecontabledynamicsps</from-outcome>
             <to-view-id>/interfasecontabledynamicsps.xhtml</to-view-id>
@@ -285,12 +285,12 @@
         <from-view-id>/interfasecontabledynamicsvt.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfasecontabledynamicsvt</from-outcome>
             <to-view-id>/interfasecontabledynamicsvt.xhtml</to-view-id>
@@ -302,12 +302,12 @@
         <from-view-id>/interfasecontabledynamicsyv.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfasecontabledynamicsyv</from-outcome>
             <to-view-id>/interfasecontabledynamicsyv.xhtml</to-view-id>
@@ -319,12 +319,12 @@
         <from-view-id>/interfasecontabledynamicscps.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfasecontabledynamicscps</from-outcome>
             <to-view-id>/interfasecontabledynamicscps.xhtml</to-view-id>
@@ -336,12 +336,12 @@
         <from-view-id>/interfasecontabledynamicssx.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfasecontabledynamicssx</from-outcome>
             <to-view-id>/interfasecontabledynamicssx.xhtml</to-view-id>
@@ -353,12 +353,12 @@
         <from-view-id>/busquedaavanzada.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nominaf</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>busquedaAvanzada</from-outcome>
             <to-view-id>/busquedaavanzada.xhtml</to-view-id>
@@ -387,12 +387,12 @@
         <from-view-id>/cargo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nominaf</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>analisisCargos</from-outcome>
             <to-view-id>/cargo.xhtml</to-view-id>
@@ -404,12 +404,12 @@
         <from-view-id>/cargo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>gruposalarial</from-outcome>
-            <to-view-id>/GrupoSalarial.xhtml</to-view-id>
+            <to-view-id>/gruposalarial.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/GrupoSalarial.xhtml</from-view-id>
+        <from-view-id>/gruposalarial.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>cargo</from-outcome>
             <to-view-id>/cargo.xhtml</to-view-id>
@@ -418,7 +418,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Formula.xhtml</from-view-id>
+        <from-view-id>/formula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadesFormula</from-outcome>
             <to-view-id>/formulanovedad.xhtml</to-view-id>
@@ -429,13 +429,13 @@
         <from-view-id>/formulanovedad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>retornoFormula</from-outcome>
-            <to-view-id>/Formula.xhtml</to-view-id>
+            <to-view-id>/formula.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Formula.xhtml</from-view-id>
+        <from-view-id>/formula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>historiaFormula</from-outcome>
             <to-view-id>/historiaformula.xhtml</to-view-id>
@@ -446,13 +446,13 @@
         <from-view-id>/historiaformula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>retornoFormula</from-outcome>
-            <to-view-id>/Formula.xhtml</to-view-id>
+            <to-view-id>/formula.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Formula.xhtml</from-view-id>
+        <from-view-id>/formula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>legislacionFormula</from-outcome>
             <to-view-id>/formulacontrato.xhtml</to-view-id>
@@ -463,14 +463,14 @@
         <from-view-id>/formulacontrato.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>retornoFormula</from-outcome>
-            <to-view-id>/Formula.xhtml</to-view-id>
+            <to-view-id>/formula.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     
     <navigation-rule>
-        <from-view-id>/Formula.xhtml</from-view-id>
+        <from-view-id>/formula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>conceptoFormula</from-outcome>
             <to-view-id>/formulaconcepto.xhtml</to-view-id>
@@ -481,7 +481,7 @@
         <from-view-id>/formulaconcepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>retornoFormula</from-outcome>
-            <to-view-id>/Formula.xhtml</to-view-id>
+            <to-view-id>/formula.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -493,12 +493,12 @@
         <from-view-id>/detalleconcepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>formulaSeleccionada</from-outcome>
-            <to-view-id>/Formula.xhtml</to-view-id>
+            <to-view-id>/formula.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Formula.xhtml</from-view-id>
+        <from-view-id>/formula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>retornoDetalleConcepto</from-outcome>
             <to-view-id>/detalleconcepto.xhtml</to-view-id>
@@ -510,12 +510,12 @@
         <from-view-id>/formulaproceso.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>retornoFormula</from-outcome>
-            <to-view-id>/Formula.xhtml</to-view-id>
+            <to-view-id>/formula.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Formula.xhtml</from-view-id>
+        <from-view-id>/formula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>procesosFormula</from-outcome>
             <to-view-id>/formulaproceso.xhtml</to-view-id>
@@ -546,12 +546,12 @@
         <from-view-id>/cuenta.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>detalleCuenta</from-outcome>
-            <to-view-id>/DetalleCuenta.xhtml</to-view-id>
+            <to-view-id>/detallecuenta.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/DetalleCuenta.xhtml</from-view-id>
+        <from-view-id>/detallecuenta.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>cuentasBack</from-outcome>
             <to-view-id>/cuenta.xhtml</to-view-id>
@@ -565,12 +565,12 @@
         <from-view-id>/conceptojuridico.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>conceptojuridico</from-outcome>
             <to-view-id>/conceptojuridico.xhtml</to-view-id>
@@ -582,12 +582,12 @@
         <from-view-id>/cuenta.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>cuenta</from-outcome>
             <to-view-id>/cuenta.xhtml</to-view-id>
@@ -599,12 +599,12 @@
         <from-view-id>/EmplVacaPendiente.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vacaciones</from-outcome>
             <to-view-id>/EmplVacaPendiente.xhtml</to-view-id>
@@ -613,24 +613,24 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmplVigenciaAfiliacion3.xhtml</from-view-id>
+        <from-view-id>/emplvigenciaafiliacion3.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>afiliaciones3</from-outcome>
-            <to-view-id>/EmplVigenciaAfiliacion3.xhtml</to-view-id>
+            <to-view-id>/emplvigenciaafiliacion3.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>normalaboral</from-outcome>
             <to-view-id>/emplvigencianormalaboral.xhtml</to-view-id>
@@ -641,7 +641,7 @@
         <from-view-id>/emplvigencianormalaboral.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>normalaboralNominaF</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -657,12 +657,12 @@
         <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>hojaVida</from-outcome>
             <to-view-id>/empleadoindividual.xhtml</to-view-id>
@@ -686,10 +686,10 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmplUbicacionGeografica.xhtml</from-view-id>
+        <from-view-id>/emplubicaciongeografica.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -698,12 +698,12 @@
         <from-view-id>/emplvigenciascargos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasC</from-outcome>
             <to-view-id>/emplvigenciascargos.xhtml</to-view-id>
@@ -711,7 +711,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>telefonos</from-outcome>
-            <to-view-id>/PerTelefono.xhtml</to-view-id>
+            <to-view-id>/pertelefono.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
@@ -719,12 +719,12 @@
         <from-view-id>/emplvigenciascargos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasC</from-outcome>
             <to-view-id>/emplvigenciascargos.xhtml</to-view-id>
@@ -732,7 +732,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>telefonos</from-outcome>
-            <to-view-id>/PerTelefono.xhtml</to-view-id>
+            <to-view-id>/pertelefono.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
@@ -740,12 +740,12 @@
         <from-view-id>/ataprobacionhe.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroATAprocacionHE</from-outcome>
             <to-view-id>/ataprobacionhe.xhtml</to-view-id>
@@ -757,12 +757,12 @@
         <from-view-id>/interfasecontabletotal.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfaseRastro</from-outcome>
             <to-view-id>/interfasecontabletotal.xhtml</to-view-id>
@@ -774,12 +774,12 @@
         <from-view-id>/atparametrotiempo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroATParametroTiempo</from-outcome>
             <to-view-id>/atparametrotiempo.xhtml</to-view-id>
@@ -791,12 +791,12 @@
         <from-view-id>/interfasecontabledynamicsro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfaseDYNAMICSRORastro</from-outcome>
             <to-view-id>/interfasecontabledynamicsro.xhtml</to-view-id>
@@ -808,12 +808,12 @@
         <from-view-id>/interfasecontabledynamicspl.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfaseDYNAMICSPLRastro</from-outcome>
             <to-view-id>/interfasecontabledynamicspl.xhtml</to-view-id>
@@ -825,12 +825,12 @@
         <from-view-id>/interfasecontabledynamicsmt.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfaseDYNAMICSMTRastro</from-outcome>
             <to-view-id>/interfasecontabledynamicsmt.xhtml</to-view-id>
@@ -842,12 +842,12 @@
         <from-view-id>/interfasecontabledynamicsps.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfaseDYNAMICSPSRastro</from-outcome>
             <to-view-id>/interfasecontabledynamicsps.xhtml</to-view-id>
@@ -859,12 +859,12 @@
         <from-view-id>/interfasecontabledynamicsvt.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfaseDYNAMICSVTRastro</from-outcome>
             <to-view-id>/interfasecontabledynamicsvt.xhtml</to-view-id>
@@ -876,12 +876,12 @@
         <from-view-id>/interfasecontabledynamicsyv.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfaseDYNAMICSYVRastro</from-outcome>
             <to-view-id>/interfasecontabledynamicsyv.xhtml</to-view-id>
@@ -893,12 +893,12 @@
         <from-view-id>/interfasecontabledynamicscps.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfaseDYNAMICSCPSRastro</from-outcome>
             <to-view-id>/interfasecontabledynamicscps.xhtml</to-view-id>
@@ -910,12 +910,12 @@
         <from-view-id>/interfasecontabledynamicssx.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfaseDYNAMICSSXRastro</from-outcome>
             <to-view-id>/interfasecontabledynamicssx.xhtml</to-view-id>
@@ -927,12 +927,12 @@
         <from-view-id>/atcuadrilla.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroATCuadrilla</from-outcome>
             <to-view-id>/atcuadrilla.xhtml</to-view-id>
@@ -944,12 +944,12 @@
         <from-view-id>/interfasecontablesapbovca.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfaseSAPBOVCARastro</from-outcome>
             <to-view-id>/interfasecontablesapbovca.xhtml</to-view-id>
@@ -961,12 +961,12 @@
         <from-view-id>/interfasecontablesapbov8.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfaseBOV8Rastro</from-outcome>
             <to-view-id>/interfasecontablesapbov8.xhtml</to-view-id>
@@ -978,12 +978,12 @@
         <from-view-id>/interfasecontablesapbope.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfaseSAPBOPERastro</from-outcome>
             <to-view-id>/interfasecontablesapbope.xhtml</to-view-id>
@@ -995,12 +995,12 @@
         <from-view-id>/interfasecontablesapbopq.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>interfaseSAPBOPQRastro</from-outcome>
             <to-view-id>/interfasecontablesapbopq.xhtml</to-view-id>
@@ -1012,12 +1012,12 @@
         <from-view-id>/Estructuras.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>estructuraRastro</from-outcome>
             <to-view-id>/Estructuras.xhtml</to-view-id>
@@ -1029,12 +1029,12 @@
         <from-view-id>/parametroautoliq.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>parametroAutoliqRastro</from-outcome>
             <to-view-id>/parametroautoliq.xhtml</to-view-id>
@@ -1048,12 +1048,12 @@
         <from-view-id>/vigenciasDeportes.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasDepRastro</from-outcome>
             <to-view-id>/vigenciasDeportes.xhtml</to-view-id>
@@ -1065,12 +1065,12 @@
         <from-view-id>/formulacontrato.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>contratoFormulaRastro</from-outcome>
             <to-view-id>/formulacontrato.xhtml</to-view-id>
@@ -1079,35 +1079,35 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmplVigenciaTipoTrabajador.xhtml</from-view-id>
+        <from-view-id>/emplvigenciatipotrabajador.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasTiposTrabajadores</from-outcome>
-            <to-view-id>/EmplVigenciaTipoTrabajador.xhtml</to-view-id>
+            <to-view-id>/emplvigenciatipotrabajador.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmplVigenciaLocalizacion.xhtml</from-view-id>
+        <from-view-id>/emplvigencialocalizacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasLocalizaciones</from-outcome>
-            <to-view-id>/EmplVigenciaLocalizacion.xhtml</to-view-id>
+            <to-view-id>/emplvigencialocalizacion.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -1116,12 +1116,12 @@
         <from-view-id>/escalafonsalarial.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroEscalafonSalarial</from-outcome>
             <to-view-id>/escalafonsalarial.xhtml</to-view-id>
@@ -1133,12 +1133,12 @@
         <from-view-id>/detalleempresa.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroDetalleEmp</from-outcome>
             <to-view-id>/detalleempresa.xhtml</to-view-id>
@@ -1150,12 +1150,12 @@
         <from-view-id>/empresa.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroEmp</from-outcome>
             <to-view-id>/empresa.xhtml</to-view-id>
@@ -1186,12 +1186,12 @@
         <from-view-id>/tiposueldo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroTipoSueldo</from-outcome>
             <to-view-id>/tiposueldo.xhtml</to-view-id>
@@ -1237,12 +1237,12 @@
         <from-view-id>/escalafon.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroEscalafon</from-outcome>
             <to-view-id>/escalafon.xhtml</to-view-id>
@@ -1254,12 +1254,12 @@
         <from-view-id>/historiaformula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>historiaFormulaRastro</from-outcome>
             <to-view-id>/historiaformula.xhtml</to-view-id>
@@ -1271,12 +1271,12 @@
         <from-view-id>/historiaformula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>historiaFormulaRastro</from-outcome>
             <to-view-id>/historiaformula.xhtml</to-view-id>
@@ -1288,12 +1288,12 @@
         <from-view-id>/cargo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroCargo</from-outcome>
             <to-view-id>/cargo.xhtml</to-view-id>
@@ -1305,12 +1305,12 @@
         <from-view-id>/formulaconcepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>conceptoFormulaRastro</from-outcome>
             <to-view-id>/formulaconcepto.xhtml</to-view-id>
@@ -1322,12 +1322,12 @@
         <from-view-id>/proceso.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroProceso</from-outcome>
             <to-view-id>/proceso.xhtml</to-view-id>
@@ -1427,12 +1427,12 @@
         <from-view-id>/formulanovedad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroFormNovedad</from-outcome>
             <to-view-id>/formulanovedad.xhtml</to-view-id>
@@ -1444,12 +1444,12 @@
         <from-view-id>/formulanovedad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroFormProceso</from-outcome>
             <to-view-id>/formulaproceso.xhtml</to-view-id>
@@ -1461,12 +1461,12 @@
         <from-view-id>/athoraextra.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroATHoraExtra</from-outcome>
             <to-view-id>/athoraextra.xhtml</to-view-id>
@@ -1479,12 +1479,12 @@
         <from-view-id>/conceptojuridico.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>conceptoJuridicoRastro</from-outcome>
             <to-view-id>/conceptojuridico.xhtml</to-view-id>
@@ -1494,41 +1494,41 @@
     
     
     <navigation-rule>
-        <from-view-id>/EmplVigenciaTipoContrato.xhtml</from-view-id>
+        <from-view-id>/emplvigenciatipocontrato.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasTC</from-outcome>
-            <to-view-id>/EmplVigenciaTipoContrato.xhtml</to-view-id>
+            <to-view-id>/emplvigenciatipocontrato.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>EmplSets</from-outcome>
-            <to-view-id>/EmplSets.xhtml</to-view-id>
+            <to-view-id>/emplsets.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmplSets.xhtml</from-view-id>
+        <from-view-id>/emplsets.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>parametroautoliq</from-outcome>
             <to-view-id>/parametroautoliq.xhtml</to-view-id>
@@ -1539,116 +1539,116 @@
         <from-view-id>/parametroautoliq.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>VigenciaReformaLaboral</from-outcome>
-            <to-view-id>/EmplVigenciaReformaLaboral.xhtml</to-view-id>
+            <to-view-id>/emplvigenciareformalaboral.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmplVigenciaReformaLaboral.xhtml</from-view-id>
+        <from-view-id>/emplvigenciareformalaboral.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>VigenciaSueldo</from-outcome>
-            <to-view-id>/EmplVigenciaSueldo.xhtml</to-view-id>
+            <to-view-id>/emplvigenciasueldo.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmplVigenciaSueldo.xhtml</from-view-id>
+        <from-view-id>/emplvigenciasueldo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>LegislacionLaboral</from-outcome>
-            <to-view-id>/EmplLegislacionLaboral.xhtml</to-view-id>
+            <to-view-id>/empllegislacionlaboral.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmplLegislacionLaboral.xhtml</from-view-id>
+        <from-view-id>/empllegislacionlaboral.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>VigenciaJornada</from-outcome>
-            <to-view-id>/EmplVigenciaJornada.xhtml</to-view-id>
+            <to-view-id>/emplvigenciajornada.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmplVigenciaJornada.xhtml</from-view-id>
+        <from-view-id>/emplvigenciajornada.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>VigenciaTipoTrabajador</from-outcome>
-            <to-view-id>/EmplVigenciaTipoTrabajador.xhtml</to-view-id>
+            <to-view-id>/emplvigenciatipotrabajador.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmplVigenciaTipoTrabajador.xhtml</from-view-id>
+        <from-view-id>/emplvigenciatipotrabajador.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>VigenciaLocalizacion</from-outcome>
-            <to-view-id>/EmplVigenciaLocalizacion.xhtml</to-view-id>
+            <to-view-id>/emplvigencialocalizacion.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmplVigenciaLocalizacion.xhtml</from-view-id>
+        <from-view-id>/emplvigencialocalizacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>ReporteNomina</from-outcome>
             <to-view-id>/NReporteNomina.xhtml</to-view-id>
@@ -1659,7 +1659,7 @@
         <from-view-id>/NReporteNomina.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -1683,12 +1683,12 @@
         <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>idiomaPerson</from-outcome>
-            <to-view-id>/IdiomaPersona.xhtml</to-view-id>
+            <to-view-id>/idiomapersona.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/IdiomaPersona.xhtml</from-view-id>
+        <from-view-id>/idiomapersona.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplIndividual</from-outcome>
             <to-view-id>/empleadoindividual.xhtml</to-view-id>
@@ -1699,12 +1699,12 @@
         <from-view-id>/reformalaboral.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplRefLab</from-outcome>
-            <to-view-id>/EmplVigenciaReformaLaboral.xhtml</to-view-id>
+            <to-view-id>/emplvigenciareformalaboral.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmplVigenciaReformaLaboral.xhtml</from-view-id>
+        <from-view-id>/emplvigenciareformalaboral.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>reformasLaborales</from-outcome>
             <to-view-id>/reformalaboral.xhtml</to-view-id>
@@ -1715,12 +1715,12 @@
         <from-view-id>/tipocontrato.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplVigContrato</from-outcome>
-            <to-view-id>/EmplLegislacionLaboral.xhtml</to-view-id>
+            <to-view-id>/empllegislacionlaboral.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmplLegislacionLaboral.xhtml</from-view-id>
+        <from-view-id>/empllegislacionlaboral.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>tiposContratos</from-outcome>
             <to-view-id>/tipocontrato.xhtml</to-view-id>
@@ -1728,7 +1728,7 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Concepto.xhtml</from-view-id>
+        <from-view-id>/concepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>detalleConcepto</from-outcome>
             <to-view-id>/detalleconcepto.xhtml</to-view-id>
@@ -1739,7 +1739,7 @@
         <from-view-id>/detalleconcepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>retornoConcepto</from-outcome>
-            <to-view-id>/Concepto.xhtml</to-view-id>
+            <to-view-id>/concepto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>    
@@ -1760,7 +1760,7 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>ReporteBanco</from-outcome>
             <to-view-id>/ReportesBancos.xhtml</to-view-id>
@@ -1771,12 +1771,12 @@
         <from-view-id>/ReportesBancos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>ReporteContabilidad</from-outcome>
             <to-view-id>/NReportesContabilidad.xhtml</to-view-id>
@@ -1787,12 +1787,12 @@
         <from-view-id>/NReportesContabilidad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>ReporteLaboral</from-outcome>
             <to-view-id>/NReporteLaboral.xhtml</to-view-id>
@@ -1803,28 +1803,28 @@
         <from-view-id>/NReporteLaboral.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>mvrsEmpl</from-outcome>
-            <to-view-id>/EmplMvrs.xhtml</to-view-id>
+            <to-view-id>/emplmvrs.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmplMvrs.xhtml</from-view-id>
+        <from-view-id>/emplmvrs.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadEmpl</from-outcome>
             <to-view-id>/EmplNovedad.xhtml</to-view-id>
@@ -1835,23 +1835,23 @@
         <from-view-id>/EmplNovedad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>estructura</from-outcome>
-            <to-view-id>/Estructura.xhtml</to-view-id>
+            <to-view-id>/estructura.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Estructura.xhtml</from-view-id>
+        <from-view-id>/estructura.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -1860,12 +1860,12 @@
         <from-view-id>/estructuraplanta.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>estructura</from-outcome>
-            <to-view-id>/Estructura.xhtml</to-view-id>
+            <to-view-id>/estructura.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Estructura.xhtml</from-view-id>
+        <from-view-id>/estructura.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>estructuraPlanta</from-outcome>
             <to-view-id>/estructuraplanta.xhtml</to-view-id>
@@ -1893,7 +1893,7 @@
         <from-view-id>/novedad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -1902,12 +1902,12 @@
         <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>hojaVida</from-outcome>
             <to-view-id>/empleadoindividual.xhtml</to-view-id>
@@ -1915,28 +1915,28 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Ciudades.xhtml</from-view-id>
+        <from-view-id>/ciudades.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>ciudades</from-outcome>
-            <to-view-id>/Ciudades.xhtml</to-view-id>
+            <to-view-id>/ciudades.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <from-view-id>/reformalaboral.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroReformaLab</from-outcome>
             <to-view-id>/reformalaboral.xhtml</to-view-id>
@@ -1946,11 +1946,11 @@
         <from-view-id>/tipocontrato.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroTipoContra</from-outcome>
             <to-view-id>/tipocontrato.xhtml</to-view-id>
@@ -1960,11 +1960,11 @@
         <from-view-id>/reformalaboral.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroReformaLab</from-outcome>
             <to-view-id>/reformalaboral.xhtml</to-view-id>
@@ -1974,11 +1974,11 @@
         <from-view-id>/tipocontrato.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroTipoContra</from-outcome>
             <to-view-id>/tipocontrato.xhtml</to-view-id>
@@ -1989,12 +1989,12 @@
         <from-view-id>/cuenta.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>cuentaRastro</from-outcome>
             <to-view-id>/cuenta.xhtml</to-view-id>
@@ -2006,12 +2006,12 @@
         <from-view-id>/estructuraplanta.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroEstructuraPlanta</from-outcome>
             <to-view-id>/estructuraplanta.xhtml</to-view-id>
@@ -2020,18 +2020,18 @@
     </navigation-rule>
    
     <navigation-rule>
-        <from-view-id>/DetalleCuenta.xhtml</from-view-id>
+        <from-view-id>/detallecuenta.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>detalleCuentaRastro</from-outcome>
-            <to-view-id>/DetalleCuenta.xhtml</to-view-id>
+            <to-view-id>/detallecuenta.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2040,31 +2040,29 @@
         <from-view-id>/detalleconcepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>detalleConceptoRastro</from-outcome>
             <to-view-id>/detalleconcepto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
-    
    
     <navigation-rule>
         <from-view-id>/EmplNovedad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadRastro</from-outcome>
             <to-view-id>/EmplNovedad.xhtml</to-view-id>
@@ -2073,18 +2071,18 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmplMvrs.xhtml</from-view-id>
+        <from-view-id>/emplmvrs.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>mvrRastro</from-outcome>
-            <to-view-id>/EmplMvrs.xhtml</to-view-id>
+            <to-view-id>/emplmvrs.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2092,61 +2090,61 @@
     
     
     <navigation-rule>
-        <from-view-id>/Tercero.xhtml</from-view-id>
+        <from-view-id>/tercero.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>terceroRastro</from-outcome>
-            <to-view-id>/Tercero.xhtml</to-view-id>
+            <to-view-id>/tercero.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplComprobante</from-outcome>
-            <to-view-id>/EmplComprobante.xhtml</to-view-id>
+            <to-view-id>/emplcomprobante.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmplComprobante.xhtml</from-view-id>
+        <from-view-id>/emplcomprobante.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmplComprobante.xhtml</from-view-id>
+        <from-view-id>/emplcomprobante.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplComprobante</from-outcome>
-            <to-view-id>/EmplComprobante.xhtml</to-view-id>
+            <to-view-id>/emplcomprobante.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/PerTelefono.xhtml</from-view-id>
+        <from-view-id>/pertelefono.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>tipostelefonos</from-outcome>
             <to-view-id>/TiposTelefonos.xhtml</to-view-id>
@@ -2156,12 +2154,12 @@
         <from-view-id>/TiposTelefonos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>direcciones</from-outcome>
             <to-view-id>/PerDirecciones.xhtml</to-view-id>
@@ -2171,12 +2169,12 @@
         <from-view-id>/PerDirecciones.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasformales</from-outcome>
             <to-view-id>/PersonaEducacion.xhtml</to-view-id>
@@ -2186,12 +2184,12 @@
         <from-view-id>/PersonaEducacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasnoformales</from-outcome>
             <to-view-id>/PersonaEducacion.xhtml</to-view-id>
@@ -2201,108 +2199,108 @@
         <from-view-id>/PersonaEducacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>concepto</from-outcome>
-            <to-view-id>/Concepto.xhtml</to-view-id>
+            <to-view-id>/concepto.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Concepto.xhtml</from-view-id>
+        <from-view-id>/concepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>concepto</from-outcome>
-            <to-view-id>/Concepto.xhtml</to-view-id>
+            <to-view-id>/concepto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Concepto.xhtml</from-view-id>
+        <from-view-id>/concepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>formula</from-outcome>
-            <to-view-id>/Formula.xhtml</to-view-id>
+            <to-view-id>/formula.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Formula.xhtml</from-view-id>
+        <from-view-id>/formula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>formula</from-outcome>
-            <to-view-id>/Formula.xhtml</to-view-id>
+            <to-view-id>/formula.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Formula.xhtml</from-view-id>
+        <from-view-id>/formula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>contrato</from-outcome>
-            <to-view-id>/Legislacion.xhtml</to-view-id>
+            <to-view-id>/legislacion.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Legislacion.xhtml</from-view-id>
+        <from-view-id>/legislacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>contrato</from-outcome>
-            <to-view-id>/Legislacion.xhtml</to-view-id>
+            <to-view-id>/legislacion.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Legislacion.xhtml</from-view-id>
+        <from-view-id>/legislacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>detalleLegislacionRastro</from-outcome>
             <to-view-id>/detallelegislacion.xhtml</to-view-id>
@@ -2312,7 +2310,7 @@
         <from-view-id>/detallelegislacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
@@ -2320,12 +2318,12 @@
         <from-view-id>/detallelegislacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>legislacion</from-outcome>
-            <to-view-id>/Legislacion.xhtml</to-view-id>
+            <to-view-id>/legislacion.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Legislacion.xhtml</from-view-id>
+        <from-view-id>/legislacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>detalleLegislacion</from-outcome>
             <to-view-id>/detallelegislacion.xhtml</to-view-id>
@@ -2334,17 +2332,17 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasproyectos</from-outcome>
-            <to-view-id>/VigenciasProyectos.xhtml</to-view-id>
+            <to-view-id>/vigenciasproyectos.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/VigenciasProyectos.xhtml</from-view-id>
+        <from-view-id>/vigenciasproyectos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
@@ -2366,7 +2364,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadreemplazo</from-outcome>
             <to-view-id>/NovedadesReemplazos.xhtml</to-view-id>
@@ -2376,7 +2374,7 @@
         <from-view-id>/NovedadesReemplazos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
@@ -2401,12 +2399,12 @@
         <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>telefonospersona</from-outcome>
-            <to-view-id>/PerTelefono.xhtml</to-view-id>
+            <to-view-id>/pertelefono.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/PerTelefono.xhtml</from-view-id>
+        <from-view-id>/pertelefono.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>individual</from-outcome>
             <to-view-id>/empleadoindividual.xhtml</to-view-id>
@@ -2435,7 +2433,7 @@
         <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>proyecto</from-outcome>
-            <to-view-id>/VigenciasProyectos.xhtml</to-view-id>
+            <to-view-id>/vigenciasproyectos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2449,7 +2447,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/VigenciasProyectos.xhtml</from-view-id>
+        <from-view-id>/vigenciasproyectos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>individual</from-outcome>
             <to-view-id>/empleadoindividual.xhtml</to-view-id>
@@ -2457,16 +2455,16 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/PerTelefono.xhtml</from-view-id>
+        <from-view-id>/pertelefono.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>ciudad</from-outcome>
-            <to-view-id>/Ciudades.xhtml</to-view-id>
+            <to-view-id>/ciudades.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/PerTelefono.xhtml</from-view-id>
+        <from-view-id>/pertelefono.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>tipotelefono</from-outcome>
             <to-view-id>/tipotelefono.xhtml</to-view-id>
@@ -2474,27 +2472,27 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Barra.xhtml</from-view-id>
+        <from-view-id>/barra.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Comprobante.xhtml</from-view-id>
+        <from-view-id>/comprobante.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>comprobante</from-outcome>
-            <to-view-id>/Comprobante.xhtml</to-view-id>
+            <to-view-id>/comprobante.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2503,12 +2501,12 @@
         <from-view-id>/cerrarliquidacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>cerrarliq</from-outcome>
             <to-view-id>/cerrarliquidacion.xhtml</to-view-id>
@@ -2517,18 +2515,18 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NovedadEmpleado.xhtml</from-view-id>
+        <from-view-id>/novedadempleado.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadempleado</from-outcome>
-            <to-view-id>/NovedadEmpleado.xhtml</to-view-id>
+            <to-view-id>/novedadempleado.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2538,12 +2536,12 @@
         <from-view-id>/solucionformula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroSolucionesFormulas</from-outcome>
             <to-view-id>/solucionformula.xhtml</to-view-id>
@@ -2553,7 +2551,7 @@
     
     
     <navigation-rule>
-        <from-view-id>/NovedadEmpleado.xhtml</from-view-id>
+        <from-view-id>/novedadempleado.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>acomuladoPorNovedad</from-outcome>
             <to-view-id>/solucionformula.xhtml</to-view-id>
@@ -2564,7 +2562,7 @@
         <from-view-id>/solucionformula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadEmpl</from-outcome>
-            <to-view-id>/NovedadEmpleado.xhtml</to-view-id>
+            <to-view-id>/novedadempleado.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2572,52 +2570,52 @@
     
     
     <navigation-rule>
-        <from-view-id>/NovedadConcepto.xhtml</from-view-id>
+        <from-view-id>/Novedadconcepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadconcepto</from-outcome>
-            <to-view-id>/NovedadConcepto.xhtml</to-view-id>
+            <to-view-id>/Novedadconcepto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
         
     <navigation-rule>
-        <from-view-id>/NovedadTercero.xhtml</from-view-id>
+        <from-view-id>/Novedadtercero.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadtercero</from-outcome>
-            <to-view-id>/NovedadTercero.xhtml</to-view-id>
+            <to-view-id>/Novedadtercero.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Atausentismos.xhtml</from-view-id>
+        <from-view-id>/atausentismos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>ausentismos</from-outcome>
-            <to-view-id>/Atausentismos.xhtml</to-view-id>
+            <to-view-id>/atausentismos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2626,12 +2624,12 @@
         <from-view-id>/auxtipoauxilio.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>auxtipoauxilio</from-outcome>
             <to-view-id>/auxtipoauxilio.xhtml</to-view-id>
@@ -2644,12 +2642,12 @@
         <from-view-id>/iniciored.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>salir</from-outcome>
             <to-view-id>/iniciored.xhtml</to-view-id>
@@ -2675,63 +2673,63 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/GrupoSalarial.xhtml</from-view-id>
+        <from-view-id>/gruposalarial.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroGrupoSalarial</from-outcome>
-            <to-view-id>/GrupoSalarial.xhtml</to-view-id>
+            <to-view-id>/gruposalarial.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
      
     <navigation-rule>
-        <from-view-id>/IdiomaPersona.xhtml</from-view-id>
+        <from-view-id>/idiomapersona.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>idiomaRastro</from-outcome>
-            <to-view-id>/IdiomaPersona.xhtml</to-view-id>
+            <to-view-id>/idiomapersona.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Proyecto.xhtml</from-view-id>
+        <from-view-id>/proyecto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>proyectoRastro</from-outcome>
-            <to-view-id>/Proyecto.xhtml</to-view-id>
+            <to-view-id>/proyecto.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmplInformacionAdicional.xhtml</from-view-id>
+        <from-view-id>/emplinformacionadicional.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>infoAdicionalRastro</from-outcome>
-            <to-view-id>/EmplInformacionAdicional.xhtml</to-view-id>
+            <to-view-id>/emplinformacionadicional.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
@@ -2739,12 +2737,12 @@
         <from-view-id>/Parametro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>parametro</from-outcome>
             <to-view-id>/Parametro.xhtml</to-view-id>
@@ -2753,18 +2751,18 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/VigenciasProyectos.xhtml</from-view-id>
+        <from-view-id>/vigenciasproyectos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>pageProyectos</from-outcome>
-            <to-view-id>/Proyecto.xhtml</to-view-id>
+            <to-view-id>/proyecto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Proyecto.xhtml</from-view-id>
+        <from-view-id>/proyecto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>proyects</from-outcome>
-            <to-view-id>/VigenciasProyectos.xhtml</to-view-id>
+            <to-view-id>/vigenciasproyectos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2773,12 +2771,12 @@
         <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasEvents</from-outcome>
-            <to-view-id>/EmplVigenciaEvento.xhtml</to-view-id>
+            <to-view-id>/emplvigenciaevento.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmplVigenciaEvento.xhtml</from-view-id>
+        <from-view-id>/emplvigenciaevento.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplIndv</from-outcome>
             <to-view-id>/empleadoindividual.xhtml</to-view-id>
@@ -2787,32 +2785,32 @@
     </navigation-rule>
      
     <navigation-rule>
-        <from-view-id>/EmplVigenciaEvento.xhtml</from-view-id>
+        <from-view-id>/emplvigenciaevento.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasERastros</from-outcome>
-            <to-view-id>/EmplVigenciaEvento.xhtml</to-view-id>
+            <to-view-id>/emplvigenciaevento.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmplVigenciaJornada.xhtml</from-view-id>
+        <from-view-id>/emplvigenciajornada.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasJornadas</from-outcome>
-            <to-view-id>/EmplVigenciaJornada.xhtml</to-view-id>
+            <to-view-id>/emplvigenciajornada.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     
@@ -2820,11 +2818,11 @@
         <from-view-id>/atextrarecargo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastroExtraRecargo</from-outcome>
             <to-view-id>/atextrarecargo.xhtml</to-view-id>
@@ -2834,7 +2832,7 @@
     
     
     <navigation-rule>
-        <from-view-id>/EmplInformacionAdicional.xhtml</from-view-id>
+        <from-view-id>/emplinformacionadicional.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>individualEmpl</from-outcome>
             <to-view-id>/empleadoindividual.xhtml</to-view-id>
@@ -2845,7 +2843,7 @@
         <from-view-id>/empleadoindividual.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>infoAdicional</from-outcome>
-            <to-view-id>/EmplInformacionAdicional.xhtml</to-view-id>
+            <to-view-id>/emplinformacionadicional.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2902,7 +2900,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>ibcsRastro</from-outcome>
             <to-view-id>/IbcAutoliquid.xhtml</to-view-id>
@@ -2913,13 +2911,13 @@
         <from-view-id>/IbcAutoliquid.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciaAfiRastro</from-outcome>
             <to-view-id>/vigenciaaficion.xhtml</to-view-id>
@@ -2930,13 +2928,13 @@
         <from-view-id>/vigenciaaficion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciaIndRastro</from-outcome>
             <to-view-id>/emplvigenciaindicador.xhtml</to-view-id>
@@ -2947,7 +2945,7 @@
         <from-view-id>/emplvigenciaindicador.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2971,7 +2969,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>demandaRastro</from-outcome>
             <to-view-id>/empldemanda.xhtml</to-view-id>
@@ -2982,13 +2980,13 @@
         <from-view-id>/empldemanda.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>experienciasLabRastro</from-outcome>
             <to-view-id>/perexperiencialaboral.xhtml</to-view-id>
@@ -2999,7 +2997,7 @@
         <from-view-id>/perexperiencialaboral.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -3008,12 +3006,12 @@
         <from-view-id>/tiposueldo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplVigSueldo</from-outcome>
-            <to-view-id>/EmplVigenciaSueldo.xhtml</to-view-id>
+            <to-view-id>/emplvigenciasueldo.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmplVigenciaSueldo.xhtml</from-view-id>
+        <from-view-id>/emplvigenciasueldo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>tipossueldos</from-outcome>
             <to-view-id>/tiposueldo.xhtml</to-view-id>
@@ -3048,7 +3046,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -3077,7 +3075,7 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplIbcs</from-outcome>
             <to-view-id>/emplibc.xhtml</to-view-id>
@@ -3088,7 +3086,7 @@
         <from-view-id>/emplibc.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasEmplIbcs</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -3126,7 +3124,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>inforeportes</from-outcome>
             <to-view-id>/adminreportes.xhtml</to-view-id>
@@ -3137,13 +3135,13 @@
         <from-view-id>/adminreportes.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>tiposcotizantes</from-outcome>
             <to-view-id>/tipocotizante.xhtml</to-view-id>
@@ -3154,13 +3152,13 @@
         <from-view-id>/tipocotizante.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Legislacion.xhtml</from-view-id>
+        <from-view-id>/legislacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>tiposcotizantes</from-outcome>
             <to-view-id>/tipocotizante.xhtml</to-view-id>
@@ -3171,13 +3169,13 @@
         <from-view-id>/tipocotizante.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasLegislacion</from-outcome>
-            <to-view-id>/Legislacion.xhtml</to-view-id>
+            <to-view-id>/legislacion.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>detallestiposcotizantes</from-outcome>
             <to-view-id>/tipocotizante.xhtml</to-view-id>
@@ -3188,13 +3186,13 @@
         <from-view-id>/tipocotizante.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>recordatorios</from-outcome>
             <to-view-id>/proverbio.xhtml</to-view-id>
@@ -3205,7 +3203,7 @@
         <from-view-id>/proverbio.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -3214,13 +3212,13 @@
         <from-view-id>/proverbio.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>operandos</from-outcome>
             <to-view-id>/operando.xhtml</to-view-id>
@@ -3231,7 +3229,7 @@
         <from-view-id>/operando.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>   
@@ -3323,7 +3321,7 @@
     </navigation-rule> 
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciaviajero</from-outcome>
             <to-view-id>/emplviajero.xhtml</to-view-id>
@@ -3334,7 +3332,7 @@
         <from-view-id>/emplviajero.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -3377,13 +3375,13 @@
         <from-view-id>/dependenciaoperando.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>dependenciasoperandos</from-outcome>
             <to-view-id>/dependenciasoperandos.xhtml</to-view-id>
@@ -3395,7 +3393,7 @@
         <from-view-id>/tipoformula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>formula</from-outcome>
-            <to-view-id>/Formula.xhtml</to-view-id>
+            <to-view-id>/formula.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -3404,13 +3402,13 @@
         <from-view-id>/novedadembargo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>eersprestamos</from-outcome>
             <to-view-id>/novedadembargo.xhtml</to-view-id>
@@ -3419,7 +3417,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmplSets.xhtml</from-view-id>
+        <from-view-id>/emplsets.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>declarante</from-outcome>
             <to-view-id>/declarante.xhtml</to-view-id>
@@ -3431,13 +3429,13 @@
         <from-view-id>/declarante.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>declarantes</from-outcome>
             <to-view-id>/declarante</to-view-id>
@@ -3449,7 +3447,7 @@
         <from-view-id>/declarante.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>sets</from-outcome>
-            <to-view-id>/EmplSets.xhtml</to-view-id>
+            <to-view-id>/emplsets.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -3457,7 +3455,7 @@
         <from-view-id>/emplvigenciaformapago.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -3466,13 +3464,13 @@
         <from-view-id>/tipotelefono.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>pertelefono</from-outcome>
-            <to-view-id>/PerTelefono.xhtml</to-view-id>
+            <to-view-id>/pertelefono.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/PerTelefono.xhtml</from-view-id>
+        <from-view-id>/pertelefono.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>individual</from-outcome>
             <to-view-id>/empleadoindividual.xhtml</to-view-id>
@@ -3481,7 +3479,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/VigenciasProyectos.xhtml</from-view-id>
+        <from-view-id>/vigenciasproyectos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>cargos</from-outcome>
             <to-view-id>/cargo.xhtml</to-view-id>
@@ -3493,16 +3491,16 @@
         <from-view-id>/cargo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasproyectos</from-outcome>
-            <to-view-id>/VigenciasProyectos.xhtml</to-view-id>
+            <to-view-id>/vigenciasproyectos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Proyecto.xhtml</from-view-id>
+        <from-view-id>/proyecto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasproyectos</from-outcome>
-            <to-view-id>/VigenciasProyectos.xhtml</to-view-id>
+            <to-view-id>/vigenciasproyectos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -3529,13 +3527,13 @@
         <from-view-id>/NovedadesReemplazos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>estructura</from-outcome>
-            <to-view-id>/Estructura.xhtml</to-view-id>
+            <to-view-id>/estructura.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Estructura.xhtml</from-view-id>
+        <from-view-id>/estructura.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadesreemplazos</from-outcome>
             <to-view-id>/NovedadesReemplazos.xhtml</to-view-id>
@@ -3565,31 +3563,31 @@
         <from-view-id>/novedad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadempleado</from-outcome>
-            <to-view-id>/NovedadEmpleado.xhtml</to-view-id>
+            <to-view-id>/novedadempleado.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NovedadEmpleado.xhtml</from-view-id>
+        <from-view-id>/novedadempleado.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>concepto</from-outcome>
-            <to-view-id>/Concepto.xhtml</to-view-id>
+            <to-view-id>/concepto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Concepto.xhtml</from-view-id>
+        <from-view-id>/concepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadempleado</from-outcome>
-            <to-view-id>/NovedadEmpleado.xhtml</to-view-id>
+            <to-view-id>/novedadempleado.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NovedadEmpleado.xhtml</from-view-id>
+        <from-view-id>/novedadempleado.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>periodicidades</from-outcome>
             <to-view-id>/periodicidad.xhtml</to-view-id>
@@ -3601,49 +3599,49 @@
         <from-view-id>/periodicidad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadempleado</from-outcome>
-            <to-view-id>/NovedadEmpleado.xhtml</to-view-id>
+            <to-view-id>/novedadempleado.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NovedadEmpleado.xhtml</from-view-id>
+        <from-view-id>/novedadempleado.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>terceros</from-outcome>
-            <to-view-id>/Tercero.xhtml</to-view-id>
+            <to-view-id>/tercero.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Tercero.xhtml</from-view-id>
+        <from-view-id>/tercero.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadempleado</from-outcome>
-            <to-view-id>/NovedadEmpleado.xhtml</to-view-id>
+            <to-view-id>/novedadempleado.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NovedadEmpleado.xhtml</from-view-id>
+        <from-view-id>/novedadempleado.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>formulas</from-outcome>
-            <to-view-id>/Formula.xhtml</to-view-id>
+            <to-view-id>/formula.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Formula.xhtml</from-view-id>
+        <from-view-id>/formula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadempleado</from-outcome>
-            <to-view-id>/NovedadEmpleado.xhtml</to-view-id>
+            <to-view-id>/novedadempleado.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NovedadEmpleado.xhtml</from-view-id>
+        <from-view-id>/novedadempleado.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedad</from-outcome>
             <to-view-id>/novedad.xhtml</to-view-id>
@@ -3652,7 +3650,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NovedadConcepto.xhtml</from-view-id>
+        <from-view-id>/Novedadconcepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedad</from-outcome>
             <to-view-id>/novedad.xhtml</to-view-id>
@@ -3664,13 +3662,13 @@
         <from-view-id>/novedad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadconcepto</from-outcome>
-            <to-view-id>/NovedadConcepto.xhtml</to-view-id>
+            <to-view-id>/Novedadconcepto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NovedadConcepto.xhtml</from-view-id>
+        <from-view-id>/Novedadconcepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>periodicidades</from-outcome>
             <to-view-id>/periodicidad.xhtml</to-view-id>
@@ -3682,49 +3680,49 @@
         <from-view-id>/periodicidad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadconcepto</from-outcome>
-            <to-view-id>/NovedadConcepto.xhtml</to-view-id>
+            <to-view-id>/Novedadconcepto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NovedadConcepto.xhtml</from-view-id>
+        <from-view-id>/Novedadconcepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>terceros</from-outcome>
-            <to-view-id>/Tercero.xhtml</to-view-id>
+            <to-view-id>/tercero.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Tercero.xhtml</from-view-id>
+        <from-view-id>/tercero.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadconcepto</from-outcome>
-            <to-view-id>/NovedadConcepto.xhtml</to-view-id>
+            <to-view-id>/Novedadconcepto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NovedadConcepto.xhtml</from-view-id>
+        <from-view-id>/Novedadconcepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>formulas</from-outcome>
-            <to-view-id>/Formula.xhtml</to-view-id>
+            <to-view-id>/formula.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Formula.xhtml</from-view-id>
+        <from-view-id>/formula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadconcepto</from-outcome>
-            <to-view-id>/NovedadConcepto.xhtml</to-view-id>
+            <to-view-id>/Novedadconcepto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NovedadTercero.xhtml</from-view-id>
+        <from-view-id>/Novedadtercero.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>periodicidades</from-outcome>
             <to-view-id>/periodicidad.xhtml</to-view-id>
@@ -3736,49 +3734,49 @@
         <from-view-id>/periodicidad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadtercero</from-outcome>
-            <to-view-id>/NovedadTercero.xhtml</to-view-id>
+            <to-view-id>/Novedadtercero.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NovedadTercero.xhtml</from-view-id>
+        <from-view-id>/Novedadtercero.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>formulas</from-outcome>
-            <to-view-id>/Formula.xhtml</to-view-id>
+            <to-view-id>/formula.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Formula.xhtml</from-view-id>
+        <from-view-id>/formula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadtercero</from-outcome>
-            <to-view-id>/NovedadTercero.xhtml</to-view-id>
+            <to-view-id>/Novedadtercero.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NovedadTercero.xhtml</from-view-id>
+        <from-view-id>/Novedadtercero.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>concepto</from-outcome>
-            <to-view-id>/Concepto.xhtml</to-view-id>
+            <to-view-id>/concepto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Concepto.xhtml</from-view-id>
+        <from-view-id>/concepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadtercero</from-outcome>
-            <to-view-id>/NovedadTercero.xhtml</to-view-id>
+            <to-view-id>/Novedadtercero.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/NovedadTercero.xhtml</from-view-id>
+        <from-view-id>/Novedadtercero.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedad</from-outcome>
             <to-view-id>/novedad.xhtml</to-view-id>
@@ -3789,14 +3787,14 @@
         <from-view-id>/novedad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadtercero</from-outcome>
-            <to-view-id>/NovedadTercero.xhtml</to-view-id>
+            <to-view-id>/Novedadtercero.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>acumuladosEmpleado</from-outcome>
             <to-view-id>/emplacumulados.xhtml</to-view-id>
@@ -3807,13 +3805,13 @@
         <from-view-id>/emplacumulados.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmplVigenciaTipoContrato.xhtml</from-view-id>
+        <from-view-id>/emplvigenciatipocontrato.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>tipocontrato</from-outcome>
             <to-view-id>/tipocontrato.xhtml</to-view-id>
@@ -3825,50 +3823,50 @@
         <from-view-id>/tipocontrato.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplvigenciatipocontrato</from-outcome>
-            <to-view-id>/EmplVigenciaTipoContrato.xhtml</to-view-id>
+            <to-view-id>/emplvigenciatipocontrato.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmplVigenciaTipoContrato.xhtml</from-view-id>
+        <from-view-id>/emplvigenciatipocontrato.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>ciudad</from-outcome>
-            <to-view-id>/Ciudades.xhtml</to-view-id>
+            <to-view-id>/ciudades.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Ciudades.xhtml</from-view-id>
+        <from-view-id>/ciudades.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplvigenciatipocontrato</from-outcome>
-            <to-view-id>/EmplVigenciaTipoContrato.xhtml</to-view-id>
+            <to-view-id>/emplvigenciatipocontrato.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmplLegislacionLaboral.xhtml</from-view-id>
+        <from-view-id>/empllegislacionlaboral.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>legislacion</from-outcome>
-            <to-view-id>/Legislacion.xhtml</to-view-id>
+            <to-view-id>/legislacion.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Legislacion.xhtml</from-view-id>
+        <from-view-id>/legislacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>empllegislacionlaboral</from-outcome>
-            <to-view-id>/EmplLegislacionLaboral.xhtml</to-view-id>
+            <to-view-id>/empllegislacionlaboral.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     
     <navigation-rule>
-        <from-view-id>/EmplLegislacionLaboral.xhtml</from-view-id>
+        <from-view-id>/empllegislacionlaboral.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>tipocontrato</from-outcome>
             <to-view-id>/tipocontrato.xhtml</to-view-id>
@@ -3880,13 +3878,13 @@
         <from-view-id>/tipocontrato.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>empllegislacionlaboral</from-outcome>
-            <to-view-id>/EmplLegislacionLaboral.xhtml</to-view-id>
+            <to-view-id>/empllegislacionlaboral.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmplVigenciaTipoContrato.xhtml</from-view-id>
+        <from-view-id>/emplvigenciatipocontrato.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>motivocontrato</from-outcome>
             <to-view-id>/motivocontrato.xhtml</to-view-id>
@@ -3898,7 +3896,7 @@
         <from-view-id>/motivocontrato.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasmotivocontrato</from-outcome>
-            <to-view-id>/EmplVigenciaTipoContrato.xhtml</to-view-id>
+            <to-view-id>/emplvigenciatipocontrato.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -3924,7 +3922,7 @@
         <from-view-id>/centrocosto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -3950,13 +3948,13 @@
         <from-view-id>/unidad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>unidades</from-outcome>
             <to-view-id>/unidad.xhtml</to-view-id>
@@ -3983,7 +3981,7 @@
         <from-view-id>/acercade.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasAcercaDe</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -4007,12 +4005,12 @@
         <from-view-id>/bienestar.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasNominaFBienestar</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>bienestar</from-outcome>
             <to-view-id>/bienestar.xhtml</to-view-id>
@@ -4052,9 +4050,8 @@
         </navigation-case>
     </navigation-rule>
     
-    
     <navigation-rule>
-        <from-view-id>/EmplVigenciaTipoTrabajador.xhtml</from-view-id>
+        <from-view-id>/emplvigenciatipotrabajador.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>clasepension</from-outcome>
             <to-view-id>/clasepension.xhtml</to-view-id>
@@ -4065,14 +4062,13 @@
         <from-view-id>/clasepension.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasEmplVigenciaTipoTrabajadorClasePension</from-outcome>
-            <to-view-id>/EmplVigenciaTipoTrabajador.xhtml</to-view-id>
+            <to-view-id>/emplvigenciatipotrabajador.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
-    
     <navigation-rule>
-        <from-view-id>/Concepto.xhtml</from-view-id>
+        <from-view-id>/concepto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>conceptosoporte</from-outcome>
             <to-view-id>/conceptosoporte.xhtml</to-view-id>
@@ -4083,7 +4079,7 @@
         <from-view-id>/conceptosoporte.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasconceptosporte</from-outcome>
-            <to-view-id>/Concepto.xhtml</to-view-id>
+            <to-view-id>/concepto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -4105,9 +4101,8 @@
         </navigation-case>
     </navigation-rule>
     
-    
     <navigation-rule>
-        <from-view-id>/Ciudades.xhtml</from-view-id>
+        <from-view-id>/ciudades.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>departamento</from-outcome>
             <to-view-id>/departamento.xhtml</to-view-id>
@@ -4118,11 +4113,10 @@
         <from-view-id>/departamento.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasdepartamento</from-outcome>
-            <to-view-id>/Ciudades.xhtml</to-view-id>
+            <to-view-id>/ciudades.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
     
     <navigation-rule>
         <from-view-id>/vigenciasDeportes.xhtml</from-view-id>
@@ -4141,9 +4135,8 @@
         </navigation-case>
     </navigation-rule>
     
-    
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplvigsaludocupacional</from-outcome>
             <to-view-id>/emplvigsaludocupacional.xhtml</to-view-id>
@@ -4154,11 +4147,10 @@
         <from-view-id>/emplvigsaludocupacional.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasemplvigsaludocupacional</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
     
     <navigation-rule>
         <from-view-id>/empresa.xhtml</from-view-id>
@@ -4176,9 +4168,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-
-    
-    
     
     <navigation-rule>
         <from-view-id>/cargo.xhtml</from-view-id>
@@ -4197,13 +4186,8 @@
         </navigation-case>
     </navigation-rule>
        
-    
-    
-    
-    
-    
     <navigation-rule>
-        <from-view-id>/Barra.xhtml</from-view-id>
+        <from-view-id>/barra.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>errorliquidacion</from-outcome>
             <to-view-id>/errorliquidacion.xhtml</to-view-id>
@@ -4214,16 +4198,11 @@
         <from-view-id>/errorliquidacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atraserrorliquidacion</from-outcome>
-            <to-view-id>/Barra.xhtml</to-view-id>
+            <to-view-id>/barra.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
 
-    
-    
-    
-    
-    
     <navigation-rule>
         <from-view-id>/cargo.xhtml</from-view-id>
         <navigation-case>
@@ -4240,13 +4219,9 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-  
-    
-    
-    
     
     <navigation-rule>
-        <from-view-id>/EmplVigenciaEvento.xhtml</from-view-id>
+        <from-view-id>/emplvigenciaevento.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>evento</from-outcome>
             <to-view-id>/evento.xhtml</to-view-id>
@@ -4257,11 +4232,10 @@
         <from-view-id>/evento.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasevento</from-outcome>
-            <to-view-id>/EmplVigenciaEvento.xhtml</to-view-id>
+            <to-view-id>/emplvigenciaevento.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
     
     <navigation-rule>
         <from-view-id>/empresa.xhtml</from-view-id>
@@ -4280,9 +4254,8 @@
         </navigation-case>
     </navigation-rule>
     
-    
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>gersaludocupacional</from-outcome>
             <to-view-id>/gersaludocupacional.xhtml</to-view-id>
@@ -4293,14 +4266,13 @@
         <from-view-id>/gersaludocupacional.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasgersaludocupacional</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-       
     
     <navigation-rule>
-        <from-view-id>/EmplInformacionAdicional.xhtml</from-view-id>
+        <from-view-id>/emplinformacionadicional.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>grupoinfadicional</from-outcome>
             <to-view-id>/grupoinfadicional.xhtml</to-view-id>
@@ -4311,11 +4283,10 @@
         <from-view-id>/grupoinfadicional.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasgrupoinfadicional</from-outcome>
-            <to-view-id>/EmplInformacionAdicional.xhtml</to-view-id>
+            <to-view-id>/emplinformacionadicional.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-       
     
     <navigation-rule>
         <from-view-id>/cargo.xhtml</from-view-id>
@@ -4334,9 +4305,8 @@
         </navigation-case>
     </navigation-rule>
         
-    
     <navigation-rule>
-        <from-view-id>/IdiomaPersona.xhtml</from-view-id>
+        <from-view-id>/idiomapersona.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>idioma</from-outcome>
             <to-view-id>/idioma.xhtml</to-view-id>
@@ -4347,13 +4317,13 @@
         <from-view-id>/idioma.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasidioma</from-outcome>
-            <to-view-id>/IdiomaPersona.xhtml</to-view-id>
+            <to-view-id>/idiomapersona.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Barra.xhtml</from-view-id>
+        <from-view-id>/barra.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>liquidacionlog</from-outcome>
             <to-view-id>/liquidacionlog.xhtml</to-view-id>
@@ -4364,15 +4334,13 @@
         <from-view-id>/liquidacionlog.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasliquidacionlog</from-outcome>
-            <to-view-id>/Barra.xhtml</to-view-id>
+            <to-view-id>/barra.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-     
-    
     
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>liquidarproyeccion</from-outcome>
             <to-view-id>/liquidarproyeccion.xhtml</to-view-id>
@@ -4383,11 +4351,10 @@
         <from-view-id>/liquidarproyeccion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasliquidarproyeccion</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-        
     
     <navigation-rule>
         <from-view-id>/liquidarproyeccion.xhtml</from-view-id>
@@ -4401,15 +4368,13 @@
         <from-view-id>/liquidarproyeccion1.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasliquidarproyeccion1</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
        
-    
-    
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>menucapacitacion</from-outcome>
             <to-view-id>/menucapacitacion.xhtml</to-view-id>
@@ -4420,12 +4385,10 @@
         <from-view-id>/menucapacitacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasmenucapacitacion</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-         
-    
     
     <navigation-rule>
         <from-view-id>/emplvigenciaformapago.xhtml</from-view-id>
@@ -4444,8 +4407,6 @@
         </navigation-case>
     </navigation-rule>
       
-    
-    
     <navigation-rule>
         <from-view-id>/empresa.xhtml</from-view-id>
         <navigation-case>
@@ -4462,7 +4423,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-       
     
     <navigation-rule>
         <from-view-id>/emplvigenciascargos.xhtml</from-view-id>
@@ -4480,10 +4440,9 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-        
     
     <navigation-rule>
-        <from-view-id>/EmplVigenciaSueldo.xhtml</from-view-id>
+        <from-view-id>/emplvigenciasueldo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>motivocambiosueldo</from-outcome>
             <to-view-id>/motivocambiosueldo.xhtml</to-view-id>
@@ -4494,11 +4453,10 @@
         <from-view-id>/motivocambiosueldo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasmotivocambiosueldo</from-outcome>
-            <to-view-id>/EmplVigenciaSueldo.xhtml</to-view-id>
+            <to-view-id>/emplvigenciasueldo.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-        
     
     <navigation-rule>
         <from-view-id>/empldemanda.xhtml</from-view-id>
@@ -4517,9 +4475,8 @@
         </navigation-case>
     </navigation-rule>
         
-    
     <navigation-rule>
-        <from-view-id>/EmplVigenciaLocalizacion.xhtml</from-view-id>
+        <from-view-id>/emplvigencialocalizacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>motivolocalizacion</from-outcome>
             <to-view-id>/motivolocalizacion.xhtml</to-view-id>
@@ -4530,16 +4487,13 @@
         <from-view-id>/motivolocalizacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasmotivolocalizacion</from-outcome>
-            <to-view-id>/EmplVigenciaLocalizacion.xhtml</to-view-id>
+            <to-view-id>/emplvigencialocalizacion.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
        
-    
-    
-    
     <navigation-rule>
-        <from-view-id>/EmplMvrs.xhtml</from-view-id>
+        <from-view-id>/emplmvrs.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>motivomvr</from-outcome>
             <to-view-id>/motivomvr.xhtml</to-view-id>
@@ -4550,15 +4504,13 @@
         <from-view-id>/motivomvr.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasmotivomvr</from-outcome>
-            <to-view-id>/EmplMvrs.xhtml</to-view-id>
+            <to-view-id>/emplmvrs.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
-    
-    
     <navigation-rule>
-        <from-view-id>/EmplVigenciaTipoTrabajador.xhtml</from-view-id>
+        <from-view-id>/emplvigenciatipotrabajador.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>motivoreempleazo</from-outcome>
             <to-view-id>/motivoreemplazo.xhtml</to-view-id>
@@ -4569,12 +4521,11 @@
         <from-view-id>/motivoreemplazo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasmotivoreemplazo</from-outcome>
-            <to-view-id>/EmplVigenciaTipoTrabajador.xhtml</to-view-id>
+            <to-view-id>/emplvigenciatipotrabajador.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
        
-    
     <navigation-rule>
         <from-view-id>/departamento.xhtml</from-view-id>
         <navigation-case>
@@ -4592,7 +4543,6 @@
         </navigation-case>
     </navigation-rule>
         
-    
     <navigation-rule>
         <from-view-id>/liquidarproyeccion1.xhtml</from-view-id>
         <navigation-case>
@@ -4609,7 +4559,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
     
     <navigation-rule>
         <from-view-id>/emplvigenciaformapago.xhtml</from-view-id>
@@ -4628,8 +4577,6 @@
         </navigation-case>
     </navigation-rule>
     
-    
-    
     <navigation-rule>
         <from-view-id>/gersaludocupacional.xhtml</from-view-id>
         <navigation-case>
@@ -4647,9 +4594,6 @@
         </navigation-case>
     </navigation-rule>
     
-    
-    
-    
     <navigation-rule>
         <from-view-id>/emplvigenciaformapago.xhtml</from-view-id>
         <navigation-case>
@@ -4666,9 +4610,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-            
        
-        
     <navigation-rule>
         <from-view-id>/detalleconcepto.xhtml</from-view-id>
         <navigation-case>
@@ -4686,10 +4628,8 @@
         </navigation-case>
     </navigation-rule>
     
-    
-        
     <navigation-rule>
-        <from-view-id>/EmplMvrs.xhtml</from-view-id>
+        <from-view-id>/emplmvrs.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>tipocertificado</from-outcome>
             <to-view-id>/tipocertificado.xhtml</to-view-id>
@@ -4700,14 +4640,13 @@
         <from-view-id>/tipocertificado.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrastipocertificado</from-outcome>
-            <to-view-id>/EmplMvrs.xhtml</to-view-id>
+            <to-view-id>/emplmvrs.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
-        
     <navigation-rule>
-        <from-view-id>/EmplVigenciaJornada.xhtml</from-view-id>
+        <from-view-id>/emplvigenciajornada.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>tipodescanso</from-outcome>
             <to-view-id>/tipodescanso.xhtml</to-view-id>
@@ -4718,11 +4657,10 @@
         <from-view-id>/tipodescanso.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrastipodescanso</from-outcome>
-            <to-view-id>/EmplVigenciaJornada.xhtml</to-view-id>
+            <to-view-id>/emplvigenciajornada.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-            
         
     <navigation-rule>
         <from-view-id>/cargo.xhtml</from-view-id>
@@ -4741,7 +4679,6 @@
         </navigation-case>
     </navigation-rule>
             
-        
     <navigation-rule>
         <from-view-id>/emplvigenciaindicador.xhtml</from-view-id>
         <navigation-case>
@@ -4758,7 +4695,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-            
         
     <navigation-rule>
         <from-view-id>/proceso.xhtml</from-view-id>
@@ -4777,9 +4713,8 @@
         </navigation-case>
     </navigation-rule>
             
-        
     <navigation-rule>
-        <from-view-id>/EmplVigenciaTipoTrabajador.xhtml</from-view-id>
+        <from-view-id>/emplvigenciatipotrabajador.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>tipopensionado</from-outcome>
             <to-view-id>/tipopensionado.xhtml</to-view-id>
@@ -4790,11 +4725,10 @@
         <from-view-id>/tipopensionado.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrastipopensionado</from-outcome>
-            <to-view-id>/EmplVigenciaTipoTrabajador.xhtml</to-view-id>
+            <to-view-id>/emplvigenciatipotrabajador.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-            
         
     <navigation-rule>
         <from-view-id>/vigenciatalla.xhtml</from-view-id>
@@ -4812,7 +4746,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-        
     
     <navigation-rule>
         <from-view-id>/unidad.xhtml</from-view-id>
@@ -4835,12 +4768,12 @@
         <from-view-id>/jornadaslaborales.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>VigenciaJornada</from-outcome>
-            <to-view-id>/EmplVigenciaJornada.xhtml</to-view-id>
+            <to-view-id>/emplvigenciajornada.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmplVigenciaJornada.xhtml</from-view-id>
+        <from-view-id>/emplvigenciajornada.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>jornadaslaborales</from-outcome>
             <to-view-id>/jornadaslaborales.xhtml</to-view-id>
@@ -4869,12 +4802,12 @@
         <from-view-id>/jornadaslaborales.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>    
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>jornadaslaborales</from-outcome>
             <to-view-id>/jornadaslaborales.xhtml</to-view-id>
@@ -4883,7 +4816,7 @@
     </navigation-rule>    
     
     <navigation-rule>
-        <from-view-id>/EmplUbicacionGeografica.xhtml</from-view-id>
+        <from-view-id>/emplubicaciongeografica.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>ubicaciongeografica</from-outcome>
             <to-view-id>/ubicaciongeografica.xhtml</to-view-id>
@@ -4894,11 +4827,10 @@
         <from-view-id>/ubicaciongeografica.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasubicaciongeografica</from-outcome>
-            <to-view-id>/EmplUbicacionGeografica.xhtml</to-view-id>
+            <to-view-id>/emplubicaciongeografica.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
     
     <navigation-rule>
         <from-view-id>/historiaformula.xhtml</from-view-id>
@@ -4916,7 +4848,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-        
     
     <navigation-rule>
         <from-view-id>/perreferencialaboral1.xhtml</from-view-id>
@@ -4934,10 +4865,9 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-        
     
     <navigation-rule>
-        <from-view-id>/EmplVigenciaSueldo.xhtml</from-view-id>
+        <from-view-id>/emplvigenciasueldo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>tipoentidademplvigenciasueldo</from-outcome>
             <to-view-id>/tipoentidad.xhtml</to-view-id>
@@ -4948,14 +4878,13 @@
         <from-view-id>/tipoentidad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrastipoentidademplvigenciasueldo</from-outcome>
-            <to-view-id>/EmplVigenciaSueldo.xhtml</to-view-id>
+            <to-view-id>/emplvigenciasueldo.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-        
     
     <navigation-rule>
-        <from-view-id>/EmplVigenciaAfiliacion3.xhtml</from-view-id>
+        <from-view-id>/emplvigenciaafiliacion3.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>tipoentidademplvigenciaafiliacion3</from-outcome>
             <to-view-id>/tipoentidad.xhtml</to-view-id>
@@ -4966,29 +4895,27 @@
         <from-view-id>/tipoentidad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrastipoentidademplvigenciaafiliacion3</from-outcome>
-            <to-view-id>/EmplVigenciaAfiliacion3.xhtml</to-view-id>
+            <to-view-id>/emplvigenciaafiliacion3.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-    
  
     <navigation-rule>
-        <from-view-id>/EmplVigenciaAfiliacion3.xhtml</from-view-id>
+        <from-view-id>/emplvigenciaafiliacion3.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>terceroemplvigenciaafiliacion3</from-outcome>
-            <to-view-id>/Tercero.xhtml</to-view-id>
+            <to-view-id>/tercero.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Tercero.xhtml</from-view-id>
+        <from-view-id>/tercero.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasterceroemplvigenciaafiliacion3</from-outcome>
-            <to-view-id>/EmplVigenciaAfiliacion3.xhtml</to-view-id>
+            <to-view-id>/emplvigenciaafiliacion3.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-        
     
     <navigation-rule>
         <from-view-id>/tiposueldo.xhtml</from-view-id>
@@ -5006,7 +4933,6 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-        
     
     <navigation-rule>
         <from-view-id>/formulacontratoentidad.xhtml</from-view-id>
@@ -5025,9 +4951,8 @@
         </navigation-case>
     </navigation-rule>
         
-    
     <navigation-rule>
-        <from-view-id>/Proyecto.xhtml</from-view-id>
+        <from-view-id>/proyecto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>pry_plataformaproyecto</from-outcome>
             <to-view-id>/pry_plataforma.xhtml</to-view-id>
@@ -5038,14 +4963,13 @@
         <from-view-id>/pry_plataforma.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atraspry_plataformaproyecto</from-outcome>
-            <to-view-id>/Proyecto.xhtml</to-view-id>
+            <to-view-id>/proyecto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-        
     
     <navigation-rule>
-        <from-view-id>/Proyecto.xhtml</from-view-id>
+        <from-view-id>/proyecto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>pry_clienteproyecto</from-outcome>
             <to-view-id>/pry_cliente.xhtml</to-view-id>
@@ -5056,12 +4980,11 @@
         <from-view-id>/pry_cliente.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atraspry_clienteproyecto</from-outcome>
-            <to-view-id>/Proyecto.xhtml</to-view-id>
+            <to-view-id>/proyecto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
         
-    
     <navigation-rule>
         <from-view-id>/emplvigenciascargos.xhtml</from-view-id>
         <navigation-case>
@@ -5079,9 +5002,8 @@
         </navigation-case>
     </navigation-rule>
         
-    
     <navigation-rule>
-        <from-view-id>/EmplVigenciaLocalizacion.xhtml</from-view-id>
+        <from-view-id>/emplvigencialocalizacion.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>centrocostoEmplVigenciaLocalizacion</from-outcome>
             <to-view-id>/centrocosto.xhtml</to-view-id>
@@ -5092,14 +5014,13 @@
         <from-view-id>/centrocosto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrascentrocostoEmplVigenciaLocalizacion</from-outcome>
-            <to-view-id>/EmplVigenciaLocalizacion.xhtml</to-view-id>
+            <to-view-id>/emplvigencialocalizacion.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-        
     
     <navigation-rule>
-        <from-view-id>/EmplComprobante.xhtml</from-view-id>
+        <from-view-id>/emplcomprobante.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>centrocostoEmplComprobante</from-outcome>
             <to-view-id>/centrocosto.xhtml</to-view-id>
@@ -5110,11 +5031,10 @@
         <from-view-id>/centrocosto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrascentrocostoEmplComprobante</from-outcome>
-            <to-view-id>/EmplComprobante.xhtml</to-view-id>
+            <to-view-id>/emplcomprobante.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
-        
     
     <navigation-rule>
         <from-view-id>/detalleconcepto.xhtml</from-view-id>
@@ -5133,7 +5053,6 @@
         </navigation-case>
     </navigation-rule>
         
-    
     <navigation-rule>
         <from-view-id>/estructuraplanta.xhtml</from-view-id>
         <navigation-case>
@@ -5150,10 +5069,9 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-        
     
     <navigation-rule>
-        <from-view-id>/Atausentismos.xhtml</from-view-id>
+        <from-view-id>/atausentismos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>claseausentismoatausentismo</from-outcome>
             <to-view-id>/claseausentismo.xhtml</to-view-id>
@@ -5164,7 +5082,7 @@
         <from-view-id>/claseausentismo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasclaseausentismoatausentismo</from-outcome>
-            <to-view-id>/Atausentismos.xhtml</to-view-id>
+            <to-view-id>/atausentismos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -5225,12 +5143,12 @@
         <from-view-id>/novedad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atausentismos</from-outcome>
-            <to-view-id>/Atausentismos.xhtml</to-view-id>
+            <to-view-id>/atausentismos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>    
     <navigation-rule>
-        <from-view-id>/Atausentismos.xhtml</from-view-id>
+        <from-view-id>/atausentismos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedad</from-outcome>
             <to-view-id>/novedad.xhtml</to-view-id>
@@ -5239,7 +5157,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Atausentismos.xhtml</from-view-id>
+        <from-view-id>/atausentismos.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>causasausentismos</from-outcome>
             <to-view-id>/causaausentismo.xhtml</to-view-id>
@@ -5250,7 +5168,7 @@
         <from-view-id>/causaausentismo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atausentismos</from-outcome>
-            <to-view-id>/Atausentismos.xhtml</to-view-id>
+            <to-view-id>/atausentismos.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -5276,12 +5194,12 @@
         <from-view-id>/causaausentismo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>    
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>causasausentismos</from-outcome>
             <to-view-id>/causaausentismo.xhtml</to-view-id>
@@ -5293,12 +5211,12 @@
         <from-view-id>/usuario.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>usuario</from-outcome>
             <to-view-id>/usuario.xhtml</to-view-id>
@@ -5306,7 +5224,7 @@
         </navigation-case>
     </navigation-rule>    
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>reintegro</from-outcome>
             <to-view-id>/reingresarempleado.xhtml</to-view-id>
@@ -5317,12 +5235,12 @@
         <from-view-id>/reingresarempleado.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/EmplVigenciaTipoContrato.xhtml</from-view-id>
+        <from-view-id>/emplvigenciatipocontrato.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>cambiofechaingreso</from-outcome>
             <to-view-id>/cambiofechaingreso.xhtml</to-view-id>
@@ -5334,12 +5252,12 @@
         <from-view-id>/usuario.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>    
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>usuarios</from-outcome>
             <to-view-id>/usuario.xhtml</to-view-id>
@@ -5351,12 +5269,12 @@
         <from-view-id>/usuariovista.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>usuariovista</from-outcome>
             <to-view-id>/usuariovista.xhtml</to-view-id>
@@ -5368,12 +5286,12 @@
         <from-view-id>/usuariovista.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>    
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>usuariovista</from-outcome>
             <to-view-id>/usuariovista.xhtml</to-view-id>
@@ -5384,95 +5302,94 @@
         <from-view-id>/cambiofechaingreso.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplvigenciatipocontrato</from-outcome>
-            <to-view-id>/EmplVigenciaTipoContrato.xhtml</to-view-id>
+            <to-view-id>/emplvigenciatipocontrato.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
         
-    
     <!-- Aqui empezamos a agregar nuevas reglas de navegacion -->
     
     <navigation-rule>
-        <from-view-id>/EmplVigenciaAfiliacion3.xhtml</from-view-id>
+        <from-view-id>/emplvigenciaafiliacion3.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>afiliaciones3</from-outcome>
-            <to-view-id>/EmplVigenciaAfiliacion3.xhtml</to-view-id>
+            <to-view-id>/emplvigenciaafiliacion3.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/EmplVigenciaSueldo.xhtml</from-view-id>
+        <from-view-id>/emplvigenciasueldo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasSueldos</from-outcome>
-            <to-view-id>/EmplVigenciaSueldo.xhtml</to-view-id>
+            <to-view-id>/emplvigenciasueldo.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
      
     <navigation-rule>
-        <from-view-id>/EmplSets.xhtml</from-view-id>
+        <from-view-id>/emplsets.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>sets</from-outcome>
-            <to-view-id>/EmplSets.xhtml</to-view-id>
+            <to-view-id>/emplsets.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
      
     <navigation-rule>
-        <from-view-id>/EmplVigenciaReformaLaboral.xhtml</from-view-id>
+        <from-view-id>/emplvigenciareformalaboral.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>reformaLaboral</from-outcome>
-            <to-view-id>/EmplVigenciaReformaLaboral.xhtml</to-view-id>
+            <to-view-id>/emplvigenciareformalaboral.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
      
     <navigation-rule>
-        <from-view-id>/EmplLegislacionLaboral.xhtml</from-view-id>
+        <from-view-id>/empllegislacionlaboral.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
+            <to-view-id>/rastro.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
+        <from-view-id>/rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>vigenciasContratos</from-outcome>
-            <to-view-id>/EmplLegislacionLaboral.xhtml</to-view-id>
+            <to-view-id>/empllegislacionlaboral.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -5497,24 +5414,24 @@
          
 
 <navigation-rule>
-    <from-view-id>/EmplVigenciaLocalizacion.xhtml</from-view-id>
+    <from-view-id>/emplvigencialocalizacion.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>pageProyectos</from-outcome>
-        <to-view-id>/Proyecto.xhtml</to-view-id>
+        <to-view-id>/proyecto.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
 <navigation-rule>
-    <from-view-id>/Proyecto.xhtml</from-view-id>
+    <from-view-id>/proyecto.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>vigencialocalizacion</from-outcome>
-        <to-view-id>/EmplVigenciaLocalizacion.xhtml</to-view-id>
+        <to-view-id>/emplvigencialocalizacion.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
     
 <navigation-rule>
-    <from-view-id>/Concepto.xhtml</from-view-id>
+    <from-view-id>/concepto.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>conceptoredondeoPag</from-outcome>
         <to-view-id>/conceptoredondeo.xhtml</to-view-id>
@@ -5525,13 +5442,13 @@
     <from-view-id>/conceptoredondeo.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>atrasconceptoredondeo</from-outcome>
-        <to-view-id>/Concepto.xhtml</to-view-id>
+        <to-view-id>/concepto.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
     
 <navigation-rule>
-    <from-view-id>/Concepto.xhtml</from-view-id>
+    <from-view-id>/concepto.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>grupoconceptoPag</from-outcome>
         <to-view-id>/grupoconcepto.xhtml</to-view-id>
@@ -5542,47 +5459,47 @@
     <from-view-id>/grupoconcepto.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>atrasgrupoconcepto</from-outcome>
-        <to-view-id>/Concepto.xhtml</to-view-id>
+        <to-view-id>/concepto.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
     
 <navigation-rule>
-    <from-view-id>/Concepto.xhtml</from-view-id>
+    <from-view-id>/concepto.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>terceroPag</from-outcome>
-        <to-view-id>/Tercero.xhtml</to-view-id>
+        <to-view-id>/tercero.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
 <navigation-rule>
-    <from-view-id>/Tercero.xhtml</from-view-id>
+    <from-view-id>/tercero.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>atrasTerceroConcepto</from-outcome>
-        <to-view-id>/Concepto.xhtml</to-view-id>
+        <to-view-id>/concepto.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
     
 <navigation-rule>
-    <from-view-id>/EmplVigenciaSueldo.xhtml</from-view-id>
+    <from-view-id>/emplvigenciasueldo.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>terceroPag</from-outcome>
-        <to-view-id>/Tercero.xhtml</to-view-id>
+        <to-view-id>/tercero.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
 <navigation-rule>
-    <from-view-id>/Tercero.xhtml</from-view-id>
+    <from-view-id>/tercero.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>atrasEmplVigenciaSueldo</from-outcome>
-        <to-view-id>/EmplVigenciaSueldo.xhtml</to-view-id>
+        <to-view-id>/emplvigenciasueldo.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
     
 <navigation-rule>
-    <from-view-id>/Concepto.xhtml</from-view-id>
+    <from-view-id>/concepto.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>unidades</from-outcome>
         <to-view-id>/unidad.xhtml</to-view-id>
@@ -5593,13 +5510,13 @@
     <from-view-id>/unidad.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>atrasConcepto</from-outcome>
-        <to-view-id>/Concepto.xhtml</to-view-id>
+        <to-view-id>/concepto.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
     
 <navigation-rule>
-    <from-view-id>/NovedadVacaciones.xhtml</from-view-id>
+    <from-view-id>/novedadvacaciones.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>novedad</from-outcome>
         <to-view-id>/novedad.xhtml</to-view-id>
@@ -5610,13 +5527,13 @@
     <from-view-id>/novedad.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>vacaciones</from-outcome>
-        <to-view-id>/NovedadVacaciones.xhtml</to-view-id>
+        <to-view-id>/novedadvacaciones.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
 
 <navigation-rule>
-    <from-view-id>/NovedadDefinitivas.xhtml</from-view-id>
+    <from-view-id>/novedaddefinitivas.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>novedad</from-outcome>
         <to-view-id>/novedad.xhtml</to-view-id>
@@ -5627,7 +5544,7 @@
     <from-view-id>/novedad.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>definitivas</from-outcome>
-        <to-view-id>/NovedadDefinitivas.xhtml</to-view-id>
+        <to-view-id>/novedaddefinitivas.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
@@ -5667,7 +5584,7 @@
 </navigation-rule>
     
 <navigation-rule>
-    <from-view-id>/EmplVigenciaLocalizacion.xhtml</from-view-id>
+    <from-view-id>/emplvigencialocalizacion.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>estructuraPlanta</from-outcome>
         <to-view-id>/estructuraplanta.xhtml</to-view-id>
@@ -5678,59 +5595,58 @@
     <from-view-id>/estructuraplanta.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>atrasVLoca</from-outcome>
-        <to-view-id>/EmplVigenciaLocalizacion.xhtml</to-view-id>
+        <to-view-id>/emplvigencialocalizacion.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
     
 <navigation-rule>
-    <from-view-id>/EmplVigenciaLocalizacion.xhtml</from-view-id>
+    <from-view-id>/emplvigencialocalizacion.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>estructura</from-outcome>
-        <to-view-id>/Estructura.xhtml</to-view-id>
+        <to-view-id>/estructura.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
 <navigation-rule>
-    <from-view-id>/Estructura.xhtml</from-view-id>
+    <from-view-id>/estructura.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>atrasVLoca</from-outcome>
-        <to-view-id>/EmplVigenciaLocalizacion.xhtml</to-view-id>
+        <to-view-id>/emplvigencialocalizacion.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
     
 <navigation-rule>
-    <from-view-id>/EmplUbicacionGeografica.xhtml</from-view-id>
+    <from-view-id>/emplubicaciongeografica.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>ciudades</from-outcome>
-        <to-view-id>/Ciudades.xhtml</to-view-id>
+        <to-view-id>/ciudades.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
 <navigation-rule>
-    <from-view-id>/Ciudades.xhtml</from-view-id>
+    <from-view-id>/ciudades.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>atrasubicaciongeografica</from-outcome>
-        <to-view-id>/EmplUbicacionGeografica.xhtml</to-view-id>
+        <to-view-id>/emplubicaciongeografica.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
       
-    
 <navigation-rule>
-    <from-view-id>/Tercero.xhtml</from-view-id>
+    <from-view-id>/tercero.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>ciudades</from-outcome>
-        <to-view-id>/Ciudades.xhtml</to-view-id>
+        <to-view-id>/ciudades.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
 <navigation-rule>
-    <from-view-id>/Ciudades.xhtml</from-view-id>
+    <from-view-id>/ciudades.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>atrastercero</from-outcome>
-        <to-view-id>/Tercero.xhtml</to-view-id>
+        <to-view-id>/tercero.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
@@ -5748,7 +5664,7 @@
     <from-view-id>/empleadoindividual.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>nomina</from-outcome>
-        <to-view-id>/NominaF.xhtml</to-view-id>
+        <to-view-id>/nominaf.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>
@@ -5770,7 +5686,7 @@
 </navigation-rule>
     
 <navigation-rule>
-    <from-view-id>/EmplVigenciaTipoTrabajador.xhtml</from-view-id>
+    <from-view-id>/emplvigenciatipotrabajador.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>tipotrabajadoremplvigenciatipotrabajador</from-outcome>
         <to-view-id>/tiposTrabajadores.xhtml</to-view-id>
@@ -5781,7 +5697,7 @@
     <from-view-id>/tiposTrabajadores.xhtml</from-view-id>
     <navigation-case>
         <from-outcome>atrastipotrabajadoremplvigenciatipotrabajador</from-outcome>
-        <to-view-id>/EmplVigenciaTipoTrabajador.xhtml</to-view-id>
+        <to-view-id>/emplvigenciatipotrabajador.xhtml</to-view-id>
         <redirect />
     </navigation-case>
 </navigation-rule>

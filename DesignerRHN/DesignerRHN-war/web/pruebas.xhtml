@@ -8,7 +8,7 @@
         <title>Pruebas</title>
     </h:head>
     <h:body> 
-        <ui:composition template="Template.xhtml">
+        <ui:composition template="template.xhtml">
             <ui:define name="body">  
                 <h:form id="form" >
                     <p:commandButton id="foto" value=""  style="background-size: 100% 100%;background-image: url(ArchivosCargados/#{controlRemoto.fotoEmpleado}); width: 49px; height: 60px; background-repeat: no-repeat;" onclick="Cargar.show();" update=":formEncrip:FileUp"/> 
