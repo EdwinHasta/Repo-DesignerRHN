@@ -528,7 +528,6 @@ public class Conceptos implements Serializable {
         } else {
             codigoSTR = null;
             codigo = null;
-
         }
         return codigoSTR;
     }

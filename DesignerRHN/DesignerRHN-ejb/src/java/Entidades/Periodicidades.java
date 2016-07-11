@@ -128,8 +128,13 @@ public class Periodicidades implements Serializable {
     }
 
     public void setCodigoStr(String codigoStr) {
-        codigo = Integer.parseInt(codigoStr);
-        this.codigoStr = codigoStr;
+        if (codigoStr != " ") {
+            codigo = Integer.parseInt(codigoStr);
+            this.codigoStr = codigoStr;
+        } else {
+            codigo = 0;
+            this.codigoStr = codigoStr;
+        }
     }
 
     public Integer getCodigo() {

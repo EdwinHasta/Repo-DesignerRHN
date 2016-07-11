@@ -82,7 +82,7 @@ public class ControlNovedadesEmpleados implements Serializable {
     private boolean guardado;
     //Crear Novedades
     private List<Novedades> listaNovedadesCrear;
-    public Novedades nuevaNovedad;
+    private Novedades nuevaNovedad;
     private int k;
     private BigInteger l;
     private String mensajeValidacion;
@@ -160,16 +160,23 @@ public class ControlNovedadesEmpleados implements Serializable {
         listaNovedadesModificar = new ArrayList<Novedades>();
         //Crear VC
         nuevaNovedad = new Novedades();
-        //nuevaNovedad.setFechafinal(new Date());
-        nuevaNovedad.setFormula(new Formulas());
-        nuevaNovedad.setTercero(new Terceros());
         nuevaNovedad.setPeriodicidad(new Periodicidades());
-        nuevaNovedad.setFechareporte(new Date());
+        nuevaNovedad.getPeriodicidad().setNombre(" ");
+        nuevaNovedad.getPeriodicidad().setCodigoStr(" ");
+        nuevaNovedad.setTercero(new Terceros());
+        nuevaNovedad.getTercero().setNombre(" ");
+        nuevaNovedad.setConcepto(new Conceptos());
+        nuevaNovedad.getConcepto().setDescripcion(" ");
+        nuevaNovedad.getConcepto().setCodigoSTR("0");
         nuevaNovedad.setTipo("FIJA");
+        nuevaNovedad.setUsuarioreporta(new Usuarios());
+        nuevaNovedad.setTerminal(" ");
+        nuevaNovedad.setFechareporte(new Date());
         altoTabla = "155";
         nuevaNovedad.setValortotal(valor);
         cargarTodos = false;
         cantidadEmpleadosNov = 0;
+        CodigoConcepto = "0";
     }
 
     @PostConstruct
@@ -459,57 +466,55 @@ public class ControlNovedadesEmpleados implements Serializable {
     public void agregarNuevaNovedadEmpleado() throws UnknownHostException {
         int pasa = 0;
         int pasa2 = 0;
+        cargarTodosEmpleados();
         Empleados emp = new Empleados();
         Empleados emp2 = new Empleados();
         mensajeValidacion = new String();
         RequestContext context = RequestContext.getCurrentInstance();
 
+        System.out.println("nuevaNovedad Fechainicial : " + nuevaNovedad.getFechainicial());
+        System.out.println("Concepto : " + nuevaNovedad.getConcepto().getDescripcion());
+        System.out.println("Formula : " + nuevaNovedad.getFormula());
+        System.out.println("Periodicidad : " + nuevaNovedad.getPeriodicidad().getNombre());
+        System.out.println("getTipo() : " + nuevaNovedad.getTipo());
+
         if (nuevaNovedad.getFechainicial() == null) {
-            System.out.println("Entro a Fecha Inicial");
             mensajeValidacion = mensajeValidacion + " * Fecha Inicial\n";
             pasa++;
         }
+        if (nuevaNovedad.getConcepto().getCodigoSTR() == null) {
+            mensajeValidacion = mensajeValidacion + " * Concepto\n";
+            pasa++;
+        }
+        if (nuevaNovedad.getFormula().getNombrelargo() == null) {
+            mensajeValidacion = mensajeValidacion + " * Formula\n";
+            pasa++;
+        }
+        if (nuevaNovedad.getValortotal() == null) {
+            mensajeValidacion = mensajeValidacion + " * Valor\n";
+            pasa++;
+        }
+        if (nuevaNovedad.getTipo() == null) {
+            mensajeValidacion = mensajeValidacion + " * Tipo\n";
+            pasa++;
+        }
+        System.out.println("mensajeValidacion : " + mensajeValidacion);
 
-        for (int i = 0; i < lovEmpleados.size(); i++) {
-            if (empleadoSeleccionado.getId().compareTo(lovEmpleados.get(i).getId()) == 0) {
-                emp2 = administrarNovedadesEmpleados.elEmpleado(lovEmpleados.get(i).getId());
-                if (nuevaNovedad.getFechainicial() != null) {
-                    if (nuevaNovedad.getFechainicial().compareTo(emp2.getFechacreacion()) < 0) {
-                        context.update("formularioDialogos:inconsistencia");
-                        context.execute("inconsistencia.show()");
-                        pasa2++;
-                    }
-                }
+        emp2 = administrarNovedadesEmpleados.elEmpleado(empleadoSeleccionado.getId());
+        if (nuevaNovedad.getFechainicial() != null) {
+            if (nuevaNovedad.getFechainicial().compareTo(emp2.getFechacreacion()) < 0) {
+                context.update("formularioDialogos:inconsistencia");
+                context.execute("inconsistencia.show()");
+                pasa2++;
             }
         }
+
         if (nuevaNovedad.getFechafinal() != null) {
             if (nuevaNovedad.getFechainicial().compareTo(nuevaNovedad.getFechafinal()) > 0) {
                 context.update("formularioDialogos:fechas");
                 context.execute("fechas.show()");
                 pasa2++;
             }
-        }
-
-        if (nuevaNovedad.getConcepto().getCodigoSTR() == null) {
-            System.out.println("Entro a Concepto");
-            mensajeValidacion = mensajeValidacion + " * Concepto\n";
-            pasa++;
-        }
-        if (nuevaNovedad.getFormula().getNombrelargo() == null) {
-            System.out.println("Entro a Formula");
-            mensajeValidacion = mensajeValidacion + " * Formula\n";
-            pasa++;
-        }
-        if (nuevaNovedad.getValortotal() == null) {
-            System.out.println("Entro a Valor");
-            mensajeValidacion = mensajeValidacion + " * Valor\n";
-            pasa++;
-        }
-
-        if (nuevaNovedad.getTipo() == null) {
-            System.out.println("Entro a Tipo");
-            mensajeValidacion = mensajeValidacion + " * Tipo\n";
-            pasa++;
         }
 
         System.out.println("Valor Pasa: " + pasa);
@@ -596,11 +601,18 @@ public class ControlNovedadesEmpleados implements Serializable {
             modificarInfoRegistro(listaNovedades.size());
             novedadSeleccionada = listaNovedades.get(listaNovedades.indexOf(nuevaNovedad));
             nuevaNovedad = new Novedades();
-            nuevaNovedad.setFormula(new Formulas());
-            nuevaNovedad.setTercero(new Terceros());
-            nuevaNovedad.setFechareporte(new Date());
             nuevaNovedad.setPeriodicidad(new Periodicidades());
+            nuevaNovedad.getPeriodicidad().setNombre(" ");
+            nuevaNovedad.getPeriodicidad().setCodigoStr(" ");
+            nuevaNovedad.setTercero(new Terceros());
+            nuevaNovedad.getTercero().setNombre(" ");
+            nuevaNovedad.setConcepto(new Conceptos());
+            nuevaNovedad.getConcepto().setDescripcion(" ");
+            nuevaNovedad.getConcepto().setCodigoSTR("0");
             nuevaNovedad.setTipo("FIJA");
+            nuevaNovedad.setUsuarioreporta(new Usuarios());
+            nuevaNovedad.setTerminal(" ");
+            nuevaNovedad.setFechareporte(new Date());
 
             System.out.println("nuevaNovedad : " + nuevaNovedad.getFechareporte());
             activoBtnAcumulado = true;
@@ -961,30 +973,28 @@ public class ControlNovedadesEmpleados implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (novedadSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
-        } else {
-            if (novedadSeleccionada != null) {
-                activoBtnAcumulado = true;
-                context.update("form:ACUMULADOS");
-                if (cualCelda == 0) {
-                    cargarLOVConceptos();
-                    context.update("formularioDialogos:conceptosDialogo");
-                    context.execute("conceptosDialogo.show()");
-                    tipoActualizacion = 0;
-                } else if (cualCelda == 6) {
-                    cargarLOVPeriodicidades();
-                    context.update("formularioDialogos:periodicidadesDialogo");
-                    context.execute("periodicidadesDialogo.show()");
-                    tipoActualizacion = 0;
-                } else if (cualCelda == 8) {
-                    cargarLOVTerceros();
-                    context.update("formularioDialogos:tercerosDialogo");
-                    context.execute("tercerosDialogo.show()");
-                    tipoActualizacion = 0;
-                } else if (cualCelda == 10) {
-                    cargarLOVFormulas();
-                    context.update("formularioDialogos:formulasDialogo");
-                    context.execute("formulasDialogo.show()");
-                }
+        } else if (novedadSeleccionada != null) {
+            activoBtnAcumulado = true;
+            context.update("form:ACUMULADOS");
+            if (cualCelda == 0) {
+                cargarLOVConceptos();
+                context.update("formularioDialogos:conceptosDialogo");
+                context.execute("conceptosDialogo.show()");
+                tipoActualizacion = 0;
+            } else if (cualCelda == 6) {
+                cargarLOVPeriodicidades();
+                context.update("formularioDialogos:periodicidadesDialogo");
+                context.execute("periodicidadesDialogo.show()");
+                tipoActualizacion = 0;
+            } else if (cualCelda == 8) {
+                cargarLOVTerceros();
+                context.update("formularioDialogos:tercerosDialogo");
+                context.execute("tercerosDialogo.show()");
+                tipoActualizacion = 0;
+            } else if (cualCelda == 10) {
+                cargarLOVFormulas();
+                context.update("formularioDialogos:formulasDialogo");
+                context.execute("formulasDialogo.show()");
             }
         }
     }
@@ -1027,68 +1037,66 @@ public class ControlNovedadesEmpleados implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (novedadSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
-        } else {
-            if (novedadSeleccionada != null) {
-                editarNovedades = novedadSeleccionada;
+        } else if (novedadSeleccionada != null) {
+            editarNovedades = novedadSeleccionada;
 
-                activoBtnAcumulado = true;
-                context.update("form:ACUMULADOS");
-                System.out.println("Entro a editar... valor celda: " + cualCelda);
-                if (cualCelda == 0) {
-                    context.update("formularioDialogos:editarConceptosCodigos");
-                    context.execute("editarConceptosCodigos.show()");
-                    cualCelda = -1;
-                } else if (cualCelda == 1) {
-                    context.update("formularioDialogos:editarConceptosDescripciones");
-                    context.execute("editarConceptosDescripciones.show()");
-                    cualCelda = -1;
-                } else if (cualCelda == 2) {
-                    context.update("formularioDialogos:editFechaInicial");
-                    context.execute("editFechaInicial.show()");
-                    cualCelda = -1;
-                } else if (cualCelda == 3) {
-                    context.update("formularioDialogos:editFechasFinales");
-                    context.execute("editFechasIniciales.show()");
-                    cualCelda = -1;
-                } else if (cualCelda == 4) {
-                    context.update("formularioDialogos:editarValores");
-                    context.execute("editarSaldos.show()");
-                    cualCelda = -1;
-                } else if (cualCelda == 5) {
-                    context.update("formularioDialogos:editarSaldos");
-                    context.execute("editarSaldos.show()");
-                } else if (cualCelda == 6) {
-                    context.update("formularioDialogos:editarPeriodicidadesCodigos");
-                    context.execute("editarPeriodicidadesCodigos.show()");
-                } else if (cualCelda == 7) {
-                    context.update("formularioDialogos:editarPeriodicidadesDescripciones");
-                    context.execute("editarPeriodicidadesDescripciones.show()");
-                    cualCelda = -1;
-                } else if (cualCelda == 8) {
-                    context.update("formularioDialogos:editarTercerosNit");
-                    context.execute("editarTercerosNit.show()");
-                    cualCelda = -1;
-                } else if (cualCelda == 9) {
-                    context.update("formularioDialogos:editarTercerosNombres");
-                    context.execute("editarTercerosNombres.show()");
-                    cualCelda = -1;
-                } else if (cualCelda == 10) {
-                    context.update("formularioDialogos:editarFormulas");
-                    context.execute("editarFormulas.show()");
-                    cualCelda = -1;
-                } else if (cualCelda == 11) {
-                    context.update("formularioDialogos:editarHorasDias");
-                    context.execute("editarHorasDias.show()");
-                    cualCelda = -1;
-                } else if (cualCelda == 12) {
-                    context.update("formularioDialogos:editarMinutosHoras");
-                    context.execute("editarMinutosHoras.show()");
-                    cualCelda = -1;
-                } else if (cualCelda == 13) {
-                    context.update("formularioDialogos:editarTipos");
-                    context.execute("editarTipos.show()");
-                    cualCelda = -1;
-                }
+            activoBtnAcumulado = true;
+            context.update("form:ACUMULADOS");
+            System.out.println("Entro a editar... valor celda: " + cualCelda);
+            if (cualCelda == 0) {
+                context.update("formularioDialogos:editarConceptosCodigos");
+                context.execute("editarConceptosCodigos.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 1) {
+                context.update("formularioDialogos:editarConceptosDescripciones");
+                context.execute("editarConceptosDescripciones.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 2) {
+                context.update("formularioDialogos:editFechaInicial");
+                context.execute("editFechaInicial.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 3) {
+                context.update("formularioDialogos:editFechasFinales");
+                context.execute("editFechasIniciales.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 4) {
+                context.update("formularioDialogos:editarValores");
+                context.execute("editarSaldos.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 5) {
+                context.update("formularioDialogos:editarSaldos");
+                context.execute("editarSaldos.show()");
+            } else if (cualCelda == 6) {
+                context.update("formularioDialogos:editarPeriodicidadesCodigos");
+                context.execute("editarPeriodicidadesCodigos.show()");
+            } else if (cualCelda == 7) {
+                context.update("formularioDialogos:editarPeriodicidadesDescripciones");
+                context.execute("editarPeriodicidadesDescripciones.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 8) {
+                context.update("formularioDialogos:editarTercerosNit");
+                context.execute("editarTercerosNit.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 9) {
+                context.update("formularioDialogos:editarTercerosNombres");
+                context.execute("editarTercerosNombres.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 10) {
+                context.update("formularioDialogos:editarFormulas");
+                context.execute("editarFormulas.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 11) {
+                context.update("formularioDialogos:editarHorasDias");
+                context.execute("editarHorasDias.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 12) {
+                context.update("formularioDialogos:editarMinutosHoras");
+                context.execute("editarMinutosHoras.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 13) {
+                context.update("formularioDialogos:editarTipos");
+                context.execute("editarTipos.show()");
+                cualCelda = -1;
             }
         }
     }
@@ -1293,7 +1301,7 @@ public class ControlNovedadesEmpleados implements Serializable {
         listaNovedades = null;
         getListaNovedades();
         modificarInfoRegistro(listaNovedades.size());
-        
+
         context.reset("formularioDialogos:LOVEmpleados:globalFilter");
         context.execute("LOVEmpleados.clearFilters()");
         context.execute("empleadosDialogo.hide()");
@@ -1524,35 +1532,33 @@ public class ControlNovedadesEmpleados implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (novedadSeleccionada == null) {
             context.execute("seleccionarRegistro.show()");
-        } else {
-            if (novedadSeleccionada != null) {
-                duplicarNovedad = new Novedades();
-                k++;
-                l = BigInteger.valueOf(k);
-                Empleados emple = administrarNovedadesEmpleados.elEmpleado(empleadoSeleccionado.getId());
+        } else if (novedadSeleccionada != null) {
+            duplicarNovedad = new Novedades();
+            k++;
+            l = BigInteger.valueOf(k);
+            Empleados emple = administrarNovedadesEmpleados.elEmpleado(empleadoSeleccionado.getId());
 
-                duplicarNovedad.setSecuencia(l);
-                duplicarNovedad.setEmpleado(emple);
-                duplicarNovedad.setConcepto(novedadSeleccionada.getConcepto());
-                duplicarNovedad.setFechainicial(novedadSeleccionada.getFechainicial());
-                duplicarNovedad.setFechafinal(novedadSeleccionada.getFechafinal());
-                duplicarNovedad.setFechareporte(novedadSeleccionada.getFechareporte());
-                duplicarNovedad.setValortotal(novedadSeleccionada.getValortotal());
-                duplicarNovedad.setSaldo(novedadSeleccionada.getSaldo());
-                duplicarNovedad.setPeriodicidad(novedadSeleccionada.getPeriodicidad());
-                duplicarNovedad.setTercero(novedadSeleccionada.getTercero());
-                duplicarNovedad.setFormula(novedadSeleccionada.getFormula());
-                duplicarNovedad.setUnidadesparteentera(novedadSeleccionada.getUnidadesparteentera());
-                duplicarNovedad.setUnidadespartefraccion(novedadSeleccionada.getUnidadespartefraccion());
-                duplicarNovedad.setTipo(novedadSeleccionada.getTipo());
-                duplicarNovedad.setTerminal(novedadSeleccionada.getTerminal());
-                duplicarNovedad.setUsuarioreporta(novedadSeleccionada.getUsuarioreporta());
+            duplicarNovedad.setSecuencia(l);
+            duplicarNovedad.setEmpleado(emple);
+            duplicarNovedad.setConcepto(novedadSeleccionada.getConcepto());
+            duplicarNovedad.setFechainicial(novedadSeleccionada.getFechainicial());
+            duplicarNovedad.setFechafinal(novedadSeleccionada.getFechafinal());
+            duplicarNovedad.setFechareporte(novedadSeleccionada.getFechareporte());
+            duplicarNovedad.setValortotal(novedadSeleccionada.getValortotal());
+            duplicarNovedad.setSaldo(novedadSeleccionada.getSaldo());
+            duplicarNovedad.setPeriodicidad(novedadSeleccionada.getPeriodicidad());
+            duplicarNovedad.setTercero(novedadSeleccionada.getTercero());
+            duplicarNovedad.setFormula(novedadSeleccionada.getFormula());
+            duplicarNovedad.setUnidadesparteentera(novedadSeleccionada.getUnidadesparteentera());
+            duplicarNovedad.setUnidadespartefraccion(novedadSeleccionada.getUnidadespartefraccion());
+            duplicarNovedad.setTipo(novedadSeleccionada.getTipo());
+            duplicarNovedad.setTerminal(novedadSeleccionada.getTerminal());
+            duplicarNovedad.setUsuarioreporta(novedadSeleccionada.getUsuarioreporta());
 
-                activoBtnAcumulado = true;
-                context.update("form:ACUMULADOS");
-                context.update("formularioDialogos:duplicarNovedad");
-                context.execute("DuplicarRegistroNovedad.show()");
-            }
+            activoBtnAcumulado = true;
+            context.update("form:ACUMULADOS");
+            context.update("formularioDialogos:duplicarNovedad");
+            context.execute("DuplicarRegistroNovedad.show()");
         }
     }
 
@@ -1685,10 +1691,12 @@ public class ControlNovedadesEmpleados implements Serializable {
         nuevaNovedad = new Novedades();
         nuevaNovedad.setPeriodicidad(new Periodicidades());
         nuevaNovedad.getPeriodicidad().setNombre(" ");
+        nuevaNovedad.getPeriodicidad().setCodigoStr(" ");
         nuevaNovedad.setTercero(new Terceros());
         nuevaNovedad.getTercero().setNombre(" ");
         nuevaNovedad.setConcepto(new Conceptos());
         nuevaNovedad.getConcepto().setDescripcion(" ");
+        nuevaNovedad.getConcepto().setCodigoSTR("0");
         nuevaNovedad.setTipo("FIJA");
         nuevaNovedad.setUsuarioreporta(new Usuarios());
         nuevaNovedad.setTerminal(" ");
@@ -1704,10 +1712,12 @@ public class ControlNovedadesEmpleados implements Serializable {
         duplicarNovedad = new Novedades();
         duplicarNovedad.setPeriodicidad(new Periodicidades());
         duplicarNovedad.getPeriodicidad().setNombre(" ");
+        duplicarNovedad.getPeriodicidad().setCodigoStr(" ");
         duplicarNovedad.setTercero(new Terceros());
         duplicarNovedad.getTercero().setNombre(" ");
         duplicarNovedad.setConcepto(new Conceptos());
         duplicarNovedad.getConcepto().setDescripcion(" ");
+        duplicarNovedad.getConcepto().setCodigoSTR("0");
         duplicarNovedad.setTipo("FIJA");
         duplicarNovedad.setUsuarioreporta(new Usuarios());
         duplicarNovedad.setTerminal(" ");
@@ -1738,12 +1748,10 @@ public class ControlNovedadesEmpleados implements Serializable {
 //            } else {
 //                context.execute("seleccionarRegistro.show()");
 //            }
+        } else if (administrarRastros.verificarHistoricosTabla("NOVEDADES")) {
+            context.execute("confirmarRastroHistorico.show()");
         } else {
-            if (administrarRastros.verificarHistoricosTabla("NOVEDADES")) {
-                context.execute("confirmarRastroHistorico.show()");
-            } else {
-                context.execute("errorRastroHistorico.show()");
-            }
+            context.execute("errorRastroHistorico.show()");
         }
     }
 

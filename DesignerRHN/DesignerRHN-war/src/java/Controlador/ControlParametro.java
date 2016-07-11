@@ -1064,17 +1064,19 @@ public class ControlParametro implements Serializable {
             infoRegistroEmpleado = String.valueOf(0);
         }
         RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroEmpleado");
-        RequestContext.getCurrentInstance().update("formularioDialogos:buscarEmpleadoDialogo");
-        RequestContext.getCurrentInstance().update("formularioDialogos:lovEmpleados");
+//        RequestContext.getCurrentInstance().update("formularioDialogos:buscarEmpleadoDialogo");
+//        RequestContext.getCurrentInstance().update("formularioDialogos:lovEmpleados");
     }
-    
+
 ///////////  Cargar listas de valores:  //////////
-    
     public void cargarLovEmpleados() {
         if (lovEmpleados == null) {
             lovEmpleados = administrarParametros.empleadosLov();
         }
         contarRegistrosLovEmpl(0);
+        RequestContext.getCurrentInstance().update("formularioDialogos:buscarEmpleadoDialogo");
+        RequestContext.getCurrentInstance().update("formularioDialogos:lovEmpleados");
+        RequestContext.getCurrentInstance().update("formularioDialogos:aceptarEm");
     }
 
     public void cargarLovProcesos() {
@@ -1094,7 +1096,6 @@ public class ControlParametro implements Serializable {
             lovEstructuras = administrarParametros.lovEstructuras();
         }
     }
-
 
     //GETTER AND SETTER
     public ParametrosEstructuras getParametroLiquidacion() {

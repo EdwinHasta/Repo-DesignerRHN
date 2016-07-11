@@ -9,8 +9,8 @@
     </h:head>
     <h:body>
         <ui:composition template="/Template.xhtml">
-            <ui:define name="body">                  
-                <h:form id="form"> 
+            <ui:define name="body">
+                <h:form id="form">
 
                     <f:loadBundle basename="Recursos.tercero" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
@@ -73,7 +73,8 @@
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " actionListener="#{controlTercero.salir()}" action="atrasterceroemplvigenciaafiliacion3" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
+                                                 actionListener="#{controlTercero.salir()}" action="#{controlTercero.valorPaginaAnterior()}" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
                             </p:toolbarGroup>  
@@ -458,10 +459,11 @@
                             </p:dataTable>
                             <h:outputText id="infoRegistroTerceroSucursal" value="#{msg['infoRegistro']} #{controlTercero.infoRegistroTerceroSucursal}" style="position: relative; left: 10px; top: 0px; font-weight: bold"/>
                         </fieldset>
-                        <p:commandButton id="ACEPTAR" style="position: absolute; left: 683px; top: 505px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" onclick="confirmarGuardarSalida.show();" update=":form:datosTerceros" disabled="#{controlTercero.guardado}" process="@this" />
-                        <p:commandButton id="ATRAS" style="position: absolute; left: 775px; top: 505px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value="" actionListener="#{controlTercero.salir()}" action="atrasterceroemplvigenciaafiliacion3" process="@this" />
+                        <p:commandButton id="ACEPTAR" style="position: absolute; left: 683px; top: 505px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" 
+                                         value="" onclick="confirmarGuardarSalida.show();" update=":form:datosTerceros" disabled="#{controlTercero.guardado}" process="@this" />
+                        <p:commandButton id="ATRAS" style="position: absolute; left: 775px; top: 505px; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" 
+                                         value="" actionListener="#{controlTercero.salir()}" action="#{controlTercero.valorPaginaAnterior()}" process="@this" />
                     </p:panel>
-
 
                     <p:dialog header="#{msg['tercerosT']}" widgetVar="BuscarTerceroDialogo" draggable="false" resizable="false" closable="false" id="BuscarTerceroDialogo"  
                               showEffect="fade" hideEffect="fade" width="431" modal="true" >
@@ -1193,7 +1195,6 @@
                             <f:facet name="header"><h:outputText value="#{msg['ciudadX']}"/> </f:facet> 
                             <h:outputText value="#{infoExp.ciudad.nombre}" />
                         </p:column>
-
                     </p:dataTable>
                 </h:form>
             </ui:define>

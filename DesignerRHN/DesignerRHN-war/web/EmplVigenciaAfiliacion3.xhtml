@@ -170,7 +170,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 220px; margin: -14px; height: 26px; border: none; color: blue" id="fooTerceroVA" actionListener="#{controlTercero.recibirPaginaEntrante(atrasterceroemplvigenciaafiliacion3)}" action="terceroemplvigenciaafiliacion3" value=""/>
+                                        <p:commandButton style="width: 220px; margin: -14px; height: 26px; border: none; color: blue" id="fooTerceroVA" actionListener="#{controlTercero.recibirPaginaEntrante('atrasterceroemplvigenciaafiliacion3')}" action="terceroemplvigenciaafiliacion3" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -364,10 +364,10 @@
                     <p:dialog id="confirmarGuardar" header="#{msg['precaucion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton icon="ui-icon-check" value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplVigenciaAfiliacion3.guardadoGeneral()}" action="nomina" 
+                        <p:commandButton icon="ui-icon-check" value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplVigenciaAfiliacion3.guardadoGeneral()}" action="#{controlTercero.valorPaginaAnterior()}" 
                                          style="position: absolute; top: 45px; left: 180px" process="@this"/>
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplVigenciaAfiliacion3.cancelarModificacionVA()}" 
-                                         style="position: absolute; top: 45px; left: 245px" process="@this" icon="ui-icon-close" />
+                                         style="position: absolute; top: 45px; left: 245px" process="@this" icon="ui-icon-close" action="#{controlTercero.valorPaginaAnterior()}" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" icon="ui-icon-arrowreturnthick-1-w"
                                          style="position: absolute; top: 45px; left: 315px" process="@this"/>
                     </p:dialog>
