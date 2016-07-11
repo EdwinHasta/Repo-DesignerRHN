@@ -47,6 +47,13 @@ a:link:hover, a:visited:hover  {
 .ui-felipe .ui-datagrid-content {
     border: none;
 }
+.ui-spinner-button{
+    right: -170px;
+}
+
+.ui-spinner-input {
+    padding-right: 0px;
+}
 
 .ui-datagrid .ui-paginator {
     font-size: 10px;

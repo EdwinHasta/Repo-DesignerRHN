@@ -116,9 +116,9 @@
                         <fieldset style="position: absolute;left: 10px; top: 168px; width: 835px; height: 148px; border-radius: 10px; ">
                             <legend style="font-weight: bold; color: #00F;">#{msg['empleado']}</legend>
 
-                            <p:dataTable id="datosSolucionesNodosEmpleado" widgetVar="datosSolucionesNodosEmpleado" var="solucionNodoEmpleado" style="width: 830px;" value="#{controlComprobantes.listaSolucionesNodosEmpleado}"
-                                         rowKey="#{solucionNodoEmpleado.secuencia}" scrollable="true" rowIndexVar="indice"
-                                         editable="true" editMode="cell"  scrollHeight="#{controlComprobantes.altoScrollSolucionesNodosEmpleado}" filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleado}" 
+                            <p:dataTable id="datosSolucionesNodosEmpleado" widgetVar="datosSolucionesNodosEmpleado" var="solucionNodoEmpleado" rowKey="#{solucionNodoEmpleado.secuencia}" style="width: 830px;" 
+                                         value="#{controlComprobantes.listaSolucionesNodosEmpleado}" scrollable="true" rowIndexVar="indice" scrollHeight="#{controlComprobantes.altoScrollSolucionesNodosEmpleado}" 
+                                         scrollWidth="830" editable="true" editMode="cell" liveScroll="true" scrollRows="15"  filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleado}" 
                                          selectionMode="single" selection="#{controlComprobantes.solucionNodoSeleccionada}" emptyMessage="#{msg['vacio']}">
 
                                 <p:column width="20" style="padding: 0px"> 

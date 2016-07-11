@@ -239,67 +239,67 @@ public class ControlComprobantes implements Serializable {
         if (bandera == 0) {
             //SOLUCIONES NODOS EMPLEADO
             codigoSNE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleado:codigoSNE");
-            codigoSNE.setFilterStyle("width: 40px");
+            codigoSNE.setFilterStyle("width: 85%");
             descipcionSNE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleado:descipcionSNE");
-            descipcionSNE.setFilterStyle("width: 170px");
+            descipcionSNE.setFilterStyle("width: 85%");
             unidadSNE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleado:unidadSNE");
-            unidadSNE.setFilterStyle("width: 30px");
+            unidadSNE.setFilterStyle("width: 85%");
             pagoSNE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleado:pagoSNE");
-            pagoSNE.setFilterStyle("");
+            pagoSNE.setFilterStyle("width: 85%");
             descuentoSNE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleado:descuentoSNE");
-            descuentoSNE.setFilterStyle("");
+            descuentoSNE.setFilterStyle("width: 85%");
             terceroSNE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleado:terceroSNE");
-            terceroSNE.setFilterStyle("width: 180px");
+            terceroSNE.setFilterStyle("width: 85%");
             fechaHastaSNE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleado:fechaHastaSNE");
-            fechaHastaSNE.setFilterStyle("width: 40px");
+            fechaHastaSNE.setFilterStyle("width: 85%");
             debitoSNE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleado:debitoSNE");
-            debitoSNE.setFilterStyle("width: 50px");
+            debitoSNE.setFilterStyle("width: 85%");
             centroCostoDSNE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleado:centroCostoDSNE");
-            centroCostoDSNE.setFilterStyle("width: 80px");
+            centroCostoDSNE.setFilterStyle("width: 85%");
             creditoSNE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleado:creditoSNE");
-            creditoSNE.setFilterStyle("width: 50px");
+            creditoSNE.setFilterStyle("width: 85%");
             centroCostoCSNE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleado:centroCostoCSNE");
-            centroCostoCSNE.setFilterStyle("width: 80px");
+            centroCostoCSNE.setFilterStyle("width: 85%");
             saldoSNE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleado:saldoSNE");
-            saldoSNE.setFilterStyle("width: 80px");
+            saldoSNE.setFilterStyle("width: 85%");
             fechaDesdeSNE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleado:fechaDesdeSNE");
-            fechaDesdeSNE.setFilterStyle("width: 40px");
+            fechaDesdeSNE.setFilterStyle("width: 85%");
             fechaPagoSNE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleado:fechaPagoSNE");
-            fechaPagoSNE.setFilterStyle("width: 40px");
+            fechaPagoSNE.setFilterStyle("width: 85%");
             FechaModificacioSNE = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleado:FechaModificacioSNE");
-            FechaModificacioSNE.setFilterStyle("width: 70px");
+            FechaModificacioSNE.setFilterStyle("width: 85%");
 
             //SOLUCIONES NODOS EMPLEADOR
             codigoSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:codigoSNER");
-            codigoSNER.setFilterStyle("width: 40px");
+            codigoSNER.setFilterStyle("width: 85%");
             descipcionSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:descipcionSNER");
-            descipcionSNER.setFilterStyle("width: 170px");
+            descipcionSNER.setFilterStyle("width: 85%");
             unidadSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:unidadSNER");
-            unidadSNER.setFilterStyle("width: 30px");
+            unidadSNER.setFilterStyle("width: 85%");
             pasivoSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:pasivoSNER");
-            pasivoSNER.setFilterStyle("");
+            pasivoSNER.setFilterStyle("width: 85%");
             gastoSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:gastoSNER");
-            gastoSNER.setFilterStyle("");
+            gastoSNER.setFilterStyle("width: 85%");
             terceroSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:terceroSNER");
-            terceroSNER.setFilterStyle("width: 180px");
+            terceroSNER.setFilterStyle("width: 85%");
             fechaHastaSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:fechaHastaSNER");
-            fechaHastaSNER.setFilterStyle("width: 40px");
+            fechaHastaSNER.setFilterStyle("width: 85%");
             debitoSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:debitoSNER");
-            debitoSNER.setFilterStyle("width: 50px");
+            debitoSNER.setFilterStyle("width: 85%");
             centroCostoDSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:centroCostoDSNER");
-            centroCostoDSNER.setFilterStyle("width: 80px");
+            centroCostoDSNER.setFilterStyle("width: 85%");
             creditoSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:creditoSNER");
-            creditoSNER.setFilterStyle("width: 50px");
+            creditoSNER.setFilterStyle("width: 85%");
             centroCostoCSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:centroCostoCSNER");
-            centroCostoCSNER.setFilterStyle("width: 80px");
+            centroCostoCSNER.setFilterStyle("width: 85%");
             saldoSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:saldoSNER");
-            saldoSNER.setFilterStyle("width: 80px");
+            saldoSNER.setFilterStyle("width: 85%");
             fechaDesdeSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:fechaDesdeSNER");
-            fechaDesdeSNER.setFilterStyle("width: 40px");
+            fechaDesdeSNER.setFilterStyle("width: 85%");
             fechaPagoSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:fechaPagoSNER");
-            fechaPagoSNER.setFilterStyle("width: 40px");
+            fechaPagoSNER.setFilterStyle("width: 85%");
             FechaModificacioSNER = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSolucionesNodosEmpleador:FechaModificacioSNER");
-            FechaModificacioSNER.setFilterStyle("width: 70px");
+            FechaModificacioSNER.setFilterStyle("width: 85%");
 
             altoScrollSolucionesNodosEmpleado = "72";
             altoScrollSolucionesNodosEmpleador = "72";
@@ -546,19 +546,8 @@ public class ControlComprobantes implements Serializable {
     }
 
     public void editarCelda() {
-//        System.out.println("cualcelda: " + cualCelda);
-//        System.out.println("solucionNodoSeleccionada: " + solucionNodoSeleccionada);
         if (tablaActual == 0) {
             if (solucionNodoSeleccionada != null) {
-                //editarSolucionNodo = solucionNodoSeleccionada;
-//            if (solucionNodoSeleccionada != null) {
-//                if (tipoLista == 0) {
-//                    editarParametros = parametroSeleccionado;
-//                }
-//                if (tipoLista == 1) {
-//                    editarParametros = parametroSeleccionado;
-//                }
-
                 RequestContext context = RequestContext.getCurrentInstance();
                 if (cualCelda == 1) {
                     context.update("formularioDialogos:editarCodEmpleado");
@@ -766,7 +755,7 @@ public class ControlComprobantes implements Serializable {
                 modificarInfoRegistroEmpleado(0);
             }
         }
-        
+
         return listaParametrosLOV;
     }
 
@@ -799,9 +788,8 @@ public class ControlComprobantes implements Serializable {
     }
 
     public List<SolucionesNodos> getListaSolucionesNodosEmpleado() {
-        //if (listaSolucionesNodosEmpleado == null && parametroActual != null) {
-        if (parametroActual != null) {
-            listaSolucionesNodosEmpleado = administrarComprobantes.consultarSolucionesNodosEmpleado(parametroActual.getEmpleado().getSecuencia());
+            if (parametroActual != null) {
+                listaSolucionesNodosEmpleado = administrarComprobantes.consultarSolucionesNodosEmpleado(parametroActual.getEmpleado().getSecuencia());
             if (listaSolucionesNodosEmpleado != null) {
                 subtotalPago = new BigDecimal(0);
                 subtotalDescuento = new BigDecimal(0);
@@ -834,10 +822,9 @@ public class ControlComprobantes implements Serializable {
     }
 
     public List<SolucionesNodos> getListaSolucionesNodosEmpleador() {
-        //if (listaSolucionesNodosEmpleador == null && parametroActual != null) {
         if (parametroActual != null) {
             if (parametroActual.getEmpleado().getSecuencia() != null) {
-                listaSolucionesNodosEmpleador = administrarComprobantes.consultarSolucionesNodosEmpleador(parametroActual.getEmpleado().getSecuencia());
+                    listaSolucionesNodosEmpleador = administrarComprobantes.consultarSolucionesNodosEmpleador(parametroActual.getEmpleado().getSecuencia());
                 if (listaSolucionesNodosEmpleador != null) {
                     subtotalPasivo = new BigDecimal(0);
                     subtotalGasto = new BigDecimal(0);

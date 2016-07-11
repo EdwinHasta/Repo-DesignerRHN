@@ -25,6 +25,7 @@ import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
+import org.primefaces.component.spinner.Spinner;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -36,7 +37,7 @@ import org.primefaces.context.RequestContext;
 public class ControlProverbio implements Serializable {
 
     @EJB
-    AdministrarRecordatoriosInterface administrarRecordatorios;
+   AdministrarRecordatoriosInterface administrarRecordatorios;
     @EJB
     AdministrarRastrosInterface administrarRastros;
 
@@ -50,12 +51,10 @@ public class ControlProverbio implements Serializable {
     private Recordatorios mensajeUsuarioSeleccionado;
     //OTROS
     private boolean aceptar;
-    private int index;
     private int tipoActualizacion; //Activo/Desactivo Crtl + F11
     private int bandera;
     private boolean permitirIndex;
     //RASTROS
-    private BigInteger secRegistro;
     private boolean guardado, guardarOk;
     //Editar Celda
     private boolean cambioEditor, aceptarEditar;
@@ -76,7 +75,6 @@ public class ControlProverbio implements Serializable {
     public Recordatorios nuevoRegistroMensajesUsuarios;
     public Recordatorios duplicarRegistroMensajesUsuarios;
     //OTROS
-    private int indexNF;
     private int banderaNF;
     //Modificar Novedades
     private List<Recordatorios> listaProverbiosModificar;
@@ -99,7 +97,8 @@ public class ControlProverbio implements Serializable {
     //Modificar Detalles Tipos Cotizantes
     private List<Recordatorios> listaMensajesUsuariosModificar;
     private List<Recordatorios> listaMensajesUsuariosBorrar;
-    private String paginaAnterior;
+    private String paginaAnterior,mensaje;
+    private int ano,dia,mes;
 
     public ControlProverbio() {
         cambiosPagina = true;
@@ -108,7 +107,6 @@ public class ControlProverbio implements Serializable {
         listaMensajesUsuario = null;
         permitirIndex = true;
         aceptar = true;
-        secRegistro = null;
         guardado = true;
         tipoLista = 0;
         altoTabla = "115";
@@ -135,7 +133,7 @@ public class ControlProverbio implements Serializable {
         listaProverbiosCrear = new ArrayList<Recordatorios>();
         listaProverbiosModificar = new ArrayList<Recordatorios>();
         //Inicializar LOVS
-        secRegistro = null;
+        proverbioSeleccionado = null;
         m = 0;
     }
 
@@ -204,8 +202,8 @@ public class ControlProverbio implements Serializable {
         listaProverbios = null;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosProverbios");
-        index = -1;
-        secRegistro = null;
+        proverbioSeleccionado = null;
+        proverbioSeleccionado = null;
         context.update("form:datosMensajesUsuarios");
         guardado = true;
         permitirIndex = true;
@@ -213,31 +211,31 @@ public class ControlProverbio implements Serializable {
         FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
         FacesContext.getCurrentInstance().addMessage(null, msg);
         context.update("form:growl");
-        indexNF = -1;
-        secRegistro = null;
+        mensajeUsuarioSeleccionado = null;
+        proverbioSeleccionado = null;
     }
 
     //Ubicacion Celda.
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(Recordatorios proverbio, int celda) {
         if (permitirIndex == true) {
-            index = indice;
+            proverbioSeleccionado = proverbio;
             cualCelda = celda;
             CualTabla = 0;
-            indexNF = -1;
+            mensajeUsuarioSeleccionado = null;
             if (tipoLista == 0) {
-                secRegistro = listaProverbios.get(index).getSecuencia();
+                proverbioSeleccionado.getSecuencia();
 
             } else {
-                secRegistro = filtradosListaProverbios.get(index).getSecuencia();
+                proverbioSeleccionado.getSecuencia();
             }
         }
     }
 
     //Ubicacion Celda.
-    public void cambiarIndiceNF(int indiceNF, int celdaNF) {
+    public void cambiarIndiceNF(Recordatorios msgUsuario, int celdaNF) {
 
         if (permitirIndex == true) {
-            indexNF = indiceNF;
+            mensajeUsuarioSeleccionado = msgUsuario;
             cualCelda = celdaNF;
             CualTabla = 1;
             tablaImprimir = ":formExportar:datosMensajesUsuariosExportar";
@@ -247,9 +245,9 @@ public class ControlProverbio implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:exportarXML");
             if (tipoListaNF == 0) {
-                secRegistro = listaMensajesUsuario.get(indexNF).getSecuencia();
+                mensajeUsuarioSeleccionado.getSecuencia();
             } else {
-                secRegistro = filtradosListaMensajesUsuario.get(indexNF).getSecuencia();
+                mensajeUsuarioSeleccionado.getSecuencia();
             }
         }
     }
@@ -258,8 +256,8 @@ public class ControlProverbio implements Serializable {
     public void limpiarNuevoProverbio() {
         nuevoProverbio = new Recordatorios();
         nuevoProverbio.setTipo("PROVERBIO");
-        index = -1;
-        secRegistro = null;
+        proverbioSeleccionado = null;
+        proverbioSeleccionado = null;
 
     }
 
@@ -324,16 +322,13 @@ public class ControlProverbio implements Serializable {
             Exporter exporter = new ExportarPDF();
             exporter.export(context, tabla, "ProverbiosPDF", false, false, "UTF-8", null, null);
             context.responseComplete();
-            index = -1;
-            secRegistro = null;
         } else {
             DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosMensajesUsuariosExportar");
             FacesContext context = FacesContext.getCurrentInstance();
             Exporter exporter = new ExportarPDF();
             exporter.export(context, tabla, "MensajesUsuariosPDF", false, false, "UTF-8", null, null);
             context.responseComplete();
-            indexNF = -1;
-            secRegistro = null;
+            proverbioSeleccionado = null;
         }
     }
 
@@ -344,16 +339,12 @@ public class ControlProverbio implements Serializable {
             Exporter exporter = new ExportarXLS();
             exporter.export(context, tabla, "ProverbiosXLS", false, false, "UTF-8", null, null);
             context.responseComplete();
-            index = -1;
-            secRegistro = null;
         } else {
             DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosMensajesUsuariosExportar");
             FacesContext context = FacesContext.getCurrentInstance();
             Exporter exporter = new ExportarXLS();
             exporter.export(context, tabla, "MensajesUsuariosXLS", false, false, "UTF-8", null, null);
             context.responseComplete();
-            indexNF = -1;
-            secRegistro = null;
         }
     }
 
@@ -377,19 +368,19 @@ public class ControlProverbio implements Serializable {
         }
     }
     //AUTOCOMPLETAR
-    public void modificarProverbio(int indice, String confirmarCambio, String valorConfirmar) {
-        index = indice;
+    public void modificarProverbio(Recordatorios proverbio, String confirmarCambio, String valorConfirmar) {
+        proverbioSeleccionado = proverbio;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("N")) {
             if (tipoLista == 0) {
-                if (!listaProverbiosCrear.contains(listaProverbios.get(indice))) {
+                if (!listaProverbiosCrear.contains(proverbioSeleccionado)) {
 
                     if (listaProverbiosModificar.isEmpty()) {
-                        listaProverbiosModificar.add(listaProverbios.get(indice));
-                    } else if (!listaProverbiosModificar.contains(listaProverbios.get(indice))) {
-                        listaProverbiosModificar.add(listaProverbios.get(indice));
+                        listaProverbiosModificar.add(proverbioSeleccionado);
+                    } else if (!listaProverbiosModificar.contains(proverbioSeleccionado)) {
+                        listaProverbiosModificar.add(proverbioSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
@@ -397,67 +388,59 @@ public class ControlProverbio implements Serializable {
 
                     }
                 }
-                index = -1;
-                secRegistro = null;
 
             } else {
-                if (!listaProverbiosCrear.contains(filtradosListaProverbios.get(indice))) {
+                if (!listaProverbiosCrear.contains(proverbioSeleccionado)) {
 
                     if (listaProverbiosCrear.isEmpty()) {
-                        listaProverbiosCrear.add(filtradosListaProverbios.get(indice));
-                    } else if (!listaProverbiosCrear.contains(filtradosListaProverbios.get(indice))) {
-                        listaProverbiosCrear.add(filtradosListaProverbios.get(indice));
+                        listaProverbiosCrear.add(proverbioSeleccionado);
+                    } else if (!listaProverbiosCrear.contains(proverbioSeleccionado)) {
+                        listaProverbiosCrear.add(proverbioSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                index = -1;
-                secRegistro = null;
             }
             context.update("form:datosProverbios");
         }
     }
 
     //AUTOCOMPLETAR
-    public void modificarMensajeUsuario(int indiceNF, String confirmarCambio, String valorConfirmar) {
-        indexNF = indiceNF;
+    public void modificarMensajeUsuario(Recordatorios msgUsuario, String confirmarCambio, String valorConfirmar) {
+        mensajeUsuarioSeleccionado = msgUsuario;
         int coincidencias = 0;
         int indiceNFUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("N")) {
             if (tipoLista == 0) {
-                if (!listaMensajesUsuariosCrear.contains(listaMensajesUsuario.get(indiceNF))) {
+                if (!listaMensajesUsuariosCrear.contains(mensajeUsuarioSeleccionado)) {
 
                     if (listaMensajesUsuariosModificar.isEmpty()) {
-                        listaMensajesUsuariosModificar.add(listaMensajesUsuario.get(indiceNF));
-                    } else if (!listaMensajesUsuariosModificar.contains(listaMensajesUsuario.get(indiceNF))) {
-                        listaMensajesUsuariosModificar.add(listaMensajesUsuario.get(indiceNF));
+                        listaMensajesUsuariosModificar.add(mensajeUsuarioSeleccionado);
+                    } else if (!listaMensajesUsuariosModificar.contains(mensajeUsuarioSeleccionado)) {
+                        listaMensajesUsuariosModificar.add(mensajeUsuarioSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                indexNF = -1;
-                secRegistro = null;
 
             } else {
-                if (!listaMensajesUsuariosCrear.contains(filtradosListaMensajesUsuario.get(indiceNF))) {
+                if (!listaMensajesUsuariosCrear.contains(mensajeUsuarioSeleccionado)) {
 
                     if (listaMensajesUsuariosCrear.isEmpty()) {
-                        listaMensajesUsuariosCrear.add(filtradosListaMensajesUsuario.get(indiceNF));
-                    } else if (!listaMensajesUsuariosCrear.contains(filtradosListaMensajesUsuario.get(indiceNF))) {
-                        listaMensajesUsuariosCrear.add(filtradosListaMensajesUsuario.get(indiceNF));
+                        listaMensajesUsuariosCrear.add(mensajeUsuarioSeleccionado);
+                    } else if (!listaMensajesUsuariosCrear.contains(mensajeUsuarioSeleccionado)) {
+                        listaMensajesUsuariosCrear.add(mensajeUsuarioSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                indexNF = -1;
-                secRegistro = null;
             }
             context.update("form:datosMensajesUsuarios");
         }
@@ -465,12 +448,12 @@ public class ControlProverbio implements Serializable {
 
     //MOSTRAR DATOS CELDA
     public void editarCelda() {
-        if (index >= 0 && CualTabla == 0) {
+        if (proverbioSeleccionado != null && CualTabla == 0) {
             if (tipoLista == 0) {
-                editarProverbios = listaProverbios.get(index);
+                editarProverbios = proverbioSeleccionado;
             }
             if (tipoLista == 1) {
-                editarProverbios = filtradosListaProverbios.get(index);
+                editarProverbios = proverbioSeleccionado;
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -479,13 +462,13 @@ public class ControlProverbio implements Serializable {
                 context.execute("editarMensajes.show()");
                 cualCelda = -1;
             }
-            index = -1;
-        } else if (indexNF >= 0 && CualTabla == 1) {
+            proverbioSeleccionado = null;
+        } else if (mensajeUsuarioSeleccionado != null && CualTabla == 1) {
             if (tipoListaNF == 0) {
-                editarProverbios = listaMensajesUsuario.get(indexNF);
+                editarProverbios = mensajeUsuarioSeleccionado;
             }
             if (tipoListaNF == 1) {
-                editarProverbios = filtradosListaMensajesUsuario.get(indexNF);
+                editarProverbios = mensajeUsuarioSeleccionado;
             }
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 0) {
@@ -505,9 +488,9 @@ public class ControlProverbio implements Serializable {
                 context.execute("editarMensajes2.show()");
                 cualCelda = -1;
             }
-            indexNF = -1;
+            mensajeUsuarioSeleccionado = null;
         }
-        secRegistro = null;
+        proverbioSeleccionado = null;
     }
 
     public void dialogoProverbios() {
@@ -538,7 +521,6 @@ public class ControlProverbio implements Serializable {
                 filtradosListaProverbios = null;
                 tipoLista = 0;
             }
-            //AGREGAR REGISTRO A LA LISTA VIGENCIAS FORMALES.
             k++;
             l = BigInteger.valueOf(k);
             nuevoProverbio.setSecuencia(l);
@@ -546,6 +528,7 @@ public class ControlProverbio implements Serializable {
 
             listaProverbiosCrear.add(nuevoProverbio);
             listaProverbios.add(nuevoProverbio);
+            proverbioSeleccionado = nuevoProverbio;
             nuevoProverbio = new Recordatorios();
             context.update("form:datosProverbios");
             if (guardado == true) {
@@ -555,15 +538,14 @@ public class ControlProverbio implements Serializable {
             cambiosPagina = false;
             context.update("form:ACEPTAR");
             context.execute("NuevoRegistroProverbio.hide()");
-            indexNF = -1;
-            secRegistro = null;
+            mensajeUsuarioSeleccionado = null;
         } else {
             context.update("formularioDialogos:validacionNuevoProverbio");
             context.execute("validacionNuevoProverbio.show()");
         }
     }
 
-    //CREAR NUEVO PROVERBIO
+   
     public void agregarNuevoMensajeUsuario() {
         int pasa = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -571,11 +553,11 @@ public class ControlProverbio implements Serializable {
             if (bandera == 1 && CualTabla == 0) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 altoTablaNF = "115";
-                mAno = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mAno");
+                mAno = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:ano");
                 mAno.setFilterStyle("display: none; visibility: hidden;");
-                mMes = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMes");
+                mMes = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mes");
                 mMes.setFilterStyle("display: none; visibility: hidden;");
-                mDia = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mDia");
+                mDia = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:dia");
                 mDia.setFilterStyle("display: none; visibility: hidden;");
                 mMensaje = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMensaje");
                 mMensaje.setFilterStyle("display: none; visibility: hidden;");
@@ -591,6 +573,7 @@ public class ControlProverbio implements Serializable {
             nuevoRegistroMensajesUsuarios.setTipo("RECORDATORIO");
             listaMensajesUsuariosCrear.add(nuevoRegistroMensajesUsuarios);
             listaMensajesUsuario.add(nuevoRegistroMensajesUsuarios);
+            mensajeUsuarioSeleccionado = nuevoRegistroMensajesUsuarios;
             nuevoRegistroMensajesUsuarios = new Recordatorios();
             context.update("form:datosMensajesUsuarios");
             if (guardado == true) {
@@ -600,61 +583,56 @@ public class ControlProverbio implements Serializable {
             cambiosPagina = false;
             context.update("form:ACEPTAR");
             context.execute("NuevoRegistroMensajeUsuario.hide()");
-            indexNF = -1;
-            secRegistro = null;
         } else {
             context.update("formularioDialogos:validacionNuevoMensajeUsuario");
             context.execute("validacionNuevoMensajeUsuario.show()");
         }
     }
 
-    //DUPLICAR TIPO COTIZANTE
+    //DUPLICAR PROVERBIO
     public void duplicarP() {
-        if (index >= 0 && CualTabla == 0) {
+        if (proverbioSeleccionado != null && CualTabla == 0) {
             duplicarProverbio = new Recordatorios();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
                 duplicarProverbio.setSecuencia(l);
-                duplicarProverbio.setMensaje(listaProverbios.get(index).getMensaje());
-                duplicarProverbio.setTipo(listaProverbios.get(index).getTipo());
+                duplicarProverbio.setMensaje(proverbioSeleccionado.getMensaje());
+                duplicarProverbio.setTipo(proverbioSeleccionado.getTipo());
             }
             if (tipoLista == 1) {
                 duplicarProverbio.setSecuencia(l);
-                duplicarProverbio.setMensaje(filtradosListaProverbios.get(index).getMensaje());
-                duplicarProverbio.setTipo(filtradosListaProverbios.get(index).getTipo());
+                duplicarProverbio.setMensaje(proverbioSeleccionado.getMensaje());
+                duplicarProverbio.setTipo(proverbioSeleccionado.getTipo());
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:DuplicarRegistroProverbio");
             context.execute("DuplicarRegistroProverbio.show()");
-            index = -1;
-            secRegistro = null;
-        } else if (indexNF >= 0 && CualTabla == 1) {
+            proverbioSeleccionado = null;
+        } else if (mensajeUsuarioSeleccionado != null && CualTabla == 1) {
             duplicarRegistroMensajesUsuarios = new Recordatorios();
             m++;
             n = BigInteger.valueOf(m);
             if (tipoListaNF == 0) {
                 duplicarRegistroMensajesUsuarios.setSecuencia(n);
-                duplicarRegistroMensajesUsuarios.setAno(listaMensajesUsuario.get(indexNF).getAno());
-                duplicarRegistroMensajesUsuarios.setMes(listaMensajesUsuario.get(indexNF).getMes());
-                duplicarRegistroMensajesUsuarios.setDia(listaMensajesUsuario.get(indexNF).getDia());
-                duplicarRegistroMensajesUsuarios.setTipo(listaMensajesUsuario.get(indexNF).getTipo());
-                duplicarRegistroMensajesUsuarios.setMensaje(listaMensajesUsuario.get(indexNF).getMensaje());
+                duplicarRegistroMensajesUsuarios.setAno(mensajeUsuarioSeleccionado.getAno());
+                duplicarRegistroMensajesUsuarios.setMes(mensajeUsuarioSeleccionado.getMes());
+                duplicarRegistroMensajesUsuarios.setDia(mensajeUsuarioSeleccionado.getDia());
+                duplicarRegistroMensajesUsuarios.setTipo(mensajeUsuarioSeleccionado.getTipo());
+                duplicarRegistroMensajesUsuarios.setMensaje(mensajeUsuarioSeleccionado.getMensaje());
             }
             if (tipoListaNF == 1) {
                 duplicarRegistroMensajesUsuarios.setSecuencia(n);
-                duplicarRegistroMensajesUsuarios.setAno(filtradosListaMensajesUsuario.get(indexNF).getAno());
-                duplicarRegistroMensajesUsuarios.setMes(filtradosListaMensajesUsuario.get(indexNF).getMes());
-                duplicarRegistroMensajesUsuarios.setDia(filtradosListaMensajesUsuario.get(indexNF).getDia());
-                duplicarRegistroMensajesUsuarios.setTipo(filtradosListaMensajesUsuario.get(indexNF).getTipo());
-                duplicarRegistroMensajesUsuarios.setMensaje(filtradosListaMensajesUsuario.get(indexNF).getMensaje());
+                duplicarRegistroMensajesUsuarios.setAno(mensajeUsuarioSeleccionado.getAno());
+                duplicarRegistroMensajesUsuarios.setMes(mensajeUsuarioSeleccionado.getMes());
+                duplicarRegistroMensajesUsuarios.setDia(mensajeUsuarioSeleccionado.getDia());
+                duplicarRegistroMensajesUsuarios.setTipo(mensajeUsuarioSeleccionado.getTipo());
+                duplicarRegistroMensajesUsuarios.setMensaje(mensajeUsuarioSeleccionado.getMensaje());
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:DuplicarRegistroMensajeUsuario");
             context.execute("DuplicarRegistroMensajeUsuario.show()");
-            indexNF = -1;
-            secRegistro = null;
 
         }
     }
@@ -1385,39 +1363,24 @@ public class ControlProverbio implements Serializable {
     //BORRAR VIGENCIA FORMAL
     public void borrarProverbio() {
 
-        if (index >= 0 && CualTabla == 0) {
-            if (tipoLista == 0) {
-                if (!listaProverbiosModificar.isEmpty() && listaProverbiosModificar.contains(listaProverbios.get(index))) {
-                    int modIndex = listaProverbiosModificar.indexOf(listaProverbios.get(index));
+        if (proverbioSeleccionado != null && CualTabla == 0) {
+                if (!listaProverbiosModificar.isEmpty() && listaProverbiosModificar.contains(proverbioSeleccionado)) {
+                    int modIndex = listaProverbiosModificar.indexOf(proverbioSeleccionado);
                     listaProverbiosModificar.remove(modIndex);
-                    listaProverbiosBorrar.add(listaProverbios.get(index));
-                } else if (!listaProverbiosCrear.isEmpty() && listaProverbiosCrear.contains(listaProverbios.get(index))) {
-                    int crearIndex = listaProverbiosCrear.indexOf(listaProverbios.get(index));
+                    listaProverbiosBorrar.add(proverbioSeleccionado);
+                } else if (!listaProverbiosCrear.isEmpty() && listaProverbiosCrear.contains(proverbioSeleccionado)) {
+                    int crearIndex = listaProverbiosCrear.indexOf(proverbioSeleccionado);
                     listaProverbiosCrear.remove(crearIndex);
                 } else {
-                    listaProverbiosBorrar.add(listaProverbios.get(index));
+                    listaProverbiosBorrar.add(proverbioSeleccionado);
                 }
-                listaProverbios.remove(index);
-            }
+                listaProverbios.remove(proverbioSeleccionado);
             if (tipoLista == 1) {
-                if (!listaProverbiosModificar.isEmpty() && listaProverbiosModificar.contains(filtradosListaProverbios.get(index))) {
-                    int modIndex = listaProverbiosModificar.indexOf(filtradosListaProverbios.get(index));
-                    listaProverbiosModificar.remove(modIndex);
-                    listaProverbiosBorrar.add(filtradosListaProverbios.get(index));
-                } else if (!listaProverbiosCrear.isEmpty() && listaProverbiosCrear.contains(filtradosListaProverbios.get(index))) {
-                    int crearIndex = listaProverbiosCrear.indexOf(filtradosListaProverbios.get(index));
-                    listaProverbiosCrear.remove(crearIndex);
-                } else {
-                    listaProverbiosBorrar.add(filtradosListaProverbios.get(index));
-                }
-                int CIndex = listaProverbios.indexOf(filtradosListaProverbios.get(index));
-                listaProverbios.remove(CIndex);
-                filtradosListaProverbios.remove(index);
+                filtradosListaProverbios.remove(proverbioSeleccionado);
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosProverbios");
-            index = -1;
-            secRegistro = null;
+            proverbioSeleccionado = null;
             cambiosPagina = false;
             context.update("form:ACEPTAR");
 
@@ -1425,41 +1388,27 @@ public class ControlProverbio implements Serializable {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
-        } else if (indexNF >= 0 && CualTabla == 1) {
-            if (tipoListaNF == 0) {
-                if (!listaMensajesUsuariosModificar.isEmpty() && listaMensajesUsuariosModificar.contains(listaMensajesUsuariosModificar.get(indexNF))) {
-                    int modIndex = listaMensajesUsuariosModificar.indexOf(listaMensajesUsuario.get(indexNF));
+        } else if (mensajeUsuarioSeleccionado != null && CualTabla == 1) {
+                if (!listaMensajesUsuariosModificar.isEmpty() && listaMensajesUsuariosModificar.contains(mensajeUsuarioSeleccionado)) {
+                    int modIndex = listaMensajesUsuariosModificar.indexOf(mensajeUsuarioSeleccionado);
                     listaMensajesUsuariosModificar.remove(modIndex);
-                    listaMensajesUsuariosBorrar.add(listaMensajesUsuario.get(indexNF));
-                } else if (!listaMensajesUsuariosCrear.isEmpty() && listaMensajesUsuariosCrear.contains(listaMensajesUsuario.get(indexNF))) {
-                    int crearIndex = listaMensajesUsuariosCrear.indexOf(listaMensajesUsuario.get(indexNF));
+                    listaMensajesUsuariosBorrar.add(mensajeUsuarioSeleccionado);
+                } else if (!listaMensajesUsuariosCrear.isEmpty() && listaMensajesUsuariosCrear.contains(mensajeUsuarioSeleccionado)) {
+                    int crearIndex = listaMensajesUsuariosCrear.indexOf(mensajeUsuarioSeleccionado);
                     listaMensajesUsuariosCrear.remove(crearIndex);
                 } else {
-                    listaMensajesUsuariosBorrar.add(listaMensajesUsuario.get(indexNF));
+                    listaMensajesUsuariosBorrar.add(mensajeUsuarioSeleccionado);
                 }
-                listaMensajesUsuario.remove(indexNF);
-            }
+                listaMensajesUsuario.remove(mensajeUsuarioSeleccionado);
             if (tipoListaNF == 1) {
-                if (!listaMensajesUsuariosModificar.isEmpty() && listaMensajesUsuariosModificar.contains(filtradosListaMensajesUsuario.get(indexNF))) {
-                    int modIndex = listaMensajesUsuariosModificar.indexOf(filtradosListaMensajesUsuario.get(indexNF));
-                    listaMensajesUsuariosModificar.remove(modIndex);
-                    listaMensajesUsuariosBorrar.add(filtradosListaMensajesUsuario.get(indexNF));
-                } else if (!listaMensajesUsuariosCrear.isEmpty() && listaMensajesUsuariosCrear.contains(filtradosListaMensajesUsuario.get(indexNF))) {
-                    int crearIndex = listaMensajesUsuariosCrear.indexOf(filtradosListaMensajesUsuario.get(indexNF));
-                    listaMensajesUsuariosCrear.remove(crearIndex);
-                } else {
-                    listaMensajesUsuariosBorrar.add(filtradosListaMensajesUsuario.get(indexNF));
-                }
-                int CIndex = listaMensajesUsuario.indexOf(filtradosListaMensajesUsuario.get(indexNF));
-                listaMensajesUsuario.remove(CIndex);
-                filtradosListaMensajesUsuario.remove(indexNF);
+                filtradosListaMensajesUsuario.remove(mensajeUsuarioSeleccionado);
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosMensajesUsuarios");
             cambiosPagina = false;
             context.update("form:ACEPTAR");
-            indexNF = -1;
-            secRegistro = null;
+            mensajeUsuarioSeleccionado = null;
+            proverbioSeleccionado = null;
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1471,8 +1420,8 @@ public class ControlProverbio implements Serializable {
         if (CualTabla == 0) {
             RequestContext context = RequestContext.getCurrentInstance();
             if (!listaProverbios.isEmpty()) {
-                if (secRegistro != null) {
-                    int resultado = administrarRastros.obtenerTabla(secRegistro, "recordatorios");
+                if (proverbioSeleccionado != null) {
+                    int resultado = administrarRastros.obtenerTabla(proverbioSeleccionado.getSecuencia(), "recordatorios");
                     if (resultado == 1) {
                         context.execute("errorObjetosDB.show()");
                     } else if (resultado == 2) {
@@ -1494,12 +1443,12 @@ public class ControlProverbio implements Serializable {
                     context.execute("errorRastroHistorico.show()");
                 }
             }
-            index = -1;
+            proverbioSeleccionado = null;
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             if (!listaMensajesUsuario.isEmpty()) {
-                if (secRegistro != null) {
-                    int resultadoNF = administrarRastros.obtenerTabla(secRegistro, "RECORDATORIOS");
+                if (proverbioSeleccionado != null) {
+                    int resultadoNF = administrarRastros.obtenerTabla(proverbioSeleccionado.getSecuencia(), "RECORDATORIOS");
                     if (resultadoNF == 1) {
                         context.execute("errorObjetosDBNF.show()");
                     } else if (resultadoNF == 2) {
@@ -1521,7 +1470,7 @@ public class ControlProverbio implements Serializable {
                     context.execute("errorRastroHistoricoNF.show()");
                 }
             }
-            index = -1;
+            proverbioSeleccionado = null;
         }
 
     }
@@ -1530,8 +1479,6 @@ public class ControlProverbio implements Serializable {
     public void limpiarNuevoMensajeUsuario() {
         nuevoRegistroMensajesUsuarios = new Recordatorios();
         nuevoRegistroMensajesUsuarios.setTipo("RECORDATORIO");
-        index = -1;
-        secRegistro = null;
 
     }
 
@@ -1539,7 +1486,7 @@ public class ControlProverbio implements Serializable {
     public void limpiarDuplicarProverbio() {
         duplicarProverbio = new Recordatorios();
     }
-    //LIMPIAR DUPLICAR NO FORMAL
+    
 
     public void limpiarDuplicarRegistroMensajeUsuario() {
         duplicarRegistroMensajesUsuarios = new Recordatorios();
@@ -1548,11 +1495,10 @@ public class ControlProverbio implements Serializable {
     public void confirmarDuplicar() {
         listaProverbios.add(duplicarProverbio);
         listaProverbiosCrear.add(duplicarProverbio);
+        proverbioSeleccionado = duplicarProverbio;
         RequestContext context = RequestContext.getCurrentInstance();
         cambiosPagina = false;
         context.update("form:ACEPTAR");
-        index = -1;
-        secRegistro = null;
         if (guardado == true) {
             guardado = false;
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1576,10 +1522,9 @@ public class ControlProverbio implements Serializable {
     public void confirmarDuplicarNF() {
         listaMensajesUsuario.add(duplicarRegistroMensajesUsuarios);
         listaMensajesUsuariosCrear.add(duplicarRegistroMensajesUsuarios);
+        mensajeUsuarioSeleccionado = duplicarRegistroMensajesUsuarios;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosMensajesUsuarios");
-        indexNF = -1;
-        secRegistro = null;
         if (guardado == true) {
             guardado = false;
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1638,15 +1583,15 @@ public class ControlProverbio implements Serializable {
         listaProverbiosBorrar.clear();
         listaProverbiosCrear.clear();
         listaProverbiosModificar.clear();
-        index = -1;
-        secRegistro = null;
+        proverbioSeleccionado = null;
+        proverbioSeleccionado = null;
 
         listaProverbios = null;
 
         listaMensajesUsuariosBorrar.clear();
         listaMensajesUsuariosCrear.clear();
         listaMensajesUsuariosModificar.clear();
-        indexNF = -1;
+        mensajeUsuarioSeleccionado = null;
 
         listaMensajesUsuario = null;
         guardado = true;
@@ -1688,13 +1633,13 @@ public class ControlProverbio implements Serializable {
         listaProverbiosBorrar.clear();
         listaProverbiosCrear.clear();
         listaProverbiosModificar.clear();
-        index = -1;
-        secRegistro = null;
+        proverbioSeleccionado = null;
+        proverbioSeleccionado = null;
         listaProverbios = null;
         listaMensajesUsuariosBorrar.clear();
         listaMensajesUsuariosCrear.clear();
         listaMensajesUsuariosModificar.clear();
-        indexNF = -1;
+        mensajeUsuarioSeleccionado = null;
         listaMensajesUsuario = null;
         guardado = true;
         permitirIndex = true;
@@ -1810,14 +1755,6 @@ public class ControlProverbio implements Serializable {
         this.duplicarRegistroMensajesUsuarios = duplicarRegistroMensajesUsuarios;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
-    }
-
     public boolean isCambiosPagina() {
         return cambiosPagina;
     }
@@ -1846,4 +1783,35 @@ public class ControlProverbio implements Serializable {
         this.guardado = guardado;
     }
 
+    public int getAno() {
+        return ano;
+    }
+
+    public void setAno(int ano) {
+        this.ano = ano;
+    }
+
+    public int getDia() {
+        return dia;
+    }
+
+    public void setDia(int dia) {
+        this.dia = dia;
+    }
+
+    public int getMes() {
+        return mes;
+    }
+
+    public void setMes(int mes) {
+        this.mes = mes;
+    }
+
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
 }

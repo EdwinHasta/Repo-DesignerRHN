@@ -1765,4 +1765,12 @@ public class ControlRemoto implements Serializable {
         this.unicaEmpresa = unicaEmpresa;
     }
 
+    public String getInfoRegistroBuscarTablas() {
+        return infoRegistroBuscarTablas;
+    }
+
+    public void setInfoRegistroBuscarTablas(String infoRegistroBuscarTablas) {
+        this.infoRegistroBuscarTablas = infoRegistroBuscarTablas;
+    }
+
 }
