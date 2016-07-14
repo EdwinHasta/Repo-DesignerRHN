@@ -88,8 +88,6 @@
 
                         <p:scrollPanel id="panelSuperior" mode="native"
                                        style="position: absolute; left: 130px; top: 80px; width: 731px; height: 176px; background-color: transparent;">
-                            <!-- <fieldset style="position: absolute; top: 71px; left: 12px; font-size: 11px; width: 828px; height: 176px; border-radius: 10px; "> -->
-                                <!-- <legend style="font-size: 12px; font-weight: bold; color: blue;">#{msg['datospersonales']}</legend> -->
 
                             <div id="secb" style="position: absolute; top: 0px; left: 0px; width: 711px; height: 23px; margin-top: 10px;">
 
@@ -408,26 +406,34 @@
                         <fieldset id="panelInferior" style="position: absolute; top: 270px; width: 832px; height: 200px; left: 10px; border-radius: 10px;" >
                             <fieldset style="position: absolute; left: -2px; top: 2px; width: 197px; height: 205px; border-radius: 7px; padding: 0px; border: none;">
                                 <!-- <legend style="font-weight: bold; color: blue">#{msg['ubicacion']}</legend> -->
-                                <p:commandButton id="btnTelefono" value=""  action="telefonospersona" actionListener="#{controlPerTelefonos.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" process="@this"
+                                <p:commandButton id="btnTelefono" value="" action="telefonospersona" actionListener="#{controlPerTelefonos.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" process="@this"
                                                  style="background-image: url(Imagenes/Iconos/telefono.png); background-size: 100% 100%; background-repeat: no-repeat; width: 40px; height: 40px; position: absolute; border:none;"/>
-                                <h:outputText value="#{msg['telefonos']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
+                                <h:commandLink value="#{msg['telefonos']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;"
+                                               action="telefonospersona" actionListener="#{controlPerTelefonos.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <p:inputText id="telefonos" value="#{controlEmpleadoIndividual.telefonoP}" style="position: absolute; left: 45px; top: 15px; width: 140px; box-shadow: none; border: none;" readonly="true"/>
 
-                                <p:commandButton id="btnDireccion" value="" style="background-image: url(Imagenes/Iconos/direccion.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 41px; border:none;" action="direccionespersona" actionListener="#{controlPerDirecciones.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" process="@this"/>
-                                <h:outputText value="#{msg['direcciones']}" style="position: absolute; left: 47px; top: 41px; font-weight: bold; color: #14388B; " />
+                                <p:commandButton id="btnDireccion" value="" style="background-image: url(Imagenes/Iconos/direccion.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 41px; border:none;" 
+                                                 action="direccionespersona" actionListener="#{controlPerDirecciones.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" process="@this"/>
+                                <h:commandLink value="#{msg['direcciones']}" style="position: absolute; left: 47px; top: 41px; font-weight: bold; color: #14388B; "
+                                               action="direccionespersona" actionListener="#{controlPerDirecciones.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <p:inputText id="direcciones" value="#{controlEmpleadoIndividual.direccionP}" style="position: absolute; left: 45px; top: 56px; width: 140px; box-shadow: none; border: none;" readonly="true"/>
 
-                                <p:commandButton id="btnEstadoCivil" value="" style="background-image: url(Imagenes/Iconos/estadocivil.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 82px; border:none;" actionListener="#{controlVigenciasEstadosCiviles.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia,controlEmpleadoIndividual.empleado.persona.secuencia)}" action="estadoCivil" process="@this"/>
-                                <h:outputText value="#{msg['estadocivil']}" style="position: absolute; left: 47px; top: 82px; font-weight: bold; color: #14388B;" />
+                                <p:commandButton id="btnEstadoCivil" value="" style="background-image: url(Imagenes/Iconos/estadocivil.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 82px; border:none;"
+                                                 actionListener="#{controlVigenciasEstadosCiviles.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia,controlEmpleadoIndividual.empleado.persona.secuencia)}" action="estadoCivil" process="@this"/>
+                                <h:commandLink value="#{msg['estadocivil']}" style="position: absolute; left: 47px; top: 82px; font-weight: bold; color: #14388B;"
+                                               actionListener="#{controlVigenciasEstadosCiviles.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia,controlEmpleadoIndividual.empleado.persona.secuencia)}" action="estadoCivil"/>
                                 <p:inputText id="estadoCivil" value="#{controlEmpleadoIndividual.estadoCivilP}" style="position: absolute; left: 45px; top: 97px; width: 140px; box-shadow: none; border: none;" readonly="true"/>
 
-                                <p:commandButton id="btnInformacionAdicional" value="" style="background-image: url(Imagenes/Iconos/relacione.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 123px; border:none; text-transform: uppercase;" process="@this" action="infoAdicional" actionListener="#{controlEmplInformacionAdicional.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
-                                <h:outputText value="#{msg['informacionadicional']}" style="position: absolute; left: 47px; top: 123px; font-weight: bold; color: #14388B; text-transform: uppercase; " />
+                                <p:commandButton id="btnInformacionAdicional" value="" style="background-image: url(Imagenes/Iconos/relacione.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 123px; border:none; text-transform: uppercase;"
+                                                 process="@this" action="infoAdicional" actionListener="#{controlEmplInformacionAdicional.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
+                                <h:commandLink value="#{msg['informacionadicional']}" style="position: absolute; left: 47px; top: 123px; font-weight: bold; color: #14388B; text-transform: uppercase; " 
+                                               action="infoAdicional" actionListener="#{controlEmplInformacionAdicional.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <p:inputText id="informacionAdicional" value="#{controlEmpleadoIndividual.informacionAdicionalP}" style="position: absolute; left: 45px; top: 138px; width: 140px; box-shadow: none; border: none; text-transform: uppercase;" readonly="true"/>
 
                                 <p:commandButton id="btnReemplazos" value="" action="novedadreemplazo" actionListener="#{controlNovedadesReemplazos.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" process="@this"
                                                  style="background-image: url(Imagenes/Iconos/reemplazo.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 164px; border:none;"/>
-                                <h:outputText value="#{msg['reemplazos']}" style="position: absolute; left: 47px; top: 164px; font-weight: bold; color: #14388B;" />
+                                <h:commandLink value="#{msg['reemplazos']}" style="position: absolute; left: 47px; top: 164px; font-weight: bold; color: #14388B;"
+                                               action="novedadreemplazo" actionListener="#{controlNovedadesReemplazos.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <p:inputText id="reemplazos" value="#{controlEmpleadoIndividual.reemplazoP}" style="position: absolute; left: 45px; top: 179px; width: 140px; box-shadow: none; border: none;" readonly="true"/>
                             </fieldset>
                             <fieldset style="position: absolute; left: 208px; top: 2px; width: 197px; height: 120px; border-radius: 7px; padding: 0px; border: none;">
@@ -435,15 +441,20 @@
 
                                 <p:commandButton id="btnEducacion" value="" process="@this" action="personaeducacion" actionListener="#{controlPersonaEducacion.recibirPersona(controlEmpleadoIndividual.empleado.secuencia)}"
                                                  style="background-image: url(Imagenes/Iconos/niveleducativo.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; border:none;"/>
-                                <h:outputText value="#{msg['educacion']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
+                                <h:commandLink value="#{msg['educacion']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;"
+                                               action="personaeducacion" actionListener="#{controlPersonaEducacion.recibirPersona(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <p:inputText id="educacion" value="#{controlEmpleadoIndividual.educacionP}" readonly="true" style="position: absolute; left: 45px; top: 15px; width: 140px; box-shadow: none; border: none;"/>
 
-                                <p:commandButton id="btnIdiomas" value="" style="background-image: url(Imagenes/Iconos/idioma.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 41px; border:none; " action="idiomaPerson" actionListener="#{controlIdiomaPersona.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" process="@this"/>
-                                <h:outputText value="#{msg['idiomas']}" style="position: absolute; left: 47px; top: 41px; font-weight: bold; color: #14388B; " />
+                                <p:commandButton id="btnIdiomas" value="" style="background-image: url(Imagenes/Iconos/idioma.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 41px; border:none; " 
+                                                 action="idiomaPerson" actionListener="#{controlIdiomaPersona.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" process="@this"/>
+                                <h:commandLink value="#{msg['idiomas']}" style="position: absolute; left: 47px; top: 41px; font-weight: bold; color: #14388B; "
+                                               action="idiomaPerson" actionListener="#{controlIdiomaPersona.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <p:inputText id="idiomas" value="#{controlEmpleadoIndividual.idiomasP}" readonly="true" style="position: absolute; left: 45px; top: 56px; width: 140px; box-shadow: none; border: none;"/>
 
-                                <p:commandButton id="btnProyectos" value="" style="background-image: url(Imagenes/Iconos/proyecto.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 82px; border:none;" process="@this" action ="proyecto" actionListener="#{controlVigenciasProyectos.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
-                                <h:outputText value="#{msg['proyectos']}" style="position: absolute; left: 47px; top: 82px; font-weight: bold; color: #14388B; " />
+                                <p:commandButton id="btnProyectos" value="" style="background-image: url(Imagenes/Iconos/proyecto.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 82px; border:none;" 
+                                                 process="@this" action ="proyecto" actionListener="#{controlVigenciasProyectos.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
+                                <h:commandLink value="#{msg['proyectos']}" style="position: absolute; left: 47px; top: 82px; font-weight: bold; color: #14388B; "
+                                               action ="proyecto" actionListener="#{controlVigenciasProyectos.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <p:inputText id="proyectos" value="#{controlEmpleadoIndividual.proyectosP}" readonly="true" style="position: absolute; left: 45px; top: 97px; width: 140px; box-shadow: none; border: none;"/>
                             </fieldset>
 
@@ -452,17 +463,20 @@
 
                                 <p:commandButton id="btnReferenciaLaboral" value="" actionListener="#{controlEmpleadoIndividual.validarRedirigirReferencias('perReferenciaLaboral')}" immediate="#{controlHvReferencias.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"   
                                                  style="background-image: url(Imagenes/Iconos/referencialaboral.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; border:none; " process="@this"/>
-                                <h:outputText value="#{msg['referencialaboral']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />  
+                                <h:commandLink value="#{msg['referencialaboral']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;"
+                                               actionListener="#{controlEmpleadoIndividual.validarRedirigirReferencias('perReferenciaLaboral')}" immediate="#{controlHvReferencias.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>  
                                 <p:inputText id="referenciaLaboral" value="#{controlEmpleadoIndividual.referenciasPersonalesP}"  readonly="true" style="position: absolute; left: 45px; top: 15px; width: 140px; box-shadow: none; border: none;"/>
 
                                 <p:commandButton id="btnReferenciaFamiliar" value="" actionListener="#{controlEmpleadoIndividual.validarRedirigirReferencias('perReferenciaFamiliar')}" immediate="#{controlHvReferencias1.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" 
                                                  style="background-image: url(Imagenes/Iconos/referenciafamiliar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 41px; border:none;" process="@this"/>
-                                <h:outputText value="#{msg['referenciafamiliar']}" style="position: absolute; left: 47px; top: 41px; font-weight: bold; color: #14388B;" />
+                                <h:commandLink value="#{msg['referenciafamiliar']}" style="position: absolute; left: 47px; top: 41px; font-weight: bold; color: #14388B;"
+                                               actionListener="#{controlEmpleadoIndividual.validarRedirigirReferencias('perReferenciaFamiliar')}" immediate="#{controlHvReferencias1.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <p:inputText id="referenciaFamiliar" value="#{controlEmpleadoIndividual.referenciasFamiliaresP}" readonly="true" style="position: absolute; left: 45px; top: 56px; width: 140px; box-shadow: none; border: none;"/>
 
                                 <p:commandButton id="btnExperienciaLaboral" value="" process="@this" actionListener="#{controlEmpleadoIndividual.validarRedirigirReferencias('experienciaLabPersona')}" immediate="#{controlPerExperienciaLaboral.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"
                                                  style="background-image: url(Imagenes/Iconos/experiencialaboral.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 82px; border:none;"/>
-                                <h:outputText value="#{msg['experiencialaboral']}" style="position: absolute; left: 47px; top: 82px; font-weight: bold; color: #14388B; " />
+                                <h:commandLink value="#{msg['experiencialaboral']}" style="position: absolute; left: 47px; top: 82px; font-weight: bold; color: #14388B; "
+                                               actionListener="#{controlEmpleadoIndividual.validarRedirigirReferencias('experienciaLabPersona')}" immediate="#{controlPerExperienciaLaboral.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <p:inputText id="experienciaLaboral" value="#{controlEmpleadoIndividual.experienciaLaboralP}" readonly="true" style="position: absolute; left: 45px; top: 97px; width: 140px; box-shadow: none; border: none;"/>
 
                             </fieldset>
@@ -471,24 +485,29 @@
                                 <!-- <legend style="font-weight: bold; color: blue">#{msg['datos']}</legend> -->
 
                                 <p:commandButton id="btnPruebasAplicadas" value="" style="background-image: url(Imagenes/Iconos/g_evaldesempeno.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; border:none; " process="@this"/>
-                                <h:outputText value="#{msg['pruebasaplicadas']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
+                                <h:commandLink value="#{msg['pruebasaplicadas']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B;" />
                                 <p:inputText id="pruebasAplicadas" value="#{controlEmpleadoIndividual.pruebasAplicadasP}" style="position: absolute; left: 45px; top: 15px; width: 140px; box-shadow: none; border: none;"/>
 
-                                <!-- <p:commandButton id="btnEntrevistas" value="" style="background-image: url(Imagenes/Iconos/afiliacion.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 41px; border:none;" process="@this" disabled="#{controlEmpleadoIndividual.existenHV}" actionListener="#{controlHvEntrevistas.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" action="hvEntrevista"/> -->
-                                <p:commandButton id="btnEntrevistas" value="" style="background-image: url(Imagenes/Iconos/entrevistas.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 41px; border:none;" process="@this" actionListener="#{controlHvEntrevistas.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" action="hvEntrevista"/>
-                                <h:outputText value="#{msg['entrevistas']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 41px" />
+                                <p:commandButton id="btnEntrevistas" value="" style="background-image: url(Imagenes/Iconos/entrevistas.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 41px; border:none;" 
+                                                 process="@this" actionListener="#{controlHvEntrevistas.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" action="hvEntrevista"/>
+                                <h:commandLink value="#{msg['entrevistas']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 41px"
+                                               actionListener="#{controlHvEntrevistas.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" action="hvEntrevista"/>
                                 <p:inputText id="entrevistas" value="#{controlEmpleadoIndividual.entrevistasP}" readonly="true" style="position: absolute; left: 45px; top: 56px; width: 140px; box-shadow: none; border: none;"/>
 
-                                <p:commandButton id="btnCensos" value="" style="background-image: url(Imagenes/Iconos/indicadorgestion.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 82px; border:none;" process="@this" action="vigenciasIndicadores" actionListener="#{controlEmplVigenciaIndicador.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
-                                <h:outputText value="#{msg['censos']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 82px" />
+                                <p:commandButton id="btnCensos" value="" style="background-image: url(Imagenes/Iconos/indicadorgestion.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 82px; border:none;"
+                                                 process="@this" action="vigenciasIndicadores" actionListener="#{controlEmplVigenciaIndicador.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
+                                <h:commandLink value="#{msg['censos']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 82px"
+                                               action="vigenciasIndicadores" actionListener="#{controlEmplVigenciaIndicador.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <p:inputText id="censos" value="#{controlEmpleadoIndividual.indicadoresP}" readonly="true" style="position: absolute; left: 45px; top: 97px; width: 140px; box-shadow: none; border: none;"/>
 
-                                <p:commandButton id="btnDemandas" value="" style="background-image: url(Imagenes/Iconos/demanda.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 123px; border:none;" process="@this" action="demandaEmpl" actionListener="#{controlEmplDemanda.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
-                                <h:outputText value="#{msg['demandas']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 123px;" />
+                                <p:commandButton id="btnDemandas" value="" style="background-image: url(Imagenes/Iconos/demanda.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 123px; border:none;" 
+                                                 process="@this" action="demandaEmpl" actionListener="#{controlEmplDemanda.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
+                                <h:commandLink value="#{msg['demandas']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 123px;"
+                                               action="demandaEmpl" actionListener="#{controlEmplDemanda.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <p:inputText id="demandas" value="#{controlEmpleadoIndividual.demandasP}" readonly="true" style="position: absolute; left: 45px; top: 138px; width: 140px; box-shadow: none; border: none;"/>
 
                                 <p:commandButton id="btnVisitasDomiciliarias" value="" style="background-image: url(Imagenes/Iconos/visitadomiciliaria.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 164px; border:none;" process="@this"/>
-                                <h:outputText value="#{msg['visitasdomiciliarias']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 164px" />
+                                <h:commandLink value="#{msg['visitasdomiciliarias']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 164px" />
                                 <p:inputText id="visitasDomiciliarias" value="#{controlEmpleadoIndividual.visitasDomiciliariasP}" readonly="true" style="position: absolute; left: 45px; top: 179px; width: 140px; box-shadow: none; border: none;"/>
                             </fieldset>
 
@@ -496,20 +515,27 @@
                             <fieldset style="position: absolute; left: 208px; top: 126px; width: 409px; height: 83px; border-radius: 7px; padding: 0px; border: none;">
                                 <!-- <legend style="font-weight: bold; color: blue">#{msg['actividades']}</legend> -->
 
-                                <p:commandButton id="btnEventos" value="" style="background-image: url(Imagenes/Iconos/evento.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 0px; border:none;" process="@this" action="vigenciasEvents" actionListener="#{controlEmplVigenciaEvento.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
-                                <h:outputText value="#{msg['eventos']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 0px" />
+                                <p:commandButton id="btnEventos" value="" style="background-image: url(Imagenes/Iconos/evento.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 0px; border:none;"
+                                                 process="@this" action="vigenciasEvents" actionListener="#{controlEmplVigenciaEvento.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
+                                <h:commandLink value="#{msg['eventos']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 0px"
+                                               action="vigenciasEvents" actionListener="#{controlEmplVigenciaEvento.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <p:inputText id="eventos" value="#{controlEmpleadoIndividual.eventosP}" readonly="true" style="position: absolute; left: 45px; top: 15px; width: 140px; box-shadow: none; border: none;"/>
 
-                                <p:commandButton id="btnDeporte" value="" style="background-image: url(Imagenes/Iconos/deporte.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 41px; border:none;" process="@this" action="infoDeportesPersona" actionListener="#{controlVigenciaDeporte.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
-                                <h:outputText value="#{msg['deporte']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 41px" />
+                                <p:commandButton id="btnDeporte" value="" style="background-image: url(Imagenes/Iconos/deporte.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 41px; border:none;" 
+                                                 process="@this" action="infoDeportesPersona" actionListener="#{controlVigenciaDeporte.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
+                                <h:commandLink value="#{msg['deporte']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 41px"
+                                               action="infoDeportesPersona" actionListener="#{controlVigenciaDeporte.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <p:inputText id="deporte" value="#{controlEmpleadoIndividual.deportesP}" readonly="true" style="position: absolute; left: 45px; top: 56px; width: 140px; box-shadow: none; border: none;"/>
 
-                                <p:commandButton id="btnAficiones" value="" style="background-image: url(Imagenes/Iconos/aficion.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 0px; left: 211px; border:none;" action="infoAficionesPersona" actionListener="#{controlVigenciaAficion.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" process="@this"/>
-                                <h:outputText value="#{msg['aficiones']}" style="position: absolute; left: 250px; top: 0px; font-weight: bold; color: #14388B;" />
+                                <p:commandButton id="btnAficiones" value="" style="background-image: url(Imagenes/Iconos/aficion.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 0px; left: 211px; border:none;"
+                                                 action="infoAficionesPersona" actionListener="#{controlVigenciaAficion.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" process="@this"/>
+                                <h:commandLink value="#{msg['aficiones']}" style="position: absolute; left: 255px; top: 0px; font-weight: bold; color: #14388B;"
+                                               action="infoAficionesPersona" actionListener="#{controlVigenciaAficion.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}"/>
                                 <p:inputText id="aficiones" value="#{controlEmpleadoIndividual.aficionesP}" readonly="true" style="position: absolute; left: 249px; top: 15px; width: 140px; box-shadow: none; border: none;"/>
 
-                                <p:commandButton id="btnFamiliares" value="" style="background-image: url(Imagenes/Iconos/familiar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 41px; left: 211px; border:none;" process="@this"/>
-                                <h:outputText value="#{msg['familiares']}" style="position: absolute; left: 250px; font-weight: bold; color: #14388B; top: 41px" />
+                                <p:commandButton id="btnFamiliares" value="" style="background-image: url(Imagenes/Iconos/familiar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 41px; left: 211px; border:none;" 
+                                                 process="@this"/>
+                                <h:commandLink value="#{msg['familiares']}" style="position: absolute; left: 255px; font-weight: bold; color: #14388B; top: 41px" />
                                 <p:inputText id="familiares" value="#{controlEmpleadoIndividual.familiaresP}" readonly="true" style="position: absolute; left: 249px; top: 56px; width: 140px; box-shadow: none; border: none;"/>
                             </fieldset>
                         </fieldset>
