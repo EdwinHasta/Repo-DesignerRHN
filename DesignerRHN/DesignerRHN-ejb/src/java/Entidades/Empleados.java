@@ -16,11 +16,14 @@ import javax.validation.constraints.Size;
 @Table(name = "EMPLEADOS")
 public class Empleados implements Serializable {
 
-    
     private static final long serialVersionUID = 1L;
+//    @Id
+//    @Basic(optional = false)
+//    @NotNull
+//    @Column(name = "SECUENCIA")
     @Id
-    @Basic(optional = false)
-    @NotNull
+    @SequenceGenerator(name = "SEQ_GEN", sequenceName = "STABLAS")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Column(name = "CODIGOEMPLEADO")
@@ -28,30 +31,30 @@ public class Empleados implements Serializable {
     @Column(name = "RUTATRANSPORTE")
     private Integer rutatransporte;
     /*@Column(name = "TELEFONO")
-    private Long telefono;
-    @Column(name = "EXTENSION")
-    private Integer extension;*/
+     private Long telefono;
+     @Column(name = "EXTENSION")
+     private Integer extension;*/
     @Size(max = 6)
     @Column(name = "PARQUEADERO")
     private String parqueadero;
     /*@Size(max = 1)
-    @Column(name = "SERVICIORESTAURANTE")
-    private String serviciorestaurante;
-    @Column(name = "NIVELENDEUDAMIENTO")
-    private BigDecimal nivelendeudamiento;
-    @Column(name = "TOTALULTIMOPAGO")
-    private BigInteger totalultimopago;
-    @Column(name = "TOTALULTIMODESCUENTO")
-    private BigInteger totalultimodescuento;
-    @Column(name = "TOTALULTIMOSOBREGIRO")
-    private BigInteger totalultimosobregiro;
-    @Size(max = 1)
-    @Column(name = "EXCLUIRLIQUIDACION")
-    private String excluirliquidacion;
-    @Column(name = "CODIGOALTERNATIVODEUDOR")
-    private Integer codigoalternativodeudor;
-    @Column(name = "CODIGOALTERNATIVOACREEDOR")
-    private Long codigoalternativoacreedor;*/
+     @Column(name = "SERVICIORESTAURANTE")
+     private String serviciorestaurante;
+     @Column(name = "NIVELENDEUDAMIENTO")
+     private BigDecimal nivelendeudamiento;
+     @Column(name = "TOTALULTIMOPAGO")
+     private BigInteger totalultimopago;
+     @Column(name = "TOTALULTIMODESCUENTO")
+     private BigInteger totalultimodescuento;
+     @Column(name = "TOTALULTIMOSOBREGIRO")
+     private BigInteger totalultimosobregiro;
+     @Size(max = 1)
+     @Column(name = "EXCLUIRLIQUIDACION")
+     private String excluirliquidacion;
+     @Column(name = "CODIGOALTERNATIVODEUDOR")
+     private Integer codigoalternativodeudor;
+     @Column(name = "CODIGOALTERNATIVOACREEDOR")
+     private Long codigoalternativoacreedor;*/
     @Column(name = "FECHACREACION")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechacreacion;
@@ -59,15 +62,15 @@ public class Empleados implements Serializable {
     @Column(name = "CODIGOALTERNATIVO")
     private String codigoalternativo;
     /*@Column(name = "TEMPTOTALINGRESOS")
-    private BigInteger temptotalingresos;
-    @Size(max = 1)
-    @Column(name = "EXTRANJERO")
-    private String extranjero;*/
+     private BigInteger temptotalingresos;
+     @Size(max = 1)
+     @Column(name = "EXTRANJERO")
+     private String extranjero;*/
     @Size(max = 1)
     @Column(name = "PAGASUBSIDIOTRANSPORTELEGAL")
     private String pagasubsidiotransportelegal;
     /*@Column(name = "TEMPBASERECALCULO")
-    private BigInteger tempbaserecalculo;*/
+     private BigInteger tempbaserecalculo;*/
     @JoinColumn(name = "PERSONA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Personas persona;
@@ -75,8 +78,8 @@ public class Empleados implements Serializable {
     @ManyToOne(optional = false)
     private Empresas empresa;
     /*@Column(name = "EMPRESA")
-    private BigInteger empresa;
-    */
+     private BigInteger empresa;
+     */
     @Size(max = 30)
     @Column(name = "USUARIOBD")
     private String usuariobd;
@@ -85,7 +88,7 @@ public class Empleados implements Serializable {
     @Transient
     private String codigoempleadoSTR;
     /*@Transient
-    private Empresas empresa;*/
+     private Empresas empresa;*/
 
     public Empleados() {
         persona = new Personas();
@@ -125,21 +128,20 @@ public class Empleados implements Serializable {
     }
 
     /*public Long getTelefono() {
-        return telefono;
-    }
+     return telefono;
+     }
 
-    public void setTelefono(Long telefono) {
-        this.telefono = telefono;
-    }
+     public void setTelefono(Long telefono) {
+     this.telefono = telefono;
+     }
 
-    public Integer getExtension() {
-        return extension;
-    }
+     public Integer getExtension() {
+     return extension;
+     }
 
-    public void setExtension(Integer extension) {
-        this.extension = extension;
-    }*/
-
+     public void setExtension(Integer extension) {
+     this.extension = extension;
+     }*/
     public String getParqueadero() {
         return parqueadero;
     }
@@ -147,71 +149,72 @@ public class Empleados implements Serializable {
     public void setParqueadero(String parqueadero) {
         this.parqueadero = parqueadero;
     }
-/*
-    public String getServiciorestaurante() {
-        return serviciorestaurante;
-    }
+    /*
+     public String getServiciorestaurante() {
+     return serviciorestaurante;
+     }
 
-    public void setServiciorestaurante(String serviciorestaurante) {
-        this.serviciorestaurante = serviciorestaurante;
-    }
+     public void setServiciorestaurante(String serviciorestaurante) {
+     this.serviciorestaurante = serviciorestaurante;
+     }
 
-    public BigDecimal getNivelendeudamiento() {
-        return nivelendeudamiento;
-    }
+     public BigDecimal getNivelendeudamiento() {
+     return nivelendeudamiento;
+     }
 
-    public void setNivelendeudamiento(BigDecimal nivelendeudamiento) {
-        this.nivelendeudamiento = nivelendeudamiento;
-    }
+     public void setNivelendeudamiento(BigDecimal nivelendeudamiento) {
+     this.nivelendeudamiento = nivelendeudamiento;
+     }
 
-    public BigInteger getTotalultimopago() {
-        return totalultimopago;
-    }
+     public BigInteger getTotalultimopago() {
+     return totalultimopago;
+     }
 
-    public void setTotalultimopago(BigInteger totalultimopago) {
-        this.totalultimopago = totalultimopago;
-    }
+     public void setTotalultimopago(BigInteger totalultimopago) {
+     this.totalultimopago = totalultimopago;
+     }
 
-    public BigInteger getTotalultimodescuento() {
-        return totalultimodescuento;
-    }
+     public BigInteger getTotalultimodescuento() {
+     return totalultimodescuento;
+     }
 
-    public void setTotalultimodescuento(BigInteger totalultimodescuento) {
-        this.totalultimodescuento = totalultimodescuento;
-    }
+     public void setTotalultimodescuento(BigInteger totalultimodescuento) {
+     this.totalultimodescuento = totalultimodescuento;
+     }
 
-    public BigInteger getTotalultimosobregiro() {
-        return totalultimosobregiro;
-    }
+     public BigInteger getTotalultimosobregiro() {
+     return totalultimosobregiro;
+     }
 
-    public void setTotalultimosobregiro(BigInteger totalultimosobregiro) {
-        this.totalultimosobregiro = totalultimosobregiro;
-    }
+     public void setTotalultimosobregiro(BigInteger totalultimosobregiro) {
+     this.totalultimosobregiro = totalultimosobregiro;
+     }
 
-    public String getExcluirliquidacion() {
-        return excluirliquidacion;
-    }
+     public String getExcluirliquidacion() {
+     return excluirliquidacion;
+     }
 
-    public void setExcluirliquidacion(String excluirliquidacion) {
-        this.excluirliquidacion = excluirliquidacion;
-    }
+     public void setExcluirliquidacion(String excluirliquidacion) {
+     this.excluirliquidacion = excluirliquidacion;
+     }
 
-    public Integer getCodigoalternativodeudor() {
-        return codigoalternativodeudor;
-    }
+     public Integer getCodigoalternativodeudor() {
+     return codigoalternativodeudor;
+     }
 
-    public void setCodigoalternativodeudor(Integer codigoalternativodeudor) {
-        this.codigoalternativodeudor = codigoalternativodeudor;
-    }
+     public void setCodigoalternativodeudor(Integer codigoalternativodeudor) {
+     this.codigoalternativodeudor = codigoalternativodeudor;
+     }
 
-    public Long getCodigoalternativoacreedor() {
-        return codigoalternativoacreedor;
-    }
+     public Long getCodigoalternativoacreedor() {
+     return codigoalternativoacreedor;
+     }
 
-    public void setCodigoalternativoacreedor(Long codigoalternativoacreedor) {
-        this.codigoalternativoacreedor = codigoalternativoacreedor;
-    }
-*/
+     public void setCodigoalternativoacreedor(Long codigoalternativoacreedor) {
+     this.codigoalternativoacreedor = codigoalternativoacreedor;
+     }
+     */
+
     public Date getFechacreacion() {
         return fechacreacion;
     }
@@ -227,23 +230,24 @@ public class Empleados implements Serializable {
     public void setCodigoalternativo(String codigoalternativo) {
         this.codigoalternativo = codigoalternativo;
     }
-/*
-    public BigInteger getTemptotalingresos() {
-        return temptotalingresos;
-    }
+    /*
+     public BigInteger getTemptotalingresos() {
+     return temptotalingresos;
+     }
 
-    public void setTemptotalingresos(BigInteger temptotalingresos) {
-        this.temptotalingresos = temptotalingresos;
-    }
+     public void setTemptotalingresos(BigInteger temptotalingresos) {
+     this.temptotalingresos = temptotalingresos;
+     }
 
-    public String getExtranjero() {
-        return extranjero;
-    }
+     public String getExtranjero() {
+     return extranjero;
+     }
 
-    public void setExtranjero(String extranjero) {
-        this.extranjero = extranjero;
-    }
-*/
+     public void setExtranjero(String extranjero) {
+     this.extranjero = extranjero;
+     }
+     */
+
     public String getPagasubsidiotransportelegal() {
         return pagasubsidiotransportelegal;
     }
@@ -251,15 +255,16 @@ public class Empleados implements Serializable {
     public void setPagasubsidiotransportelegal(String pagasubsidiotransportelegal) {
         this.pagasubsidiotransportelegal = pagasubsidiotransportelegal;
     }
-/*
-    public BigInteger getTempbaserecalculo() {
-        return tempbaserecalculo;
-    }
+    /*
+     public BigInteger getTempbaserecalculo() {
+     return tempbaserecalculo;
+     }
 
-    public void setTempbaserecalculo(BigInteger tempbaserecalculo) {
-        this.tempbaserecalculo = tempbaserecalculo;
-    }
-*/
+     public void setTempbaserecalculo(BigInteger tempbaserecalculo) {
+     this.tempbaserecalculo = tempbaserecalculo;
+     }
+     */
+
     public Personas getPersona() {
         return persona;
     }
@@ -269,20 +274,21 @@ public class Empleados implements Serializable {
     }
 
     public Empresas getEmpresa() {
-    return empresa;
-    }
-    public void setEmpresa(Empresas empresa) {
-    this.empresa = empresa;
-    }
-/*     
-    public BigInteger getEmpresa() {
         return empresa;
     }
 
-    public void setEmpresa(BigInteger empresafk) {
+    public void setEmpresa(Empresas empresa) {
         this.empresa = empresa;
     }
-  */  
+    /*     
+     public BigInteger getEmpresa() {
+     return empresa;
+     }
+
+     public void setEmpresa(BigInteger empresafk) {
+     this.empresa = empresa;
+     }
+     */
 
     @Override
     public int hashCode() {

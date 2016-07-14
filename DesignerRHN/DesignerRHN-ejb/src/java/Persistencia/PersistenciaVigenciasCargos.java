@@ -4,6 +4,7 @@
 package Persistencia;
 
 import Entidades.Empleados;
+import Entidades.Papeles;
 import Entidades.VigenciasCargos;
 import InterfacePersistencia.PersistenciaVigenciasCargosInterface;
 import java.math.BigInteger;
@@ -26,6 +27,8 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
 
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
+     *
+     * @param em
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager emr;*/
@@ -40,7 +43,7 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
             System.out.println("vigenciasCargos Empleado Secuencia: " + vigenciasCargos.getEmpleado().getSecuencia());
             tx.begin();
             System.out.println("TX Begin");
-            em.merge(vigenciasCargos);
+            em.persist(vigenciasCargos);
             System.out.println("Persist");
             tx.commit();
             System.out.println("commitea");
@@ -106,6 +109,7 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
         return em.createQuery(cq).getResultList();
     }
 
+    @Override
     public List<VigenciasCargos> buscarVigenciasCargosEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             em.clear();

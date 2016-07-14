@@ -71,6 +71,7 @@ import InterfacePersistencia.PersistenciaNormasLaboralesInterface;
 import InterfacePersistencia.PersistenciaPapelesInterface;
 import InterfacePersistencia.PersistenciaPeriodicidadesInterface;
 import InterfacePersistencia.PersistenciaPersonasInterface;
+import InterfacePersistencia.PersistenciaPlantillasTTInterface;
 import InterfacePersistencia.PersistenciaProcesosInterface;
 import InterfacePersistencia.PersistenciaReformasLaboralesInterface;
 import InterfacePersistencia.PersistenciaSetsInterface;
@@ -137,20 +138,20 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     PersistenciaJornadasLaboralesInterface persistenciaJornadasLaborales;
     @EJB
     PersistenciaMotivosContratosInterface persistenciaMotivosContratos;
-    @EJB
-    PersistenciaTiposContratosInterface persistenciaTiposContratos;
+//    @EJB
+//    PersistenciaTiposContratosInterface persistenciaTiposContratos;
     @EJB
     PersistenciaTiposTrabajadoresInterface persistenciaTiposTrabajadores;
     @EJB
     PersistenciaReformasLaboralesInterface persistenciaReformasLaborales;
-    @EJB
-    PersistenciaNormasLaboralesInterface persistenciaNormasLaborales;
-    @EJB
-    PersistenciaContratosInterface persistenciaContratos;
+//    @EJB
+//    PersistenciaNormasLaboralesInterface persistenciaNormasLaborales;
+//    @EJB
+//    PersistenciaContratosInterface persistenciaContratos;
     @EJB
     PersistenciaMotivosCambiosSueldosInterface persistenciaMotivosCambiosSueldos;
-    @EJB
-    PersistenciaTiposSueldosInterface persistenciaTiposSueldos;
+//    @EJB
+//    PersistenciaTiposSueldosInterface persistenciaTiposSueldos;
     @EJB
     PersistenciaUnidadesInterface persistenciaUnidades;
     @EJB
@@ -218,6 +219,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     @EJB
     AdministrarSesionesInterface administrarSesiones;
     private EntityManager em;
+    @EJB
+    PersistenciaPlantillasTTInterface PersistenciaPlantillasTT;
 
     @Override
     public void obtenerConexion(String idSesion) {
@@ -371,59 +374,126 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public List<TiposContratos> lovTiposContratos() {
-        try {
-            List<TiposContratos> lista = persistenciaTiposContratos.tiposContratos(em);
-            return lista;
-        } catch (Exception e) {
-            System.out.println("Error lovTiposContratos Admi : " + e.toString());
-            return null;
-        }
-    }
-
-    @Override
     public List<TiposTrabajadores> lovTiposTrabajadores() {
         try {
             List<TiposTrabajadores> lista = persistenciaTiposTrabajadores.buscarTiposTrabajadores(em);
             System.out.println("AdministrarPersonaIndividual lovTiposTrabajadores retorno lista : " + lista);
             return lista;
         } catch (Exception e) {
-            System.err.println("Error lovTiposTrabajadores Admi : " + e.toString());
+            System.err.println("Error AdministrarP..I.. lovTiposTrabajadores() : " + e.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public List<TiposSueldos> lovTiposSueldosValidos(BigInteger secTT){
+        try {
+            List<TiposSueldos> lista = PersistenciaPlantillasTT.consultarTiposSueldosValidos(em, secTT);
+            return lista;
+        } catch (Exception e) {
+            System.err.println("Error lovTiposSueldosValidos : " + e.toString());
             return null;
         }
     }
 
     @Override
-    public List<ReformasLaborales> lovReformasLaborales() {
+    public List<Contratos> lovContratosValidos(BigInteger secTT){
         try {
-            List<ReformasLaborales> lista = persistenciaReformasLaborales.buscarReformasLaborales(em);
+            List<Contratos> lista = PersistenciaPlantillasTT.consultarContratosValidos(em, secTT);
             return lista;
         } catch (Exception e) {
+            System.err.println("Error lovContratosValidos : " + e.toString());
             return null;
         }
     }
 
     @Override
-    public List<NormasLaborales> lovNormasLaborales() {
+    public List<NormasLaborales> lovNormasLaboralesValidos(BigInteger secTT){
         try {
-            List<NormasLaborales> lista = persistenciaNormasLaborales.consultarNormasLaborales(em);
+            List<NormasLaborales> lista = PersistenciaPlantillasTT.consultarNormasLaboralesValidas(em, secTT);
             return lista;
         } catch (Exception e) {
-            System.out.println("Error lovNormasLaborales Admi : " + e.toString());
+            System.err.println("Error lovNormasLaboralesValidos : " + e.toString());
             return null;
         }
     }
 
-    ///@Override
-    public List<Contratos> lovContratos() {
+    @Override
+    public List<ReformasLaborales> lovReformasLaboralesValidos(BigInteger secTT){
         try {
-            List<Contratos> lista = persistenciaContratos.buscarContratosPorUsuario(em);
+            List<ReformasLaborales> lista = PersistenciaPlantillasTT.consultarReformasLaboralesValidas(em, secTT);
             return lista;
         } catch (Exception e) {
-            System.out.println("Error lovContratos Admi : " + e.toString());
+            System.err.println("Error lovReformasLaboralesValidos : " + e.toString());
             return null;
         }
     }
+
+    @Override
+    public List<TiposContratos> lovTiposContratosValidos(BigInteger secTT){
+        try {
+            List<TiposContratos> lista = PersistenciaPlantillasTT.consultarTiposContratosValidos(em, secTT);
+            return lista;
+        } catch (Exception e) {
+            System.err.println("Error lovTiposContratosValidos : " + e.toString());
+            return null;
+        }
+    }
+    
+//
+//    @Override
+//    public List<TiposContratos> lovTiposContratos() {
+//        try {
+//            List<TiposContratos> lista = persistenciaTiposContratos.tiposContratos(em);
+//            return lista;
+//        } catch (Exception e) {
+//            System.out.println("Error lovTiposContratos Admi : " + e.toString());
+//            return null;
+//        }
+//    }
+//
+//    @Override
+//    public List<ReformasLaborales> lovReformasLaborales() {
+//        try {
+//            List<ReformasLaborales> lista = persistenciaReformasLaborales.buscarReformasLaborales(em);
+//            return lista;
+//        } catch (Exception e) {
+//            return null;
+//        }
+//    }
+//
+//    @Override
+//    public List<NormasLaborales> lovNormasLaborales() {
+//        try {
+//            List<NormasLaborales> lista = persistenciaNormasLaborales.consultarNormasLaborales(em);
+//            return lista;
+//        } catch (Exception e) {
+//            System.out.println("Error lovNormasLaborales Admi : " + e.toString());
+//            return null;
+//        }
+//    }
+//
+//    @Override
+//    public List<Contratos> lovContratos() {
+//        try {
+//            List<Contratos> lista = persistenciaContratos.buscarContratosPorUsuario(em);
+//            return lista;
+//        } catch (Exception e) {
+//            System.out.println("Error lovContratos Admi : " + e.toString());
+//            return null;
+//        }
+//    }
+//
+//    @Override
+//    public List<TiposSueldos> lovTiposSueldos() {
+//        try {
+//            List<TiposSueldos> lista = persistenciaTiposSueldos.buscarTiposSueldosParaUsuarioConectado(em);
+//            return lista;
+//        } catch (Exception e) {
+//            System.out.println("Error lovTiposSueldos Admi : " + e.toString());
+//            return null;
+//        }
+//    }
 
     @Override
     public List<MotivosCambiosSueldos> lovMotivosCambiosSueldos() {
@@ -432,17 +502,6 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovMotivosCambiosSueldos Admi : " + e.toString());
-            return null;
-        }
-    }
-
-    @Override
-    public List<TiposSueldos> lovTiposSueldos() {
-        try {
-            List<TiposSueldos> lista = persistenciaTiposSueldos.buscarTiposSueldosParaUsuarioConectado(em);
-            return lista;
-        } catch (Exception e) {
-            System.out.println("Error lovTiposSueldos Admi : " + e.toString());
             return null;
         }
     }
@@ -732,7 +791,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
         try {
             System.out.println("AdministrarPers... validarTipoTrabajadorNormaLaboral() :");
             System.out.println("tipoTrabajador : " + tipoTrabajador + ",   normaLaboral : " + normaLaboral);
-            String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorTipoSueldo(em, tipoTrabajador, normaLaboral);
+            String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorNormaLaboral(em, tipoTrabajador, normaLaboral);
             if(validar == null){
                 validar = " ";
             }
@@ -749,7 +808,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
         try {
             System.out.println("AdministrarPers... validarTipoTrabajadorContrato() :");
             System.out.println("tipoTrabajador : " + tipoTrabajador + ",   contrato : " + contrato);
-            String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorTipoContrato(em, tipoTrabajador, contrato);
+            String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorContrato(em, tipoTrabajador, contrato);
             if(validar == null){
                 validar = " ";
             }
@@ -805,7 +864,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     @Override
     public Empleados obtenerUltimoRegistroEmpleado(BigInteger empresa, BigInteger codigoEmpleado) {
         try {
-            System.out.println("Admin..PersonaInd.. obtenerUltimoRegistroEmpleado() empresa : " + empresa + ",  codigoEmpleado : " + codigoEmpleado);
+//            System.out.println("Admin..PersonaInd.. obtenerUltimoRegistroEmpleado() empresa : " + empresa + ",  codigoEmpleado : " + codigoEmpleado);
             Empleados empleado = persistenciaEmpleado.obtenerUltimoEmpleadoAlmacenado(em, empresa, codigoEmpleado);
             return empleado;
         } catch (Exception e) {

@@ -26,6 +26,7 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
 
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
+     * @param em
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
@@ -106,6 +107,7 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
         }
     }
 
+    @Override
     public BigInteger contarParametrosInformesActividad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {

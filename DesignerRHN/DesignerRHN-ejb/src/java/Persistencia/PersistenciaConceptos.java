@@ -242,6 +242,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
         }
     }
 
+    @Override
     public List<Conceptos> conceptoEmpresa(EntityManager em) {
         try {
             em.clear();

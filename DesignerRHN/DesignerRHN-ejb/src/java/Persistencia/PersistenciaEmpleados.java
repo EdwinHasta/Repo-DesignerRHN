@@ -40,12 +40,20 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(empleados);
+            em.persist(empleados);
+            tx.commit();
+            tx.begin();
+            System.out.println("empleados : " + empleados);
+//            empleados = em.find(Empleados.class, empleados);
+//            System.out.println("empleados : " + empleados);
             tx.commit();
             System.out.println("PersistenciaEmpleados crear() se supone creo el empleado: " + empleados.getSecuencia() + ", persona: " + empleados.getPersona() + ", nombre: " + empleados.getPersona().getNombre());
         } catch (Exception e) {
             //PropertyConfigurator.configure("log4j.properties");
             //logger.error("Metodo: crear - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
+            System.out.println(this.getClass().getName()+".crear()");
+            System.out.println("error al crear el empleado");
+            e.printStackTrace();
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -465,6 +473,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     public Empleados buscarEmpleadoPorCodigoyEmpresa(EntityManager em, BigInteger codigo, BigInteger empresa) {
         try {
             em.clear();
+            
             String sql = "SELECT * FROM empleados WHERE CODIGOEMPLEADO =? AND NVL(EMPRESA,?)=?";
             Query query = em.createNativeQuery(sql, Empleados.class);
             query.setParameter(1, codigo);
@@ -482,6 +491,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     @Override
     public Empleados obtenerUltimoEmpleadoAlmacenado(EntityManager em, BigInteger secuenciaEmpresa, BigInteger codigoEmpleado) {
         try {
+            System.out.println(this.getClass().getName() + "obtenerUltimoEmpleadoAlmacenado :");
+            System.out.println("em" + em + ",  secuenciaEmpresa : " + secuenciaEmpresa + ",  codigoEmpleado : " + codigoEmpleado);
             em.clear();
             String sql = "SELECT * FROM EMPLEADOS WHERE EMPRESA = ? AND CODIGOEMPLEADO = ?";
             Query query = em.createNativeQuery(sql, Empleados.class);
@@ -497,7 +508,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
 //            Empleados empl = (Empleados) query.getSingleResult();
 //            return empl;
         } catch (Exception e) {
-            System.out.println(this.getClass().getName() + " error en obtenereUltimoEmpleadoAlmacenado");
+            System.out.println(this.getClass().getName() + " error en obtenerUltimoEmpleadoAlmacenado");
             e.printStackTrace();
             //PropertyConfigurator.configure("log4j.properties");
             //logger.error("Metodo: obtenerUltimoEmpleadoAlmacenado - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());

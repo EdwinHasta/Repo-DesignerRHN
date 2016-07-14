@@ -3,6 +3,7 @@ package Controlador;
 import Entidades.*;
 import InterfaceAdministrar.AdministrarCarpetaPersonalInterface;
 import InterfaceAdministrar.AdministrarPersonaIndividualInterface;
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -280,6 +281,8 @@ public class ControlPersonaIndividual implements Serializable {
     //unidad PESOS
     private Unidades unidadPesos;
     private String tituloTercero;
+    //valiudacion Tipo Trabajador
+    private String errorTT;
 
     public ControlPersonaIndividual() {
         nuevoEmpleado = new Empleados();
@@ -458,6 +461,8 @@ public class ControlPersonaIndividual implements Serializable {
         unidadPesos.setNombre("");
         desdeNominaFEmpresa = 0;
         errorDesdeNominaF = false;
+        //
+        errorTT = " ";
     }
 
     @PostConstruct
@@ -593,11 +598,14 @@ public class ControlPersonaIndividual implements Serializable {
     public void listaValoresTipoSalario() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idTipoSalario == 0) {
-            cargarLovReformasLaborales();
-            context.update("formLovs:formDTipoSalario:ReformaLaboralTipoSalarioDialogo");
-            modificarInfoR_ReformaTipoSa(lovReformasLaborales.size());
-            context.execute("ReformaLaboralTipoSalarioDialogo.show()");
-            idTipoSalario = -1;
+            if (lovReformasLaborales == null) {
+                context.execute("advertenciaSeleccionTipoT.show()");
+            } else {
+                context.update("formLovs:formDTipoSalario:ReformaLaboralTipoSalarioDialogo");
+                modificarInfoR_ReformaTipoSa(lovReformasLaborales.size());
+                context.execute("ReformaLaboralTipoSalarioDialogo.show()");
+                idTipoSalario = -1;
+            }
         }
     }
 
@@ -611,11 +619,14 @@ public class ControlPersonaIndividual implements Serializable {
             idSueldo = -1;
         }
         if (idSueldo == 2) {
-            cargarLovTiposSueldos();
-            context.update("formLovs:formDSueldo:formTipoSueldo:TipoSueldoSueldoDialogo");
-            modificarInfoR_TipoSuSu(lovTiposSueldos.size());
-            context.execute("TipoSueldoSueldoDialogo.show()");
-            idSueldo = -1;
+            if (lovTiposSueldos == null) {
+                context.execute("advertenciaSeleccionTipoT.show()");
+            } else {
+                context.update("formLovs:formDSueldo:formTipoSueldo:TipoSueldoSueldoDialogo");
+                modificarInfoR_TipoSuSu(lovTiposSueldos.size());
+                context.execute("TipoSueldoSueldoDialogo.show()");
+                idSueldo = -1;
+            }
         }
         if (idSueldo == 3) {
             context.update("formLovs:formDSueldo:formUnidadS:UnidadSueldoDialogo");
@@ -635,33 +646,42 @@ public class ControlPersonaIndividual implements Serializable {
             idTipoContrato = -1;
         }
         if (idTipoContrato == 1) {
-            cargarLovTiposContratos();
-            context.update("formLovs:formDTipoContrato:formTipoContrato:TipoContratoTipoContratoDialogo");
-            modificarInfoR_TipoContrato(lovTiposContratos.size());
-            context.execute("TipoContratoTipoContratoDialogo.show()");
-            idTipoContrato = -1;
+            if (lovTiposContratos == null) {
+                context.execute("advertenciaSeleccionTipoT.show()");
+            } else {
+                context.update("formLovs:formDTipoContrato:formTipoContrato:TipoContratoTipoContratoDialogo");
+                modificarInfoR_TipoContrato(lovTiposContratos.size());
+                context.execute("TipoContratoTipoContratoDialogo.show()");
+                idTipoContrato = -1;
+            }
         }
     }
 
     public void listaValoresNormaLaboral() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idNormaLaboral == 0) {
-            cargarLovNormasLaborales();
-            context.update("formLovs:formDNormaLaboral:NormaLaboralNormaLaboralDialogo");
-            modificarInfoR_ReformaTipoSa(lovNormasLaborales.size());
-            context.execute("NormaLaboralNormaLaboralDialogo.show()");
-            idNormaLaboral = -1;
+            if (lovNormasLaborales == null) {
+                context.execute("advertenciaSeleccionTipoT.show()");
+            } else {
+                context.update("formLovs:formDNormaLaboral:NormaLaboralNormaLaboralDialogo");
+                modificarInfoR_ReformaTipoSa(lovNormasLaborales.size());
+                context.execute("NormaLaboralNormaLaboralDialogo.show()");
+                idNormaLaboral = -1;
+            }
         }
     }
 
     public void listaValoresLegislacionLaboral() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idLegislacionLaboral == 0) {
-            cargarLovContratos();
-            context.update("formLovs:formDLegislacionLaboral:ContratoLegislacionLaboralDialogo");
-            modificarInfoR_ContratoLL(lovContratos.size());
-            context.execute("ContratoLegislacionLaboralDialogo.show()");
-            idLegislacionLaboral = -1;
+            if (lovContratos == null) {
+                context.execute("advertenciaSeleccionTipoT.show()");
+            } else {
+                context.update("formLovs:formDLegislacionLaboral:ContratoLegislacionLaboralDialogo");
+                modificarInfoR_ContratoLL(lovContratos.size());
+                context.execute("ContratoLegislacionLaboralDialogo.show()");
+                idLegislacionLaboral = -1;
+            }
         }
     }
 
@@ -787,6 +807,7 @@ public class ControlPersonaIndividual implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (idDireccion == 1) {
             cargarLovTercerosSucursales();
+            cargarLovCiudades();
             context.update("formLovs:formDDireccion:CiudadDireccionDialogo");
             modificarInfoR_CiudadDir(lovCiudades.size());
             context.execute("CiudadDireccionDialogo.show()");
@@ -904,11 +925,14 @@ public class ControlPersonaIndividual implements Serializable {
             }
         } else if (idTipoSalario >= 0) {
             if (idTipoSalario == 0) {
-                cargarLovReformasLaborales();
-                context.update("formLovs:formDTipoSalario:ReformaLaboralTipoSalarioDialogo");
-                modificarInfoR_ReformaTipoSa(lovReformasLaborales.size());
-                context.execute("ReformaLaboralTipoSalarioDialogo.show()");
-                idTipoSalario = -1;
+                if (lovReformasLaborales == null) {
+                    context.execute("advertenciaSeleccionTipoT.show()");
+                } else {
+                    context.update("formLovs:formDTipoSalario:ReformaLaboralTipoSalarioDialogo");
+                    modificarInfoR_ReformaTipoSa(lovReformasLaborales.size());
+                    context.execute("ReformaLaboralTipoSalarioDialogo.show()");
+                    idTipoSalario = -1;
+                }
             }
         } else if (idSueldo >= 0) {
             if (idSueldo == 1) {
@@ -919,11 +943,14 @@ public class ControlPersonaIndividual implements Serializable {
                 idSueldo = -1;
             }
             if (idSueldo == 2) {
-                cargarLovTiposSueldos();
-                context.update("formLovs:formDSueldo:formTipoSueldo:TipoSueldoSueldoDialogo");
-                modificarInfoR_TipoSuSu(lovTiposSueldos.size());
-                context.execute("TipoSueldoSueldoDialogo.show()");
-                idSueldo = -1;
+                if (lovTiposSueldos == null) {
+                    context.execute("advertenciaSeleccionTipoT.show()");
+                } else {
+                    context.update("formLovs:formDSueldo:formTipoSueldo:TipoSueldoSueldoDialogo");
+                    modificarInfoR_TipoSuSu(lovTiposSueldos.size());
+                    context.execute("TipoSueldoSueldoDialogo.show()");
+                    idSueldo = -1;
+                }
             }
             if (idSueldo == 3) {
                 getLovUnidades();
@@ -941,27 +968,36 @@ public class ControlPersonaIndividual implements Serializable {
                 idTipoContrato = -1;
             }
             if (idTipoContrato == 1) {
-                cargarLovTiposContratos();
-                context.update("formLovs:formDTipoContrato:formTipoContrato:TipoContratoTipoContratoDialogo");
-                modificarInfoR_TipoContrato(lovTiposContratos.size());
-                context.execute("TipoContratoTipoContratoDialogo.show()");
-                idTipoContrato = -1;
+                if (lovTiposContratos == null) {
+                    context.execute("advertenciaSeleccionTipoT.show()");
+                } else {
+                    context.update("formLovs:formDTipoContrato:formTipoContrato:TipoContratoTipoContratoDialogo");
+                    modificarInfoR_TipoContrato(lovTiposContratos.size());
+                    context.execute("TipoContratoTipoContratoDialogo.show()");
+                    idTipoContrato = -1;
+                }
             }
         } else if (idNormaLaboral >= 0) {
             if (idNormaLaboral == 0) {
-                cargarLovNormasLaborales();
-                context.update("formLovs:formDNormaLaboral:NormaLaboralNormaLaboralDialogo");
-                modificarInfoR_NormaL(lovNormasLaborales.size());
-                context.execute("NormaLaboralNormaLaboralDialogo.show()");
-                idNormaLaboral = -1;
+                if (lovNormasLaborales == null) {
+                    context.execute("advertenciaSeleccionTipoT.show()");
+                } else {
+                    context.update("formLovs:formDNormaLaboral:NormaLaboralNormaLaboralDialogo");
+                    modificarInfoR_NormaL(lovNormasLaborales.size());
+                    context.execute("NormaLaboralNormaLaboralDialogo.show()");
+                    idNormaLaboral = -1;
+                }
             }
         } else if (idLegislacionLaboral >= 0) {
             if (idLegislacionLaboral == 0) {
-                cargarLovContratos();
-                context.update("formLovs:formDLegislacionLaboral:ContratoLegislacionLaboralDialogo");
-                modificarInfoR_ContratoLL(lovContratos.size());
-                context.execute("ContratoLegislacionLaboralDialogo.show()");
-                idLegislacionLaboral = -1;
+                if (lovContratos == null) {
+                    context.execute("advertenciaSeleccionTipoT.show()");
+                } else {
+                    context.update("formLovs:formDLegislacionLaboral:ContratoLegislacionLaboralDialogo");
+                    modificarInfoR_ContratoLL(lovContratos.size());
+                    context.execute("ContratoLegislacionLaboralDialogo.show()");
+                    idLegislacionLaboral = -1;
+                }
             }
         } else if (idUbicacionGeografica >= 0) {
             if (idUbicacionGeografica == 0) {
@@ -1496,6 +1532,9 @@ public class ControlPersonaIndividual implements Serializable {
         lovEstadosCiviles = null;
         lovTiposTelefonos = null;
 
+        cargarLovEmpresas();
+        nuevoEmpleado.setEmpresa(lovEmpresas.get(0));
+
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:scrollPrincipal");
     }
@@ -1526,10 +1565,14 @@ public class ControlPersonaIndividual implements Serializable {
                 retorno = false;
             }
         }
-        if (nuevaPersona.getTipodocumento().getSecuencia() == null) {
+        if (nuevaPersona.getTipodocumento() == null) {
+            System.err.println("validarCamposObligatoriosEmpleado() : 6");
+            retorno = false;
+        } else if (nuevaPersona.getTipodocumento().getSecuencia() == null) {
             System.err.println("validarCamposObligatoriosEmpleado() : 6");
             retorno = false;
         }
+
         if (nuevaPersona.getSexo() == null) {
             System.err.println("validarCamposObligatoriosEmpleado() : 7");
             retorno = false;
@@ -1538,11 +1581,17 @@ public class ControlPersonaIndividual implements Serializable {
             System.err.println("validarCamposObligatoriosEmpleado() : 8");
             retorno = false;
         }
-        if (nuevaPersona.getCiudaddocumento().getSecuencia() == null) {
+        if (nuevaPersona.getCiudaddocumento() == null) {
+            System.err.println("validarCamposObligatoriosEmpleado() : 9");
+            retorno = false;
+        } else if (nuevaPersona.getCiudaddocumento().getSecuencia() == null) {
             System.err.println("validarCamposObligatoriosEmpleado() : 9");
             retorno = false;
         }
-        if (nuevaPersona.getCiudadnacimiento().getSecuencia() == null) {
+        if (nuevaPersona.getCiudadnacimiento() == null) {
+            System.err.println("validarCamposObligatoriosEmpleado() : 10");
+            retorno = false;
+        } else if (nuevaPersona.getCiudadnacimiento().getSecuencia() == null) {
             System.err.println("validarCamposObligatoriosEmpleado() : 10");
             retorno = false;
         }
@@ -1559,34 +1608,58 @@ public class ControlPersonaIndividual implements Serializable {
             retorno = false;
         }
         //
-        if (nuevaVigenciaCargo.getCargo().getSecuencia() == null) {
+        if (nuevaVigenciaCargo.getCargo() == null) {
+            System.err.println("validarCamposObligatoriosEmpleado() : 14");
+            retorno = false;
+        } else if (nuevaVigenciaCargo.getCargo().getSecuencia() == null) {
             System.err.println("validarCamposObligatoriosEmpleado() : 14");
             retorno = false;
         }
-        if (nuevaVigenciaCargo.getMotivocambiocargo().getSecuencia() == null) {
+        //
+        if (nuevaVigenciaCargo.getMotivocambiocargo() == null) {
+            System.err.println("validarCamposObligatoriosEmpleado() : 15");
+            retorno = false;
+        } else if (nuevaVigenciaCargo.getMotivocambiocargo().getSecuencia() == null) {
             System.err.println("validarCamposObligatoriosEmpleado() : 15");
             retorno = false;
         }
-        if (nuevaVigenciaCargo.getEstructura().getSecuencia() == null) {
+        //
+        if (nuevaVigenciaCargo.getEstructura() == null) {
+            System.err.println("validarCamposObligatoriosEmpleado() : 16");
+            retorno = false;
+        } else if (nuevaVigenciaCargo.getEstructura().getSecuencia() == null) {
             System.err.println("validarCamposObligatoriosEmpleado() : 16");
             retorno = false;
         }
         //
-        if (nuevaVigenciaLocalizacion.getMotivo().getSecuencia() == null) {
+        if (nuevaVigenciaLocalizacion.getMotivo() == null) {
+            System.err.println("validarCamposObligatoriosEmpleado() : 17");
+            retorno = false;
+        } else if (nuevaVigenciaLocalizacion.getMotivo().getSecuencia() == null) {
             System.err.println("validarCamposObligatoriosEmpleado() : 17");
             retorno = false;
         }
-        if (nuevaVigenciaLocalizacion.getLocalizacion().getSecuencia() == null) {
+        //
+        if (nuevaVigenciaLocalizacion.getLocalizacion() == null) {
+            System.err.println("validarCamposObligatoriosEmpleado() : 18");
+            retorno = false;
+        } else if (nuevaVigenciaLocalizacion.getLocalizacion().getSecuencia() == null) {
             System.err.println("validarCamposObligatoriosEmpleado() : 18");
             retorno = false;
         }
         //
-        if (nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia() == null) {
+        if (nuevaVigenciaTipoTrabajador.getTipotrabajador() == null) {
+            System.err.println("validarCamposObligatoriosEmpleado() : 19");
+            retorno = false;
+        } else if (nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia() == null) {
             System.err.println("validarCamposObligatoriosEmpleado() : 19");
             retorno = false;
         }
         //
-        if (nuevaVigenciaReformaLaboral.getReformalaboral().getSecuencia() == null) {
+        if (nuevaVigenciaReformaLaboral.getReformalaboral() == null) {
+            System.err.println("validarCamposObligatoriosEmpleado() : 20");
+            retorno = false;
+        } else if (nuevaVigenciaReformaLaboral.getReformalaboral().getSecuencia() == null) {
             System.err.println("validarCamposObligatoriosEmpleado() : 20");
             retorno = false;
         }
@@ -1594,20 +1667,28 @@ public class ControlPersonaIndividual implements Serializable {
         if (valorSueldo == null) {
             System.err.println("validarCamposObligatoriosEmpleado() : 21");
             retorno = false;
-        } else {
-            if (valorSueldo.doubleValue() < 0) {
-                System.err.println("validarCamposObligatoriosEmpleado() : 22");
-                retorno = false;
-            }
+        } else if (valorSueldo.doubleValue() <= 0) {
+            System.err.println("validarCamposObligatoriosEmpleado() : 22");
+            retorno = false;
         }
-        if (nuevaVigenciaSueldo.getMotivocambiosueldo().getSecuencia() == null) {
+        //
+        if (nuevaVigenciaSueldo.getMotivocambiosueldo() == null) {
+            System.err.println("validarCamposObligatoriosEmpleado() : 23");
+            retorno = false;
+        } else if (nuevaVigenciaSueldo.getMotivocambiosueldo().getSecuencia() == null) {
             System.err.println("validarCamposObligatoriosEmpleado() : 23");
             retorno = false;
         }
-        if (nuevaVigenciaSueldo.getUnidadpago().getSecuencia() == null) {
+        //
+        nuevaVigenciaSueldo.setUnidadpago(unidadPesos);
+        if (nuevaVigenciaSueldo.getUnidadpago() == null) {
+            System.err.println("validarCamposObligatoriosEmpleado() : 24");
+            retorno = false;
+        } else if (nuevaVigenciaSueldo.getUnidadpago().getSecuencia() == null) {
             System.err.println("validarCamposObligatoriosEmpleado() : 24");
             retorno = false;
         }
+        //
         if (nuevaVigenciaSueldo.getTiposueldo().getSecuencia() == null) {
             System.err.println("validarCamposObligatoriosEmpleado() : 25");
             retorno = false;
@@ -1712,351 +1793,397 @@ public class ControlPersonaIndividual implements Serializable {
 
     public boolean validarCamposAlternativosEmpleado() {
         boolean retorno = true;
-        if (nuevaPersona.getGruposanguineo().isEmpty() && !nuevaPersona.getFactorrh().isEmpty()) {
-            System.err.println("validarCamposAlternativosEmpleado() : 1");
-            retorno = false;
-        }
-        if (!nuevaPersona.getGruposanguineo().isEmpty() && nuevaPersona.getFactorrh().isEmpty()) {
-            System.err.println("validarCamposAlternativosEmpleado() : 2");
-            retorno = false;
-        }
-        if (nuevaDireccion.getDireccionalternativa() == null) {
-            if (nuevaDireccion.getCiudad().getSecuencia() != null) {
-                System.err.println("validarCamposAlternativosEmpleado() : 3");
+        //Para grupo sanguineo:
+        if (!nuevaPersona.getGruposanguineo().isEmpty() && !nuevaPersona.getFactorrh().isEmpty()) {
+            if (nuevaPersona.getGruposanguineo().isEmpty() && !nuevaPersona.getFactorrh().isEmpty()) {
+                System.err.println("validarCamposAlternativosEmpleado() : 1");
                 retorno = false;
             }
-        } else {
-            if (nuevaDireccion.getDireccionalternativa().isEmpty()) {
-                if (nuevaDireccion.getCiudad().getSecuencia() != null) {
-                    System.err.println("validarCamposAlternativosEmpleado() : 4");
+            if (!nuevaPersona.getGruposanguineo().isEmpty() && nuevaPersona.getFactorrh().isEmpty()) {
+                System.err.println("validarCamposAlternativosEmpleado() : 2");
+                retorno = false;
+            }
+        }
+
+        //Para direcciones
+        if (nuevaDireccion.getDireccionalternativa() != null && nuevaDireccion.getCiudad() != null) {
+            if (!nuevaDireccion.getDireccionalternativa().isEmpty() && !nuevaDireccion.getCiudad().getNombre().isEmpty()) {
+                if (nuevaDireccion.getDireccionalternativa() == null) {
+                    if (nuevaDireccion.getCiudad() != null) {
+                        System.err.println("validarCamposAlternativosEmpleado() : 3");
+                        retorno = false;
+                    }
+                } else {
+                    if (nuevaDireccion.getDireccionalternativa().isEmpty()) {
+                        if (nuevaDireccion.getCiudad() != null) {
+                            System.err.println("validarCamposAlternativosEmpleado() : 4");
+                            retorno = false;
+                        }
+                    }
+                }
+                if (nuevaDireccion.getCiudad() == null) {
+                    if ((nuevaDireccion.getDireccionalternativa() != null) && (!nuevaDireccion.getDireccionalternativa().isEmpty())) {
+                        System.err.println("validarCamposAlternativosEmpleado() : 5");
+                        retorno = false;
+                    }
+                }
+            }
+        }
+        //Para Telefonos
+        if ((nuevoTelefono.getNumerotelefono() <= 0) && (nuevoTelefono.getCiudad() != null) && (nuevoTelefono.getTipotelefono() != null)) {
+            if ((nuevoTelefono.getCiudad().getNombre() != null) && (nuevoTelefono.getTipotelefono().getNombre() != null)) {
+
+                if (nuevoTelefono.getNumerotelefono() > 0 && nuevoTelefono.getCiudad() == null && nuevoTelefono.getTipotelefono() == null) {
+                    System.err.println("validarCamposAlternativosEmpleado() : 6");
+                    retorno = false;
+                }
+                if (nuevoTelefono.getNumerotelefono() <= 0 && nuevoTelefono.getCiudad() != null && nuevoTelefono.getTipotelefono() == null) {
+                    System.err.println("validarCamposAlternativosEmpleado() : 7");
+                    retorno = false;
+                }
+                if (nuevoTelefono.getNumerotelefono() <= 0 && nuevoTelefono.getCiudad() == null && nuevoTelefono.getTipotelefono() != null) {
+                    System.err.println("validarCamposAlternativosEmpleado() : 8");
+                    retorno = false;
+                }
+                if (nuevoTelefono.getNumerotelefono() <= 0 && nuevoTelefono.getCiudad() != null && nuevoTelefono.getTipotelefono() != null) {
+                    System.err.println("validarCamposAlternativosEmpleado() : 9");
+                    retorno = false;
+                }
+                if (nuevoTelefono.getNumerotelefono() > 0 && nuevoTelefono.getCiudad() != null && nuevoTelefono.getTipotelefono() == null) {
+                    System.err.println("validarCamposAlternativosEmpleado() : 10");
+                    retorno = false;
+                }
+                if (nuevoTelefono.getNumerotelefono() > 0 && nuevoTelefono.getCiudad() == null && nuevoTelefono.getTipotelefono() != null) {
+                    System.err.println("validarCamposAlternativosEmpleado() : 11");
                     retorno = false;
                 }
             }
         }
-        if (nuevaDireccion.getCiudad().getSecuencia() == null) {
-            if ((nuevaDireccion.getDireccionalternativa() != null) && (!nuevaDireccion.getDireccionalternativa().isEmpty())) {
-                System.err.println("validarCamposAlternativosEmpleado() : 5");
-                retorno = false;
-            }
-        }
-        if (nuevoTelefono.getNumerotelefono() > 0 && nuevoTelefono.getCiudad().getSecuencia() == null && nuevoTelefono.getTipotelefono().getSecuencia() == null) {
-            System.err.println("validarCamposAlternativosEmpleado() : 6");
-            retorno = false;
-        }
-        if (nuevoTelefono.getNumerotelefono() <= 0 && nuevoTelefono.getCiudad().getSecuencia() != null && nuevoTelefono.getTipotelefono().getSecuencia() == null) {
-            System.err.println("validarCamposAlternativosEmpleado() : 7");
-            retorno = false;
-        }
-        if (nuevoTelefono.getNumerotelefono() <= 0 && nuevoTelefono.getCiudad().getSecuencia() == null && nuevoTelefono.getTipotelefono().getSecuencia() != null) {
-            System.err.println("validarCamposAlternativosEmpleado() : 8");
-            retorno = false;
-        }
-        if (nuevoTelefono.getNumerotelefono() <= 0 && nuevoTelefono.getCiudad().getSecuencia() != null && nuevoTelefono.getTipotelefono().getSecuencia() != null) {
-            System.err.println("validarCamposAlternativosEmpleado() : 9");
-            retorno = false;
-        }
-        if (nuevoTelefono.getNumerotelefono() > 0 && nuevoTelefono.getCiudad().getSecuencia() != null && nuevoTelefono.getTipotelefono().getSecuencia() == null) {
-            System.err.println("validarCamposAlternativosEmpleado() : 10");
-            retorno = false;
-        }
-        if (nuevoTelefono.getNumerotelefono() > 0 && nuevoTelefono.getCiudad().getSecuencia() == null && nuevoTelefono.getTipotelefono().getSecuencia() != null) {
-            System.err.println("validarCamposAlternativosEmpleado() : 11");
-            retorno = false;
-        }
         return retorno;
+    }
+
+    public boolean validarCamposConTipoTrabajador() {
+        System.out.println("Entro en validarCamposConTipoTrabajador(), errorTT = " + errorTT);
+        boolean continuarV = true;
+        if ("Rl".equals(errorTT)) {
+            continuarV = false;
+            RequestContext.getCurrentInstance().execute("aletarTiposTrabajadoresRL.show()");
+        } else if ("TS".equals(errorTT)) {
+            continuarV = false;
+            RequestContext.getCurrentInstance().execute("aletarTiposTrabajadoresTS.show()");
+        } else if ("TC".equals(errorTT)) {
+            continuarV = false;
+            RequestContext.getCurrentInstance().execute("aletarTiposTrabajadoresTC.show()");
+        } else if ("NL".equals(errorTT)) {
+            continuarV = false;
+            RequestContext.getCurrentInstance().execute("aletarTiposTrabajadoresNL.show()");
+        } else if ("C".equals(errorTT)) {
+            continuarV = false;
+            RequestContext.getCurrentInstance().execute("aletarTiposTrabajadoresC.show()");
+        }
+        return continuarV;
     }
 
     public void crearNuevoEmpleado() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (validarCamposObligatoriosEmpleado()) {
-            if (validarFechasEmpleado()) {
-                if (validarCamposAlternativosEmpleado()) {
 
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    String checkIntegral = administrarPersonaIndividual.obtenerCheckIntegralReformaLaboral(nuevaVigenciaReformaLaboral.getReformalaboral().getSecuencia());
-                    nuevaPersona.setSecuencia(l);
-                    administrarPersonaIndividual.crearNuevaPersona(nuevaPersona);
-                    Personas personaAlmacenada = administrarPersonaIndividual.obtenerUltimoRegistroPersona(nuevaPersona.getNumerodocumento());
-                    nuevoEmpleado.setPersona(personaAlmacenada);
-                    //
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    nuevoEmpleado.setSecuencia(l);
-                    administrarPersonaIndividual.crearNuevoEmpleado(nuevoEmpleado);
-                    Empleados empleadoAlmacenado = administrarPersonaIndividual.obtenerUltimoRegistroEmpleado(nuevoEmpleado.getEmpresa().getSecuencia(), nuevoEmpleado.getCodigoempleado());
-                    System.out.println("crearNuevoEmpleado() empleadoAlmacenado : " + empleadoAlmacenado);
-                    //Empleados empleadoAlmacenado = administrarPersonaIndividual.obtenerUltimoRegistroEmpleado(nuevoEmpleado.getEmpresa(), nuevoEmpleado.getCodigoempleado());
-                    //
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    nuevaVigenciaCargo.setSecuencia(l);
-                    nuevaVigenciaCargo.setEmpleado(empleadoAlmacenado);
-                    nuevaVigenciaCargo.setFechavigencia(fechaIngreso);
-                    if (nuevaVigenciaCargo.getPapel().getSecuencia() == null) {
-                        nuevaVigenciaCargo.setPapel(null);
-                    }
-                    if (nuevaVigenciaCargo.getEmpleadojefe().getSecuencia() == null) {
-                        nuevaVigenciaCargo.setEmpleadojefe(null);
-                    }
-                    administrarPersonaIndividual.crearVigenciaCargo(nuevaVigenciaCargo);
-                    //
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    nuevaVigenciaLocalizacion.setSecuencia(l);
-                    nuevaVigenciaLocalizacion.setEmpleado(empleadoAlmacenado);
-                    nuevaVigenciaLocalizacion.setFechavigencia(fechaIngreso);
-                    administrarPersonaIndividual.crearVigenciaLocalizacion(nuevaVigenciaLocalizacion);
-                    //
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    nuevaVigenciaTipoTrabajador.setSecuencia(l);
-                    nuevaVigenciaTipoTrabajador.setEmpleado(empleadoAlmacenado);
-                    nuevaVigenciaTipoTrabajador.setFechavigencia(fechaIngreso);
-                    administrarPersonaIndividual.crearVigenciaTipoTrabajador(nuevaVigenciaTipoTrabajador);
-                    //
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    nuevaVigenciaReformaLaboral.setSecuencia(l);
-                    nuevaVigenciaReformaLaboral.setEmpleado(empleadoAlmacenado);
-                    nuevaVigenciaReformaLaboral.setFechavigencia(fechaIngreso);
-                    administrarPersonaIndividual.crearVigenciaReformaLaboral(nuevaVigenciaReformaLaboral);
-                    //
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    nuevaVigenciaSueldo.setSecuencia(l);
-                    nuevaVigenciaSueldo.setEmpleado(empleadoAlmacenado); //
-                    nuevaVigenciaSueldo.setFechavigencia(fechaIngreso); //
-                    nuevaVigenciaSueldo.setValor(valorSueldo);//
-                    nuevaVigenciaSueldo.setFechasistema(new Date());//
-                    nuevaVigenciaSueldo.setFechavigenciaretroactivo(fechaIngreso);//
-                    nuevaVigenciaSueldo.setUnidadpago(unidadPesos);
-                    if (nuevaVigenciaSueldo.getTiposueldo().getSecuencia() == null) {
-                        nuevaVigenciaSueldo.setTiposueldo(null);
-                    }
-                    administrarPersonaIndividual.crearVigenciaSueldo(nuevaVigenciaSueldo);//
-                    //
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    nuevaVigenciaTipoContrato.setSecuencia(l);
-                    nuevaVigenciaTipoContrato.setEmpleado(empleadoAlmacenado);
-                    nuevaVigenciaTipoContrato.setFechavigencia(fechaIngreso);
-                    administrarPersonaIndividual.crearVigenciaTipoContrato(nuevaVigenciaTipoContrato);
-                    //
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    nuevaVigenciaNormaEmpleado.setSecuencia(l);
-                    nuevaVigenciaNormaEmpleado.setEmpleado(empleadoAlmacenado);
-                    nuevaVigenciaNormaEmpleado.setFechavigencia(fechaIngreso);
-                    administrarPersonaIndividual.crearVigenciaNormaEmpleado(nuevaVigenciaNormaEmpleado);
-                    //
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    nuevaVigenciaContrato.setSecuencia(l);
-                    nuevaVigenciaContrato.setEmpleado(empleadoAlmacenado);
-                    nuevaVigenciaContrato.setFechainicial(fechaIngreso);
-                    administrarPersonaIndividual.crearVigenciaContrato(nuevaVigenciaContrato);
-                    //
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    nuevaVigenciaUbicacion.setSecuencia(l);
-                    nuevaVigenciaUbicacion.setEmpleado(empleadoAlmacenado);
-                    nuevaVigenciaUbicacion.setFechavigencia(fechaIngreso);
-                    administrarPersonaIndividual.crearVigenciaUbicacion(nuevaVigenciaUbicacion);
-                    //
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    nuevaVigenciaJornada.setSecuencia(l);
-                    nuevaVigenciaJornada.setEmpleado(empleadoAlmacenado);
-                    nuevaVigenciaJornada.setFechavigencia(fechaIngreso);
-                    administrarPersonaIndividual.crearVigenciaJornada(nuevaVigenciaJornada);
-                    //
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    nuevaVigenciaFormaPago.setSecuencia(l);
-                    nuevaVigenciaFormaPago.setEmpleado(empleadoAlmacenado);
-                    nuevaVigenciaFormaPago.setFechavigencia(fechaIngreso);
-                    if (nuevaVigenciaFormaPago.getSucursal().getSecuencia() == null) {
-                        nuevaVigenciaFormaPago.setSucursal(null);
-                    }
-                    administrarPersonaIndividual.crearVigenciaFormaPago(nuevaVigenciaFormaPago);
-                    //
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    nuevaVigenciaAfiliacionEPS.setSecuencia(l);
-                    nuevaVigenciaAfiliacionEPS.setEmpleado(empleadoAlmacenado);
-                    nuevaVigenciaAfiliacionEPS.setFechainicial(fechaIngreso);
-                    administrarPersonaIndividual.crearVigenciaAfiliacion(nuevaVigenciaAfiliacionEPS);
-                    //
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    nuevaVigenciaAfiliacionARP.setSecuencia(l);
-                    nuevaVigenciaAfiliacionARP.setEmpleado(empleadoAlmacenado);
-                    nuevaVigenciaAfiliacionARP.setFechainicial(fechaIngreso);
-                    administrarPersonaIndividual.crearVigenciaAfiliacion(nuevaVigenciaAfiliacionARP);
-                    //
-                    if (nuevaVigenciaAfiliacionAFP.getTercerosucursal().getSecuencia() != null) {
-                        if (!nuevaVigenciaTipoTrabajador.getTipotrabajador().getNombre().contains("SENA")) {
-                            k++;
-                            l = BigInteger.valueOf(k);
-                            nuevaVigenciaAfiliacionAFP.setSecuencia(l);
-                            nuevaVigenciaAfiliacionAFP.setEmpleado(empleadoAlmacenado);
-                            nuevaVigenciaAfiliacionAFP.setFechainicial(fechaIngreso);
-                            administrarPersonaIndividual.crearVigenciaAfiliacion(nuevaVigenciaAfiliacionAFP);
-                        }
-                    }
-                    //
-                    if (nuevaVigenciaAfiliacionCaja.getTercerosucursal().getSecuencia() != null) {
-                        if (!nuevaVigenciaTipoTrabajador.getTipotrabajador().getNombre().contains("SENA")) {
-                            k++;
-                            l = BigInteger.valueOf(k);
-                            nuevaVigenciaAfiliacionCaja.setSecuencia(l);
-                            nuevaVigenciaAfiliacionCaja.setEmpleado(empleadoAlmacenado);
-                            nuevaVigenciaAfiliacionCaja.setFechainicial(fechaIngreso);
-                            administrarPersonaIndividual.crearVigenciaAfiliacion(nuevaVigenciaAfiliacionCaja);
-                        }
-                    }
-                    //
+        if (validarCamposConTipoTrabajador()) {
+            if (validarCamposObligatoriosEmpleado()) {
+                if (validarFechasEmpleado()) {
+                    if (validarCamposAlternativosEmpleado()) {
 
-                    if (nuevaVigenciaAfiliacionFondo.getTercerosucursal().getSecuencia() != null) {
-                        if (checkIntegral.equalsIgnoreCase("N") && !nuevaVigenciaTipoTrabajador.getTipotrabajador().getNombre().contains("SENA")) {
-                            k++;
-                            l = BigInteger.valueOf(k);
-                            nuevaVigenciaAfiliacionFondo.setSecuencia(l);
-                            nuevaVigenciaAfiliacionFondo.setEmpleado(empleadoAlmacenado);
-                            nuevaVigenciaAfiliacionFondo.setFechainicial(fechaIngreso);
-                            administrarPersonaIndividual.crearVigenciaAfiliacion(nuevaVigenciaAfiliacionFondo);
-                        }
-                    }
-
-                    if (nuevoEstadoCivil.getSecuencia() != null) {
                         k++;
                         l = BigInteger.valueOf(k);
-                        nuevoEstadoCivil.setSecuencia(l);
-                        nuevoEstadoCivil.setPersona(empleadoAlmacenado.getPersona());
-                        nuevoEstadoCivil.setFechavigencia(fechaIngreso);
-                        administrarPersonaIndividual.crearEstadoCivil(nuevoEstadoCivil);
-                    }
+                        String checkIntegral = administrarPersonaIndividual.obtenerCheckIntegralReformaLaboral(nuevaVigenciaReformaLaboral.getReformalaboral().getSecuencia());
+                        nuevaPersona.setSecuencia(l);
+                        administrarPersonaIndividual.crearNuevaPersona(nuevaPersona);
+                        Personas personaAlmacenada = administrarPersonaIndividual.obtenerUltimoRegistroPersona(nuevaPersona.getNumerodocumento());
+                        if (personaAlmacenada != null) {
+                            nuevoEmpleado.setPersona(personaAlmacenada);
+                            //
+                            k++;
+                            l = BigInteger.valueOf(k);
+                            nuevoEmpleado.setSecuencia(l);
+                            administrarPersonaIndividual.crearNuevoEmpleado(nuevoEmpleado);
 
-                    if ((nuevaDireccion.getDireccionalternativa() != null && !nuevaDireccion.getDireccionalternativa().isEmpty()) && nuevaDireccion.getCiudad().getSecuencia() != null) {
-                        k++;
-                        l = BigInteger.valueOf(k);
-                        nuevaDireccion.setSecuencia(l);
-                        nuevaDireccion.setTipoppal("O");
-                        nuevaDireccion.setTiposecundario("O");
-                        nuevaDireccion.setPersona(empleadoAlmacenado.getPersona());
-                        nuevaDireccion.setFechavigencia(fechaIngreso);
-                        //nuevaDireccion.setPpal(".");
-                        administrarPersonaIndividual.crearDireccion(nuevaDireccion);
-                    }
+                            Empleados empleadoAlmacenado = administrarPersonaIndividual.obtenerUltimoRegistroEmpleado(nuevoEmpleado.getEmpresa().getSecuencia(), nuevoEmpleado.getCodigoempleado());
+                            System.out.println("crearNuevoEmpleado() empleadoAlmacenado : " + empleadoAlmacenado);
+                            //Empleados empleadoAlmacenado = administrarPersonaIndividual.obtenerUltimoRegistroEmpleado(nuevoEmpleado.getEmpresa(), nuevoEmpleado.getCodigoempleado());
+                            //
 
-                    if (nuevoTelefono.getCiudad().getSecuencia() != null && nuevoTelefono.getTipotelefono().getSecuencia() != null && nuevoTelefono.getNumerotelefono() > 0) {
-                        k++;
-                        l = BigInteger.valueOf(k);
-                        nuevoTelefono.setSecuencia(l);
-                        nuevoTelefono.setPersona(empleadoAlmacenado.getPersona());
-                        nuevoTelefono.setFechavigencia(fechaIngreso);
-                        administrarPersonaIndividual.crearTelefono(nuevoTelefono);
-                    }
+                            if (empleadoAlmacenado != null) {
 
-                    Sets nuevoSet = new Sets();
-                    nuevoSet.setEmpleado(empleadoAlmacenado);
-                    nuevoSet.setFechainicial(fechaIngreso);
-                    nuevoSet.setPromedio(new BigDecimal("0.01"));
-                    nuevoSet.setTiposet("1");
-                    nuevoSet.setPorcentaje(new BigDecimal("0"));
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    nuevoSet.setSecuencia(l);
-                    administrarPersonaIndividual.crearSets(nuevoSet);
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                nuevaVigenciaCargo.setSecuencia(l);
+                                nuevaVigenciaCargo.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaCargo.setFechavigencia(fechaIngreso);
+                                administrarPersonaIndividual.crearVigenciaCargo(nuevaVigenciaCargo);
 
-                    BigDecimal numeroComprobante = administrarPersonaIndividual.obtenerNumeroMaximoComprobante();
+                                //
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                nuevaVigenciaLocalizacion.setSecuencia(l);
+                                nuevaVigenciaLocalizacion.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaLocalizacion.setFechavigencia(fechaIngreso);
+                                administrarPersonaIndividual.crearVigenciaLocalizacion(nuevaVigenciaLocalizacion);
+                                //
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                nuevaVigenciaTipoTrabajador.setSecuencia(l);
+                                nuevaVigenciaTipoTrabajador.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaTipoTrabajador.setFechavigencia(fechaIngreso);
+                                administrarPersonaIndividual.crearVigenciaTipoTrabajador(nuevaVigenciaTipoTrabajador);
+                                //
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                nuevaVigenciaReformaLaboral.setSecuencia(l);
+                                nuevaVigenciaReformaLaboral.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaReformaLaboral.setFechavigencia(fechaIngreso);
+                                administrarPersonaIndividual.crearVigenciaReformaLaboral(nuevaVigenciaReformaLaboral);
+                                //
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                nuevaVigenciaSueldo.setSecuencia(l);
+                                nuevaVigenciaSueldo.setEmpleado(empleadoAlmacenado); //
+                                nuevaVigenciaSueldo.setFechavigencia(fechaIngreso); //
+                                nuevaVigenciaSueldo.setValor(valorSueldo);//
+                                nuevaVigenciaSueldo.setFechasistema(new Date());//
+                                nuevaVigenciaSueldo.setFechavigenciaretroactivo(fechaIngreso);//
+                                nuevaVigenciaSueldo.setUnidadpago(unidadPesos);
+                                if (nuevaVigenciaSueldo.getTiposueldo() == null) {
+                                    nuevaVigenciaSueldo.setTiposueldo(null);
+                                }
+                                administrarPersonaIndividual.crearVigenciaSueldo(nuevaVigenciaSueldo);//
+                                //
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                nuevaVigenciaTipoContrato.setSecuencia(l);
+                                nuevaVigenciaTipoContrato.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaTipoContrato.setFechavigencia(fechaIngreso);
+                                administrarPersonaIndividual.crearVigenciaTipoContrato(nuevaVigenciaTipoContrato);
+                                //
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                nuevaVigenciaNormaEmpleado.setSecuencia(l);
+                                nuevaVigenciaNormaEmpleado.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaNormaEmpleado.setFechavigencia(fechaIngreso);
+                                administrarPersonaIndividual.crearVigenciaNormaEmpleado(nuevaVigenciaNormaEmpleado);
+                                //
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                nuevaVigenciaContrato.setSecuencia(l);
+                                nuevaVigenciaContrato.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaContrato.setFechainicial(fechaIngreso);
+                                administrarPersonaIndividual.crearVigenciaContrato(nuevaVigenciaContrato);
+                                //
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                nuevaVigenciaUbicacion.setSecuencia(l);
+                                nuevaVigenciaUbicacion.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaUbicacion.setFechavigencia(fechaIngreso);
+                                administrarPersonaIndividual.crearVigenciaUbicacion(nuevaVigenciaUbicacion);
+                                //
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                nuevaVigenciaJornada.setSecuencia(l);
+                                nuevaVigenciaJornada.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaJornada.setFechavigencia(fechaIngreso);
+                                administrarPersonaIndividual.crearVigenciaJornada(nuevaVigenciaJornada);
+                                //
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                nuevaVigenciaFormaPago.setSecuencia(l);
+                                nuevaVigenciaFormaPago.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaFormaPago.setFechavigencia(fechaIngreso);
+                                if (nuevaVigenciaFormaPago.getSucursal() == null) {
+                                    nuevaVigenciaFormaPago.setSucursal(null);
+                                }
+                                administrarPersonaIndividual.crearVigenciaFormaPago(nuevaVigenciaFormaPago);
+                                //
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                nuevaVigenciaAfiliacionEPS.setSecuencia(l);
+                                nuevaVigenciaAfiliacionEPS.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaAfiliacionEPS.setFechainicial(fechaIngreso);
+                                administrarPersonaIndividual.crearVigenciaAfiliacion(nuevaVigenciaAfiliacionEPS);
+                                //
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                nuevaVigenciaAfiliacionARP.setSecuencia(l);
+                                nuevaVigenciaAfiliacionARP.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaAfiliacionARP.setFechainicial(fechaIngreso);
+                                administrarPersonaIndividual.crearVigenciaAfiliacion(nuevaVigenciaAfiliacionARP);
+                                //
+                                if (nuevaVigenciaAfiliacionAFP.getTercerosucursal() != null) {
+                                    if (!nuevaVigenciaTipoTrabajador.getTipotrabajador().getNombre().contains("SENA")) {
+                                        k++;
+                                        l = BigInteger.valueOf(k);
+                                        nuevaVigenciaAfiliacionAFP.setSecuencia(l);
+                                        nuevaVigenciaAfiliacionAFP.setEmpleado(empleadoAlmacenado);
+                                        nuevaVigenciaAfiliacionAFP.setFechainicial(fechaIngreso);
+                                        administrarPersonaIndividual.crearVigenciaAfiliacion(nuevaVigenciaAfiliacionAFP);
+                                    }
+                                }
+                                //
+                                if (nuevaVigenciaAfiliacionCaja.getTercerosucursal() != null) {
+                                    if (!nuevaVigenciaTipoTrabajador.getTipotrabajador().getNombre().contains("SENA")) {
+                                        k++;
+                                        l = BigInteger.valueOf(k);
+                                        nuevaVigenciaAfiliacionCaja.setSecuencia(l);
+                                        nuevaVigenciaAfiliacionCaja.setEmpleado(empleadoAlmacenado);
+                                        nuevaVigenciaAfiliacionCaja.setFechainicial(fechaIngreso);
+                                        administrarPersonaIndividual.crearVigenciaAfiliacion(nuevaVigenciaAfiliacionCaja);
+                                    }
+                                }
+                                //
 
-                    Comprobantes comprobante = new Comprobantes();
-                    comprobante.setEmpleado(empleadoAlmacenado);
+                                if (nuevaVigenciaAfiliacionFondo.getTercerosucursal() != null) {
+                                    if (checkIntegral.equalsIgnoreCase("N") && !nuevaVigenciaTipoTrabajador.getTipotrabajador().getNombre().contains("SENA")) {
+                                        k++;
+                                        l = BigInteger.valueOf(k);
+                                        nuevaVigenciaAfiliacionFondo.setSecuencia(l);
+                                        nuevaVigenciaAfiliacionFondo.setEmpleado(empleadoAlmacenado);
+                                        nuevaVigenciaAfiliacionFondo.setFechainicial(fechaIngreso);
+                                        administrarPersonaIndividual.crearVigenciaAfiliacion(nuevaVigenciaAfiliacionFondo);
+                                    }
+                                }
 
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(fechaIngreso); // Configuramos la fecha que se recibe
-                    calendar.add(Calendar.DAY_OF_YEAR, -1);
-                    Date fecha = calendar.getTime();
+                                if (nuevoEstadoCivil != null) {
+                                    k++;
+                                    l = BigInteger.valueOf(k);
+                                    nuevoEstadoCivil.setSecuencia(l);
+                                    nuevoEstadoCivil.setPersona(empleadoAlmacenado.getPersona());
+                                    nuevoEstadoCivil.setFechavigencia(fechaIngreso);
+                                    administrarPersonaIndividual.crearEstadoCivil(nuevoEstadoCivil);
+                                }
 
-                    comprobante.setFecha(fecha);
+                                if ((nuevaDireccion.getDireccionalternativa() != null && !nuevaDireccion.getDireccionalternativa().isEmpty()) && nuevaDireccion.getCiudad() != null) {
+                                    k++;
+                                    l = BigInteger.valueOf(k);
+                                    nuevaDireccion.setSecuencia(l);
+                                    nuevaDireccion.setTipoppal("O");
+                                    nuevaDireccion.setTiposecundario("O");
+                                    nuevaDireccion.setPersona(empleadoAlmacenado.getPersona());
+                                    nuevaDireccion.setFechavigencia(fechaIngreso);
+                                    //nuevaDireccion.setPpal(".");
+                                    administrarPersonaIndividual.crearDireccion(nuevaDireccion);
+                                }
 
-                    if (numeroComprobante == null) {
-                        numeroComprobante = new BigDecimal("0");
-                    }
-                    String valorComprobante = String.valueOf(numeroComprobante.intValue() + 1);
-                    comprobante.setNumero(new BigInteger(valorComprobante));
-                    comprobante.setValor(new BigDecimal("0.01"));
+                                if (nuevoTelefono.getCiudad() != null && nuevoTelefono.getTipotelefono() != null && nuevoTelefono.getNumerotelefono() > 0) {
+                                    k++;
+                                    l = BigInteger.valueOf(k);
+                                    nuevoTelefono.setSecuencia(l);
+                                    nuevoTelefono.setPersona(empleadoAlmacenado.getPersona());
+                                    nuevoTelefono.setFechavigencia(fechaIngreso);
+                                    administrarPersonaIndividual.crearTelefono(nuevoTelefono);
+                                }
 
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    comprobante.setSecuencia(l);
+                                Sets nuevoSet = new Sets();
+                                nuevoSet.setEmpleado(empleadoAlmacenado);
+                                nuevoSet.setFechainicial(fechaIngreso);
+                                nuevoSet.setPromedio(new BigDecimal("0.01"));
+                                nuevoSet.setTiposet("1");
+                                nuevoSet.setPorcentaje(new BigDecimal("0"));
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                nuevoSet.setSecuencia(l);
+                                administrarPersonaIndividual.crearSets(nuevoSet);
 
-                    administrarPersonaIndividual.crearComprobante(comprobante);
+                                BigDecimal numeroComprobante = administrarPersonaIndividual.obtenerNumeroMaximoComprobante();
 
-                    Comprobantes comprobanteEmpleado = administrarPersonaIndividual.buscarComprobanteParaPrimerRegistroEmpleado(empleadoAlmacenado.getSecuencia());
+                                Comprobantes comprobante = new Comprobantes();
+                                comprobante.setEmpleado(empleadoAlmacenado);
 
-                    Procesos procesoCodigo1 = null;
-                    short cod1 = 1;
-                    procesoCodigo1 = administrarPersonaIndividual.buscarProcesoPorCodigo(cod1);
-                    Procesos procesoCodigo80 = null;
-                    short cod80 = 80;
-                    procesoCodigo80 = administrarPersonaIndividual.buscarProcesoPorCodigo(cod80);
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.setTime(fechaIngreso); // Configuramos la fecha que se recibe
+                                calendar.add(Calendar.DAY_OF_YEAR, -1);
+                                Date fecha = calendar.getTime();
 
-                    CortesProcesos corte = new CortesProcesos();
-                    corte.setComprobante(comprobanteEmpleado);
-                    if (fechaCorte == null) {
-                        corte.setCorte(fecha);
-                    } else {
-                        corte.setCorte(fechaCorte);
-                    }
-                    corte.setEmpleado(empleadoAlmacenado);
-                    corte.setProceso(procesoCodigo1);
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    corte.setSecuencia(l);
-                    administrarPersonaIndividual.crearCortesProcesos(corte);
+                                comprobante.setFecha(fecha);
 
-                    if (procesoCodigo80 != null) {
-                        CortesProcesos corte2 = new CortesProcesos();
-                        corte2.setComprobante(comprobanteEmpleado);
-                        if (fechaCorte == null) {
-                            corte2.setCorte(fecha);
+                                if (numeroComprobante == null) {
+                                    numeroComprobante = new BigDecimal("0");
+                                }
+                                String valorComprobante = String.valueOf(numeroComprobante.intValue() + 1);
+                                comprobante.setNumero(new BigInteger(valorComprobante));
+                                comprobante.setValor(new BigDecimal("0.01"));
+
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                comprobante.setSecuencia(l);
+
+                                administrarPersonaIndividual.crearComprobante(comprobante);
+
+                                Comprobantes comprobanteEmpleado = administrarPersonaIndividual.buscarComprobanteParaPrimerRegistroEmpleado(empleadoAlmacenado.getSecuencia());
+
+                                Procesos procesoCodigo1 = null;
+                                short cod1 = 1;
+                                procesoCodigo1 = administrarPersonaIndividual.buscarProcesoPorCodigo(cod1);
+                                Procesos procesoCodigo80 = null;
+                                short cod80 = 80;
+                                procesoCodigo80 = administrarPersonaIndividual.buscarProcesoPorCodigo(cod80);
+
+                                CortesProcesos corte = new CortesProcesos();
+                                corte.setComprobante(comprobanteEmpleado);
+                                if (fechaCorte == null) {
+                                    corte.setCorte(fecha);
+                                } else {
+                                    corte.setCorte(fechaCorte);
+                                }
+                                corte.setEmpleado(empleadoAlmacenado);
+                                corte.setProceso(procesoCodigo1);
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                corte.setSecuencia(l);
+                                administrarPersonaIndividual.crearCortesProcesos(corte);
+
+                                if (procesoCodigo80 != null) {
+                                    CortesProcesos corte2 = new CortesProcesos();
+                                    corte2.setComprobante(comprobanteEmpleado);
+                                    if (fechaCorte == null) {
+                                        corte2.setCorte(fecha);
+                                    } else {
+                                        corte2.setCorte(fechaCorte);
+                                    }
+                                    corte2.setEmpleado(empleadoAlmacenado);
+                                    corte2.setProceso(procesoCodigo80);
+                                    k++;
+                                    l = BigInteger.valueOf(k);
+                                    corte2.setSecuencia(l);
+                                    administrarPersonaIndividual.crearCortesProcesos(corte2);
+                                }
+
+                                short cod12 = 12;
+                                TiposTrabajadores codigo12 = administrarPersonaIndividual.buscarTipoTrabajadorPorCodigo(cod12);
+                                VigenciasTiposTrabajadores nuevaVigenciaTT = new VigenciasTiposTrabajadores();
+                                nuevaVigenciaTT.setEmpleado(empleadoAlmacenado);
+                                Date fechaNuevo = new Date(1, 1, 60);
+                                nuevaVigenciaTT.setFechavigencia(fechaNuevo);
+                                nuevaVigenciaTT.setTipotrabajador(codigo12);
+                                k++;
+                                l = BigInteger.valueOf(k);
+                                nuevaVigenciaTT.setSecuencia(l);
+                                administrarPersonaIndividual.crearVigenciaTipoTrabajador(nuevaVigenciaTT);
+                                context.execute("procesoGuardadoOK.show()");
+                                cancelarModificaciones();
+                            } else {
+                                System.err.println("No trajo el ultimo empleado creado con vigencia cargo");
+                            }
                         } else {
-                            corte2.setCorte(fechaCorte);
+                            System.err.println("No trajo la ultima persona creada para crear Empleado");
                         }
-                        corte2.setEmpleado(empleadoAlmacenado);
-                        corte2.setProceso(procesoCodigo80);
-                        k++;
-                        l = BigInteger.valueOf(k);
-                        corte2.setSecuencia(l);
-                        administrarPersonaIndividual.crearCortesProcesos(corte2);
+                    } else {
+                        context.execute("errorCamposAlternativos.show()");
                     }
-
-                    short cod12 = 12;
-                    TiposTrabajadores codigo12 = administrarPersonaIndividual.buscarTipoTrabajadorPorCodigo(cod12);
-                    VigenciasTiposTrabajadores nuevaVigenciaTT = new VigenciasTiposTrabajadores();
-                    nuevaVigenciaTT.setEmpleado(empleadoAlmacenado);
-                    Date fechaNuevo = new Date(1, 1, 60);
-                    nuevaVigenciaTT.setFechavigencia(fechaNuevo);
-                    nuevaVigenciaTT.setTipotrabajador(codigo12);
-                    k++;
-                    l = BigInteger.valueOf(k);
-                    nuevaVigenciaTT.setSecuencia(l);
-                    administrarPersonaIndividual.crearVigenciaTipoTrabajador(nuevaVigenciaTT);
-                    context.execute("procesoGuardadoOK.show()");
-                    cancelarModificaciones();
                 } else {
-                    context.execute("errorCamposAlternativos.show()");
+                    mensajeErrorFechasEmpleado = "Existe un error en las siguientes fechas: " + mensajeErrorFechasEmpleado;
+                    context.update("formDialogos:errorFechasEmpleado");
+                    context.execute("errorFechasEmpleado.show()");
                 }
             } else {
-                mensajeErrorFechasEmpleado = "Existe un error en las siguientes fechas: " + mensajeErrorFechasEmpleado;
-                context.update("formDialogos:errorFechasEmpleado");
-                context.execute("errorFechasEmpleado.show()");
+                context.execute("errorCamposObligatorios.show()");
             }
-        } else {
-            context.execute("errorCamposObligatorios.show()");
         }
     }
 
@@ -2088,7 +2215,7 @@ public class ControlPersonaIndividual implements Serializable {
             auxFechaIngreso = fechaIngreso;
             auxFechaNacimiento = nuevaPersona.getFechanacimiento();
             if (idInformacionPersonal == 0) {
-                if (nuevoEmpleado.getEmpresa().getSecuencia() != null) {
+                if (nuevoEmpleado.getEmpresa() != null) {
                     auxInformacionPersonaEmpresal = nuevoEmpleado.getEmpresa().getNombre();
                     /*
                      * if (nuevoEmpleado.getEmpresa() != null) {
@@ -2100,21 +2227,21 @@ public class ControlPersonaIndividual implements Serializable {
                 }
             }
             if (idInformacionPersonal == 5) {
-                if (nuevaPersona.getTipodocumento().getSecuencia() != null) {
+                if (nuevaPersona.getTipodocumento() != null) {
                     auxInformacionPersonalTipoDocumento = nuevaPersona.getTipodocumento().getNombrelargo();
                 } else {
                     listaValoresInformacionPersonal();
                 }
             }
             if (idInformacionPersonal == 7) {
-                if (nuevaPersona.getCiudaddocumento().getSecuencia() != null) {
+                if (nuevaPersona.getCiudaddocumento() != null) {
                     auxInformacionPersonalCiudadDocumento = nuevaPersona.getCiudaddocumento().getNombre();
                 } else {
                     listaValoresInformacionPersonal();
                 }
             }
             if (idInformacionPersonal == 9) {
-                if (nuevaPersona.getCiudadnacimiento().getSecuencia() != null) {
+                if (nuevaPersona.getCiudadnacimiento() != null) {
                     auxInformacionPersonalCiudadNacimiento = nuevaPersona.getCiudadnacimiento().getNombre();
                 } else {
                     listaValoresInformacionPersonal();
@@ -2149,21 +2276,21 @@ public class ControlPersonaIndividual implements Serializable {
             auxCargoDesempeñadoPapel = nuevaVigenciaCargo.getPapel().getDescripcion();
             auxCargoDesempeñadoEmpleadoJefe = nuevaVigenciaCargo.getEmpleadojefe().getPersona().getNombreCompleto();
             if (idCargoDesempeñado == 0) {
-                if (nuevaVigenciaCargo.getCargo().getSecuencia() != null) {
+                if (nuevaVigenciaCargo.getCargo() != null) {
                     auxCargoDesempeñadoNombreCargo = nuevaVigenciaCargo.getCargo().getNombre();
                 } else {
                     listaValoresCargoDesempenado();
                 }
             }
             if (idCargoDesempeñado == 1) {
-                if (nuevaVigenciaCargo.getMotivocambiocargo().getSecuencia() != null) {
+                if (nuevaVigenciaCargo.getMotivocambiocargo() != null) {
                     auxCargoDesempeñadoMotivoCargo = nuevaVigenciaCargo.getMotivocambiocargo().getNombre();
                 } else {
                     listaValoresCargoDesempenado();
                 }
             }
             if (idCargoDesempeñado == 2) {
-                if (nuevaVigenciaCargo.getEstructura().getSecuencia() != null) {
+                if (nuevaVigenciaCargo.getEstructura() != null) {
                     auxCargoDesempeñadoNombreEstructura = nuevaVigenciaCargo.getEstructura().getNombre();
                 } else {
                     listaValoresCargoDesempenado();
@@ -2196,14 +2323,14 @@ public class ControlPersonaIndividual implements Serializable {
             idTelefono = -1;
             idCentroCosto = i;
             if (idCentroCosto == 0) {
-                if (nuevaVigenciaLocalizacion.getMotivo().getSecuencia() != null) {
+                if (nuevaVigenciaLocalizacion.getMotivo() != null) {
                     auxCentroCostoMotivo = nuevaVigenciaLocalizacion.getMotivo().getDescripcion();
                 } else {
                     listaValoresCentroCosto();
                 }
             }
             if (idCentroCosto == 1) {
-                if (nuevaVigenciaLocalizacion.getLocalizacion().getSecuencia() != null) {
+                if (nuevaVigenciaLocalizacion.getLocalizacion() != null) {
                     auxCentroCostoEstructura = nuevaVigenciaLocalizacion.getLocalizacion().getCentrocosto().getNombre();
                 } else {
                     listaValoresCentroCosto();
@@ -2235,7 +2362,7 @@ public class ControlPersonaIndividual implements Serializable {
             idTelefono = -1;
             idTipoTrabajador = i;
             if (idTipoTrabajador == 0) {
-                if (nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia() != null) {
+                if (nuevaVigenciaTipoTrabajador.getTipotrabajador() != null) {
                     auxTipoTrabajadorNombreTipoTrabajador = nuevaVigenciaTipoTrabajador.getTipotrabajador().getNombre();
                 } else {
                     listaValoresTipoTrabajador();
@@ -2267,7 +2394,7 @@ public class ControlPersonaIndividual implements Serializable {
             idTelefono = -1;
             idTipoSalario = i;
             if (idTipoSalario == 0) {
-                if (nuevaVigenciaReformaLaboral.getReformalaboral().getSecuencia() != null) {
+                if (nuevaVigenciaReformaLaboral.getReformalaboral() != null) {
                     auxTipoSalarioReformaLaboral = nuevaVigenciaReformaLaboral.getReformalaboral().getNombre();
                 } else {
                     listaValoresTipoSalario();
@@ -2300,21 +2427,21 @@ public class ControlPersonaIndividual implements Serializable {
             idSueldo = i;
             auxSueldoValor = valorSueldo;
             if (idSueldo == 1) {
-                if (nuevaVigenciaSueldo.getMotivocambiosueldo().getSecuencia() != null) {
+                if (nuevaVigenciaSueldo.getMotivocambiosueldo() != null) {
                     auxSueldoMotivoSueldo = nuevaVigenciaSueldo.getMotivocambiosueldo().getNombre();
                 } else {
                     listaValoresSueldo();
                 }
             }
             if (idSueldo == 2) {
-                if (nuevaVigenciaSueldo.getTiposueldo().getSecuencia() != null) {
+                if (nuevaVigenciaSueldo.getTiposueldo() != null) {
                     auxSueldoTipoSueldo = nuevaVigenciaSueldo.getTiposueldo().getDescripcion();
                 } else {
                     listaValoresSueldo();
                 }
             }
             if (idSueldo == 3) {
-                if (nuevaVigenciaSueldo.getUnidadpago().getSecuencia() != null) {
+                if (nuevaVigenciaSueldo.getUnidadpago() != null) {
                     auxSueldoUnidad = nuevaVigenciaSueldo.getUnidadpago().getNombre();
                 } else {
                     listaValoresSueldo();
@@ -2347,14 +2474,14 @@ public class ControlPersonaIndividual implements Serializable {
             idTipoContrato = i;
             auxTipoContratoFecha = nuevaVigenciaTipoContrato.getFechavigencia();
             if (idTipoContrato == 1) {
-                if (nuevaVigenciaTipoContrato.getTipocontrato().getSecuencia() != null) {
+                if (nuevaVigenciaTipoContrato.getTipocontrato() != null) {
                     auxTipoContratoMotivo = nuevaVigenciaTipoContrato.getTipocontrato().getNombre();
                 } else {
                     listaValoresTipoContrato();
                 }
             }
             if (idTipoContrato == 0) {
-                if (nuevaVigenciaTipoContrato.getMotivocontrato().getSecuencia() != null) {
+                if (nuevaVigenciaTipoContrato.getMotivocontrato() != null) {
                     auxTipoContratoTipoContrato = nuevaVigenciaTipoContrato.getMotivocontrato().getNombre();
                 } else {
                     listaValoresTipoContrato();
@@ -2386,7 +2513,7 @@ public class ControlPersonaIndividual implements Serializable {
             idTelefono = -1;
             idNormaLaboral = i;
             if (idNormaLaboral == 0) {
-                if (nuevaVigenciaNormaEmpleado.getNormalaboral().getSecuencia() != null) {
+                if (nuevaVigenciaNormaEmpleado.getNormalaboral() != null) {
                     auxNormaLaboralNorma = nuevaVigenciaNormaEmpleado.getNormalaboral().getNombre();
                 } else {
                     listaValoresNormaLaboral();
@@ -2418,7 +2545,7 @@ public class ControlPersonaIndividual implements Serializable {
             idTelefono = -1;
             idLegislacionLaboral = i;
             if (idLegislacionLaboral == 0) {
-                if (nuevaVigenciaContrato.getContrato().getSecuencia() != null) {
+                if (nuevaVigenciaContrato.getContrato() != null) {
                     auxLegislacionLaboralNombre = nuevaVigenciaContrato.getContrato().getDescripcion();
                 } else {
                     listaValoresLegislacionLaboral();
@@ -2450,7 +2577,7 @@ public class ControlPersonaIndividual implements Serializable {
             idTelefono = -1;
             idUbicacionGeografica = i;
             if (idUbicacionGeografica == 0) {
-                if (nuevaVigenciaUbicacion.getUbicacion().getSecuencia() != null) {
+                if (nuevaVigenciaUbicacion.getUbicacion() != null) {
                     auxUbicacionGeograficaUbicacion = nuevaVigenciaUbicacion.getUbicacion().getDescripcion();
                 } else {
                     listaValoresUbicacion();
@@ -2482,21 +2609,21 @@ public class ControlPersonaIndividual implements Serializable {
             idTelefono = -1;
             idFormaPago = i;
             if (idFormaPago == 0) {
-                if (nuevaVigenciaFormaPago.getFormapago().getSecuencia() != null) {
+                if (nuevaVigenciaFormaPago.getFormapago() != null) {
                     auxFormaPagoPeriodicidad = nuevaVigenciaFormaPago.getFormapago().getNombre();
                 } else {
                     listaValoresFormaPago();
                 }
             }
             if (idFormaPago == 3) {
-                if (nuevaVigenciaFormaPago.getSucursal().getSecuencia() != null) {
+                if (nuevaVigenciaFormaPago.getSucursal() != null) {
                     auxFormaPagoSucursal = nuevaVigenciaFormaPago.getSucursal().getNombre();
                 } else {
                     listaValoresFormaPago();
                 }
             }
             if (idFormaPago == 4) {
-                if (nuevaVigenciaFormaPago.getMetodopago().getSecuencia() != null) {
+                if (nuevaVigenciaFormaPago.getMetodopago() != null) {
                     auxFormaPagoMetodo = nuevaVigenciaFormaPago.getMetodopago().getDescripcion();
                 } else {
                     listaValoresFormaPago();
@@ -2528,7 +2655,7 @@ public class ControlPersonaIndividual implements Serializable {
             idTelefono = -1;
             idJornadaLaboral = i;
             if (idJornadaLaboral == 0) {
-                if (nuevaVigenciaJornada.getJornadatrabajo().getSecuencia() != null) {
+                if (nuevaVigenciaJornada.getJornadatrabajo() != null) {
                     auxJornadaLaboralJornada = nuevaVigenciaJornada.getJornadatrabajo().getDescripcion();
                 } else {
                     listaValoresJornadaLaboral();
@@ -2588,7 +2715,7 @@ public class ControlPersonaIndividual implements Serializable {
             idTelefono = -1;
             idAfiliacionEPS = i;
             if (idAfiliacionEPS == 0) {
-                if (nuevaVigenciaAfiliacionEPS.getTercerosucursal().getSecuencia() != null) {
+                if (nuevaVigenciaAfiliacionEPS.getTercerosucursal() != null) {
                     auxAfiliacionEPS = nuevaVigenciaAfiliacionEPS.getTercerosucursal().getDescripcion();
                 } else {
                     listaValoresAfiliacionEPS();
@@ -2646,7 +2773,7 @@ public class ControlPersonaIndividual implements Serializable {
             idTelefono = -1;
             idAfiliacionARP = i;
             if (idAfiliacionARP == 0) {
-                if (nuevaVigenciaAfiliacionARP.getTercerosucursal().getSecuencia() != null) {
+                if (nuevaVigenciaAfiliacionARP.getTercerosucursal() != null) {
                     auxAfiliacionARP = nuevaVigenciaAfiliacionARP.getTercerosucursal().getDescripcion();
                 } else {
                     listaValoresAfiliacionARP();
@@ -2763,7 +2890,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void modificarCodigoEmpleado() {
         Empleados empleado = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevoEmpleado.getEmpresa().getSecuencia() != null) {
+        if (nuevoEmpleado.getEmpresa() != null) {
             empleado = administrarPersonaIndividual.buscarEmpleadoPorCodigoyEmpresa(nuevoEmpleado.getCodigoempleado(), nuevoEmpleado.getEmpresa().getSecuencia());
             /*
              * if (nuevoEmpleado.getEmpresa() != null) { empleado =
@@ -2782,11 +2909,11 @@ public class ControlPersonaIndividual implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         Personas persona = administrarPersonaIndividual.buscarPersonaPorNumeroDocumento(nuevaPersona.getNumerodocumento());
         Empleados empleado = null;
-        //if (nuevoEmpleado.getEmpresa().getSecuencia() != null) {
+        //if (nuevoEmpleado.getEmpresa() != null) {
         //empleado = administrarPersonaIndividual.buscarEmpleadoPorCodigoyEmpresa(nuevaPersona.getNumerodocumento(), nuevoEmpleado.getEmpresa().getSecuencia());
         //if (nuevoEmpleado.getEmpresa() != null) {
         //empleado = administrarPersonaIndividual.buscarEmpleadoPorCodigoyEmpresa(nuevaPersona.getNumerodocumento(), nuevoEmpleado.getEmpresa());
-        if (nuevoEmpleado.getEmpresa().getSecuencia() != null) {
+        if (nuevoEmpleado.getEmpresa() != null) {
             empleado = administrarPersonaIndividual.buscarEmpleadoPorCodigoyEmpresa(nuevaPersona.getNumerodocumento(), nuevoEmpleado.getEmpresa().getSecuencia());
         } else {
             empleado = administrarPersonaIndividual.buscarEmpleadoPorCodigoyEmpresa(nuevaPersona.getNumerodocumento(), null);
@@ -3256,9 +3383,26 @@ public class ControlPersonaIndividual implements Serializable {
                 nuevaVigenciaTipoTrabajador.setTipotrabajador(lovTiposTrabajadores.get(indiceUnicoElemento));
                 context.update("form:tipoTrabajadorModTipoTrabajador");
                 validarDisableTipoTrabajador();
+                System.out.println("nuevaVigenciaSueldo.getMotivocambiosueldo() : " + nuevaVigenciaSueldo.getMotivocambiosueldo());
+                if (nuevaVigenciaSueldo.getMotivocambiosueldo() != null) {
+                    System.out.println("nuevaVigenciaSueldo.getMotivocambiosueldo().getNombre() :" + nuevaVigenciaSueldo.getMotivocambiosueldo().getNombre());
+                }
+                System.out.println("nuevaVigenciaTipoContrato.getMotivocontrato() : " + nuevaVigenciaTipoContrato.getMotivocontrato());
+                if (nuevaVigenciaSueldo.getMotivocambiosueldo() != null) {
+                    System.out.println("nuevaVigenciaTipoContrato.getMotivocontrato().getNombre() :" + nuevaVigenciaTipoContrato.getMotivocontrato().getNombre());
+                }
+                cargarLovsConTipoTrabajador(nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia());
+                System.out.println("Despues de cargarLovsConTipoTrabajador.");
+                System.out.println("nuevaVigenciaSueldo.getMotivocambiosueldo() : " + nuevaVigenciaSueldo.getMotivocambiosueldo());
+                if (nuevaVigenciaSueldo.getMotivocambiosueldo() != null) {
+                    System.out.println("nuevaVigenciaSueldo.getMotivocambiosueldo().getNombre() :" + nuevaVigenciaSueldo.getMotivocambiosueldo().getNombre());
+                }
+                System.out.println("nuevaVigenciaTipoContrato.getMotivocontrato() : " + nuevaVigenciaTipoContrato.getMotivocontrato());
+                if (nuevaVigenciaSueldo.getMotivocambiosueldo() != null) {
+                    System.out.println("nuevaVigenciaTipoContrato.getMotivocontrato().getNombre() :" + nuevaVigenciaTipoContrato.getMotivocontrato().getNombre());
+                }
             } else {
                 permitirIndexTipoTrabajador = false;
-                getInfoRegistroTipoTrabajadorTT();
                 context.update("formLovs:formDTipoTrabajador:TipoTrabajadorTipoTrabajadorDialogo");
                 modificarInfoR_TipoTraTT(lovTiposTrabajadores.size());
                 context.execute("TipoTrabajadorTipoTrabajadorDialogo.show()");
@@ -3274,26 +3418,29 @@ public class ControlPersonaIndividual implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("REFORMA")) {
             nuevaVigenciaReformaLaboral.getReformalaboral().setNombre(auxTipoSalarioReformaLaboral);
-            cargarLovReformasLaborales();
-            if (lovReformasLaborales != null) {
-                for (int i = 0; i < lovReformasLaborales.size(); i++) {
-                    if (lovReformasLaborales.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
+            if (lovReformasLaborales == null) {
+                context.execute("advertenciaSeleccionTipoT.show()");
+            } else {
+                if (lovReformasLaborales != null) {
+                    for (int i = 0; i < lovReformasLaborales.size(); i++) {
+                        if (lovReformasLaborales.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                            indiceUnicoElemento = i;
+                            coincidencias++;
+                        }
                     }
                 }
-            }
-            if (coincidencias == 1) {
-                nuevaVigenciaReformaLaboral.setReformalaboral(lovReformasLaborales.get(indiceUnicoElemento));
-                context.update("form:tipoSalarioModTipoSalario");
-                validarTipoTrabajadorReformaLaboral();
-            } else {
-                permitirIndexTipoSalario = false;
-                getInfoRegistroReformaTipoSalario();
-                context.update("formLovs:formDTipoSalario:ReformaLaboralTipoSalarioDialogo");
-                modificarInfoR_ReformaTipoSa(lovReformasLaborales.size());
-                context.execute("ReformaLaboralTipoSalarioDialogo.show()");
-                context.update("form:tipoSalarioModTipoSalario");
+                if (coincidencias == 1) {
+                    nuevaVigenciaReformaLaboral.setReformalaboral(lovReformasLaborales.get(indiceUnicoElemento));
+                    context.update("form:tipoSalarioModTipoSalario");
+                    validarTipoTrabajadorReformaLaboral();
+                } else {
+                    permitirIndexTipoSalario = false;
+                    getInfoRegistroReformaTipoSalario();
+                    context.update("formLovs:formDTipoSalario:ReformaLaboralTipoSalarioDialogo");
+                    modificarInfoR_ReformaTipoSa(lovReformasLaborales.size());
+                    context.execute("ReformaLaboralTipoSalarioDialogo.show()");
+                    context.update("form:tipoSalarioModTipoSalario");
+                }
             }
         }
     }
@@ -3328,27 +3475,30 @@ public class ControlPersonaIndividual implements Serializable {
         }
         if (confirmarCambio.equalsIgnoreCase("TIPOSUELDO")) {
             nuevaVigenciaSueldo.getTiposueldo().setDescripcion(auxSueldoTipoSueldo);
-            cargarLovTiposSueldos();
-            if (lovTiposSueldos != null) {
-                for (int i = 0; i < lovTiposSueldos.size(); i++) {
-                    if (lovTiposSueldos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
+            if (lovTiposSueldos == null) {
+                context.execute("advertenciaSeleccionTipoT.show()");
+            } else {
+                if (lovTiposSueldos != null) {
+                    for (int i = 0; i < lovTiposSueldos.size(); i++) {
+                        if (lovTiposSueldos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                            indiceUnicoElemento = i;
+                            coincidencias++;
+                        }
                     }
                 }
-            }
-            if (coincidencias == 1) {
-                nuevaVigenciaSueldo.setTiposueldo(lovTiposSueldos.get(indiceUnicoElemento));
-                context.update("form:motivoSueldoModSueldo");
-                validarTipoTrabajadorTipoSueldo();
+                if (coincidencias == 1) {
+                    nuevaVigenciaSueldo.setTiposueldo(lovTiposSueldos.get(indiceUnicoElemento));
+                    context.update("form:motivoSueldoModSueldo");
+                    validarTipoTrabajadorTipoSueldo();
 
-            } else {
-                permitirIndexSueldo = false;
-                getInfoRegistroTipoSueldoS();
-                context.update("formLovs:formDSueldo:formTipoSueldo:TipoSueldoSueldoDialogo");
-                modificarInfoR_TipoSuSu(lovTiposSueldos.size());
-                context.execute("TipoSueldoSueldoDialogo.show()");
-                context.update("form:tipoSueldoModSueldo");
+                } else {
+                    permitirIndexSueldo = false;
+                    getInfoRegistroTipoSueldoS();
+                    context.update("formLovs:formDSueldo:formTipoSueldo:TipoSueldoSueldoDialogo");
+                    modificarInfoR_TipoSuSu(lovTiposSueldos.size());
+                    context.execute("TipoSueldoSueldoDialogo.show()");
+                    context.update("form:tipoSueldoModSueldo");
+                }
             }
         }
         /*
@@ -3401,26 +3551,29 @@ public class ControlPersonaIndividual implements Serializable {
 
         if (confirmarCambio.equalsIgnoreCase("TIPO")) {
             nuevaVigenciaTipoContrato.getTipocontrato().setNombre(auxTipoContratoTipoContrato);
-            cargarLovTiposContratos();
-            if (lovTiposContratos != null) {
-                for (int i = 0; i < lovTiposContratos.size(); i++) {
-                    if (lovTiposContratos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
+            if (lovTiposContratos == null) {
+                context.execute("advertenciaSeleccionTipoT.show()");
+            } else {
+                if (lovTiposContratos != null) {
+                    for (int i = 0; i < lovTiposContratos.size(); i++) {
+                        if (lovTiposContratos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                            indiceUnicoElemento = i;
+                            coincidencias++;
+                        }
                     }
                 }
-            }
-            if (coincidencias == 1) {
-                nuevaVigenciaTipoContrato.setTipocontrato(lovTiposContratos.get(indiceUnicoElemento));
-                context.update("form:tipoContratoModTipoContrato");
-                validarTipoTrabajadorTipoContrato();
-            } else {
-                permitirIndexTipoContrato = false;
-                getInfoRegistroTipoContrato();
-                context.update("formLovs:formDTipoContrato:formTipoContrato:TipoContratoTipoContratoDialogo");
-                modificarInfoR_TipoContrato(lovTiposContratos.size());
-                context.execute("TipoContratoTipoContratoDialogo.show()");
-                context.update("form:tipoContratoModTipoContrato");
+                if (coincidencias == 1) {
+                    nuevaVigenciaTipoContrato.setTipocontrato(lovTiposContratos.get(indiceUnicoElemento));
+                    context.update("form:tipoContratoModTipoContrato");
+                    validarTipoTrabajadorTipoContrato();
+                } else {
+                    permitirIndexTipoContrato = false;
+                    getInfoRegistroTipoContrato();
+                    context.update("formLovs:formDTipoContrato:formTipoContrato:TipoContratoTipoContratoDialogo");
+                    modificarInfoR_TipoContrato(lovTiposContratos.size());
+                    context.execute("TipoContratoTipoContratoDialogo.show()");
+                    context.update("form:tipoContratoModTipoContrato");
+                }
             }
         }
     }
@@ -3432,26 +3585,29 @@ public class ControlPersonaIndividual implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("NORMA")) {
             nuevaVigenciaNormaEmpleado.getNormalaboral().setNombre(auxNormaLaboralNorma);
-            cargarLovNormasLaborales();
-            if (lovNormasLaborales != null) {
-                for (int i = 0; i < lovNormasLaborales.size(); i++) {
-                    if (lovNormasLaborales.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
+            if (lovNormasLaborales == null) {
+                context.execute("advertenciaSeleccionTipoT.show()");
+            } else {
+                if (lovNormasLaborales != null) {
+                    for (int i = 0; i < lovNormasLaborales.size(); i++) {
+                        if (lovNormasLaborales.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                            indiceUnicoElemento = i;
+                            coincidencias++;
+                        }
                     }
                 }
-            }
-            if (coincidencias == 1) {
-                nuevaVigenciaNormaEmpleado.setNormalaboral(lovNormasLaborales.get(indiceUnicoElemento));
-                context.update("form:normaLaboralModNormaLaboral");
-                validarTipoTrabajadorNormaLaboral();
-            } else {
-                permitirIndexNormaLaboral = false;
-                getInfoRegistroNormaLaboral();
-                context.update("formLovs:formDNormaLaboral:NormaLaboralNormaLaboralDialogo");
-                modificarInfoR_NormaL(lovNormasLaborales.size());
-                context.execute("NormaLaboralNormaLaboralDialogo.show()");
-                context.update("form:normaLaboralModNormaLaboral");
+                if (coincidencias == 1) {
+                    nuevaVigenciaNormaEmpleado.setNormalaboral(lovNormasLaborales.get(indiceUnicoElemento));
+                    context.update("form:normaLaboralModNormaLaboral");
+                    validarTipoTrabajadorNormaLaboral();
+                } else {
+                    permitirIndexNormaLaboral = false;
+                    getInfoRegistroNormaLaboral();
+                    context.update("formLovs:formDNormaLaboral:NormaLaboralNormaLaboralDialogo");
+                    modificarInfoR_NormaL(lovNormasLaborales.size());
+                    context.execute("NormaLaboralNormaLaboralDialogo.show()");
+                    context.update("form:normaLaboralModNormaLaboral");
+                }
             }
         }
     }
@@ -3463,26 +3619,29 @@ public class ControlPersonaIndividual implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("CONTRATO")) {
             nuevaVigenciaContrato.getContrato().setDescripcion(auxLegislacionLaboralNombre);
-            cargarLovContratos();
-            if (lovContratos != null) {
-                for (int i = 0; i < lovContratos.size(); i++) {
-                    if (lovContratos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
+            if (lovContratos == null) {
+                context.execute("advertenciaSeleccionTipoT.show()");
+            } else {
+                if (lovContratos != null) {
+                    for (int i = 0; i < lovContratos.size(); i++) {
+                        if (lovContratos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                            indiceUnicoElemento = i;
+                            coincidencias++;
+                        }
                     }
                 }
-            }
-            if (coincidencias == 1) {
-                nuevaVigenciaContrato.setContrato(lovContratos.get(indiceUnicoElemento));
-                context.update("form:legislacionLaboralModLegislacionLaboral");
-                validarTipoTrabajadorContrato();
-            } else {
-                permitirIndexLegislacionLaboral = false;
-                getInfoRegistroContratoLegislacionL();
-                context.update("formLovs:formDLegislacionLaboral:ContratoLegislacionLaboralDialogo");
-                modificarInfoR_ContratoLL(lovContratos.size());
-                context.execute("ContratoLegislacionLaboralDialogo.show()");
-                context.update("form:legislacionLaboralModLegislacionLaboral");
+                if (coincidencias == 1) {
+                    nuevaVigenciaContrato.setContrato(lovContratos.get(indiceUnicoElemento));
+                    context.update("form:legislacionLaboralModLegislacionLaboral");
+                    validarTipoTrabajadorContrato();
+                } else {
+                    permitirIndexLegislacionLaboral = false;
+                    getInfoRegistroContratoLegislacionL();
+                    context.update("formLovs:formDLegislacionLaboral:ContratoLegislacionLaboralDialogo");
+                    modificarInfoR_ContratoLL(lovContratos.size());
+                    context.execute("ContratoLegislacionLaboralDialogo.show()");
+                    context.update("form:legislacionLaboralModLegislacionLaboral");
+                }
             }
         }
     }
@@ -4768,7 +4927,27 @@ public class ControlPersonaIndividual implements Serializable {
 
     public void actualizarParametroTipoTrabajadorTipoTrabajador() {
         RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("tipoTrabajadorSeleccionado : " + tipoTrabajadorSeleccionado);
+        System.out.println("tipoTrabajadorSeleccionado.secuencia : " + tipoTrabajadorSeleccionado.getSecuencia());
         nuevaVigenciaTipoTrabajador.setTipotrabajador(tipoTrabajadorSeleccionado);
+        System.out.println("nuevaVigenciaSueldo.getMotivocambiosueldo() : " + nuevaVigenciaSueldo.getMotivocambiosueldo());
+        if (nuevaVigenciaSueldo.getMotivocambiosueldo() != null) {
+            System.out.println("nuevaVigenciaSueldo.getMotivocambiosueldo().getNombre() :" + nuevaVigenciaSueldo.getMotivocambiosueldo().getNombre());
+        }
+        System.out.println("nuevaVigenciaTipoContrato.getMotivocontrato() : " + nuevaVigenciaTipoContrato.getMotivocontrato());
+        if (nuevaVigenciaSueldo.getMotivocambiosueldo() != null) {
+            System.out.println("nuevaVigenciaTipoContrato.getMotivocontrato().getNombre() :" + nuevaVigenciaTipoContrato.getMotivocontrato().getNombre());
+        }
+        cargarLovsConTipoTrabajador(nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia());
+        System.out.println("Despues de cargarLovsConTipoTrabajador.");
+        System.out.println("nuevaVigenciaSueldo.getMotivocambiosueldo() : " + nuevaVigenciaSueldo.getMotivocambiosueldo());
+        if (nuevaVigenciaSueldo.getMotivocambiosueldo() != null) {
+            System.out.println("nuevaVigenciaSueldo.getMotivocambiosueldo().getNombre() :" + nuevaVigenciaSueldo.getMotivocambiosueldo().getNombre());
+        }
+        System.out.println("nuevaVigenciaTipoContrato.getMotivocontrato() : " + nuevaVigenciaTipoContrato.getMotivocontrato());
+        if (nuevaVigenciaSueldo.getMotivocambiosueldo() != null) {
+            System.out.println("nuevaVigenciaTipoContrato.getMotivocontrato().getNombre() :" + nuevaVigenciaTipoContrato.getMotivocontrato().getNombre());
+        }
         tipoTrabajadorSeleccionado = new TiposTrabajadores();
         filtrarLovTiposTrabajadores = null;
         aceptar = true;
@@ -5272,7 +5451,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void modificacionesEmpresaFechaIngresoInformacionPersonal() {
-        if (nuevoEmpleado.getEmpresa().getSecuencia() != null) {
+        if (nuevoEmpleado.getEmpresa() != null) {
             //if (nuevoEmpleado.getEmpresa() != null) {
             System.out.println("modificacionesEmpresaFechaIngresoInformacionPersonal() nuevoEmpleado.getEmpresa(): " + nuevoEmpleado.getEmpresa().getSecuencia());
             //System.out.println("paso el if()  nuevoEmpleado.getEmpresa(): " + nuevoEmpleado.getEmpresa());
@@ -5314,7 +5493,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void validarDisableTipoTrabajador() {
-        if (nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia() != null) {
+        if (nuevaVigenciaTipoTrabajador.getTipotrabajador() != null) {
             disableCamposDependientesTipoT = false;
         } else {
             disableCamposDependientesTipoT = true;
@@ -5405,12 +5584,15 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void validarTipoTrabajadorReformaLaboral() {
-        if (nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia() != null) {
+        if (nuevaVigenciaTipoTrabajador.getTipotrabajador() != null) {
             String validar = administrarPersonaIndividual.validarTipoTrabajadorReformaLaboral(nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia(), nuevaVigenciaReformaLaboral.getReformalaboral().getSecuencia());
             if (validar != null) {
                 if (validar.equalsIgnoreCase("N")) {
+                    errorTT = "RL";
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.execute("aletarTiposTrabajadoresRL.show()");
+                } else {
+                    errorTT = " ";
                 }
             } else {
                 System.out.println("Error en la consulta a la BD");
@@ -5419,14 +5601,17 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void validarTipoTrabajadorTipoSueldo() {
-        if (nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia() != null) {
+        if (nuevaVigenciaTipoTrabajador.getTipotrabajador() != null) {
             String validar = administrarPersonaIndividual.validarTipoTrabajadorTipoSueldo(nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia(), nuevaVigenciaSueldo.getTiposueldo().getSecuencia());
             System.out.println("validarTipoTrabajadorTipoSueldo() validar : " + validar + "  para :");
             System.out.println("nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia() : " + nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia() + "  y nuevaVigenciaSueldo.getTiposueldo().getSecuencia() : " + nuevaVigenciaSueldo.getTiposueldo().getSecuencia());
             if (validar != null) {
                 if (validar.equalsIgnoreCase("N")) {
+                    errorTT = "TS";
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.execute("aletarTiposTrabajadoresTS.show()");
+                } else {
+                    errorTT = " ";
                 }
             } else {
                 System.out.println("Error en la consulta a la BD");
@@ -5435,12 +5620,15 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void validarTipoTrabajadorTipoContrato() {
-        if (nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia() != null) {
+        if (nuevaVigenciaTipoTrabajador.getTipotrabajador() != null) {
             String validar = administrarPersonaIndividual.validarTipoTrabajadorTipoContrato(nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia(), nuevaVigenciaTipoContrato.getTipocontrato().getSecuencia());
             if (validar != null) {
                 if (validar.equalsIgnoreCase("N")) {
+                    errorTT = "TC";
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.execute("aletarTiposTrabajadoresTC.show()");
+                } else {
+                    errorTT = " ";
                 }
             } else {
                 System.out.println("Error en la consulta a la BD");
@@ -5449,12 +5637,15 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void validarTipoTrabajadorNormaLaboral() {
-        if (nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia() != null) {
+        if (nuevaVigenciaTipoTrabajador.getTipotrabajador() != null) {
             String validar = administrarPersonaIndividual.validarTipoTrabajadorNormaLaboral(nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia(), nuevaVigenciaNormaEmpleado.getNormalaboral().getSecuencia());
             if (validar != null) {
                 if (validar.equalsIgnoreCase("N")) {
+                    errorTT = "NL";
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.execute("aletarTiposTrabajadoresNL.show()");
+                } else {
+                    errorTT = " ";
                 }
             } else {
                 System.out.println("Error en la consulta a la BD");
@@ -5463,12 +5654,15 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void validarTipoTrabajadorContrato() {
-        if (nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia() != null) {
+        if (nuevaVigenciaTipoTrabajador.getTipotrabajador() != null) {
             String validar = administrarPersonaIndividual.validarTipoTrabajadorContrato(nuevaVigenciaTipoTrabajador.getTipotrabajador().getSecuencia(), nuevaVigenciaContrato.getContrato().getSecuencia());
             if (validar != null) {
                 if (validar.equalsIgnoreCase("N")) {
+                    errorTT = "C";
                     RequestContext context = RequestContext.getCurrentInstance();
-                    //context.execute("aletarTiposTrabajadoresC.show()");
+                    context.execute("aletarTiposTrabajadoresC.show()");
+                } else {
+                    errorTT = " ";
                 }
             } else {
                 System.out.println("Error en la consulta a la BD");
@@ -5988,7 +6182,6 @@ public class ControlPersonaIndividual implements Serializable {
         RequestContext.getCurrentInstance().update("formLovs:formDJornadaLaboral:infoRegistroJornadaJornadaLaboral");
     }
 
-        
 //    public void titulosTercero(int tercero) {
 //        if (tercero == 0) {
 //            tituloTercero= "eps";
@@ -6005,7 +6198,6 @@ public class ControlPersonaIndividual implements Serializable {
 //        }
 //
 //    }
-
     //////////////////////GETS Y SETS///////////////
     public Personas getNuevaPersona() {
         return nuevaPersona;
@@ -6287,7 +6479,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void cargarLovCiudades() {
-        if (lovCiudades == null && nuevoEmpleado.getEmpresa().getSecuencia() != null) {
+        if (lovCiudades == null && nuevoEmpleado.getEmpresa() != null) {
             //if (lovCiudades == null && nuevoEmpleado.getEmpresa() != null) {
             lovCiudades = administrarPersonaIndividual.lovCiudades();
         }
@@ -6315,7 +6507,7 @@ public class ControlPersonaIndividual implements Serializable {
     public void cargarLovEstructuras() {
         System.out.println("cargarLovEstructuras() : nuevoEmpleado.getEmpresa().getSecuencia() : " + nuevoEmpleado.getEmpresa().getSecuencia());
         System.out.println("&& fechaIngreso : " + fechaIngreso + ",  lovEstructuras : " + lovEstructuras);
-        if (nuevoEmpleado.getEmpresa().getSecuencia() != null && (fechaIngreso != null) && lovEstructuras == null) {
+        if (nuevoEmpleado.getEmpresa() != null && (fechaIngreso != null) && lovEstructuras == null) {
             lovEstructuras = administrarPersonaIndividual.lovEstructurasModCargos(nuevoEmpleado.getEmpresa().getSecuencia(), fechaIngreso);
             /*
              * if (nuevoEmpleado.getEmpresa() != null && (fechaIngreso != null)
@@ -6345,7 +6537,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void cargarLovEstructurasCentroCosto() {
-        if (nuevoEmpleado.getEmpresa().getSecuencia() != null && lovEstructurasCentroCosto == null) {
+        if (nuevoEmpleado.getEmpresa() != null && lovEstructurasCentroCosto == null) {
             lovEstructurasCentroCosto = administrarPersonaIndividual.lovEstructurasModCentroCosto(nuevoEmpleado.getEmpresa().getSecuencia());
         }
         /*
@@ -6357,27 +6549,81 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void cargarLovTiposTrabajadores() {
-        if (lovTiposTrabajadores == null && nuevoEmpleado.getEmpresa().getSecuencia() != null) {
+        if (lovTiposTrabajadores == null && nuevoEmpleado.getEmpresa() != null) {
             //if (lovTiposTrabajadores == null && nuevoEmpleado.getEmpresa() != null) {
             lovTiposTrabajadores = administrarPersonaIndividual.lovTiposTrabajadores();
         }
     }
 
-    public void cargarLovReformasLaborales() {
-        if (lovReformasLaborales == null) {
-            lovReformasLaborales = administrarPersonaIndividual.lovReformasLaborales();
+    public void cargarLovsConTipoTrabajador(BigInteger secTipoTr) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("Secuencia Tipo Trabajador = " + secTipoTr);
+        lovReformasLaborales = null;
+        lovTiposSueldos = null;
+        lovTiposContratos = null;
+        lovNormasLaborales = null;
+        lovContratos = null;
+
+        lovReformasLaborales = administrarPersonaIndividual.lovReformasLaboralesValidos(secTipoTr);
+        if (lovReformasLaborales != null) {
+            modificarInfoR_ReformaTipoSa(lovReformasLaborales.size());
+            System.out.println("tamaño lovReformasLaborales : " + lovReformasLaborales.size());
+            nuevaVigenciaReformaLaboral.setReformalaboral(new ReformasLaborales());
+            if (lovReformasLaborales.size() == 1) {
+                nuevaVigenciaReformaLaboral.setReformalaboral(lovReformasLaborales.get(0));
+            }
         }
+        lovTiposSueldos = administrarPersonaIndividual.lovTiposSueldosValidos(secTipoTr);
+        if (lovTiposSueldos != null) {
+            modificarInfoR_TipoSuSu(lovTiposSueldos.size());
+            System.out.println("tamaño lovTiposSueldos : " + lovTiposSueldos.size());
+            nuevaVigenciaSueldo.setTiposueldo(new TiposSueldos());
+            if (lovTiposSueldos.size() == 1) {
+                nuevaVigenciaSueldo.setTiposueldo(lovTiposSueldos.get(0));
+            }
+        }
+        lovTiposContratos = administrarPersonaIndividual.lovTiposContratosValidos(secTipoTr);
+        if (lovTiposContratos != null) {
+            modificarInfoR_TipoContrato(lovTiposContratos.size());
+            System.out.println("tamaño lovTiposContratos : " + lovTiposContratos.size());
+            nuevaVigenciaTipoContrato.setTipocontrato(new TiposContratos());
+            if (lovTiposContratos.size() == 1) {
+                nuevaVigenciaTipoContrato.setTipocontrato(lovTiposContratos.get(0));
+            }
+        }
+        lovNormasLaborales = administrarPersonaIndividual.lovNormasLaboralesValidos(secTipoTr);
+        if (lovNormasLaborales != null) {
+            modificarInfoR_NormaL(lovNormasLaborales.size());
+            System.out.println("tamaño lovNormasLaborales : " + lovNormasLaborales.size());
+            nuevaVigenciaNormaEmpleado.setNormalaboral(new NormasLaborales());
+            if (lovNormasLaborales.size() == 1) {
+                nuevaVigenciaNormaEmpleado.setNormalaboral(lovNormasLaborales.get(0));
+            }
+        }
+        lovContratos = administrarPersonaIndividual.lovContratosValidos(secTipoTr);
+        if (lovContratos != null) {
+            modificarInfoR_ContratoLL(lovContratos.size());
+            System.out.println("tamaño lovContratos : " + lovContratos.size());
+            nuevaVigenciaContrato.setContrato(new Contratos());
+            if (lovContratos.size() == 1) {
+                nuevaVigenciaContrato.setContrato(lovContratos.get(0));
+            }
+        }
+        context.update("formLovs:formDTipoSalario:ReformaLaboralTipoSalarioDialogo");
+        context.update("formLovs:formDSueldo:formTipoSueldo:TipoSueldoSueldoDialogo");
+        context.update("formLovs:formDTipoContrato:formTipoContrato:TipoContratoTipoContratoDialogo");
+        context.update("formLovs:formDNormaLaboral:NormaLaboralNormaLaboralDialogo");
+        context.update("formLovs:formDLegislacionLaboral:ContratoLegislacionLaboralDialogo");
+        context.update("form:tipoSalarioModTipoSalario");
+        context.update("form:tipoSueldoModSueldo");
+        context.update("form:tipoContratoModTipoContrato");
+        context.update("form:normaLaboralModNormaLaboral");
+        context.update("form:legislacionLaboralModLegislacionLaboral");
     }
 
     public void cargarLovMotivosCambiosSueldos() {
         if (lovMotivosCambiosSueldos == null) {
             lovMotivosCambiosSueldos = administrarPersonaIndividual.lovMotivosCambiosSueldos();
-        }
-    }
-
-    public void cargarLovTiposSueldos() {
-        if (lovTiposSueldos == null) {
-            lovTiposSueldos = administrarPersonaIndividual.lovTiposSueldos();
         }
     }
 
@@ -6387,26 +6633,8 @@ public class ControlPersonaIndividual implements Serializable {
         }
     }
 
-    public void cargarLovTiposContratos() {
-        if (lovTiposContratos == null) {
-            lovTiposContratos = administrarPersonaIndividual.lovTiposContratos();
-        }
-    }
-
-    public void cargarLovNormasLaborales() {
-        if (lovNormasLaborales == null) {
-            lovNormasLaborales = administrarPersonaIndividual.lovNormasLaborales();
-        }
-    }
-
-    public void cargarLovContratos() {
-        if (lovContratos == null) {
-            lovContratos = administrarPersonaIndividual.lovContratos();
-        }
-    }
-
     public void cargarLovUbicacionesGeograficas() {
-        if (nuevoEmpleado.getEmpresa().getSecuencia() != null && lovUbicacionesGeograficas == null) {
+        if (nuevoEmpleado.getEmpresa() != null && lovUbicacionesGeograficas == null) {
             lovUbicacionesGeograficas = administrarPersonaIndividual.lovUbicacionesGeograficas(nuevoEmpleado.getEmpresa().getSecuencia());
         }
         /*
@@ -6442,7 +6670,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void cargarLovTercerosSucursales() {
-        if (lovTercerosSucursales == null && nuevoEmpleado.getEmpresa().getSecuencia() != null) {
+        if (lovTercerosSucursales == null && nuevoEmpleado.getEmpresa() != null) {
             lovTercerosSucursales = administrarPersonaIndividual.lovTercerosSucursales(nuevoEmpleado.getEmpresa().getSecuencia());
         }
         /*
@@ -7284,5 +7512,5 @@ public class ControlPersonaIndividual implements Serializable {
     public void setTituloTercero(String tituloTercero) {
         this.tituloTercero = tituloTercero;
     }
-    
+
 }

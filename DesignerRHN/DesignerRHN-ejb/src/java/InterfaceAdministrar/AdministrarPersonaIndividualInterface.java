@@ -84,19 +84,7 @@ public interface AdministrarPersonaIndividualInterface {
 
     public List<Unidades> lovUnidades();
 
-    public List<TiposSueldos> lovTiposSueldos();
-
     public List<MotivosCambiosSueldos> lovMotivosCambiosSueldos();
-
-    public List<Contratos> lovContratos();
-
-    public List<NormasLaborales> lovNormasLaborales();
-
-    public List<ReformasLaborales> lovReformasLaborales();
-
-    public List<TiposTrabajadores> lovTiposTrabajadores();
-
-    public List<TiposContratos> lovTiposContratos();
 
     public List<MotivosContratos> lovMotivosContratos();
 
@@ -121,6 +109,28 @@ public interface AdministrarPersonaIndividualInterface {
     public List<TiposDocumentos> lovTiposDocumentos();
 
     public List<Empresas> lovEmpresas();
+
+    public List<TiposTrabajadores> lovTiposTrabajadores();
+
+    public List<TiposSueldos> lovTiposSueldosValidos(BigInteger secTT);
+
+    public List<Contratos> lovContratosValidos(BigInteger secTT);
+
+    public List<NormasLaborales> lovNormasLaboralesValidos(BigInteger secTT);
+
+    public List<ReformasLaborales> lovReformasLaboralesValidos(BigInteger secTT);
+
+    public List<TiposContratos> lovTiposContratosValidos(BigInteger secTT);
+//
+//    public List<TiposSueldos> lovTiposSueldos();
+//
+//    public List<Contratos> lovContratos();
+//
+//    public List<NormasLaborales> lovNormasLaborales();
+//
+//    public List<ReformasLaborales> lovReformasLaborales();
+//
+//    public List<TiposContratos> lovTiposContratos();
     
     public Empresas obtenerEmpresa(BigInteger secEmpresa);
 

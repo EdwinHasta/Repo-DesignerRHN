@@ -194,131 +194,131 @@ public class ControlEmpleadoIndividual implements Serializable {
             if (hvReferenciasPersonales != null) {
                 referenciasPersonalesP = hvReferenciasPersonales.getNombrepersona();
             } else {
-                referenciasPersonalesP = "SIN REGISTRAR";
+                referenciasPersonalesP = "";
             }
 
             hvReferenciasFamiliares = administrarEmpleadoIndividual.referenciasFamiliaresPersona(secHv);
             if (hvReferenciasFamiliares != null) {
                 referenciasFamiliaresP = hvReferenciasFamiliares.getNombrepersona();
             } else {
-                referenciasFamiliaresP = "SIN REGISTRAR";
+                referenciasFamiliaresP = "";
             }
             experienciaLaboral = administrarEmpleadoIndividual.experienciaLaboralPersona(secHv);
             if (experienciaLaboral != null) {
                 experienciaLaboralP = experienciaLaboral.getEmpresa() + "  " + formatoFecha.format(experienciaLaboral.getFechadesde());
             } else {
-                experienciaLaboralP = "SIN REGISTRAR";
+                experienciaLaboralP = "";
             }
             entrevistas = administrarEmpleadoIndividual.entrevistasPersona(secHv);
             if (entrevistas != null) {
                 entrevistasP = entrevistas.getNombre() + "  " + formatoFecha.format(entrevistas.getFecha());
             } else {
-                entrevistasP = "SIN REGISTRAR";
+                entrevistasP = "";
             }
             existenHV = false;
         } else {
             hojaDeVidaPersona = new HVHojasDeVida();
-            referenciasPersonalesP = "SIN REGISTRAR";
-            referenciasFamiliaresP = "SIN REGISTRAR";
-            experienciaLaboralP = "SIN REGISTRAR";
-            entrevistasP = "SIN REGISTRAR";
+            referenciasPersonalesP = "";
+            referenciasFamiliaresP = "";
+            experienciaLaboralP = "";
+            entrevistasP = "";
             existenHV = true;
         }
         telefono = administrarEmpleadoIndividual.primerTelefonoPersona(secPersona);
         if (telefono != null) {
             telefonoP = telefono.getTipotelefono().getNombre() + " :  " + telefono.getNumerotelefono();
         } else {
-            telefonoP = "SIN REGISTRAR";
+            telefonoP = "";
         }
         direccion = administrarEmpleadoIndividual.primeraDireccionPersona(secPersona);
         if (direccion != null) {
             direccionP = direccion.getDireccionalternativa();
         } else {
-            direccionP = "SIN REGISTRAR";
+            direccionP = "";
         }
         estadoCivil = administrarEmpleadoIndividual.estadoCivilPersona(secPersona);
         if (estadoCivil != null) {
             estadoCivilP = estadoCivil.getEstadocivil().getDescripcion() + "   " + formatoFecha.format(estadoCivil.getFechavigencia());
         } else {
-            estadoCivilP = "SIN REGISTRAR";
+            estadoCivilP = "";
         }
         informacionAdicional = administrarEmpleadoIndividual.informacionAdicionalPersona(secEmpleado);
         if (informacionAdicional != null) {
             informacionAdicionalP = informacionAdicional.getDescripcion() + "  " + formatoFecha.format(informacionAdicional.getFechainicial());
         } else {
-            informacionAdicionalP = "SIN REGISTRAR";
+            informacionAdicionalP = "";
         }
         encargatura = administrarEmpleadoIndividual.reemplazoPersona(secEmpleado);
         if (encargatura != null) {
             reemplazoP = encargatura.getTiporeemplazo().getNombre() + "  " + formatoFecha.format(encargatura.getFechainicial());
         } else {
-            reemplazoP = "SIN REGISTRAR";
+            reemplazoP = "";
         }
         vigenciaFormal = administrarEmpleadoIndividual.educacionPersona(secPersona);
         if (vigenciaFormal != null) {
             educacionP = vigenciaFormal.getTipoeducacion().getNombre() + "  " + formatoFecha.format(vigenciaFormal.getFechavigencia());
         } else {
-            educacionP = "SIN REGISTRAR";
+            educacionP = "";
         }
         idiomasPersona = administrarEmpleadoIndividual.idiomasPersona(secPersona);
         if (idiomasPersona != null) {
             idiomasP = idiomasPersona.getIdioma().getNombre();
         } else {
-            idiomasP = "SIN REGISTRAR";
+            idiomasP = "";
         }
         vigenciaProyecto = administrarEmpleadoIndividual.proyectosPersona(secEmpleado);
         if (vigenciaProyecto != null) {
             proyectosP = vigenciaProyecto.getProyecto().getNombreproyecto() + "  " + formatoFecha.format(vigenciaProyecto.getFechafinal());
         } else {
-            proyectosP = "SIN REGISTRAR";
+            proyectosP = "";
         }
         vigenciaEvento = administrarEmpleadoIndividual.eventosPersona(secEmpleado);
         if (vigenciaEvento != null) {
             eventosP = vigenciaEvento.getEvento().getDescripcion() + "  " + formatoFecha.format(vigenciaEvento.getFechainicial());
         } else {
-            eventosP = "SIN REGISTRAR";
+            eventosP = "";
         }
         vigenciaDeporte = administrarEmpleadoIndividual.deportesPersona(secPersona);
         if (vigenciaDeporte != null) {
             deportesP = vigenciaDeporte.getDeporte().getNombre() + "  " + formatoFecha.format(vigenciaDeporte.getFechainicial());
         } else {
-            deportesP = "SIN REGISTRAR";
+            deportesP = "";
         }
         vigenciaAficion = administrarEmpleadoIndividual.aficionesPersona(secPersona);
         if (vigenciaAficion != null) {
             aficionesP = vigenciaAficion.getAficion().getDescripcion() + "  " + formatoFecha.format(vigenciaAficion.getFechainicial());
         } else {
-            aficionesP = "SIN REGISTRAR";
+            aficionesP = "";
         }
         familiares = administrarEmpleadoIndividual.familiaresPersona(secPersona);
         if (familiares != null) {
             familiaresP = familiares.getTipofamiliar().getTipo() + "  " + familiares.getPersona().getPrimerapellido() + "  " + familiares.getPersona().getNombre();
         } else {
-            familiaresP = "SIN REGISTRAR";
+            familiaresP = "";
         }
         vigenciaIndicador = administrarEmpleadoIndividual.indicadoresPersona(secEmpleado);
         if (vigenciaIndicador != null) {
             indicadoresP = vigenciaIndicador.getIndicador().getDescripcion() + "  " + formatoFecha.format(vigenciaIndicador.getFechainicial());
         } else {
-            indicadoresP = "SIN REGISTRAR";
+            indicadoresP = "";
         }
         demandas = administrarEmpleadoIndividual.demandasPersona(secEmpleado);
         if (demandas != null) {
             demandasP = demandas.getMotivo().getDescripcion();
         } else {
-            demandasP = "SIN REGISTRAR";
+            demandasP = "";
         }
         vigenciaDomiciliaria = administrarEmpleadoIndividual.visitasDomiciliariasPersona(secPersona);
         if (vigenciaDomiciliaria != null) {
             visitasDomiciliariasP = "VISITADO EL:  " + formatoFecha.format(vigenciaDomiciliaria.getFecha());
         } else {
-            visitasDomiciliariasP = "SIN REGISTRAR";
+            visitasDomiciliariasP = "";
         }
         pruebasAplicadas = administrarEmpleadoIndividual.pruebasAplicadasPersona(secEmpleado);
         if (pruebasAplicadas != null) {
             pruebasAplicadasP = pruebasAplicadas.getNombreprueba() + " -> " + pruebasAplicadas.getPuntajeobtenido() + "%";
         } else {
-            pruebasAplicadasP = "SIN REGISTRAR";
+            pruebasAplicadasP = "";
         }
         //VEHICULO PROPIO
         if (persona.getPlacavehiculo() != null) {
