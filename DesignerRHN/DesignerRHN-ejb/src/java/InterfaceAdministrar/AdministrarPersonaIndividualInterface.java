@@ -172,7 +172,7 @@ public interface AdministrarPersonaIndividualInterface {
 
     public Personas obtenerUltimoRegistroPersona(BigInteger documento);
 
-    public void crearNuevoEmpleado(Empleados empleado);
+    public BigInteger crearNuevoEmpleado(BigInteger codigoEmpl, BigInteger secPers, BigInteger secEmpr);
 
     public Empleados obtenerUltimoRegistroEmpleado(BigInteger empresa, BigInteger codigoEmpleado);
 

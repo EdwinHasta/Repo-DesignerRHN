@@ -360,7 +360,6 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-
                                     <f:facet name="footer">
                                         <h:outputText value=" " />
                                     </f:facet>
@@ -381,7 +380,6 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-
                                     <f:facet name="footer">
                                         <h:outputText value=" " />
                                     </f:facet>
@@ -419,7 +417,6 @@
 
                         <p:commandButton style="position: absolute; left: 275px; top: 475px; background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 128px; height: 30px; color: white;" icon="ui-icon-extlink" id="ACUMULADOS" value="Acumulados" disabled="#{controlNovedadesEmpleados.activoBtnAcumulado}" action="acomuladoPorNovedad" actionListener="#{controlSolucionFormula.recibirParametros(controlNovedadesEmpleados.empleadoSeleccionado.codigo, controlNovedadesEmpleados.actualNovedadTabla.secuencia)}" process="@this" />
                         <p:tooltip  for="ACUMULADOS" value="#{msg['btnAcumuladoNovedad']}" />
-                     <!--   <p:commandButton style="position: absolute; left: 510px; top: 470px;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlNovedadesEmpleados.cancelarModificacion()}" process="@this" />-->
 
                         <p:commandButton id="ACEPTAR" style="position: absolute; left: 664px; top: 500px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=" " onclick="confirmarGuardar.show();" update=":form:datosNovedadesEmpleado" process="@this" disabled="#{controlNovedadesEmpleados.aceptar}"/>
                         <p:commandButton id="ATRAS" style="position: absolute; left: 765px; top: 500px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" value=" " actionListener="#{controlNovedadesEmpleados.salir()}" action="novedad" process="@this"/>

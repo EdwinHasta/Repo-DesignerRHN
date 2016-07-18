@@ -384,9 +384,9 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             return null;
         }
     }
-    
+
     @Override
-    public List<TiposSueldos> lovTiposSueldosValidos(BigInteger secTT){
+    public List<TiposSueldos> lovTiposSueldosValidos(BigInteger secTT) {
         try {
             List<TiposSueldos> lista = PersistenciaPlantillasTT.consultarTiposSueldosValidos(em, secTT);
             return lista;
@@ -397,7 +397,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public List<Contratos> lovContratosValidos(BigInteger secTT){
+    public List<Contratos> lovContratosValidos(BigInteger secTT) {
         try {
             List<Contratos> lista = PersistenciaPlantillasTT.consultarContratosValidos(em, secTT);
             return lista;
@@ -408,7 +408,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public List<NormasLaborales> lovNormasLaboralesValidos(BigInteger secTT){
+    public List<NormasLaborales> lovNormasLaboralesValidos(BigInteger secTT) {
         try {
             List<NormasLaborales> lista = PersistenciaPlantillasTT.consultarNormasLaboralesValidas(em, secTT);
             return lista;
@@ -419,7 +419,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public List<ReformasLaborales> lovReformasLaboralesValidos(BigInteger secTT){
+    public List<ReformasLaborales> lovReformasLaboralesValidos(BigInteger secTT) {
         try {
             List<ReformasLaborales> lista = PersistenciaPlantillasTT.consultarReformasLaboralesValidas(em, secTT);
             return lista;
@@ -430,7 +430,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public List<TiposContratos> lovTiposContratosValidos(BigInteger secTT){
+    public List<TiposContratos> lovTiposContratosValidos(BigInteger secTT) {
         try {
             List<TiposContratos> lista = PersistenciaPlantillasTT.consultarTiposContratosValidos(em, secTT);
             return lista;
@@ -439,7 +439,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             return null;
         }
     }
-    
+
 //
 //    @Override
 //    public List<TiposContratos> lovTiposContratos() {
@@ -494,7 +494,6 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
 //            return null;
 //        }
 //    }
-
     @Override
     public List<MotivosCambiosSueldos> lovMotivosCambiosSueldos() {
         try {
@@ -741,7 +740,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             System.out.println("AdministrarPers... validarTipoTrabajadorReformaLaboral() :");
             System.out.println("tipoTrabajador : " + tipoTrabajador + ",   reformaLaboral : " + reformaLaboral);
             String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorReformaLaboral(em, tipoTrabajador, reformaLaboral);
-            if(validar == null){
+            if (validar == null) {
                 validar = " ";
             }
             return validar;
@@ -755,13 +754,13 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     @Override
     public String validarTipoTrabajadorTipoSueldo(BigInteger tipoTrabajador, BigInteger tipoSueldo) {
         try {
-           System.out.println("AdministrarPers... validarTipoTrabajadorTipoSueldo() :");
+            System.out.println("AdministrarPers... validarTipoTrabajadorTipoSueldo() :");
             System.out.println("tipoTrabajador : " + tipoTrabajador + ",   tipoSueldo : " + tipoSueldo);
             String retorno = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorTipoSueldo(em, tipoTrabajador, tipoSueldo);
-            if(retorno == null){
+            if (retorno == null) {
                 retorno = " ";
             }
-            return retorno; 
+            return retorno;
         } catch (Exception e) {
             System.out.println("Error validarTipoTrabajadorTipoSueldo Admi : " + e.toString());
             return " ";
@@ -775,7 +774,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             System.out.println("AdministrarPers... validarTipoTrabajadorTipoContrato() :");
             System.out.println("tipoTrabajador : " + tipoTrabajador + ",   tipoContrato : " + tipoContrato);
             String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorTipoContrato(em, tipoTrabajador, tipoContrato);
-            if(validar == null){
+            if (validar == null) {
                 validar = " ";
             }
             return validar;
@@ -792,7 +791,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             System.out.println("AdministrarPers... validarTipoTrabajadorNormaLaboral() :");
             System.out.println("tipoTrabajador : " + tipoTrabajador + ",   normaLaboral : " + normaLaboral);
             String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorNormaLaboral(em, tipoTrabajador, normaLaboral);
-            if(validar == null){
+            if (validar == null) {
                 validar = " ";
             }
             return validar;
@@ -809,7 +808,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             System.out.println("AdministrarPers... validarTipoTrabajadorContrato() :");
             System.out.println("tipoTrabajador : " + tipoTrabajador + ",   contrato : " + contrato);
             String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorContrato(em, tipoTrabajador, contrato);
-            if(validar == null){
+            if (validar == null) {
                 validar = " ";
             }
             return validar;
@@ -853,11 +852,12 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public void crearNuevoEmpleado(Empleados empleado) {
+    public BigInteger crearNuevoEmpleado(BigInteger codigoEmpl, BigInteger secPers, BigInteger secEmpr) {
         try {
-            persistenciaEmpleado.crear(em, empleado);
+            return persistenciaEmpleado.crear(em, codigoEmpl, secPers, secEmpr);
         } catch (Exception e) {
             System.out.println("Error crearNuevaPersona Admi : " + e.toString());
+            return null;
         }
     }
 

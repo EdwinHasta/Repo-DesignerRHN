@@ -5,6 +5,7 @@ package Persistencia;
 
 import Entidades.Empleados;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 //import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,28 +36,39 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
      * em;
      */
     @Override
-    public void crear(EntityManager em, Empleados empleados) {
+    public BigInteger crear(EntityManager em, BigInteger codigoEmpleado, BigInteger secPersona, BigInteger secEmpresa) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
+        BigDecimal sec = null;
         try {
-            tx.begin();
-            em.persist(empleados);
-            tx.commit();
-            tx.begin();
-            System.out.println("empleados : " + empleados);
-//            empleados = em.find(Empleados.class, empleados);
-//            System.out.println("empleados : " + empleados);
-            tx.commit();
-            System.out.println("PersistenciaEmpleados crear() se supone creo el empleado: " + empleados.getSecuencia() + ", persona: " + empleados.getPersona() + ", nombre: " + empleados.getPersona().getNombre());
+            String sql = "SELECT CREAR_EMPLEADO2(?, ?, ?) FROM DUAL";
+//            String sql = "call CREAR_EMPLEADO2(?, ?, ?)";
+//            String sql = "SELECT CREAR_EMPL_CON_PROC(?, ?, ?) FROM DUAL";
+//            String sql = "exec CREAR_EMPL_CON_PROC(?, ?, ?)";
+//            String sql = "";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, codigoEmpleado);
+            query.setParameter(2, secPersona);
+            query.setParameter(3, secEmpresa);
+//            query.executeUpdate();
+            sec = (BigDecimal) query.getSingleResult();
+            System.out.println("Secuencia Nuevo empleado en String : " + sec);
+            BigInteger secuenciaCreado = null;
+            if (sec != null) {
+                secuenciaCreado = sec.toBigInteger();
+            }
+            System.out.println("PersistenciaEmpleados crear() se supone creo el empleado con codigo: " + codigoEmpleado + ", persona: " + secPersona + ", Y Retorno: " + secuenciaCreado);
+            return secuenciaCreado;
         } catch (Exception e) {
             //PropertyConfigurator.configure("log4j.properties");
             //logger.error("Metodo: crear - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
-            System.out.println(this.getClass().getName()+".crear()");
+            System.out.println(this.getClass().getName() + ".crear()");
             System.out.println("error al crear el empleado");
             e.printStackTrace();
             if (tx.isActive()) {
                 tx.rollback();
             }
+            return null;
         }
     }
 
@@ -473,7 +485,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     public Empleados buscarEmpleadoPorCodigoyEmpresa(EntityManager em, BigInteger codigo, BigInteger empresa) {
         try {
             em.clear();
-            
+
             String sql = "SELECT * FROM empleados WHERE CODIGOEMPLEADO =? AND NVL(EMPRESA,?)=?";
             Query query = em.createNativeQuery(sql, Empleados.class);
             query.setParameter(1, codigo);

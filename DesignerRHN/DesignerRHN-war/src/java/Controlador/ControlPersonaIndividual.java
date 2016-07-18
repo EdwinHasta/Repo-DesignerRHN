@@ -1904,19 +1904,20 @@ public class ControlPersonaIndividual implements Serializable {
                             k++;
                             l = BigInteger.valueOf(k);
                             nuevoEmpleado.setSecuencia(l);
-                            administrarPersonaIndividual.crearNuevoEmpleado(nuevoEmpleado);
-
-                            Empleados empleadoAlmacenado = administrarPersonaIndividual.obtenerUltimoRegistroEmpleado(nuevoEmpleado.getEmpresa().getSecuencia(), nuevoEmpleado.getCodigoempleado());
-                            System.out.println("crearNuevoEmpleado() empleadoAlmacenado : " + empleadoAlmacenado);
+                            System.out.println("Enviando a crear Empleado: COD: " + nuevoEmpleado.getCodigoempleado() + ", PERSONA: " + nuevoEmpleado.getPersona().getSecuencia() + " Y EMPRESA: " + nuevoEmpleado.getEmpresa().getSecuencia());
+                            BigInteger sec = administrarPersonaIndividual.crearNuevoEmpleado(nuevoEmpleado.getCodigoempleado(), nuevoEmpleado.getPersona().getSecuencia(), nuevoEmpleado.getEmpresa().getSecuencia());
+                            nuevoEmpleado.setSecuencia(sec);
+    //                            Empleados empleadoAlmacenado = administrarPersonaIndividual.obtenerUltimoRegistroEmpleado(nuevoEmpleado.getEmpresa().getSecuencia(), nuevoEmpleado.getCodigoempleado());
+                            System.out.println("crearNuevoEmpleado() nuevoEmpleado : " + nuevoEmpleado.getSecuencia());
                             //Empleados empleadoAlmacenado = administrarPersonaIndividual.obtenerUltimoRegistroEmpleado(nuevoEmpleado.getEmpresa(), nuevoEmpleado.getCodigoempleado());
                             //
 
-                            if (empleadoAlmacenado != null) {
+                            if (sec != null) {
 
                                 k++;
                                 l = BigInteger.valueOf(k);
                                 nuevaVigenciaCargo.setSecuencia(l);
-                                nuevaVigenciaCargo.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaCargo.setEmpleado(nuevoEmpleado);
                                 nuevaVigenciaCargo.setFechavigencia(fechaIngreso);
                                 administrarPersonaIndividual.crearVigenciaCargo(nuevaVigenciaCargo);
 
@@ -1924,28 +1925,28 @@ public class ControlPersonaIndividual implements Serializable {
                                 k++;
                                 l = BigInteger.valueOf(k);
                                 nuevaVigenciaLocalizacion.setSecuencia(l);
-                                nuevaVigenciaLocalizacion.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaLocalizacion.setEmpleado(nuevoEmpleado);
                                 nuevaVigenciaLocalizacion.setFechavigencia(fechaIngreso);
                                 administrarPersonaIndividual.crearVigenciaLocalizacion(nuevaVigenciaLocalizacion);
                                 //
                                 k++;
                                 l = BigInteger.valueOf(k);
                                 nuevaVigenciaTipoTrabajador.setSecuencia(l);
-                                nuevaVigenciaTipoTrabajador.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaTipoTrabajador.setEmpleado(nuevoEmpleado);
                                 nuevaVigenciaTipoTrabajador.setFechavigencia(fechaIngreso);
                                 administrarPersonaIndividual.crearVigenciaTipoTrabajador(nuevaVigenciaTipoTrabajador);
                                 //
                                 k++;
                                 l = BigInteger.valueOf(k);
                                 nuevaVigenciaReformaLaboral.setSecuencia(l);
-                                nuevaVigenciaReformaLaboral.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaReformaLaboral.setEmpleado(nuevoEmpleado);
                                 nuevaVigenciaReformaLaboral.setFechavigencia(fechaIngreso);
                                 administrarPersonaIndividual.crearVigenciaReformaLaboral(nuevaVigenciaReformaLaboral);
                                 //
                                 k++;
                                 l = BigInteger.valueOf(k);
                                 nuevaVigenciaSueldo.setSecuencia(l);
-                                nuevaVigenciaSueldo.setEmpleado(empleadoAlmacenado); //
+                                nuevaVigenciaSueldo.setEmpleado(nuevoEmpleado); //
                                 nuevaVigenciaSueldo.setFechavigencia(fechaIngreso); //
                                 nuevaVigenciaSueldo.setValor(valorSueldo);//
                                 nuevaVigenciaSueldo.setFechasistema(new Date());//
@@ -1959,42 +1960,42 @@ public class ControlPersonaIndividual implements Serializable {
                                 k++;
                                 l = BigInteger.valueOf(k);
                                 nuevaVigenciaTipoContrato.setSecuencia(l);
-                                nuevaVigenciaTipoContrato.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaTipoContrato.setEmpleado(nuevoEmpleado);
                                 nuevaVigenciaTipoContrato.setFechavigencia(fechaIngreso);
                                 administrarPersonaIndividual.crearVigenciaTipoContrato(nuevaVigenciaTipoContrato);
                                 //
                                 k++;
                                 l = BigInteger.valueOf(k);
                                 nuevaVigenciaNormaEmpleado.setSecuencia(l);
-                                nuevaVigenciaNormaEmpleado.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaNormaEmpleado.setEmpleado(nuevoEmpleado);
                                 nuevaVigenciaNormaEmpleado.setFechavigencia(fechaIngreso);
                                 administrarPersonaIndividual.crearVigenciaNormaEmpleado(nuevaVigenciaNormaEmpleado);
                                 //
                                 k++;
                                 l = BigInteger.valueOf(k);
                                 nuevaVigenciaContrato.setSecuencia(l);
-                                nuevaVigenciaContrato.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaContrato.setEmpleado(nuevoEmpleado);
                                 nuevaVigenciaContrato.setFechainicial(fechaIngreso);
                                 administrarPersonaIndividual.crearVigenciaContrato(nuevaVigenciaContrato);
                                 //
                                 k++;
                                 l = BigInteger.valueOf(k);
                                 nuevaVigenciaUbicacion.setSecuencia(l);
-                                nuevaVigenciaUbicacion.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaUbicacion.setEmpleado(nuevoEmpleado);
                                 nuevaVigenciaUbicacion.setFechavigencia(fechaIngreso);
                                 administrarPersonaIndividual.crearVigenciaUbicacion(nuevaVigenciaUbicacion);
                                 //
                                 k++;
                                 l = BigInteger.valueOf(k);
                                 nuevaVigenciaJornada.setSecuencia(l);
-                                nuevaVigenciaJornada.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaJornada.setEmpleado(nuevoEmpleado);
                                 nuevaVigenciaJornada.setFechavigencia(fechaIngreso);
                                 administrarPersonaIndividual.crearVigenciaJornada(nuevaVigenciaJornada);
                                 //
                                 k++;
                                 l = BigInteger.valueOf(k);
                                 nuevaVigenciaFormaPago.setSecuencia(l);
-                                nuevaVigenciaFormaPago.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaFormaPago.setEmpleado(nuevoEmpleado);
                                 nuevaVigenciaFormaPago.setFechavigencia(fechaIngreso);
                                 if (nuevaVigenciaFormaPago.getSucursal() == null) {
                                     nuevaVigenciaFormaPago.setSucursal(null);
@@ -2004,14 +2005,14 @@ public class ControlPersonaIndividual implements Serializable {
                                 k++;
                                 l = BigInteger.valueOf(k);
                                 nuevaVigenciaAfiliacionEPS.setSecuencia(l);
-                                nuevaVigenciaAfiliacionEPS.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaAfiliacionEPS.setEmpleado(nuevoEmpleado);
                                 nuevaVigenciaAfiliacionEPS.setFechainicial(fechaIngreso);
                                 administrarPersonaIndividual.crearVigenciaAfiliacion(nuevaVigenciaAfiliacionEPS);
                                 //
                                 k++;
                                 l = BigInteger.valueOf(k);
                                 nuevaVigenciaAfiliacionARP.setSecuencia(l);
-                                nuevaVigenciaAfiliacionARP.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaAfiliacionARP.setEmpleado(nuevoEmpleado);
                                 nuevaVigenciaAfiliacionARP.setFechainicial(fechaIngreso);
                                 administrarPersonaIndividual.crearVigenciaAfiliacion(nuevaVigenciaAfiliacionARP);
                                 //
@@ -2020,7 +2021,7 @@ public class ControlPersonaIndividual implements Serializable {
                                         k++;
                                         l = BigInteger.valueOf(k);
                                         nuevaVigenciaAfiliacionAFP.setSecuencia(l);
-                                        nuevaVigenciaAfiliacionAFP.setEmpleado(empleadoAlmacenado);
+                                        nuevaVigenciaAfiliacionAFP.setEmpleado(nuevoEmpleado);
                                         nuevaVigenciaAfiliacionAFP.setFechainicial(fechaIngreso);
                                         administrarPersonaIndividual.crearVigenciaAfiliacion(nuevaVigenciaAfiliacionAFP);
                                     }
@@ -2031,7 +2032,7 @@ public class ControlPersonaIndividual implements Serializable {
                                         k++;
                                         l = BigInteger.valueOf(k);
                                         nuevaVigenciaAfiliacionCaja.setSecuencia(l);
-                                        nuevaVigenciaAfiliacionCaja.setEmpleado(empleadoAlmacenado);
+                                        nuevaVigenciaAfiliacionCaja.setEmpleado(nuevoEmpleado);
                                         nuevaVigenciaAfiliacionCaja.setFechainicial(fechaIngreso);
                                         administrarPersonaIndividual.crearVigenciaAfiliacion(nuevaVigenciaAfiliacionCaja);
                                     }
@@ -2043,7 +2044,7 @@ public class ControlPersonaIndividual implements Serializable {
                                         k++;
                                         l = BigInteger.valueOf(k);
                                         nuevaVigenciaAfiliacionFondo.setSecuencia(l);
-                                        nuevaVigenciaAfiliacionFondo.setEmpleado(empleadoAlmacenado);
+                                        nuevaVigenciaAfiliacionFondo.setEmpleado(nuevoEmpleado);
                                         nuevaVigenciaAfiliacionFondo.setFechainicial(fechaIngreso);
                                         administrarPersonaIndividual.crearVigenciaAfiliacion(nuevaVigenciaAfiliacionFondo);
                                     }
@@ -2053,7 +2054,7 @@ public class ControlPersonaIndividual implements Serializable {
                                     k++;
                                     l = BigInteger.valueOf(k);
                                     nuevoEstadoCivil.setSecuencia(l);
-                                    nuevoEstadoCivil.setPersona(empleadoAlmacenado.getPersona());
+                                    nuevoEstadoCivil.setPersona(nuevoEmpleado.getPersona());
                                     nuevoEstadoCivil.setFechavigencia(fechaIngreso);
                                     administrarPersonaIndividual.crearEstadoCivil(nuevoEstadoCivil);
                                 }
@@ -2064,7 +2065,7 @@ public class ControlPersonaIndividual implements Serializable {
                                     nuevaDireccion.setSecuencia(l);
                                     nuevaDireccion.setTipoppal("O");
                                     nuevaDireccion.setTiposecundario("O");
-                                    nuevaDireccion.setPersona(empleadoAlmacenado.getPersona());
+                                    nuevaDireccion.setPersona(nuevoEmpleado.getPersona());
                                     nuevaDireccion.setFechavigencia(fechaIngreso);
                                     //nuevaDireccion.setPpal(".");
                                     administrarPersonaIndividual.crearDireccion(nuevaDireccion);
@@ -2074,13 +2075,13 @@ public class ControlPersonaIndividual implements Serializable {
                                     k++;
                                     l = BigInteger.valueOf(k);
                                     nuevoTelefono.setSecuencia(l);
-                                    nuevoTelefono.setPersona(empleadoAlmacenado.getPersona());
+                                    nuevoTelefono.setPersona(nuevoEmpleado.getPersona());
                                     nuevoTelefono.setFechavigencia(fechaIngreso);
                                     administrarPersonaIndividual.crearTelefono(nuevoTelefono);
                                 }
 
                                 Sets nuevoSet = new Sets();
-                                nuevoSet.setEmpleado(empleadoAlmacenado);
+                                nuevoSet.setEmpleado(nuevoEmpleado);
                                 nuevoSet.setFechainicial(fechaIngreso);
                                 nuevoSet.setPromedio(new BigDecimal("0.01"));
                                 nuevoSet.setTiposet("1");
@@ -2093,7 +2094,7 @@ public class ControlPersonaIndividual implements Serializable {
                                 BigDecimal numeroComprobante = administrarPersonaIndividual.obtenerNumeroMaximoComprobante();
 
                                 Comprobantes comprobante = new Comprobantes();
-                                comprobante.setEmpleado(empleadoAlmacenado);
+                                comprobante.setEmpleado(nuevoEmpleado);
 
                                 Calendar calendar = Calendar.getInstance();
                                 calendar.setTime(fechaIngreso); // Configuramos la fecha que se recibe
@@ -2115,7 +2116,7 @@ public class ControlPersonaIndividual implements Serializable {
 
                                 administrarPersonaIndividual.crearComprobante(comprobante);
 
-                                Comprobantes comprobanteEmpleado = administrarPersonaIndividual.buscarComprobanteParaPrimerRegistroEmpleado(empleadoAlmacenado.getSecuencia());
+                                Comprobantes comprobanteEmpleado = administrarPersonaIndividual.buscarComprobanteParaPrimerRegistroEmpleado(nuevoEmpleado.getSecuencia());
 
                                 Procesos procesoCodigo1 = null;
                                 short cod1 = 1;
@@ -2131,7 +2132,7 @@ public class ControlPersonaIndividual implements Serializable {
                                 } else {
                                     corte.setCorte(fechaCorte);
                                 }
-                                corte.setEmpleado(empleadoAlmacenado);
+                                corte.setEmpleado(nuevoEmpleado);
                                 corte.setProceso(procesoCodigo1);
                                 k++;
                                 l = BigInteger.valueOf(k);
@@ -2146,7 +2147,7 @@ public class ControlPersonaIndividual implements Serializable {
                                     } else {
                                         corte2.setCorte(fechaCorte);
                                     }
-                                    corte2.setEmpleado(empleadoAlmacenado);
+                                    corte2.setEmpleado(nuevoEmpleado);
                                     corte2.setProceso(procesoCodigo80);
                                     k++;
                                     l = BigInteger.valueOf(k);
@@ -2157,7 +2158,7 @@ public class ControlPersonaIndividual implements Serializable {
                                 short cod12 = 12;
                                 TiposTrabajadores codigo12 = administrarPersonaIndividual.buscarTipoTrabajadorPorCodigo(cod12);
                                 VigenciasTiposTrabajadores nuevaVigenciaTT = new VigenciasTiposTrabajadores();
-                                nuevaVigenciaTT.setEmpleado(empleadoAlmacenado);
+                                nuevaVigenciaTT.setEmpleado(nuevoEmpleado);
                                 Date fechaNuevo = new Date(1, 1, 60);
                                 nuevaVigenciaTT.setFechavigencia(fechaNuevo);
                                 nuevaVigenciaTT.setTipotrabajador(codigo12);
@@ -2168,7 +2169,7 @@ public class ControlPersonaIndividual implements Serializable {
                                 context.execute("procesoGuardadoOK.show()");
                                 cancelarModificaciones();
                             } else {
-                                System.err.println("No trajo el ultimo empleado creado con vigencia cargo");
+                                System.err.println("No trajo la secuencia del empleado creado");
                             }
                         } else {
                             System.err.println("No trajo la ultima persona creada para crear Empleado");

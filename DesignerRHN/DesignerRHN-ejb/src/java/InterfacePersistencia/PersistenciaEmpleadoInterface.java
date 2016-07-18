@@ -16,13 +16,14 @@ public interface PersistenciaEmpleadoInterface {
      *
      * @param empleados Empleado que se quiere crear.
      */
-    public void crear(EntityManager em, Empleados empleados);
+    public BigInteger crear(EntityManager em, BigInteger codigoEmpleado, BigInteger secPersona, BigInteger secEmpresa);
 
     /**
      * Método encargado de modificar un Empleado de la base de datos. Este
      * método recibe la información del parámetro para hacer un 'merge' con la
      * información de la base de datos.
      *
+     * @param em
      * @param empleados Empleado con los cambios que se van a realizar.
      */
     public void editar(EntityManager em, Empleados empleados);
