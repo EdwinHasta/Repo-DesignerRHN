@@ -5438,4 +5438,31 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+     <navigation-rule>
+        <from-view-id>/novedadpagoparcialcesantias.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedad</from-outcome>
+            <to-view-id>/novedad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/novedad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>pagoparcial</from-outcome>
+            <to-view-id>/novedadpagoparcialcesantias.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+        <navigation-rule>
+        <from-view-id>/novedadpagoparcialcesantias.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>motivocesantias</from-outcome>
+            <to-view-id>/motivocesantia.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
 </faces-config>

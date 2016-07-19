@@ -5,6 +5,7 @@ package Persistencia;
 
 import Entidades.NovedadesSistema;
 import InterfacePersistencia.PersistenciaNovedadesSistemaInterface;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -95,6 +96,28 @@ public class PersistenciaNovedadesSistema implements PersistenciaNovedadesSistem
     }
 
     @Override
+    public List<NovedadesSistema> novedadesEmpleadoCesantias(EntityManager em, BigInteger secuenciaEmpleado) {
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT n FROM NovedadesSistema n WHERE n.tipo = 'CESANTIA' and n.empleado.secuencia = :secuenciaEmpleado ORDER BY n.fechainicialdisfrute DESC ");
+            query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            List<NovedadesSistema> novedadesSistema = query.getResultList();
+            if (novedadesSistema != null) {
+                if (novedadesSistema.isEmpty()) {
+                    return null;
+                } else {
+                    return novedadesSistema;
+                }
+            } else {
+                return novedadesSistema;
+            }
+        } catch (Exception e) {
+            System.out.println("Error: (novedadesEmpleadoCesantias)" + e);
+            return null;
+        }
+    }
+
+    @Override
     public List<NovedadesSistema> novedadesEmpleadoVacaciones(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
             em.clear();
@@ -102,14 +125,14 @@ public class PersistenciaNovedadesSistema implements PersistenciaNovedadesSistem
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<NovedadesSistema> novedadesSistema = query.getResultList();
-            if(novedadesSistema != null){
-                if(novedadesSistema.isEmpty()){
+            if (novedadesSistema != null) {
+                if (novedadesSistema.isEmpty()) {
                     return null;
                 } else {
                     return novedadesSistema;
                 }
-            } else{
-            return novedadesSistema;
+            } else {
+                return novedadesSistema;
             }
         } catch (Exception e) {
             System.out.println("Error: (novedadesEmpleado)" + e);
@@ -160,4 +183,119 @@ public class PersistenciaNovedadesSistema implements PersistenciaNovedadesSistem
             return null;
         }
     }
+
+    @Override
+    public BigDecimal valorCesantias(EntityManager em, BigInteger secuenciaEmpleado) {
+        try {
+
+            em.clear();
+            String qr = "SELECT sn1.SALDO \n" + //,SN1.FECHAHASTA 
+                    "FROM SOLUCIONESNODOS SN1, EMPLEADOS E, vigenciascargos vc, estructuras est, organigramas org\n"
+                    + "WHERE sn1.EMPLEADO= E.SECUENCIA\n"
+                    + "and e.secuencia=vc.empleado\n"
+                    + "and vc.estructura=est.secuencia\n"
+                    + "and est.organigrama=org.secuencia\n"
+                    + "AND sn1.TIPO = 'PASIVO'\n"
+                    + "AND sn1.ESTADO='CERRADO'\n"
+                    + "AND sn1.CONCEPTO = (SELECT gc.CONCEPTO \n"
+                    + "                FROM GRUPOSPROVISIONES GC\n"
+                    + "                WHERE gc.NOMBRE='CESANTIAS' AND GC.empresa=org.EMPRESA)\n"
+                    + "and vc.fechavigencia=(select max(vci.fechavigencia) \n"
+                    + "                      from vigenciascargos vci\n"
+                    + "                      where vc.empleado=vci.empleado\n"
+                    + "                      and vc.fechavigencia<=sysdate)\n"
+                    + "AND sn1.FECHAHASTA = (SELECT MAX(sn2.FECHAHASTA)\n"
+                    + "                      FROM SOLUCIONESNODOS SN2\n"
+                    + "                      WHERE SN1.EMPLEADO=SN2.EMPLEADO\n"
+                    + "                      AND SN1.CONCEPTO= SN2.CONCEPTO\n"
+                    + "                      AND SN2.ESTADO='CERRADO'"
+                    + "                      AND sn2.fechadesde <= sysdate)\n"
+                    + "AND E.SECUENCIA= ? \n";
+            Query query = em.createNativeQuery(qr);
+            query.setParameter(1, secuenciaEmpleado);
+            BigDecimal valorcesantias = (BigDecimal) query.getSingleResult();
+            System.out.println("valor retornado por la funcion PersistenciaNovedadesSistema.valorCesantias: " + valorcesantias);
+            return valorcesantias;
+        } catch (Exception e) {
+            System.out.println("Error: (valorCesantias)" + e);
+            return null;
+        }
+    }
+
+    @Override
+    public BigDecimal valorIntCesantias(EntityManager em, BigInteger secuenciaEmpleado) {
+        try {
+
+            em.clear();
+            String qr = "SELECT sn1.SALDO  \n" + //,SN1.FECHAHASTA
+                    "FROM SOLUCIONESNODOS SN1, EMPLEADOS E, vigenciascargos vc, estructuras est, organigramas org\n"
+                    + "WHERE sn1.EMPLEADO= E.SECUENCIA\n"
+                    + "and e.secuencia=vc.empleado\n"
+                    + "and vc.estructura=est.secuencia\n"
+                    + "and est.organigrama=org.secuencia\n"
+                    + "AND sn1.TIPO = 'PASIVO'\n"
+                    + "AND sn1.ESTADO='CERRADO'\n"
+                    + "AND sn1.CONCEPTO = (SELECT gc.CONCEPTO \n"
+                    + "                FROM GRUPOSPROVISIONES GC\n"
+                    + "                WHERE gc.NOMBRE='INTERES CESANTIAS' AND GC.empresa=org.EMPRESA)\n"
+                    + "and vc.fechavigencia=(select max(vci.fechavigencia) \n"
+                    + "                      from vigenciascargos vci\n"
+                    + "                      where vc.empleado=vci.empleado\n"
+                    + "                      and vc.fechavigencia<=sysdate)\n"
+                    + "AND sn1.FECHAHASTA = (SELECT MAX(sn2.FECHAHASTA)\n"
+                    + "                      FROM SOLUCIONESNODOS SN2\n"
+                    + "                      WHERE SN1.EMPLEADO=SN2.EMPLEADO\n"
+                    + "                      AND SN1.CONCEPTO= SN2.CONCEPTO\n"
+                    + "                      AND SN2.ESTADO='CERRADO'"
+                    + "                      AND sn2.fechadesde <= sysdate)\n"
+                    + "AND E.SECUENCIA= ? \n";
+            Query query = em.createNativeQuery(qr);
+            query.setParameter(1, secuenciaEmpleado);
+            BigDecimal valorintcesantias = (BigDecimal) query.getSingleResult();
+            System.out.println("valor retornado por la funcion PersistenciaNovedadesSistema.valorIntCesantias: " + valorintcesantias);
+            return valorintcesantias;
+        } catch (Exception e) {
+            System.err.println("Error: (valorIntCesantias)" + e);
+            return null;
+        }
+    }
+
+//    @Override
+//    public List<NovedadesSistema> todasNovedadesCesantias(EntityManager em, BigInteger secuenciaEmpleado) {
+//        try {
+//            em.clear();
+//            String qr = "SELECT * FROM NOVEDADESSISTEMA N,EMPLEADOS E WHERE N.EMPLEADO = ? AND N.TIPO='CESANTIA'";
+//            Query query = em.createNativeQuery(qr);
+//            query.setParameter(1, secuenciaEmpleado);
+//            List<NovedadesSistema> todasnovedades = query.getResultList();
+//            return todasnovedades;
+//
+//        } catch (Exception e) {
+//            System.err.println("Error: (persistenciaNovedadesSistema.todasNovedadesCesantias)" + e);
+//            return null;
+//        }
+//    }
+//
+//    @Override
+//    public List<NovedadesSistema> novedadesCesantiasNoLiquidadas(EntityManager em, BigInteger secuenciaEmpleado) {
+//        try {
+//            em.clear();
+//            String qr = " select * from empleados v where \n"
+//                    + " exists (select 1 from novedadessistema ns\n"
+//                    + "          where NS.empleado = ? \n"
+//                    + "          and ns.tipo = 'CESANTIA'\n"
+//                    + "          AND not EXISTS (SELECT 'X' \n"
+//                    + "                          FROM detallesnovedadessistema dns, novedades n, solucionesformulas sf \n"
+//                    + "                          WHERE ns.secuencia = dns.novedadsistema  AND dns.novedad = n.secuencia AND N.secuencia = SF.novedad))";
+//            Query query = em.createNativeQuery(qr);
+//            query.setParameter(1, secuenciaEmpleado);
+//            List<NovedadesSistema> actualesnovedades = query.getResultList();
+//            return actualesnovedades;
+//
+//        } catch (Exception e) {
+//            System.err.println("Error: (persistenciaNovedadesSistema.actualesNovedadesCesantias)" + e);
+//            return null;
+//        }
+//    }
+
 }

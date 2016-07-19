@@ -46,6 +46,7 @@ public class ControlMotivosCesantias implements Serializable {
     private MotivosCesantias nuevoMotivoCesantia;
     private MotivosCesantias duplicarMotivoCesantia;
     private MotivosCesantias editarMotivoCesantia;
+    private MotivosCesantias motivoCesantiaSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -57,7 +58,7 @@ public class ControlMotivosCesantias implements Serializable {
     private Column codigo, descripcion;
     //borrado
     private int registrosBorrados;
-    private String mensajeValidacion;
+    private String mensajeValidacion,paginaAnterior;
 
     public ControlMotivosCesantias() {
         listMotivosCesantias = null;
@@ -83,6 +84,20 @@ public class ControlMotivosCesantias implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
+    
+    public void recibirPag(String pag) {
+        paginaAnterior = pag;
+        //contarRegistrosNovedades();
+        if (!listMotivosCesantias.isEmpty()) {
+            motivoCesantiaSeleccionado = listMotivosCesantias.get(0);
+        }
+    }
+
+    public String volverPagAnterior() {
+        return paginaAnterior;
+    }
+    
+    
     
     public void eventoFiltrar() {
         try {
@@ -798,4 +813,13 @@ public class ControlMotivosCesantias implements Serializable {
         this.guardado = guardado;
     }
 
+    public String getPaginaAnterior() {
+        return paginaAnterior;
+    }
+
+    public void setPaginaAnterior(String paginaAnterior) {
+        this.paginaAnterior = paginaAnterior;
+    }
+
+    
 }

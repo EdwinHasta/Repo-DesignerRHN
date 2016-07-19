@@ -16,6 +16,7 @@ import InterfacePersistencia.PersistenciaMotivosDefinitivasInterface;
 import InterfacePersistencia.PersistenciaMotivosRetirosInterface;
 import InterfacePersistencia.PersistenciaNovedadesSistemaInterface;
 import InterfacePersistencia.PersistenciaVacacionesInterface;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
@@ -102,9 +103,27 @@ public class AdministrarNovedadesSistema implements AdministrarNovedadesSistemaI
     public List<NovedadesSistema> vacacionesEmpleado(BigInteger secuenciaEmpleado){
         return persistenciaNovedades.novedadesEmpleadoVacaciones(em, secuenciaEmpleado);
     }
-        
+     
+   
+    @Override
+    public List<NovedadesSistema> cesantiasEmpleado(BigInteger secuenciaEmpleado){
+        return persistenciaNovedades.novedadesEmpleadoCesantias(em, secuenciaEmpleado);
+    }
+     
+    
     @Override
     public List<Vacaciones> periodosEmpleado(BigInteger secuenciaEmpleado){
         return persistenciaVacaciones.periodoVacaciones(em, secuenciaEmpleado);
     }
+
+    @Override
+    public BigDecimal valorCesantias(BigInteger secuenciaEmpleado) {
+        return persistenciaNovedades.valorCesantias(em, secuenciaEmpleado);
+    }
+
+    @Override
+        public BigDecimal valorIntCesantias(BigInteger secuenciaEmpleado) {
+        return persistenciaNovedades.valorIntCesantias(em, secuenciaEmpleado);
+    }
+
 }

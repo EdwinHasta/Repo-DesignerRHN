@@ -9,6 +9,7 @@ import Entidades.MotivosRetiros;
 import Entidades.MotivosDefinitivas;
 import Entidades.NovedadesSistema;
 import Entidades.Vacaciones;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -41,6 +42,12 @@ public interface AdministrarNovedadesSistemaInterface {
     
     public List<NovedadesSistema> vacacionesEmpleado(BigInteger secuenciaEmpleado);
     
+    public List<NovedadesSistema> cesantiasEmpleado(BigInteger secuenciaEmpleado);
+    
     public List<Vacaciones> periodosEmpleado(BigInteger secuenciaEmpleado);
+    
+    public BigDecimal valorCesantias(BigInteger secuenciaEmpleado);
+    
+    public BigDecimal valorIntCesantias(BigInteger secuenciaEmpleado);
     
 }

@@ -4,6 +4,7 @@
 package InterfacePersistencia;
 
 import Entidades.NovedadesSistema;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -34,6 +35,7 @@ public interface PersistenciaNovedadesSistemaInterface {
     /**
      * Método encargado de buscar las NovedadesSistema ordenadas por fechaInicialDisfrute,
      * de tipo 'DEFINITIVA' y de un empleado dado como parámetro.
+     * @param em
      * @param secuenciaEmpleado Secuencia del empleado al que se la buscan las NovedadesSistema
      * @return Retorna una lista de NovedadesSistema.
      */
@@ -46,6 +48,16 @@ public interface PersistenciaNovedadesSistemaInterface {
      * @param secuenciaEmpleado Secuencia del empleado al que se la buscan las NovedadesSistema
      * @return Retorna un String.
      */
+   public BigDecimal valorCesantias(EntityManager em, BigInteger secuenciaEmpleado);
+   
+   public BigDecimal valorIntCesantias(EntityManager em, BigInteger secuenciaEmpleado);
+    
     public String buscarEstadoVacaciones(EntityManager em, BigInteger secuenciaEmpleado);
+    
+    public List<NovedadesSistema> novedadesEmpleadoCesantias(EntityManager em, BigInteger secuenciaEmpleado);
+    
+//    public List<NovedadesSistema> todasNovedadesCesantias(EntityManager em, BigInteger secuenciaEmpleado);
+//    
+//    public List<NovedadesSistema> novedadesCesantiasNoLiquidadas(EntityManager em, BigInteger secuenciaEmpleado);
     
     }

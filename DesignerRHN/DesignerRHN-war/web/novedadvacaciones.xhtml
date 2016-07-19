@@ -91,7 +91,7 @@
                             <p:dataTable id="datosEmpleados" var="empleados" value="#{controlNovedadesVacaciones.listaEmpleadosNovedad}"
                                          rowKey="#{empleados.secuencia}" style=" border: 1px; text-align: left; width: 560px"                           
                                          scrollable="true"  scrollHeight="86" scrollWidth="580" filteredValue="#{controlNovedadesVacaciones.filtradosListaEmpleadosNovedad}" 
-                                         emptyMessage="No se encontrarón resultados para la búsqueda" selection="#{controlNovedadesVacaciones.empleadoSeleccionado}"
+                                         emptyMessage="No se encontraron resultados para la búsqueda" selection="#{controlNovedadesVacaciones.empleadoSeleccionado}"
                                          editable="true" editMode="cell" selectionMode="single" >
 
                                 <p:ajax event="filter" listener="#{controlNovedadesVacaciones.eventoFiltrar()}"/>
@@ -359,7 +359,7 @@
                             <pe:keyFilter for="nuevoDias" mask="num"/>
 
                             <strong><h:outputText value="Fecha Sig. Fin. Vacacion: " style=" position: absolute; top: 185px" /></strong>
-                            <div id="posicionFechaSiguienteNuevoReg" style=" position: absolute; top: 180px; left: 200px">
+                            <div id="posicionFechaSiguienteNuevoRegi" style=" position: absolute; top: 180px; left: 200px">
                                 <lnk:calendar id="nuevaFechaSiguiente" value="#{controlNovedadesVacaciones.nuevaNovedad.fechasiguientefinvaca}" >
                                     <p:ajax event="dateSelect" update="nuevaFechaSiguiente"/>
                                     <p:ajax event="change" update="nuevaFechaSiguiente"/>
@@ -659,7 +659,7 @@
                     <p:dialog id="confirmarRastro" header="#{msg['informacion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" icon="ui-icon-check" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlNovedadesEmpleados.secRegistro, 'Novedades', 'novedadempleado')}" style="position: absolute; top: 63px; left: 175px" action="rastro" process="@this" />
+                        <p:commandButton value="Si" icon="ui-icon-check" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlNovedadesEmpleados.novedadSeleccionada.getSecuencia(), 'Novedades', 'novedadvacaciones')}" style="position: absolute; top: 63px; left: 175px" action="rastro" process="@this" />
                         <p:commandButton value="No" icon="ui-icon-close" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 240px" process="@this" />
                     </p:dialog>
 
@@ -683,7 +683,7 @@
                     <p:dialog id="errorTablaConRastro" header="#{msg['informacion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" icon="ui-icon-check" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlNovedadesEmpleados.secRegistro, 'Novedades', 'novedadempleado')}" style="position: absolute; top: 65px; left: 175px" action="rastro" process="@this" />
+                        <p:commandButton value="Si" icon="ui-icon-check" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlNovedadesEmpleados.novedadSeleccionada.getSecuencia(), 'Novedades', 'novedadvacaciones')}" style="position: absolute; top: 65px; left: 175px" action="rastro" process="@this" />
                         <p:commandButton value="No" icon="ui-icon-close" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 65px; left: 240px" process="@this" />
                     </p:dialog>
 

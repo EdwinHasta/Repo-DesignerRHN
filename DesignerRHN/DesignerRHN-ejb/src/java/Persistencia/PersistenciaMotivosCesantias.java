@@ -24,9 +24,11 @@ public class PersistenciaMotivosCesantias implements PersistenciaMotivosCesantia
 
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
+     * @param em
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
+    @Override
     public void crear(EntityManager em, MotivosCesantias motivosCesantias) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
@@ -42,6 +44,7 @@ public class PersistenciaMotivosCesantias implements PersistenciaMotivosCesantia
         }
     }
 
+    @Override
     public void editar(EntityManager em, MotivosCesantias motivosCesantias) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
@@ -57,6 +60,7 @@ public class PersistenciaMotivosCesantias implements PersistenciaMotivosCesantia
         }
     }
 
+    @Override
     public void borrar(EntityManager em, MotivosCesantias motivosCesantias) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
@@ -76,6 +80,7 @@ public class PersistenciaMotivosCesantias implements PersistenciaMotivosCesantia
         }
     }
 
+    @Override
     public MotivosCesantias buscarMotivoCensantia(EntityManager em, BigInteger secuenciaME) {
         try {
             em.clear();
@@ -85,6 +90,7 @@ public class PersistenciaMotivosCesantias implements PersistenciaMotivosCesantia
         }
     }
 
+    @Override
     public List<MotivosCesantias> buscarMotivosCesantias(EntityManager em) {
         em.clear();
         Query query = em.createQuery("SELECT m FROM MotivosCesantias m ORDER BY m.codigo ASC");
@@ -93,6 +99,7 @@ public class PersistenciaMotivosCesantias implements PersistenciaMotivosCesantia
         return listaMotivosEmbargos;
     }
 
+    @Override
     public BigInteger contadorNovedadesSistema(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {

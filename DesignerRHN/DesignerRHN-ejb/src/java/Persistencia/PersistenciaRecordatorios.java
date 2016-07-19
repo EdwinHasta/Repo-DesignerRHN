@@ -29,9 +29,12 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
     public void crear(EntityManager em, Recordatorios recordatorios) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
+        System.out.println("PersistenciaRecordatorios.crear:EntityManager: "+ em );
+        System.out.println("PersistenciaRecordatorios.crear: Recordatorios: "+ recordatorios );
         try {
             tx.begin();
-            em.merge(recordatorios);
+            //em.merge(recordatorios);
+            em.persist(recordatorios);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaRecordatorios.crear: " + e.toString());
@@ -149,8 +152,8 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
     public List<Recordatorios> mensajesRecordatorios(EntityManager em) {
         try {
             em.clear();
-            String consulta = "SELECT * FROM RECORDATORIOS R WHERE R.TIPO='RECORDATORIO'and usuario =(SELECT U.SECUENCIA FROM USUARIOS U "
-                    + "WHERE U.ALIAS=USER)";
+            String consulta = "SELECT * FROM RECORDATORIOS R WHERE R.TIPO='RECORDATORIO' and (usuario =(SELECT U.SECUENCIA FROM USUARIOS U "
+                    + "WHERE U.ALIAS=USER) OR usuario IS NULL)";
             Query query = em.createNativeQuery(consulta, Recordatorios.class);
             //Query query = em.createNativeQuery(consulta);  //Obliga a hacer un casting cuando la lista se use.
             List<Recordatorios> listaConsultas = query.getResultList();

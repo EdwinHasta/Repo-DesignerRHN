@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -91,6 +92,7 @@ public class ControlPerDirecciones implements Serializable {
         tipoLista = 0;
         nuevaDireccion = new Direcciones();
         nuevaDireccion.setCiudad(new Ciudades());
+        nuevaDireccion.setFechavigencia(new Date());
         listaDireccionesBorrar = new ArrayList<Direcciones>();
         listaDireccionesCrear = new ArrayList<Direcciones>();
         listaDireccionesModificar = new ArrayList<Direcciones>();

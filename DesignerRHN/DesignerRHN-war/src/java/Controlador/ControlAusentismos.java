@@ -25,6 +25,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -82,14 +83,12 @@ public class ControlAusentismos implements Serializable {
     private int cualCelda, tipoLista;
     //OTROS
     private boolean aceptar;
-    private int index;
     private int tipoActualizacion; //Activo/Desactivo Crtl + F11
     private int bandera;
     private int banderaBotones;
     private int banderaBotonesD;
     private boolean permitirIndex;
     //RASTROS
-    private BigInteger secRegistro;
     private boolean guardado, guardarOk;
     //Crear Novedades
     private List<Soausentismos> listaAusentismosCrear;
@@ -160,6 +159,7 @@ public class ControlAusentismos implements Serializable {
     private String altoDialogoNuevo;
     private String altoDialogoDuplicar;
     private boolean colapsado;
+    private String infoRegistroAusentismos;
     private String infoRegistroTipo;
     private String infoRegistroClase;
     private String infoRegistroCausa;
@@ -172,6 +172,9 @@ public class ControlAusentismos implements Serializable {
     private String infoRegistroProrroga;
     private String infoRegistroTercero;
     private String infoRegistroEmpleado;
+    private String infoRegistroEmpleadoLov;
+    private boolean activarLov;
+    private DataTable tablaC;
 
     public ControlAusentismos() {
         colapsado = true;
@@ -204,7 +207,7 @@ public class ControlAusentismos implements Serializable {
         listaEmpleadosAusentismo = null;
         permitirIndex = true;
         aceptar = true;
-        secRegistro = null;
+        ausentismoSeleccionado = null;
         guardado = true;
         tipoLista = 0;
         listaAusentismosBorrar = new ArrayList<Soausentismos>();
@@ -212,6 +215,7 @@ public class ControlAusentismos implements Serializable {
         listaAusentismosModificar = new ArrayList<Soausentismos>();
         //Crear VC
         nuevoAusentismo = new Soausentismos();
+        nuevoAusentismo.setFecha(new Date());
         nuevoAusentismo.setTipo(new Tiposausentismos());
         nuevoAusentismo.setClase(new Clasesausentismos());
         nuevoAusentismo.setCausa(new Causasausentismos());
@@ -226,7 +230,7 @@ public class ControlAusentismos implements Serializable {
         bandera = 0;
         banderaBotones = 0;
         banderaBotonesD = 0;
-        index = -1;
+        ausentismoSeleccionado = null;
     }
 
     @PostConstruct
@@ -236,6 +240,7 @@ public class ControlAusentismos implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarAusentismos.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
+            contarRegistros();
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -249,6 +254,8 @@ public class ControlAusentismos implements Serializable {
         if (listaAusentismosCrear.isEmpty() && listaAusentismosBorrar.isEmpty() && listaAusentismosModificar.isEmpty()) {
             secuenciaEmpleado = seleccionMostrar.getSecuencia();
             listaAusentismos = null;
+            getListaAusentismos();
+            modificarInfoRegistroAusentismos(listaAusentismos.size());
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosAusentismosEmpleado");
             //}
@@ -269,62 +276,135 @@ public class ControlAusentismos implements Serializable {
         context.update("form:datosAusentismosEmpleado");
     }
 
-    public void eventoFiltrar() {
-        if (tipoLista == 0) {
-            tipoLista = 1;
-        }
-    }
-
-    public void asignarIndex(Integer indice, int dlg, int LND) {
-        index = indice;
+    public void asignarIndex(Soausentismos ausentismo, int dlg, int LND) {
+        ausentismoSeleccionado = ausentismo;
         RequestContext context = RequestContext.getCurrentInstance();
-        if (LND == 0) {
-            tipoActualizacion = 0;
-        } else if (LND == 1) {
-            tipoActualizacion = 1;
-            index = -1;
-            secRegistro = null;
-            System.out.println("Tipo Actualizacion: " + tipoActualizacion);
-        } else if (LND == 2) {
-            index = -1;
-            secRegistro = null;
-            tipoActualizacion = 2;
-        }
+        tipoActualizacion = LND;
         if (dlg == 0) {
+            habilitarBotonLov();
+            modificarInfoRegistroEmpleadoLov(listaEmpleados.size());
             context.update("formularioDialogos:empleadosDialogo");
             context.execute("empleadosDialogo.show()");
         } else if (dlg == 1) {
+            habilitarBotonLov();
+            modificarInfoRegistroTipo(listaTiposAusentismos.size());
             context.update("formularioDialogos:tiposAusentismosDialogo");
             context.execute("tiposAusentismosDialogo.show()");
         } else if (dlg == 2) {
+            habilitarBotonLov();
+            modificarInfoRegistroClase(listaClasesAusentismos.size());
             context.update("formularioDialogos:clasesAusentismosDialogo");
             context.execute("clasesAusentismosDialogo.show()");
         } else if (dlg == 3) {
+            habilitarBotonLov();
+            modificarInfoRegistroCausa(listaCausasAusentismos.size());
             context.update("formularioDialogos:causasAusentismosDialogo");
             context.execute("causasAusentismosDialogo.show()");
         } else if (dlg == 4) {
+            habilitarBotonLov();
+            modificarInfoRegistroPorcentaje(listaPorcentaje.size());
             context.update("formularioDialogos:porcentajesDialogo");
             context.execute("porcentajesDialogo.show()");
         } else if (dlg == 5) {
+            habilitarBotonLov();
+            modificarInfoRegistroBase(listaIBCS.size());
             context.update("formularioDialogos:ibcsDialogo");
             context.execute("ibcsDialogo.show()");
         } else if (dlg == 6) {
+            habilitarBotonLov();
+            modificarInfoRegistroForma(listaForma.size());
             context.update("formularioDialogos:formasDialogo");
             context.execute("formasDialogo.show()");
         } else if (dlg == 7) {
+            habilitarBotonLov();
+            modificarInfoRegistroAccidente(listaAccidentes.size());
             context.update("formularioDialogos:accidentesDialogo");
             context.execute("accidentesDialogo.show()");
         } else if (dlg == 8) {
+            habilitarBotonLov();
+            modificarInfoRegistroTercero(listaTerceros.size());
             context.update("formularioDialogos:tercerosDialogo");
             context.execute("tercerosDialogo.show()");
         } else if (dlg == 9) {
+            habilitarBotonLov();
+            modificarInfoRegistroEnfermedad(listaEnfermeadadesProfesionales.size());
             context.update("formularioDialogos:enfermedadesDialogo");
             context.execute("enfermedadesDialogo.show()");
         } else if (dlg == 10) {
-            //    listaProrrogas = null;
+            habilitarBotonLov();
+            modificarInfoRegistroProrroga(listaProrrogas.size());
             context.update("formularioDialogos:prorrogasDialogo");
             context.execute("prorrogasDialogo.show()");
         } else if (dlg == 11) {
+            habilitarBotonLov();
+            modificarInfoRegistroDiagnostico(listaDiagnosticos.size());
+            context.update("formularioDialogos:diagnosticosDialogo");
+            context.execute("diagnosticosDialogo.show()");
+        }
+    }
+
+    public void asignarIndex(int dlg, int LND) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        tipoActualizacion = LND;
+
+        if (dlg == 0) {
+            habilitarBotonLov();
+            modificarInfoRegistroEmpleadoLov(listaEmpleados.size());
+            context.update("formularioDialogos:empleadosDialogo");
+            context.execute("empleadosDialogo.show()");
+        } else if (dlg == 1) {
+            habilitarBotonLov();
+            modificarInfoRegistroTipo(listaTiposAusentismos.size());
+            context.update("formularioDialogos:tiposAusentismosDialogo");
+            context.execute("tiposAusentismosDialogo.show()");
+        } else if (dlg == 2) {
+            habilitarBotonLov();
+            modificarInfoRegistroClase(listaClasesAusentismos.size());
+            context.update("formularioDialogos:clasesAusentismosDialogo");
+            context.execute("clasesAusentismosDialogo.show()");
+        } else if (dlg == 3) {
+            habilitarBotonLov();
+            modificarInfoRegistroCausa(listaCausasAusentismos.size());
+            context.update("formularioDialogos:causasAusentismosDialogo");
+            context.execute("causasAusentismosDialogo.show()");
+        } else if (dlg == 4) {
+            habilitarBotonLov();
+            modificarInfoRegistroPorcentaje(listaPorcentaje.size());
+            context.update("formularioDialogos:porcentajesDialogo");
+            context.execute("porcentajesDialogo.show()");
+        } else if (dlg == 5) {
+            habilitarBotonLov();
+            modificarInfoRegistroBase(listaIBCS.size());
+            context.update("formularioDialogos:ibcsDialogo");
+            context.execute("ibcsDialogo.show()");
+        } else if (dlg == 6) {
+            habilitarBotonLov();
+            modificarInfoRegistroForma(listaForma.size());
+            context.update("formularioDialogos:formasDialogo");
+            context.execute("formasDialogo.show()");
+        } else if (dlg == 7) {
+            habilitarBotonLov();
+            modificarInfoRegistroAccidente(listaAccidentes.size());
+            context.update("formularioDialogos:accidentesDialogo");
+            context.execute("accidentesDialogo.show()");
+        } else if (dlg == 8) {
+            habilitarBotonLov();
+            modificarInfoRegistroTercero(listaTerceros.size());
+            context.update("formularioDialogos:tercerosDialogo");
+            context.execute("tercerosDialogo.show()");
+        } else if (dlg == 9) {
+            habilitarBotonLov();
+            modificarInfoRegistroEnfermedad(listaEnfermeadadesProfesionales.size());
+            context.update("formularioDialogos:enfermedadesDialogo");
+            context.execute("enfermedadesDialogo.show()");
+        } else if (dlg == 10) {
+            habilitarBotonLov();
+            modificarInfoRegistroProrroga(listaProrrogas.size());
+            context.update("formularioDialogos:prorrogasDialogo");
+            context.execute("prorrogasDialogo.show()");
+        } else if (dlg == 11) {
+            habilitarBotonLov();
+            modificarInfoRegistroDiagnostico(listaDiagnosticos.size());
             context.update("formularioDialogos:diagnosticosDialogo");
             context.execute("diagnosticosDialogo.show()");
         }
@@ -345,7 +425,7 @@ public class ControlAusentismos implements Serializable {
         }
         seleccionEmpleados = listaEmpleadosAusentismo.get(0);
         listaAusentismos = administrarAusentismos.ausentismosEmpleado(seleccionEmpleados.getSecuencia());
-
+        modificarInforegistroEmpleado(listaEmpleadosAusentismo.size());
         context.update("form:datosEmpleados");
         context.update("form:datosAusentismosEmpleado");
         //getListaConceptosNovedad();
@@ -353,8 +433,7 @@ public class ControlAusentismos implements Serializable {
         listaAusentismos = null;
         filtradosListaAusentismos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        ausentismoSeleccionado = null;
         tipoActualizacion = -1;
         cualCelda = -1;
     }
@@ -377,6 +456,7 @@ public class ControlAusentismos implements Serializable {
         cambiosPagina = false;
         secuenciaEmpleado = seleccionEmpleados.getSecuencia();
         listaAusentismos = null;
+        modificarInforegistroEmpleado(listaEmpleados.size());
         context.reset("formularioDialogos:LOVEmpleados:globalFilter");
         context.execute("LOVEmpleados.clearFilters()");
         context.execute("empleadosDialogo.hide()");
@@ -386,15 +466,13 @@ public class ControlAusentismos implements Serializable {
         filtradosListaAusentismos = null;
         seleccionEmpleados = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
     }
 
     public void actualizarProrrogas() {
         RequestContext context = RequestContext.getCurrentInstance();
-        listaAusentismos.get(index).setProrroga(seleccionProrrogas);
+        ausentismoSeleccionado.setProrroga(seleccionProrrogas);
         context.reset("formularioDialogos:LOVProrrogas:globalFilter");
         context.execute("LOVProrrogas.clearFilters()");
         context.execute("prorrogasDialogo.hide()");
@@ -404,8 +482,6 @@ public class ControlAusentismos implements Serializable {
         filtradosListaAusentismos = null;
         seleccionProrrogas = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
     }
@@ -414,21 +490,21 @@ public class ControlAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaAusentismos.get(index).setTipo(seleccionTiposAusentismos);
-                if (!listaAusentismosCrear.contains(listaAusentismos.get(index))) {
+                ausentismoSeleccionado.setTipo(seleccionTiposAusentismos);
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(listaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             } else {
-                filtradosListaAusentismos.get(index).setTipo(seleccionTiposAusentismos);
-                if (!listaAusentismosCrear.contains(filtradosListaAusentismos.get(index))) {
+                ausentismoSeleccionado.setTipo(seleccionTiposAusentismos);
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(filtradosListaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             }
@@ -452,8 +528,6 @@ public class ControlAusentismos implements Serializable {
         filtradoslistaTiposAusentismos = null;
         seleccionTiposAusentismos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
 //        context.update("formularioDialogos:LOVTiposAusentismos");
@@ -466,21 +540,21 @@ public class ControlAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaAusentismos.get(index).setClase(seleccionClasesAusentismos);
-                if (!listaAusentismosCrear.contains(listaAusentismos.get(index))) {
+                ausentismoSeleccionado.setClase(seleccionClasesAusentismos);
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(listaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             } else {
-                filtradosListaAusentismos.get(index).setClase(seleccionClasesAusentismos);
-                if (!listaAusentismosCrear.contains(filtradosListaAusentismos.get(index))) {
+                ausentismoSeleccionado.setClase(seleccionClasesAusentismos);
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(filtradosListaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             }
@@ -503,8 +577,6 @@ public class ControlAusentismos implements Serializable {
         filtradoslistaClasesAusentismos = null;
         seleccionClasesAusentismos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVClasesAusentismos:globalFilter");
@@ -517,21 +589,21 @@ public class ControlAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaAusentismos.get(index).setCausa(seleccionCausasAusentismos);
-                if (!listaAusentismosCrear.contains(listaAusentismos.get(index))) {
+                ausentismoSeleccionado.setCausa(seleccionCausasAusentismos);
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(listaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             } else {
-                filtradosListaAusentismos.get(index).setCausa(seleccionCausasAusentismos);
-                if (!listaAusentismosCrear.contains(filtradosListaAusentismos.get(index))) {
+                ausentismoSeleccionado.setCausa(seleccionCausasAusentismos);
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(filtradosListaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             }
@@ -553,8 +625,6 @@ public class ControlAusentismos implements Serializable {
         filtradoslistaCausasAusentismos = null;
         seleccionCausasAusentismos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVCausasAusentismos:globalFilter");
@@ -567,21 +637,21 @@ public class ControlAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaAusentismos.get(index).setPorcentajeindividual(new BigDecimal(seleccionPorcentajes));
-                if (!listaAusentismosCrear.contains(listaAusentismos.get(index))) {
+                ausentismoSeleccionado.setPorcentajeindividual(new BigDecimal(seleccionPorcentajes));
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(listaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             } else {
-                filtradosListaAusentismos.get(index).setPorcentajeindividual(new BigDecimal(seleccionPorcentajes));
-                if (!listaAusentismosCrear.contains(filtradosListaAusentismos.get(index))) {
+                ausentismoSeleccionado.setPorcentajeindividual(new BigDecimal(seleccionPorcentajes));
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(filtradosListaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             }
@@ -604,8 +674,6 @@ public class ControlAusentismos implements Serializable {
         filtradosListaPorcentajes = null;
         seleccionPorcentajes = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVPorcentajes:globalFilter");
@@ -618,21 +686,21 @@ public class ControlAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaAusentismos.get(index).setBaseliquidacion(seleccionIBCS.getValor().toBigInteger());
-                if (!listaAusentismosCrear.contains(listaAusentismos.get(index))) {
+                ausentismoSeleccionado.setBaseliquidacion(seleccionIBCS.getValor().toBigInteger());
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(listaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             } else {
-                filtradosListaAusentismos.get(index).setBaseliquidacion(seleccionIBCS.getValor().toBigInteger());
-                if (!listaAusentismosCrear.contains(filtradosListaAusentismos.get(index))) {
+                ausentismoSeleccionado.setBaseliquidacion(seleccionIBCS.getValor().toBigInteger());
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(filtradosListaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             }
@@ -655,8 +723,6 @@ public class ControlAusentismos implements Serializable {
         filtradosListaIBCS = null;
         seleccionIBCS = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVIbcs:globalFilter");
@@ -669,21 +735,21 @@ public class ControlAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaAusentismos.get(index).setEnfermedad(seleccionEnfermeadadesProfesionales);
-                if (!listaAusentismosCrear.contains(listaAusentismos.get(index))) {
+                ausentismoSeleccionado.setEnfermedad(seleccionEnfermeadadesProfesionales);
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(listaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             } else {
-                filtradosListaAusentismos.get(index).setEnfermedad(seleccionEnfermeadadesProfesionales);
-                if (!listaAusentismosCrear.contains(filtradosListaAusentismos.get(index))) {
+                ausentismoSeleccionado.setEnfermedad(seleccionEnfermeadadesProfesionales);
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(filtradosListaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             }
@@ -706,8 +772,6 @@ public class ControlAusentismos implements Serializable {
         filtradoslistaEnfermeadadesProfesionales = null;
         seleccionEnfermeadadesProfesionales = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVEnfermedades:globalFilter");
@@ -720,21 +784,21 @@ public class ControlAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaAusentismos.get(index).setFormaliquidacion(seleccionForma);
-                if (!listaAusentismosCrear.contains(listaAusentismos.get(index))) {
+                ausentismoSeleccionado.setFormaliquidacion(seleccionForma);
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(listaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             } else {
-                filtradosListaAusentismos.get(index).setFormaliquidacion(seleccionForma);
-                if (!listaAusentismosCrear.contains(filtradosListaAusentismos.get(index))) {
+                ausentismoSeleccionado.setFormaliquidacion(seleccionForma);
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(filtradosListaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             }
@@ -757,8 +821,6 @@ public class ControlAusentismos implements Serializable {
         filtradosListaForma = null;
         seleccionForma = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVFormas:globalFilter");
@@ -771,21 +833,21 @@ public class ControlAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaAusentismos.get(index).setAccidente(seleccionAccidentes);
-                if (!listaAusentismosCrear.contains(listaAusentismos.get(index))) {
+                ausentismoSeleccionado.setAccidente(seleccionAccidentes);
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(listaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             } else {
-                filtradosListaAusentismos.get(index).setAccidente(seleccionAccidentes);
-                if (!listaAusentismosCrear.contains(filtradosListaAusentismos.get(index))) {
+                ausentismoSeleccionado.setAccidente(seleccionAccidentes);
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(filtradosListaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             }
@@ -808,8 +870,6 @@ public class ControlAusentismos implements Serializable {
         filtradoslistaAccidentes = null;
         seleccionAccidentes = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVAccidentes:globalFilter");
@@ -822,21 +882,21 @@ public class ControlAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaAusentismos.get(index).setTercero(seleccionTerceros);
-                if (!listaAusentismosCrear.contains(listaAusentismos.get(index))) {
+                ausentismoSeleccionado.setTercero(seleccionTerceros);
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(listaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             } else {
-                filtradosListaAusentismos.get(index).setTercero(seleccionTerceros);
-                if (!listaAusentismosCrear.contains(filtradosListaAusentismos.get(index))) {
+                ausentismoSeleccionado.setTercero(seleccionTerceros);
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(filtradosListaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             }
@@ -859,8 +919,6 @@ public class ControlAusentismos implements Serializable {
         filtradoslistaTerceros = null;
         seleccionTerceros = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVTerceros:globalFilter");
@@ -873,21 +931,21 @@ public class ControlAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaAusentismos.get(index).setDiagnosticocategoria(seleccionDiagnosticos);
-                if (!listaAusentismosCrear.contains(listaAusentismos.get(index))) {
+                ausentismoSeleccionado.setDiagnosticocategoria(seleccionDiagnosticos);
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(listaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(listaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             } else {
-                filtradosListaAusentismos.get(index).setDiagnosticocategoria(seleccionDiagnosticos);
-                if (!listaAusentismosCrear.contains(filtradosListaAusentismos.get(index))) {
+                ausentismoSeleccionado.setDiagnosticocategoria(seleccionDiagnosticos);
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
-                    } else if (!listaAusentismosModificar.contains(filtradosListaAusentismos.get(index))) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(index));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                 }
             }
@@ -910,8 +968,6 @@ public class ControlAusentismos implements Serializable {
         filtradoslistaDiagnosticos = null;
         seleccionDiagnosticos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVDiagnosticos:globalFilter");
@@ -925,8 +981,6 @@ public class ControlAusentismos implements Serializable {
         filtradoslistaDiagnosticos = null;
         seleccionDiagnosticos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -940,8 +994,6 @@ public class ControlAusentismos implements Serializable {
         filtradoslistaEmpleados = null;
         seleccionEmpleados = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -954,8 +1006,6 @@ public class ControlAusentismos implements Serializable {
         filtradoslistaTiposAusentismos = null;
         seleccionTiposAusentismos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -970,8 +1020,6 @@ public class ControlAusentismos implements Serializable {
         filtradoslistaClasesAusentismos = null;
         seleccionClasesAusentismos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -985,8 +1033,6 @@ public class ControlAusentismos implements Serializable {
         filtradoslistaCausasAusentismos = null;
         seleccionCausasAusentismos = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -1000,8 +1046,6 @@ public class ControlAusentismos implements Serializable {
         filtradosListaPorcentajes = null;
         seleccionPorcentajes = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -1015,8 +1059,6 @@ public class ControlAusentismos implements Serializable {
         filtradosListaForma = null;
         seleccionForma = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -1030,8 +1072,6 @@ public class ControlAusentismos implements Serializable {
         filtradosListaIBCS = null;
         seleccionIBCS = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -1045,8 +1085,6 @@ public class ControlAusentismos implements Serializable {
         filtradoslistaEnfermeadadesProfesionales = null;
         seleccionEnfermeadadesProfesionales = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -1060,8 +1098,6 @@ public class ControlAusentismos implements Serializable {
         filtradoslistaProrrogas = null;
         seleccionProrrogas = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -1075,8 +1111,6 @@ public class ControlAusentismos implements Serializable {
         filtradoslistaAccidentes = null;
         seleccionAccidentes = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -1090,8 +1124,6 @@ public class ControlAusentismos implements Serializable {
         filtradoslistaTerceros = null;
         seleccionTerceros = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -1105,9 +1137,9 @@ public class ControlAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
         if (!listaAusentismos.isEmpty()) {
-            if (secRegistro != null) {
+            if (ausentismoSeleccionado != null) {
                 System.out.println("lol 2");
-                int result = administrarRastros.obtenerTabla(secRegistro, "SOAUSENTISMOS");
+                int result = administrarRastros.obtenerTabla(ausentismoSeleccionado.getSecuencia(), "SOAUSENTISMOS");
                 System.out.println("resultado: " + result);
                 if (result == 1) {
                     context.execute("errorObjetosDB.show()");
@@ -1131,23 +1163,23 @@ public class ControlAusentismos implements Serializable {
             }
 
         }
-        index = -1;
+        ausentismoSeleccionado = null;
     }
 
     //AUTOCOMPLETAR
-    public void modificarAusentismos(int indice, String confirmarCambio, String valorConfirmar) {
-        index = indice;
+    public void modificarAusentismos(Soausentismos ausentismo, String confirmarCambio, String valorConfirmar) {
+        ausentismoSeleccionado = ausentismo;
         System.out.println("modificarAusentismos");
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("N")) {
             if (tipoLista == 0) {
-                if (!listaAusentismosCrear.contains(listaAusentismos.get(indice))) {
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(listaAusentismos.get(indice));
-                    } else if (!listaAusentismosModificar.contains(listaAusentismos.get(indice))) {
-                        listaAusentismosModificar.add(listaAusentismos.get(indice));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
@@ -1155,14 +1187,12 @@ public class ControlAusentismos implements Serializable {
 
                     }
                 }
-                index = -1;
-                secRegistro = null;
             } else {
-                if (!listaAusentismosCrear.contains(filtradosListaAusentismos.get(indice))) {
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(indice));
-                    } else if (!listaAusentismosModificar.contains(filtradosListaAusentismos.get(indice))) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(indice));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
@@ -1170,15 +1200,14 @@ public class ControlAusentismos implements Serializable {
 
                     }
                 }
-                index = -1;
             }
 
             context.update("form:datosAusentismosEmpleado");
         } else if (confirmarCambio.equalsIgnoreCase("TIPO")) {
             if (tipoLista == 0) {
-                listaAusentismos.get(indice).getTipo().setDescripcion(TipoAusentismo);
+                ausentismoSeleccionado.getTipo().setDescripcion(TipoAusentismo);
             } else {
-                filtradosListaAusentismos.get(indice).getTipo().setDescripcion(TipoAusentismo);
+                ausentismoSeleccionado.getTipo().setDescripcion(TipoAusentismo);
             }
 
             for (int i = 0; i < listaTiposAusentismos.size(); i++) {
@@ -1189,9 +1218,9 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaAusentismos.get(indice).setTipo(listaTiposAusentismos.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setTipo(listaTiposAusentismos.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaAusentismos.get(indice).setTipo(listaTiposAusentismos.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setTipo(listaTiposAusentismos.get(indiceUnicoElemento));
                 }
                 listaTiposAusentismos.clear();
                 getListaTiposAusentismos();
@@ -1204,9 +1233,9 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("TERCERO")) {
             if (tipoLista == 0) {
-                listaAusentismos.get(indice).getTercero().setNombre(Tercero);
+                ausentismoSeleccionado.getTercero().setNombre(Tercero);
             } else {
-                filtradosListaAusentismos.get(indice).getTercero().setNombre(Tercero);
+                ausentismoSeleccionado.getTercero().setNombre(Tercero);
             }
 
             for (int i = 0; i < listaAusentismos.size(); i++) {
@@ -1217,9 +1246,9 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaAusentismos.get(indice).setTercero(listaTerceros.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setTercero(listaTerceros.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaAusentismos.get(indice).setTercero(listaTerceros.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setTercero(listaTerceros.get(indiceUnicoElemento));
                 }
                 listaTerceros.clear();
                 getListaTerceros();
@@ -1233,9 +1262,9 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("CLASE")) {
             if (tipoLista == 0) {
-                listaAusentismos.get(indice).getClase().setDescripcion(ClaseAusentismo);
+                ausentismoSeleccionado.getClase().setDescripcion(ClaseAusentismo);
             } else {
-                filtradosListaAusentismos.get(indice).getClase().setDescripcion(ClaseAusentismo);
+                ausentismoSeleccionado.getClase().setDescripcion(ClaseAusentismo);
             }
 
             for (int i = 0; i < listaClasesAusentismos.size(); i++) {
@@ -1246,9 +1275,9 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaAusentismos.get(indice).setClase(listaClasesAusentismos.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setClase(listaClasesAusentismos.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaAusentismos.get(indice).setClase(listaClasesAusentismos.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setClase(listaClasesAusentismos.get(indiceUnicoElemento));
                 }
                 listaClasesAusentismos.clear();
                 getListaClasesAusentismos();
@@ -1262,9 +1291,9 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("CAUSA")) {
             if (tipoLista == 0) {
-                listaAusentismos.get(indice).getCausa().setDescripcion(CausaAusentismo);
+                ausentismoSeleccionado.getCausa().setDescripcion(CausaAusentismo);
             } else {
-                filtradosListaAusentismos.get(indice).getCausa().setDescripcion(CausaAusentismo);
+                ausentismoSeleccionado.getCausa().setDescripcion(CausaAusentismo);
             }
 
             for (int i = 0; i < listaCausasAusentismos.size(); i++) {
@@ -1275,9 +1304,9 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaAusentismos.get(indice).setCausa(listaCausasAusentismos.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setCausa(listaCausasAusentismos.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaAusentismos.get(indice).setCausa(listaCausasAusentismos.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setCausa(listaCausasAusentismos.get(indiceUnicoElemento));
                 }
                 listaCausasAusentismos.clear();
                 getListaCausasAusentismos();
@@ -1291,9 +1320,9 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("PORCENTAJE")) {
             if (tipoLista == 0) {
-                listaAusentismos.get(indice).setPorcentajeindividual(new BigDecimal(Porcentaje));
+                ausentismoSeleccionado.setPorcentajeindividual(new BigDecimal(Porcentaje));
             } else {
-                filtradosListaAusentismos.get(indice).setPorcentajeindividual(new BigDecimal(Porcentaje));
+                ausentismoSeleccionado.setPorcentajeindividual(new BigDecimal(Porcentaje));
             }
 
             for (int i = 0; i < listaPorcentaje.size(); i++) {
@@ -1304,9 +1333,9 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaAusentismos.get(indice).setPorcentajeindividual(new BigDecimal(listaPorcentaje.get(indiceUnicoElemento)));
+                    ausentismoSeleccionado.setPorcentajeindividual(new BigDecimal(listaPorcentaje.get(indiceUnicoElemento)));
                 } else {
-                    filtradosListaAusentismos.get(indice).setPorcentajeindividual(new BigDecimal(listaPorcentaje.get(indiceUnicoElemento)));
+                    ausentismoSeleccionado.setPorcentajeindividual(new BigDecimal(listaPorcentaje.get(indiceUnicoElemento)));
                 }
                 listaPorcentaje.clear();
                 getListaPorcentaje();
@@ -1320,9 +1349,9 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("BASE")) {
             if (tipoLista == 0) {
-                listaAusentismos.get(indice).setBaseliquidacion(new BigInteger(BaseLiquidacion));
+                ausentismoSeleccionado.setBaseliquidacion(new BigInteger(BaseLiquidacion));
             } else {
-                filtradosListaAusentismos.get(indice).setBaseliquidacion(new BigInteger(BaseLiquidacion));
+                ausentismoSeleccionado.setBaseliquidacion(new BigInteger(BaseLiquidacion));
             }
 
             for (int i = 0; i < listaIBCS.size(); i++) {
@@ -1333,9 +1362,9 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaAusentismos.get(indice).setBaseliquidacion(listaIBCS.get(indiceUnicoElemento).getSecuencia());
+                    ausentismoSeleccionado.setBaseliquidacion(listaIBCS.get(indiceUnicoElemento).getSecuencia());
                 } else {
-                    filtradosListaAusentismos.get(indice).setBaseliquidacion(listaIBCS.get(indiceUnicoElemento).getSecuencia());
+                    ausentismoSeleccionado.setBaseliquidacion(listaIBCS.get(indiceUnicoElemento).getSecuencia());
                 }
                 listaIBCS.clear();
                 getListaIBCS();
@@ -1349,9 +1378,9 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("FORMA")) {
             if (tipoLista == 0) {
-                listaAusentismos.get(indice).setFormaliquidacion(Forma);
+                ausentismoSeleccionado.setFormaliquidacion(Forma);
             } else {
-                filtradosListaAusentismos.get(indice).setFormaliquidacion(Forma);
+                ausentismoSeleccionado.setFormaliquidacion(Forma);
             }
 
             for (int i = 0; i < listaForma.size(); i++) {
@@ -1362,9 +1391,9 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaAusentismos.get(indice).setFormaliquidacion(listaForma.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setFormaliquidacion(listaForma.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaAusentismos.get(indice).setFormaliquidacion(listaForma.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setFormaliquidacion(listaForma.get(indiceUnicoElemento));
                 }
                 listaForma.clear();
                 getListaForma();
@@ -1378,9 +1407,9 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("AD")) {
             if (tipoLista == 0) {
-                listaAusentismos.get(indice).getAccidente().setDescripcioncaso(AD);
+                ausentismoSeleccionado.getAccidente().setDescripcioncaso(AD);
             } else {
-                filtradosListaAusentismos.get(indice).getAccidente().setDescripcioncaso(AD);
+                ausentismoSeleccionado.getAccidente().setDescripcioncaso(AD);
             }
 
             for (int i = 0; i < listaAccidentes.size(); i++) {
@@ -1391,9 +1420,9 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaAusentismos.get(indice).setAccidente(listaAccidentes.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setAccidente(listaAccidentes.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaAusentismos.get(indice).setAccidente(listaAccidentes.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setAccidente(listaAccidentes.get(indiceUnicoElemento));
                 }
                 listaAccidentes.clear();
                 getListaAccidentes();
@@ -1407,9 +1436,9 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("ENFERMEDADES")) {
             if (tipoLista == 0) {
-                listaAusentismos.get(indice).getEnfermedad().getCategoria().setDescripcion(Enfermedad);
+                ausentismoSeleccionado.getEnfermedad().getCategoria().setDescripcion(Enfermedad);
             } else {
-                filtradosListaAusentismos.get(indice).getEnfermedad().getCategoria().setDescripcion(Enfermedad);
+                ausentismoSeleccionado.getEnfermedad().getCategoria().setDescripcion(Enfermedad);
             }
 
             for (int i = 0; i < listaEnfermeadadesProfesionales.size(); i++) {
@@ -1420,9 +1449,9 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaAusentismos.get(indice).setEnfermedad(listaEnfermeadadesProfesionales.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setEnfermedad(listaEnfermeadadesProfesionales.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaAusentismos.get(indice).setEnfermedad(listaEnfermeadadesProfesionales.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setEnfermedad(listaEnfermeadadesProfesionales.get(indiceUnicoElemento));
                 }
                 listaEnfermeadadesProfesionales.clear();
                 getListaEnfermeadadesProfesionales();
@@ -1436,9 +1465,9 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("DIAGNOSTICO")) {
             if (tipoLista == 0) {
-                listaAusentismos.get(indice).getDiagnosticocategoria().setCodigo(Diagnostico);
+                ausentismoSeleccionado.getDiagnosticocategoria().setCodigo(Diagnostico);
             } else {
-                filtradosListaAusentismos.get(indice).getDiagnosticocategoria().setCodigo(Diagnostico);
+                ausentismoSeleccionado.getDiagnosticocategoria().setCodigo(Diagnostico);
             }
 
             for (int i = 0; i < listaDiagnosticos.size(); i++) {
@@ -1449,9 +1478,9 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaAusentismos.get(indice).setDiagnosticocategoria(listaDiagnosticos.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setDiagnosticocategoria(listaDiagnosticos.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaAusentismos.get(indice).setDiagnosticocategoria(listaDiagnosticos.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setDiagnosticocategoria(listaDiagnosticos.get(indiceUnicoElemento));
                 }
                 listaDiagnosticos.clear();
                 getListaDiagnosticos();
@@ -1465,9 +1494,9 @@ public class ControlAusentismos implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("PRORROGA")) {
             if (tipoLista == 0) {
-                listaAusentismos.get(indice).getProrroga().setProrrogaAusentismo(Prorroga);
+                ausentismoSeleccionado.getProrroga().setProrrogaAusentismo(Prorroga);
             } else {
-                filtradosListaAusentismos.get(indice).getProrroga().setProrrogaAusentismo(Prorroga);
+                ausentismoSeleccionado.getProrroga().setProrrogaAusentismo(Prorroga);
             }
 
             for (int i = 0; i < listaProrrogas.size(); i++) {
@@ -1478,9 +1507,9 @@ public class ControlAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaAusentismos.get(indice).setProrroga(listaProrrogas.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setProrroga(listaProrrogas.get(indiceUnicoElemento));
                 } else {
-                    filtradosListaAusentismos.get(indice).setProrroga(listaProrrogas.get(indiceUnicoElemento));
+                    ausentismoSeleccionado.setProrroga(listaProrrogas.get(indiceUnicoElemento));
                 }
                 listaProrrogas.clear();
                 getListaProrrogas();
@@ -1495,11 +1524,11 @@ public class ControlAusentismos implements Serializable {
         }
         if (coincidencias == 1) {
             if (tipoLista == 0) {
-                if (!listaAusentismosCrear.contains(listaAusentismos.get(indice))) {
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(listaAusentismos.get(indice));
-                    } else if (!listaAusentismosModificar.contains(listaAusentismos.get(indice))) {
-                        listaAusentismosModificar.add(listaAusentismos.get(indice));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
@@ -1507,15 +1536,13 @@ public class ControlAusentismos implements Serializable {
 
                     }
                 }
-                index = -1;
-                secRegistro = null;
             } else {
-                if (!listaAusentismosCrear.contains(filtradosListaAusentismos.get(indice))) {
+                if (!listaAusentismosCrear.contains(ausentismoSeleccionado)) {
 
                     if (listaAusentismosModificar.isEmpty()) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(indice));
-                    } else if (!listaAusentismosModificar.contains(filtradosListaAusentismos.get(indice))) {
-                        listaAusentismosModificar.add(filtradosListaAusentismos.get(indice));
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
+                    } else if (!listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                        listaAusentismosModificar.add(ausentismoSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
@@ -1523,8 +1550,6 @@ public class ControlAusentismos implements Serializable {
 
                     }
                 }
-                index = -1;
-                secRegistro = null;
             }
         }
         context.update("form:datosAusentismosEmpleado");
@@ -1533,46 +1558,31 @@ public class ControlAusentismos implements Serializable {
     //BORRAR Novedades
     public void borrarAusentismos() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index < 0) {
+        if (ausentismoSeleccionado == null) {
             context.execute("seleccionarRegistro.show()");
         } else {
-            if (index >= 0) {
+            if (ausentismoSeleccionado != null) {
                 cambiosPagina = false;
-                if (tipoLista == 0) {
-                    if (!listaAusentismosModificar.isEmpty() && listaAusentismosModificar.contains(listaAusentismos.get(index))) {
-                        int modIndex = listaAusentismosModificar.indexOf(listaAusentismos.get(index));
-                        listaAusentismosModificar.remove(modIndex);
-                        listaAusentismosBorrar.add(listaAusentismos.get(index));
-                    } else if (!listaAusentismosCrear.isEmpty() && listaAusentismosCrear.contains(listaAusentismos.get(index))) {
-                        int crearIndex = listaAusentismosCrear.indexOf(listaAusentismos.get(index));
-                        listaAusentismosCrear.remove(crearIndex);
-                    } else {
-                        listaAusentismosBorrar.add(listaAusentismos.get(index));
-                    }
-                    listaAusentismos.remove(index);
+                if (!listaAusentismosModificar.isEmpty() && listaAusentismosModificar.contains(ausentismoSeleccionado)) {
+                    int modIndex = listaAusentismosModificar.indexOf(ausentismoSeleccionado);
+                    listaAusentismosModificar.remove(modIndex);
+                    listaAusentismosBorrar.add(ausentismoSeleccionado);
+                } else if (!listaAusentismosCrear.isEmpty() && listaAusentismosCrear.contains(ausentismoSeleccionado)) {
+                    int crearIndex = listaAusentismosCrear.indexOf(ausentismoSeleccionado);
+                    listaAusentismosCrear.remove(crearIndex);
+                } else {
+                    listaAusentismosBorrar.add(ausentismoSeleccionado);
                 }
-
+                listaAusentismos.remove(ausentismoSeleccionado);
                 if (tipoLista == 1) {
-                    if (!listaAusentismosModificar.isEmpty() && listaAusentismosModificar.contains(filtradosListaAusentismos.get(index))) {
-                        int modIndex = listaAusentismosModificar.indexOf(filtradosListaAusentismos.get(index));
-                        listaAusentismosModificar.remove(modIndex);
-                        listaAusentismosBorrar.add(filtradosListaAusentismos.get(index));
-                    } else if (!listaAusentismosCrear.isEmpty() && listaAusentismosCrear.contains(filtradosListaAusentismos.get(index))) {
-                        int crearIndex = listaAusentismosCrear.indexOf(filtradosListaAusentismos.get(index));
-                        listaAusentismosCrear.remove(crearIndex);
-                    } else {
-                        listaAusentismosBorrar.add(filtradosListaAusentismos.get(index));
-                    }
-                    int CIndex = listaAusentismos.indexOf(filtradosListaAusentismos.get(index));
-                    listaAusentismos.remove(CIndex);
-                    filtradosListaAusentismos.remove(index);
+                    filtradosListaAusentismos.remove(ausentismoSeleccionado);
                     System.out.println("Realizado");
                 }
 
                 context.update("form:datosAusentismosEmpleado");
                 context.update("form:ACEPTAR");
-                index = -1;
-                secRegistro = null;
+                ausentismoSeleccionado = null;
+                ausentismoSeleccionado = null;
 
                 if (guardado == true) {
                     guardado = false;
@@ -1582,101 +1592,131 @@ public class ControlAusentismos implements Serializable {
         }
     }
 
-    public void periodoAusentismo() {
-        System.out.println("Fuckin Funciona");
-    }
+//    public void periodoAusentismo() {
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+//        String celda = map.get("celda"); // name attribute of node 
+//        String registro = map.get("registro"); // type attribute of node 
+//        int indice = Integer.parseInt(registro);
+//        int columna = Integer.parseInt(celda);
+//        ausentismoSeleccionado = listaAusentismos.get(indice);
+//        cambiarIndice(ausentismoSeleccionado, columna);
+//    }
     //Ubicacion Celda Indice Abajo. //Van los que no son NOT NULL.
 
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(Soausentismos ausentismo, int celda) {
         System.out.println("Cambiar Indice");
         if (permitirIndex == true) {
-            index = indice;
+            ausentismoSeleccionado = ausentismo;
             cualCelda = celda;
             if (tipoLista == 0) {
-                secuenciaCausa = listaAusentismos.get(index).getCausa().getSecuencia();
-                secuenciaAusentismo = listaAusentismos.get(index).getSecuencia();
-                secRegistro = listaAusentismos.get(index).getSecuencia();
-                Relacion = administrarAusentismos.mostrarRelacion(listaAusentismos.get(index).getSecuencia());
+                secuenciaCausa = ausentismoSeleccionado.getCausa().getSecuencia();
+                secuenciaAusentismo = ausentismoSeleccionado.getSecuencia();
+                ausentismoSeleccionado.getSecuencia();
+                Relacion = administrarAusentismos.mostrarRelacion(ausentismoSeleccionado.getSecuencia());
                 if (cualCelda == 0) {
-                    TipoAusentismo = listaAusentismos.get(index).getTipo().getDescripcion();
+                    habilitarBotonLov();
+                    TipoAusentismo = ausentismoSeleccionado.getTipo().getDescripcion();
+                } else if (cualCelda == 1) {
+                    habilitarBotonLov();
+                    ClaseAusentismo = ausentismoSeleccionado.getClaseausentismo();
+                } else if (cualCelda == 2) {
+                    habilitarBotonLov();
+                    CausaAusentismo = ausentismoSeleccionado.getCausa().getDescripcion();
                 } else if (cualCelda == 3) {
-                    Dias = listaAusentismos.get(index).getDias().toString();
+                    deshabilitarBotonLov();
+                    Dias = ausentismoSeleccionado.getDias().toString();
                 } else if (cualCelda == 4) {
-                    Horas = listaAusentismos.get(index).getHoras().toString();
+                    deshabilitarBotonLov();
+                    Horas = ausentismoSeleccionado.getHoras().toString();
                 } else if (cualCelda == 6) {
-                    Fechafinaus = listaAusentismos.get(index).getFechafinaus().toString();
+                    deshabilitarBotonLov();
+                    Fechafinaus = ausentismoSeleccionado.getFechafinaus().toString();
                 } else if (cualCelda == 7) {
-                    Fechaexpedicion = listaAusentismos.get(index).getFechaexpedicion().toString();
+                    deshabilitarBotonLov();
+                    Fechaexpedicion = ausentismoSeleccionado.getFechaexpedicion().toString();
                 } else if (cualCelda == 8) {
-                    InicioPago = listaAusentismos.get(index).getFechainipago().toString();
+                    deshabilitarBotonLov();
+                    InicioPago = ausentismoSeleccionado.getFechainipago().toString();
                 } else if (cualCelda == 9) {
-                    FinPago = listaAusentismos.get(index).getFechafinpago().toString();
+                    deshabilitarBotonLov();
+                    FinPago = ausentismoSeleccionado.getFechafinpago().toString();
                 } else if (cualCelda == 10) {
-                    Porcentaje = listaAusentismos.get(index).getPorcentajeindividual().toString();
+                    habilitarBotonLov();
+                    Porcentaje = ausentismoSeleccionado.getPorcentajeindividual().toString();
                 } else if (cualCelda == 11) {
-                    BaseLiquidacion = listaAusentismos.get(index).getBaseliquidacion().toString();
+                    habilitarBotonLov();
+                    BaseLiquidacion = ausentismoSeleccionado.getBaseliquidacion().toString();
                 } else if (cualCelda == 12) {
-                    Forma = listaAusentismos.get(index).getFormaliquidacion();
+                    habilitarBotonLov();
+                    Forma = ausentismoSeleccionado.getFormaliquidacion();
                 } else if (cualCelda == 13) {
-                    AD = listaAusentismos.get(index).getAccidente().getDescripcioncaso();
+                    habilitarBotonLov();
+                    AD = ausentismoSeleccionado.getAccidente().getDescripcioncaso();
                 } else if (cualCelda == 14) {
-                    Enfermedad = listaAusentismos.get(index).getEnfermedad().getCategoria().getDescripcion();
+                    habilitarBotonLov();
+                    Enfermedad = ausentismoSeleccionado.getEnfermedad().getCategoria().getDescripcion();
                 } else if (cualCelda == 15) {
-                    NumeroCertificado = listaAusentismos.get(index).getNumerocertificado();
+                    deshabilitarBotonLov();
+                    NumeroCertificado = ausentismoSeleccionado.getNumerocertificado();
                 } else if (cualCelda == 16) {
-                    Diagnostico = listaAusentismos.get(index).getDiagnosticocategoria().getCodigo();
+                    habilitarBotonLov();
+                    Diagnostico = ausentismoSeleccionado.getDiagnosticocategoria().getCodigo();
                 } else if (cualCelda == 17) {
-                    Prorrogas = listaAusentismos.get(index).getProrroga().getProrrogaAusentismo();
+                    habilitarBotonLov();
+                    Prorrogas = ausentismoSeleccionado.getProrroga().getProrrogaAusentismo();
                 } else if (cualCelda == 18) {
-                    Relacionn = listaAusentismos.get(index).getRelacion();
+                    deshabilitarBotonLov();
+                    Relacionn = ausentismoSeleccionado.getRelacion();
+                } else if (cualCelda == 19) {
+                    habilitarBotonLov();
+                    Tercero = ausentismoSeleccionado.getTercero().getNombre();
                 } else if (cualCelda == 20) {
-                    Tercero = listaAusentismos.get(index).getTercero().getNombre();
-                } else if (cualCelda == 21) {
-                    Observacion = listaAusentismos.get(index).getObservaciones();
+                    deshabilitarBotonLov();
+                    Observacion = ausentismoSeleccionado.getObservaciones();
                 }
             } else {
-                secuenciaCausa = listaAusentismos.get(index).getCausa().getSecuencia();
-                secuenciaAusentismo = listaAusentismos.get(index).getSecuencia();
-                secRegistro = filtradosListaAusentismos.get(index).getSecuencia();
-                Relacion = administrarAusentismos.mostrarRelacion(listaAusentismos.get(index).getSecuencia());
+                secuenciaCausa = ausentismoSeleccionado.getCausa().getSecuencia();
+                secuenciaAusentismo = ausentismoSeleccionado.getSecuencia();
+                ausentismoSeleccionado.getSecuencia();
+                Relacion = administrarAusentismos.mostrarRelacion(ausentismoSeleccionado.getSecuencia());
                 if (cualCelda == 3) {
-                    Dias = filtradosListaAusentismos.get(index).getDias().toString();
+                    Dias = ausentismoSeleccionado.getDias().toString();
                 } else if (cualCelda == 4) {
-                    Horas = filtradosListaAusentismos.get(index).getHoras().toString();
+                    Horas = ausentismoSeleccionado.getHoras().toString();
                 } else if (cualCelda == 6) {
-                    Fechafinaus = filtradosListaAusentismos.get(index).getFechafinaus().toString();
+                    Fechafinaus = ausentismoSeleccionado.getFechafinaus().toString();
                 } else if (cualCelda == 7) {
-                    Fechaexpedicion = filtradosListaAusentismos.get(index).getFechaexpedicion().toString();
+                    Fechaexpedicion = ausentismoSeleccionado.getFechaexpedicion().toString();
                 } else if (cualCelda == 8) {
-                    InicioPago = filtradosListaAusentismos.get(index).getFechainipago().toString();
+                    InicioPago = ausentismoSeleccionado.getFechainipago().toString();
                 } else if (cualCelda == 9) {
-                    FinPago = filtradosListaAusentismos.get(index).getFechafinpago().toString();
+                    FinPago = ausentismoSeleccionado.getFechafinpago().toString();
                 } else if (cualCelda == 10) {
-                    Porcentaje = filtradosListaAusentismos.get(index).getPorcentajeindividual().toString();
+                    Porcentaje = ausentismoSeleccionado.getPorcentajeindividual().toString();
                 } else if (cualCelda == 11) {
-                    BaseLiquidacion = filtradosListaAusentismos.get(index).getBaseliquidacion().toString();
+                    BaseLiquidacion = ausentismoSeleccionado.getBaseliquidacion().toString();
                 } else if (cualCelda == 12) {
-                    Forma = filtradosListaAusentismos.get(index).getFormaliquidacion();
+                    Forma = ausentismoSeleccionado.getFormaliquidacion();
                 } else if (cualCelda == 13) {
-                    AD = filtradosListaAusentismos.get(index).getAccidente().getDescripcioncaso();
+                    AD = ausentismoSeleccionado.getAccidente().getDescripcioncaso();
                 } else if (cualCelda == 14) {
-                    Enfermedad = filtradosListaAusentismos.get(index).getEnfermedad().getCategoria().getDescripcion();
+                    Enfermedad = ausentismoSeleccionado.getEnfermedad().getCategoria().getDescripcion();
                 } else if (cualCelda == 15) {
-                    NumeroCertificado = filtradosListaAusentismos.get(index).getNumerocertificado();
+                    NumeroCertificado = ausentismoSeleccionado.getNumerocertificado();
                 } else if (cualCelda == 16) {
-                    Diagnostico = filtradosListaAusentismos.get(index).getDiagnosticocategoria().getCodigo();
+                    Diagnostico = ausentismoSeleccionado.getDiagnosticocategoria().getCodigo();
                 } else if (cualCelda == 17) {
-                    Prorrogas = filtradosListaAusentismos.get(index).getProrroga().getProrrogaAusentismo();
+                    Prorrogas = ausentismoSeleccionado.getProrroga().getProrrogaAusentismo();
                 } else if (cualCelda == 18) {
-                    Relacionn = filtradosListaAusentismos.get(index).getRelacion();
+                    Relacionn = ausentismoSeleccionado.getRelacion();
                 } else if (cualCelda == 20) {
-                    Tercero = filtradosListaAusentismos.get(index).getTercero().getNombre();
+                    Tercero = ausentismoSeleccionado.getTercero().getNombre();
                 } else if (cualCelda == 21) {
-                    Observacion = filtradosListaAusentismos.get(index).getObservaciones();
+                    Observacion = ausentismoSeleccionado.getObservaciones();
                 }
             }
         }
-        System.out.println("Index: " + index + " Celda: " + celda);
     }
 
     //EXPORTAR
@@ -1686,8 +1726,6 @@ public class ControlAusentismos implements Serializable {
         Exporter exporter = new ExportarPDFTablasAnchas();
         exporter.export(context, tabla, "AusentismosPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
     }
 
     public void exportXLS() throws IOException {
@@ -1696,18 +1734,16 @@ public class ControlAusentismos implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "AusentismosXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
     }
 
 //MOSTRAR DATOS CELDA
     public void editarCelda() {
-        if (index >= 0) {
+        if (ausentismoSeleccionado != null) {
             if (tipoLista == 0) {
-                editarAusentismos = listaAusentismos.get(index);
+                editarAusentismos = ausentismoSeleccionado;
             }
             if (tipoLista == 1) {
-                editarAusentismos = filtradosListaAusentismos.get(index);
+                editarAusentismos = ausentismoSeleccionado;
             }
             RequestContext context = RequestContext.getCurrentInstance();
             System.out.println("Entro a editar... valor celda: " + cualCelda);
@@ -1724,12 +1760,12 @@ public class ControlAusentismos implements Serializable {
                 context.execute("editarCausasAusentismos.show()");
                 cualCelda = -1;
             } else if (cualCelda == 3) {
-                context.update("formularioDialogos:editarDias");
-                context.execute("editarDias.show()");
+                context.update("formularioDialogos:editarDiasD");
+                context.execute("editarDiasD.show()");
                 cualCelda = -1;
             } else if (cualCelda == 4) {
-                context.update("formularioDialogos:editarHoras");
-                context.execute("editarHoras.show()");
+                context.update("formularioDialogos:editarHorasD");
+                context.execute("editarHorasD.show()");
                 cualCelda = -1;
             } else if (cualCelda == 5) {
                 context.update("formularioDialogos:editarFIausencias");
@@ -1785,18 +1821,18 @@ public class ControlAusentismos implements Serializable {
                 context.update("formularioDialogos:editarRelacion");
                 context.execute("editarRelacion.show()");
                 cualCelda = -1;
-            } else if (cualCelda == 20) {
+            } else if (cualCelda == 19) {
                 context.update("formularioDialogos:editarTerceros");
                 context.execute("editarTerceros.show()");
                 cualCelda = -1;
-            } else if (cualCelda == 21) {
-                context.update("formularioDialogos:editarObservaciones");
-                context.execute("editarObservaciones.show()");
+            } else if (cualCelda == 20) {
+                context.update("formularioDialogos:editarObservacionesD");
+                context.execute("editarObservacionesD.show()");
                 cualCelda = -1;
             }
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
-        index = -1;
-        secRegistro = null;
     }
 
     public void valoresBackupAutocompletar(int tipoNuevo, String Campo) {
@@ -2242,64 +2278,64 @@ public class ControlAusentismos implements Serializable {
 
     //DUPLICAR ENCARGATURA
     public void duplicarA() {
-        if (index >= 0) {
+        if (ausentismoSeleccionado != null) {
             duplicarAusentismo = new Soausentismos();
 
             if (tipoLista == 0) {
                 duplicarAusentismo.setEmpleado(seleccionMostrar);
-                duplicarAusentismo.setTipo(listaAusentismos.get(index).getTipo());
-                duplicarAusentismo.setClase(listaAusentismos.get(index).getClase());
-                duplicarAusentismo.setCausa(listaAusentismos.get(index).getCausa());
-                duplicarAusentismo.setDias(listaAusentismos.get(index).getDias());
-                duplicarAusentismo.setHoras(listaAusentismos.get(index).getHoras());
-                duplicarAusentismo.setFecha(listaAusentismos.get(index).getFecha());
-                duplicarAusentismo.setFechafinaus(listaAusentismos.get(index).getFechafinaus());
-                duplicarAusentismo.setFechaexpedicion(listaAusentismos.get(index).getFechaexpedicion());
-                duplicarAusentismo.setFechainipago(listaAusentismos.get(index).getFechainipago());
-                duplicarAusentismo.setFechafinpago(listaAusentismos.get(index).getFechafinpago());
-                duplicarAusentismo.setPorcentajeindividual(listaAusentismos.get(index).getPorcentajeindividual());
-                duplicarAusentismo.setBaseliquidacion(listaAusentismos.get(index).getBaseliquidacion());
-                duplicarAusentismo.setFormaliquidacion(listaAusentismos.get(index).getFormaliquidacion());
-                duplicarAusentismo.setAccidente(listaAusentismos.get(index).getAccidente());
-                duplicarAusentismo.setEnfermedad(listaAusentismos.get(index).getEnfermedad());
-                duplicarAusentismo.setNumerocertificado(listaAusentismos.get(index).getNumerocertificado());
-                duplicarAusentismo.setDiagnosticocategoria(listaAusentismos.get(index).getDiagnosticocategoria());
-                duplicarAusentismo.setProrroga(listaAusentismos.get(index).getProrroga());
-                duplicarAusentismo.setRelacion(listaAusentismos.get(index).getRelacion());
-                duplicarAusentismo.setRelacionada(listaAusentismos.get(index).getRelacionada());
-                duplicarAusentismo.setTercero(listaAusentismos.get(index).getTercero());
-                duplicarAusentismo.setObservaciones(listaAusentismos.get(index).getObservaciones());
+                duplicarAusentismo.setTipo(ausentismoSeleccionado.getTipo());
+                duplicarAusentismo.setClase(ausentismoSeleccionado.getClase());
+                duplicarAusentismo.setCausa(ausentismoSeleccionado.getCausa());
+                duplicarAusentismo.setDias(ausentismoSeleccionado.getDias());
+                duplicarAusentismo.setHoras(ausentismoSeleccionado.getHoras());
+                duplicarAusentismo.setFecha(ausentismoSeleccionado.getFecha());
+                duplicarAusentismo.setFechafinaus(ausentismoSeleccionado.getFechafinaus());
+                duplicarAusentismo.setFechaexpedicion(ausentismoSeleccionado.getFechaexpedicion());
+                duplicarAusentismo.setFechainipago(ausentismoSeleccionado.getFechainipago());
+                duplicarAusentismo.setFechafinpago(ausentismoSeleccionado.getFechafinpago());
+                duplicarAusentismo.setPorcentajeindividual(ausentismoSeleccionado.getPorcentajeindividual());
+                duplicarAusentismo.setBaseliquidacion(ausentismoSeleccionado.getBaseliquidacion());
+                duplicarAusentismo.setFormaliquidacion(ausentismoSeleccionado.getFormaliquidacion());
+                duplicarAusentismo.setAccidente(ausentismoSeleccionado.getAccidente());
+                duplicarAusentismo.setEnfermedad(ausentismoSeleccionado.getEnfermedad());
+                duplicarAusentismo.setNumerocertificado(ausentismoSeleccionado.getNumerocertificado());
+                duplicarAusentismo.setDiagnosticocategoria(ausentismoSeleccionado.getDiagnosticocategoria());
+                duplicarAusentismo.setProrroga(ausentismoSeleccionado.getProrroga());
+                duplicarAusentismo.setRelacion(ausentismoSeleccionado.getRelacion());
+                duplicarAusentismo.setRelacionada(ausentismoSeleccionado.getRelacionada());
+                duplicarAusentismo.setTercero(ausentismoSeleccionado.getTercero());
+                duplicarAusentismo.setObservaciones(ausentismoSeleccionado.getObservaciones());
             }
             if (tipoLista == 1) {
                 duplicarAusentismo.setEmpleado(seleccionMostrar);
-                duplicarAusentismo.setTipo(filtradosListaAusentismos.get(index).getTipo());
-                duplicarAusentismo.setClase(filtradosListaAusentismos.get(index).getClase());
-                duplicarAusentismo.setCausa(filtradosListaAusentismos.get(index).getCausa());
-                duplicarAusentismo.setDias(filtradosListaAusentismos.get(index).getDias());
-                duplicarAusentismo.setHoras(filtradosListaAusentismos.get(index).getHoras());
-                duplicarAusentismo.setFecha(filtradosListaAusentismos.get(index).getFecha());
-                duplicarAusentismo.setFechafinaus(filtradosListaAusentismos.get(index).getFechafinaus());
-                duplicarAusentismo.setFechaexpedicion(filtradosListaAusentismos.get(index).getFechaexpedicion());
-                duplicarAusentismo.setFechainipago(filtradosListaAusentismos.get(index).getFechainipago());
-                duplicarAusentismo.setFechafinpago(filtradosListaAusentismos.get(index).getFechafinpago());
-                duplicarAusentismo.setPorcentajeindividual(filtradosListaAusentismos.get(index).getPorcentajeindividual());
-                duplicarAusentismo.setBaseliquidacion(filtradosListaAusentismos.get(index).getBaseliquidacion());
-                duplicarAusentismo.setFormaliquidacion(filtradosListaAusentismos.get(index).getFormaliquidacion());
-                duplicarAusentismo.setAccidente(filtradosListaAusentismos.get(index).getAccidente());
-                duplicarAusentismo.setEnfermedad(filtradosListaAusentismos.get(index).getEnfermedad());
-                duplicarAusentismo.setNumerocertificado(filtradosListaAusentismos.get(index).getNumerocertificado());
-                duplicarAusentismo.setDiagnosticocategoria(filtradosListaAusentismos.get(index).getDiagnosticocategoria());
-                duplicarAusentismo.setProrroga(filtradosListaAusentismos.get(index).getProrroga());
-                duplicarAusentismo.setRelacion(filtradosListaAusentismos.get(index).getRelacion());
-                duplicarAusentismo.setRelacionada(filtradosListaAusentismos.get(index).getRelacionada());
-                duplicarAusentismo.setTercero(filtradosListaAusentismos.get(index).getTercero());
-                duplicarAusentismo.setObservaciones(filtradosListaAusentismos.get(index).getObservaciones());
+                duplicarAusentismo.setTipo(ausentismoSeleccionado.getTipo());
+                duplicarAusentismo.setClase(ausentismoSeleccionado.getClase());
+                duplicarAusentismo.setCausa(ausentismoSeleccionado.getCausa());
+                duplicarAusentismo.setDias(ausentismoSeleccionado.getDias());
+                duplicarAusentismo.setHoras(ausentismoSeleccionado.getHoras());
+                duplicarAusentismo.setFecha(ausentismoSeleccionado.getFecha());
+                duplicarAusentismo.setFechafinaus(ausentismoSeleccionado.getFechafinaus());
+                duplicarAusentismo.setFechaexpedicion(ausentismoSeleccionado.getFechaexpedicion());
+                duplicarAusentismo.setFechainipago(ausentismoSeleccionado.getFechainipago());
+                duplicarAusentismo.setFechafinpago(ausentismoSeleccionado.getFechafinpago());
+                duplicarAusentismo.setPorcentajeindividual(ausentismoSeleccionado.getPorcentajeindividual());
+                duplicarAusentismo.setBaseliquidacion(ausentismoSeleccionado.getBaseliquidacion());
+                duplicarAusentismo.setFormaliquidacion(ausentismoSeleccionado.getFormaliquidacion());
+                duplicarAusentismo.setAccidente(ausentismoSeleccionado.getAccidente());
+                duplicarAusentismo.setEnfermedad(ausentismoSeleccionado.getEnfermedad());
+                duplicarAusentismo.setNumerocertificado(ausentismoSeleccionado.getNumerocertificado());
+                duplicarAusentismo.setDiagnosticocategoria(ausentismoSeleccionado.getDiagnosticocategoria());
+                duplicarAusentismo.setProrroga(ausentismoSeleccionado.getProrroga());
+                duplicarAusentismo.setRelacion(ausentismoSeleccionado.getRelacion());
+                duplicarAusentismo.setRelacionada(ausentismoSeleccionado.getRelacionada());
+                duplicarAusentismo.setTercero(ausentismoSeleccionado.getTercero());
+                duplicarAusentismo.setObservaciones(ausentismoSeleccionado.getObservaciones());
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarAusentismo");
             context.execute("DuplicarAusentismoEmpleado.show()");
-            index = -1;
-            secRegistro = null;
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
     }
 
@@ -2310,11 +2346,7 @@ public class ControlAusentismos implements Serializable {
         nuevoAusentismo.setTipo(new Tiposausentismos());
         nuevoAusentismo.setCausa(new Causasausentismos());
         nuevoAusentismo.setClase(new Clasesausentismos());
-        index = -1;
-        secRegistro = null;
         System.out.println("Entro a Bandera B. 1");
-        RequestContext context = RequestContext.getCurrentInstance();
-        //context.update("formularioDialogos:limpiar");
     }
 
 //Salir NUEVO AUSENTISMO
@@ -2324,8 +2356,8 @@ public class ControlAusentismos implements Serializable {
         nuevoAusentismo.setTipo(new Tiposausentismos());
         nuevoAusentismo.setCausa(new Causasausentismos());
         nuevoAusentismo.setClase(new Clasesausentismos());
-        index = -1;
-        secRegistro = null;
+        ausentismoSeleccionado = null;
+        ausentismoSeleccionado = null;
         System.out.println("Entro a Bandera B. 1");
         botonLimpiar = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:limpiar");
         botonLimpiar.setStyle("position: absolute; left: 50px; top: 400px;");
@@ -2349,51 +2381,51 @@ public class ControlAusentismos implements Serializable {
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
             ATipo = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
-            ATipo.setFilterStyle("width: 60px");
+            ATipo.setFilterStyle("width: 85%");
             AClase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
-            AClase.setFilterStyle("width: 60px");
+            AClase.setFilterStyle("width: 85%");
             ACausa = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
-            ACausa.setFilterStyle("width: 60px");
+            ACausa.setFilterStyle("width: 85%");
             ADias = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
-            ADias.setFilterStyle("width: 60px");
+            ADias.setFilterStyle("width: 85%");
             AHoras = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
-            AHoras.setFilterStyle("width: 60px");
+            AHoras.setFilterStyle("width: 85%");
             AFecha = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
-            AFecha.setFilterStyle("width: 60px");
+            AFecha.setFilterStyle("width: 85%");
             AFechaFinaus = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
-            AFechaFinaus.setFilterStyle("width: 60px");
+            AFechaFinaus.setFilterStyle("width: 85%");
             AFechaExpedicion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
-            AFechaExpedicion.setFilterStyle("width: 60px");
+            AFechaExpedicion.setFilterStyle("width: 85%");
             AFechaInipago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
-            AFechaInipago.setFilterStyle("width: 60px");
+            AFechaInipago.setFilterStyle("width: 85%");
             AFechaFinpago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
-            AFechaFinpago.setFilterStyle("width: 60px");
+            AFechaFinpago.setFilterStyle("width: 85%");
             APorcentaje = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
-            APorcentaje.setFilterStyle("width: 60px");
+            APorcentaje.setFilterStyle("width: 85%");
             ABase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
-            ABase.setFilterStyle("width: 60px");
+            ABase.setFilterStyle("width: 85%");
             AForma = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
-            AForma.setFilterStyle("width: 60px");
+            AForma.setFilterStyle("width: 85%");
             ADescripcionCaso = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
-            ADescripcionCaso.setFilterStyle("width: 60px");
+            ADescripcionCaso.setFilterStyle("width: 85%");
             AEnfermedad = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
-            AEnfermedad.setFilterStyle("width: 60px");
+            AEnfermedad.setFilterStyle("width: 85%");
             ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
-            ANumero.setFilterStyle("width: 60px");
+            ANumero.setFilterStyle("width: 85%");
             ADiagnostico = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
-            ADiagnostico.setFilterStyle("width: 60px");
+            ADiagnostico.setFilterStyle("width: 85%");
             AProrroga = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
-            AProrroga.setFilterStyle("width: 60px");
+            AProrroga.setFilterStyle("width: 85%");
             ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
-            ANumero.setFilterStyle("width: 60px");
+            ANumero.setFilterStyle("width: 85%");
             ARelacion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
-            ARelacion.setFilterStyle("width: 60px");
+            ARelacion.setFilterStyle("width: 85%");
             ARelacionada = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
-            ARelacionada.setFilterStyle("width: 60px");
+            ARelacionada.setFilterStyle("width: 85%");
             ATercero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
-            ATercero.setFilterStyle("width: 60px");
+            ATercero.setFilterStyle("width: 85%");
             AObservaciones = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
-            AObservaciones.setFilterStyle("width: 60px");
+            AObservaciones.setFilterStyle("width: 85%");
             RequestContext.getCurrentInstance().update("form:datosAusentismosEmpleado");
             bandera = 1;
             tipoLista = 1;
@@ -2407,42 +2439,53 @@ public class ControlAusentismos implements Serializable {
 
     //LISTA DE VALORES DINAMICA
     public void listaValoresBoton() {
-        if (index >= 0) {
+        if (ausentismoSeleccionado != null) {
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 0) {
+                habilitarBotonLov();
                 context.update("formularioDialogos:tiposAusentismosDialogo");
                 context.execute("tiposAusentismosDialogo.show()");
                 tipoActualizacion = 0;
             } else if (cualCelda == 1) {
+                habilitarBotonLov();
                 context.update("formularioDialogos:clasesAusentismosDialogo");
                 context.execute("clasesAusentismosDialogo.show()");
                 tipoActualizacion = 0;
             } else if (cualCelda == 2) {
+                habilitarBotonLov();
                 context.update("formularioDialogos:causasAusentismosDialogo");
                 context.execute("causasAusentismosDialogo.show()");
                 tipoActualizacion = 0;
             } else if (cualCelda == 10) {
+                habilitarBotonLov();
                 context.update("formularioDialogos:porcentajesDialogo");
                 context.execute("porcentajesDialogo.show()");
             } else if (cualCelda == 11) {
+                habilitarBotonLov();
                 context.update("formularioDialogos:ibcsDialogo");
                 context.execute("ibcsDialogo.show()");
             } else if (cualCelda == 12) {
+                habilitarBotonLov();
                 context.update("formularioDialogos:formasDialogo");
                 context.execute("formasDialogo.show()");
             } else if (cualCelda == 13) {
+                habilitarBotonLov();
                 context.update("formularioDialogos:accidentesDialogo");
                 context.execute("accidentesDialogo.show()");
             } else if (cualCelda == 14) {
+                habilitarBotonLov();
                 context.update("formularioDialogos:enfermedadesDialogo");
                 context.execute("enfermedadesDialogo.show()");
             } else if (cualCelda == 16) {
+                habilitarBotonLov();
                 context.update("formularioDialogos:diagnosticosDialogo");
                 context.execute("diagnosticosDialogo.show()");
             } else if (cualCelda == 17) {
+                habilitarBotonLov();
                 context.update("formularioDialogos:prorrogasDialogo");
                 context.execute("prorrogasDialogo.show()");
             } else if (cualCelda == 19) {
+                habilitarBotonLov();
                 context.update("formularioDialogos:tercerosDialogo");
                 context.execute("tercerosDialogo.show()");
             }
@@ -2460,7 +2503,7 @@ public class ControlAusentismos implements Serializable {
         mensajeValidacion = new String();
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("Nuevo Ausentismo Fecha Inicial: " + nuevoAusentismo.getFecha());
-        System.out.println("Nuevo Ausentismo Fecha Inicial: " + nuevoAusentismo.getFecha());
+
         if (nuevoAusentismo.getFecha() == null) {
             System.out.println("Entro a Fecha ");
             mensajeValidacion = mensajeValidacion + " * Fecha Inicio Ausentismo\n";
@@ -2491,7 +2534,7 @@ public class ControlAusentismos implements Serializable {
         }
 
         System.out.println("Valor Pasa: " + pasa);
-
+        System.out.println("Fecha Inicio " + nuevoAusentismo.getFecha());
         if (pasa != 0) {
             context.update("formularioDialogos:validacionNuevoAusentismo");
             context.execute("validacionNuevoAusentismo.show()");
@@ -2514,6 +2557,8 @@ public class ControlAusentismos implements Serializable {
             nuevoAusentismo.setEmpleado(seleccionMostrar);
             listaAusentismosCrear.add(nuevoAusentismo);
             listaAusentismos.add(nuevoAusentismo);
+            ausentismoSeleccionado = nuevoAusentismo;
+            modificarInfoRegistroAusentismos(listaAusentismos.size());
             nuevoAusentismo = new Soausentismos();
             nuevoAusentismo.setTipo(new Tiposausentismos());
             nuevoAusentismo.setClase(new Clasesausentismos());
@@ -2534,8 +2579,6 @@ public class ControlAusentismos implements Serializable {
                 context.update("form:ACEPTAR");
             }
             context.execute("NuevoAusentismoEmpleado.hide()");
-            index = -1;
-            secRegistro = null;
         }
     }
 
@@ -2583,11 +2626,11 @@ public class ControlAusentismos implements Serializable {
         k++;
         l = BigInteger.valueOf(k);
         duplicarAusentismo.setSecuencia(l);
-        listaAusentismos.add(duplicarAusentismo);
         listaAusentismosCrear.add(duplicarAusentismo);
-
+        listaAusentismos.add(duplicarAusentismo);
+        ausentismoSeleccionado = duplicarAusentismo;
+        modificarInfoRegistroAusentismos(listaAusentismos.size());
         context.update("form:datosAusentismosEmpleado");
-        index = -1;
         if (guardado == true) {
             guardado = false;
             context.update("form:ACEPTAR");
@@ -2614,8 +2657,6 @@ public class ControlAusentismos implements Serializable {
         duplicarAusentismo.setTipo(new Tiposausentismos());
         duplicarAusentismo.setCausa(new Causasausentismos());
         duplicarAusentismo.setClase(new Clasesausentismos());
-        index = -1;
-        secRegistro = null;
     }
 
     public void salirduplicarAusentismos() {
@@ -2623,8 +2664,8 @@ public class ControlAusentismos implements Serializable {
         duplicarAusentismo.setTipo(new Tiposausentismos());
         duplicarAusentismo.setCausa(new Causasausentismos());
         duplicarAusentismo.setClase(new Clasesausentismos());
-        index = -1;
-        secRegistro = null;
+        ausentismoSeleccionado = null;
+        ausentismoSeleccionado = null;
         FacesContext c = FacesContext.getCurrentInstance();
         System.out.println("Entro a Bandera B. 1");
         botonLimpiarD = (CommandButton) c.getViewRoot().findComponent("formularioDialogos:limpiarDuplicado");
@@ -2782,22 +2823,23 @@ public class ControlAusentismos implements Serializable {
 
             System.out.println("Se guardaron los datos con exito");
             listaAusentismos = null;
+            getListaAusentismos();
+            contarRegistros();
             RequestContext context = RequestContext.getCurrentInstance();
             cambiosPagina = true;
             context.update("form:ACEPTAR");
             context.update("form:datosAusentismosEmpleado");
             guardado = true;
+            ausentismoSeleccionado = null;
             permitirIndex = true;
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
-        System.out.println("Tamaño lista: " + listaAusentismosCrear.size());
+        System.out.println("Tamaño lista: " + listaAusentismos.size());
         System.out.println("Valor k: " + k);
-        index = -1;
-        secRegistro = null;
     }
 
     //CANCELAR MODIFICACIONES
@@ -2828,9 +2870,10 @@ public class ControlAusentismos implements Serializable {
         listaAusentismosCrear.clear();
         listaAusentismosModificar.clear();
         colapsado = true;
-        index = -1;
-        secRegistro = null;
+        ausentismoSeleccionado = null;
         listaAusentismos = null;
+        getListaAusentismos();
+        contarRegistros();
         guardado = true;
         permitirIndex = true;
         cambiosPagina = true;
@@ -2917,8 +2960,7 @@ public class ControlAusentismos implements Serializable {
         listaAusentismosBorrar.clear();
         listaAusentismosCrear.clear();
         listaAusentismosModificar.clear();
-        index = -1;
-        secRegistro = null;
+        ausentismoSeleccionado = null;
         listaAusentismos = null;
         guardado = true;
         cambiosPagina = true;
@@ -2982,6 +3024,158 @@ public class ControlAusentismos implements Serializable {
         tipoLista = 0;
     }
 
+    public void eventoFiltrar() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
+        modificarInfoRegistroAusentismos(filtradosListaAusentismos.size());
+    }
+
+    public void eventoFiltrarEmpleadosLov() {
+        System.out.println("lista filtrar empleados : " + filtradoslistaEmpleados.size());
+        modificarInfoRegistroEmpleadoLov(filtradoslistaEmpleados.size());
+    }
+
+    public void eventoFiltrarTipo() {
+        modificarInfoRegistroTipo(filtradoslistaTiposAusentismos.size());
+    }
+
+    public void eventoFiltrarBase() {
+        modificarInfoRegistroBase(filtradosListaIBCS.size());
+    }
+
+    public void eventoFiltrarDiagnosticos() {
+        modificarInfoRegistroDiagnostico(filtradoslistaDiagnosticos.size());
+    }
+
+    public void eventoFiltrarPorcentaje() {
+        modificarInfoRegistroPorcentaje(filtradosListaPorcentajes.size());
+    }
+
+    public void eventoFiltrarCausa() {
+        modificarInfoRegistroCausa(filtradoslistaCausasAusentismos.size());
+    }
+
+    public void eventoFiltrarClase() {
+        modificarInfoRegistroClase(filtradoslistaClasesAusentismos.size());
+    }
+
+    public void eventoFiltrarForma() {
+        modificarInfoRegistroForma(filtradosListaForma.size());
+    }
+
+    public void eventoFiltrarAccidente() {
+        modificarInfoRegistroAccidente(filtradoslistaAccidentes.size());
+    }
+
+    public void eventoFiltrarEnfermedad() {
+        modificarInfoRegistroEnfermedad(filtradoslistaEnfermeadadesProfesionales.size());
+    }
+
+    public void eventoFiltrarProrroga() {
+        modificarInfoRegistroProrroga(filtradoslistaProrrogas.size());
+    }
+
+    public void eventoFiltrarTerceros() {
+        modificarInfoRegistroTercero(filtradoslistaTerceros.size());
+    }
+
+    public void modificarInfoRegistroAusentismos(int valor) {
+        infoRegistroAusentismos = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroAusentismos");
+    }
+
+    public void modificarInforegistroEmpleado(int valor) {
+        infoRegistroEmpleado = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroEmpleados");
+    }
+
+    public void modificarInfoRegistroEmpleadoLov(int valor) {
+        infoRegistroEmpleadoLov = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroEmpleadoLOV");
+    }
+
+    public void modificarInfoRegistroAccidente(int valor) {
+        infoRegistroAccidente = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroAccidente");
+    }
+
+    public void modificarInfoRegistroDiagnostico(int valor) {
+        infoRegistroDiagnostico = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroDiagnostico");
+    }
+
+    public void modificarInfoRegistroProrroga(int valor) {
+        infoRegistroProrroga = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroProrroga");
+    }
+
+    public void modificarInfoRegistroTercero(int valor) {
+        infoRegistroTercero = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroTercero");
+    }
+
+    public void modificarInfoRegistroEnfermedad(int valor) {
+        infoRegistroEnfermedad = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroEnfermedad");
+    }
+
+    public void modificarInfoRegistroTipo(int valor) {
+        infoRegistroTipo = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroTipos");
+    }
+
+    public void modificarInfoRegistroClase(int valor) {
+        infoRegistroClase = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroClases");
+    }
+
+    public void modificarInfoRegistroCausa(int valor) {
+        infoRegistroCausa = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroCausas");
+    }
+
+    public void modificarInfoRegistroPorcentaje(int valor) {
+        infoRegistroPorcentaje = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroPorcentaje");
+    }
+
+    public void modificarInfoRegistroBase(int valor) {
+        infoRegistroBase = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroIBCS");
+    }
+
+    public void modificarInfoRegistroForma(int valor) {
+        infoRegistroForma = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroForma");
+    }
+
+    public void habilitarBotonLov() {
+        activarLov = false;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+    }
+
+    public void deshabilitarBotonLov() {
+        activarLov = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+    }
+
+    public void contarRegistros() {
+        if (listaAusentismos != null) {
+            modificarInfoRegistroAusentismos(listaAusentismos.size());
+        } else {
+            modificarInfoRegistroAusentismos(0);
+        }
+    }
+
+      public void recordarSeleccion() {
+        if (ausentismoSeleccionado != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tablaC = (DataTable) c.getViewRoot().findComponent("form:datosAusentismosEmpleado");
+            tablaC.setSelection(ausentismoSeleccionado);
+        }
+    }
+    
     //GETTER & SETTER
     public List<Soausentismos> getListaAusentismos() {
         if (listaAusentismos == null && secuenciaEmpleado != null) {
@@ -3012,11 +3206,11 @@ public class ControlAusentismos implements Serializable {
             listaEmpleadosAusentismo = administrarAusentismos.lovEmpleados();
             if (!listaEmpleadosAusentismo.isEmpty()) {
                 seleccionMostrar = listaEmpleadosAusentismo.get(0);
-                secuenciaEmpleado = seleccionMostrar.getSecuencia();
-                System.out.println(seleccionMostrar.getSecuencia());
+//                secuenciaEmpleado = seleccionMostrar.getSecuencia();
+//                System.out.println(seleccionMostrar.getSecuencia());
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:datosEmpleados");
-                System.out.println("Seleccionado: " + seleccionMostrar.getPersona().getNombreCompleto());
+                //System.out.println("Seleccionado: " + seleccionMostrar.getPersona().getNombreCompleto());
             }
         }
         return listaEmpleadosAusentismo;
@@ -3198,14 +3392,6 @@ public class ControlAusentismos implements Serializable {
         this.secuenciaEmpleado = secuenciaEmpleado;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
-    }
-
     public List<Ibcs> getListaIBCS() {
         if (listaIBCS == null) {
             listaIBCS = administrarAusentismos.empleadosIBCS(secuenciaEmpleado);
@@ -3285,7 +3471,6 @@ public class ControlAusentismos implements Serializable {
     }
 
     public List<EnfermeadadesProfesionales> getListaEnfermeadadesProfesionales() {
-
 
         listaEnfermeadadesProfesionales = administrarAusentismos.empleadosEP(secuenciaEmpleado);
         return listaEnfermeadadesProfesionales;
@@ -3404,9 +3589,9 @@ public class ControlAusentismos implements Serializable {
     }
 
     public String getRelacion() {
-        if (index >= 0) {
+        if (ausentismoSeleccionado != null) {
             if (Relacion == null) {
-                Relacion = administrarAusentismos.mostrarRelacion(listaAusentismos.get(index).getSecuencia());
+                Relacion = administrarAusentismos.mostrarRelacion(ausentismoSeleccionado.getSecuencia());
             }
         }
         return Relacion;
@@ -3483,9 +3668,9 @@ public class ControlAusentismos implements Serializable {
     public String getInfoRegistroTipo() {
 //        getListaTiposAusentismos();
 //        if (listaTiposAusentismos != null) {
-//            infoRegistroTipo = "Cantidad de registros : " + listaTiposAusentismos.size();
+//            modificarInfoRegistroTipo(listaTiposAusentismos.size());
 //        } else {
-//            infoRegistroTipo = "Cantidad de registros : 0";
+//            modificarInfoRegistroTipo(0);
 //        }
 
         return infoRegistroTipo;
@@ -3498,9 +3683,9 @@ public class ControlAusentismos implements Serializable {
     public String getInfoRegistroClase() {
 //        getListaClasesAusentismos();
 //        if (listaClasesAusentismos != null) {
-//            infoRegistroClase = "Cantidad de registros : " + listaClasesAusentismos.size();
+//            modificarInfoRegistroClase(listaClasesAusentismos.size());
 //        } else {
-//            infoRegistroClase = "Cantidad de registros : 0";
+//            modificarInfoRegistroClase(0);
 //        }
         return infoRegistroClase;
     }
@@ -3512,9 +3697,9 @@ public class ControlAusentismos implements Serializable {
     public String getInfoRegistroCausa() {
 //        getListaCausasAusentismos();
 //        if (listaCausasAusentismos != null) {
-//            infoRegistroCausa = "Cantidad de registros : " + listaCausasAusentismos.size();
+//            modificarInfoRegistroCausa(listaCausasAusentismos.size());
 //        } else {
-//            infoRegistroCausa = "Cantidad de registros : 0";
+//            modificarInfoRegistroCausa(0);
 //        }
         return infoRegistroCausa;
     }
@@ -3526,9 +3711,9 @@ public class ControlAusentismos implements Serializable {
     public String getInfoRegistroPorcentaje() {
 //        getListaPorcentaje();
 //        if (listaPorcentaje != null) {
-//            infoRegistroPorcentaje = "Cantidad de registros : " + listaPorcentaje.size();
+//            modificarInfoRegistroPorcentaje(listaPorcentaje.size());
 //        } else {
-//            infoRegistroPorcentaje = "Cantidad de registros : 0";
+//            modificarInfoRegistroPorcentaje(0);
 //        }
         return infoRegistroPorcentaje;
     }
@@ -3540,9 +3725,9 @@ public class ControlAusentismos implements Serializable {
     public String getInfoRegistroBase() {
 //        getListaIBCS();
 //        if (listaIBCS != null) {
-//            infoRegistroBase = "Cantidad de registros : " + listaIBCS.size();
+//            modificarInfoRegistroBase(listaIBCS.size());
 //        } else {
-//            infoRegistroBase = "Cantidad de registros : 0";
+//            modificarInfoRegistroBase(0);
 //        }
         return infoRegistroBase;
     }
@@ -3554,9 +3739,9 @@ public class ControlAusentismos implements Serializable {
     public String getInfoRegistroAccidente() {
 //        getListaAccidentes();
 //        if (listaAccidentes != null) {
-//            infoRegistroAccidente = "Cantidad de registros : " + listaAccidentes.size();
+//            modificarInfoRegistroAccidente(listaAccidentes.size());
 //        } else {
-//            infoRegistroAccidente = "Cantidad de registros : 0";
+//            modificarInfoRegistroAccidente(0);
 //        }
         return infoRegistroAccidente;
     }
@@ -3568,9 +3753,9 @@ public class ControlAusentismos implements Serializable {
     public String getInfoRegistroEnfermedad() {
 //        getListaEnfermeadadesProfesionales();
 //        if (listaEnfermeadadesProfesionales != null) {
-//            infoRegistroEnfermedad = "Cantidad de registros : " + listaEnfermeadadesProfesionales.size();
+//            modificarInfoRegistroEnfermedad(listaEnfermeadadesProfesionales.size());
 //        } else {
-//            infoRegistroEnfermedad = "Cantidad de registros : 0";
+//            modificarInfoRegistroEnfermedad(0);
 //        }
         return infoRegistroEnfermedad;
     }
@@ -3582,9 +3767,9 @@ public class ControlAusentismos implements Serializable {
     public String getInfoRegistroDiagnostico() {
 //        getListaDiagnosticos();
 //        if (listaDiagnosticos != null) {
-//            infoRegistroDiagnostico = "Cantidad de registros : " + listaDiagnosticos.size();
+//            modificarInfoRegistroDiagnostico(listaDiagnosticos.size());
 //        } else {
-//            infoRegistroDiagnostico = "Cantidad de registros : 0";
+//            modificarInfoRegistroDiagnostico(0);
 //        }
         return infoRegistroDiagnostico;
     }
@@ -3594,11 +3779,11 @@ public class ControlAusentismos implements Serializable {
     }
 
     public String getInfoRegistroProrroga() {
-//        getListaProrrogas();
+//       getListaProrrogas();
 //        if (listaProrrogas != null) {
-//            infoRegistroProrroga = "Cantidad de registros : " + listaProrrogas.size();
+//            modificarInfoRegistroProrroga(listaProrrogas.size());
 //        } else {
-//            infoRegistroProrroga = "Cantidad de registros : 0";
+//            modificarInfoRegistroProrroga(0);
 //        }
         return infoRegistroProrroga;
     }
@@ -3610,9 +3795,9 @@ public class ControlAusentismos implements Serializable {
     public String getInfoRegistroTercero() {
 //        getListaTerceros();
 //        if (listaTerceros != null) {
-//            infoRegistroTercero = "Cantidad de registros : " + listaTerceros.size();
+//            modificarInfoRegistroTercero(listaTerceros.size());
 //        } else {
-//            infoRegistroTercero = "Cantidad de registros : 0";
+//            modificarInfoRegistroTercero(0);
 //        }
         return infoRegistroTercero;
     }
@@ -3622,12 +3807,12 @@ public class ControlAusentismos implements Serializable {
     }
 
     public String getInfoRegistroEmpleado() {
-//        getListaEmpleadosAusentismo();
-//        if (listaEmpleadosAusentismo != null) {
-//            infoRegistroEmpleado = "Cantidad de registros : " + listaEmpleadosAusentismo.size();
-//        } else {
-//            infoRegistroEmpleado = "Cantidad de registros : 0";
-//        }
+        getListaEmpleadosAusentismo();
+        if (listaEmpleadosAusentismo != null) {
+            modificarInforegistroEmpleado(listaEmpleadosAusentismo.size());
+        } else {
+            modificarInforegistroEmpleado(0);
+        }
         return infoRegistroEmpleado;
     }
 
@@ -3638,9 +3823,9 @@ public class ControlAusentismos implements Serializable {
     public String getInfoRegistroForma() {
 //        getListaForma();
 //        if (listaForma != null) {
-//            infoRegistroForma = "Cantidad de registros : " + listaForma.size();
+//            modificarInfoRegistroForma(listaForma.size());
 //        } else {
-//            infoRegistroForma = "Cantidad de registros : 0";
+//            modificarInfoRegistroForma(0);
 //        }
         return infoRegistroForma;
     }
@@ -3664,4 +3849,36 @@ public class ControlAusentismos implements Serializable {
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
     }
+
+    public String getInfoRegistroAusentismos() {
+        return infoRegistroAusentismos;
+    }
+
+    public void setInfoRegistroAusentismos(String infoRegistroAusentismos) {
+        this.infoRegistroAusentismos = infoRegistroAusentismos;
+    }
+
+    public String getInfoRegistroEmpleadoLov() {
+//        getListaEmpleados();
+//        if (listaEmpleados != null) {
+//            modificarInfoRegistroEmpleadoLov(listaEmpleados.size());
+//        } else {
+//            modificarInfoRegistroEmpleadoLov(0);
+//        }
+//        
+        return infoRegistroEmpleadoLov;
+    }
+
+    public void setInfoRegistroEmpleadoLov(String infoRegistroEmpleadoLov) {
+        this.infoRegistroEmpleadoLov = infoRegistroEmpleadoLov;
+    }
+
+    public boolean isActivarLov() {
+        return activarLov;
+    }
+
+    public void setActivarLov(boolean activarLov) {
+        this.activarLov = activarLov;
+    }
+
 }

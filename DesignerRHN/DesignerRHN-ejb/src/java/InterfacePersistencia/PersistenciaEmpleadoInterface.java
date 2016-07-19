@@ -8,6 +8,7 @@ import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
+import Entidades.NovedadesSistema;
 
 public interface PersistenciaEmpleadoInterface {
 
@@ -123,7 +124,7 @@ public interface PersistenciaEmpleadoInterface {
     public List<Empleados> empleadosNovedad(EntityManager em);
 
     public List<Empleados> empleadosNovedadSoloAlgunos(EntityManager em);
-    
+
     public int contarEmpleadosNovedad(EntityManager em);
 
     /**
@@ -189,7 +190,13 @@ public interface PersistenciaEmpleadoInterface {
     public List<Empleados> consultarEmpleadosCuadrillas(EntityManager em);
 
     public List<Empleados> buscarEmpleadosATHoraExtra(EntityManager em);
-    
+
     public List<Empleados> consultarEmpleadosParaAprobarHorasExtras(EntityManager em);
+
+    public List<Empleados> empleadosCesantias(EntityManager em);
+
+    public List<Empleados> consultarCesantiasnoLiquidadas(EntityManager em);
+
+    public List<NovedadesSistema> novedadescesantiasnoliquidadas(EntityManager em, BigInteger secuenciaEmpleado);
 
 }

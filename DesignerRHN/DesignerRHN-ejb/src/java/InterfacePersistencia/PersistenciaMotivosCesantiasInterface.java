@@ -20,6 +20,7 @@ public interface PersistenciaMotivosCesantiasInterface {
     /**
      * Método encargado de insertar un Motivo Cesantia en la base de datos.
      *
+     * @param em
      * @param motivosCesantias Nibeda que se quiere crear.
      */
     public void crear(EntityManager em, MotivosCesantias motivosCesantias);
@@ -29,6 +30,7 @@ public interface PersistenciaMotivosCesantiasInterface {
      * Este método recibe la información del parámetro para hacer un 'merge' con
      * la información de la base de datos.
      *
+     * @param em
      * @param motivosCesantias Monedas con los cambios que se van a realizar.
      */
     public void editar(EntityManager em, MotivosCesantias motivosCesantias);
@@ -37,6 +39,7 @@ public interface PersistenciaMotivosCesantiasInterface {
      * Método encargado de eliminar de la base de datos un Motivo Cesantia que
      * entra por parámetro.
      *
+     * @param em
      * @param motivosCesantias Monedas que se quiere eliminar.
      */
     public void borrar(EntityManager em, MotivosCesantias motivosCesantias);
@@ -44,6 +47,7 @@ public interface PersistenciaMotivosCesantiasInterface {
     /**
      * Método encargado de buscar la Moneda con la secMotivosCesantias dada por parámetro.
      *
+     * @param em
      * @param secMotivosCesantias Secuencia de la Moneda que se quiere encontrar.
      * @return Retorna la Moneda identificada con la secMotivosCesantias dada por
      * parámetro.
@@ -54,6 +58,7 @@ public interface PersistenciaMotivosCesantiasInterface {
      * Método encargado de buscar todas los Motivos Cesantias existentes en la
      * base de datos.
      *
+     * @param em
      * @return Retorna una lista de MotivosCesantias.
      */
     public List<MotivosCesantias> buscarMotivosCesantias(EntityManager em);
@@ -63,6 +68,7 @@ public interface PersistenciaMotivosCesantiasInterface {
      * Cesantia específica y algúna Novedad Sistema. Adémas de la revisión,
      * cuenta cuantas relaciones existen.
      *
+     * @param em
      * @param secMotivosCesantias Secuencia del Motivo Cesantia.
      * @return Retorna el número de proyectos relacionados con el Motivo
      * Censantia cuya secMotivosCesantias coincide con el parámetro.

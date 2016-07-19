@@ -50,11 +50,5 @@ public class Validar implements Validator {
 //    @Override
 //    public ExecutableValidator forExecutables() {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-// 
-
-//    public ExecutableValidator forExecutables() {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-  
+//}
 }

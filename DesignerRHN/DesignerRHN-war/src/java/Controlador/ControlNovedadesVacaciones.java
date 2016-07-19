@@ -206,7 +206,6 @@ public class ControlNovedadesVacaciones implements Serializable {
         nuevaNovedad.setSubtipo("TIEMPO");
         nuevaNovedad.setTipo("VACACION");
         nuevaNovedad.setVacadiasaplazados(Short.valueOf(cero));
-        novedadSeleccionada = null;
     }
 
     public void limpiarduplicarNovedades() {
@@ -215,7 +214,6 @@ public class ControlNovedadesVacaciones implements Serializable {
         duplicarNovedad.setSubtipo("TIEMPO");
         duplicarNovedad.setTipo("VACACION");
         duplicarNovedad.setVacadiasaplazados(Short.valueOf(cero));
-        novedadSeleccionada = null;
     }
 
     //CREAR NOVEDADES
@@ -254,8 +252,8 @@ public class ControlNovedadesVacaciones implements Serializable {
             System.out.println("Empleado enviado: " + emp.getPersona().getNombreCompleto());
             listaNovedadesCrear.add(nuevaNovedad);
             listaNovedades.add(nuevaNovedad);
+            novedadSeleccionada = nuevaNovedad;
             nuevaNovedad = new NovedadesSistema();
-            nuevaNovedad.setSubtipo("TIEMPO");
             nuevaNovedad.setSubtipo("TIEMPO");
             nuevaNovedad.setTipo("VACACION");
             nuevaNovedad.setVacacion(new Vacaciones());
@@ -266,13 +264,11 @@ public class ControlNovedadesVacaciones implements Serializable {
                 context.update("form:ACEPTAR");
             }
             context.execute("nuevanovedadVacaciones.hide()");
-            novedadSeleccionada = null;
             context.update("form:datosNovedadesEmpleado");
         } else {
         }
     }
 
-    //DUPLICAR ENCARGATURA
     public void duplicarNV() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (novedadSeleccionada != null) {
@@ -299,7 +295,6 @@ public class ControlNovedadesVacaciones implements Serializable {
 
             context.update("formularioDialogos:duplicarNovedad");
             context.execute("duplicarregistroNovedad.show()");
-            novedadSeleccionada = null;
         } else {
             context.execute("seleccionarRegistro.show()");
         }
@@ -350,7 +345,7 @@ public class ControlNovedadesVacaciones implements Serializable {
             listaNovedades.add(duplicarNovedad);
             listaNovedadesCrear.add(duplicarNovedad);
 
-            novedadSeleccionada = null;
+            novedadSeleccionada = duplicarNovedad;
             if (guardado == true) {
                 guardado = false;
                 context.update("form:ACEPTAR");
@@ -372,7 +367,6 @@ public class ControlNovedadesVacaciones implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "NovedadVacacionesPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        novedadSeleccionada = null;
     }
 
     public void exportXLS() throws IOException {
@@ -381,7 +375,6 @@ public class ControlNovedadesVacaciones implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "NovedadVacacionesXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        novedadSeleccionada = null;
     }
 
     public void activarCtrlF11() {
@@ -595,6 +588,9 @@ public class ControlNovedadesVacaciones implements Serializable {
             }
             listaNovedades.remove(novedadSeleccionada);
 
+            if(tipoLista == 1){
+                filtradosListaNovedades.remove(novedadSeleccionada);
+            }
             context.update("form:datosNovedadesEmpleado");
             novedadSeleccionada = null;
 
@@ -829,10 +825,7 @@ public class ControlNovedadesVacaciones implements Serializable {
             }
         }
         novedadSeleccionada = null;
-        /*
-         * } else { context.execute("seleccionarRegistro.show()"); }
-         */
-    }
+       }
 
     //CANCELAR MODIFICACIONES
     public void cancelarModificacion() {

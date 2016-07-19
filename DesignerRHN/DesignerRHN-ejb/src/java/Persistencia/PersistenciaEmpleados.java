@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import org.omg.CORBA.INTERNAL;
+import Entidades.NovedadesSistema;
 //import org.apache.log4j.Logger;
 //import org.apache.log4j.PropertyConfigurator;
 
@@ -746,4 +747,69 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return null;
         }
     }
+    
+        @Override
+    public List<Empleados> empleadosCesantias(EntityManager em) {
+        try {
+            em.clear();
+            String sqlQuery = "select v.SECUENCIA,v.PERSONA,v.CODIGOEMPLEADO \n"
+                    + "from empleados  v where EXISTS (SELECT 'X' from  VWACTUALESTIPOSTRABAJADORES vtt, tipostrabajadores  tt \n"
+                    + "where tt.secuencia = vtt.tipotrabajador\n"
+                    + "and vtt.empleado = v.secuencia\n"
+                    + "and tt.tipo IN ('ACTIVO'))";
+            Query query = em.createNativeQuery(sqlQuery, Empleados.class);
+            List<Empleados> listaEmpleados = query.getResultList();
+            return listaEmpleados;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Empleados> consultarCesantiasnoLiquidadas(EntityManager em) {
+        try {
+            em.clear();
+            String qr = " select v.SECUENCIA,v.PERSONA,v.CODIGOEMPLEADO from empleados v where \n"
+                    + " exists (select * from novedadessistema ns\n"
+                    + "          where NS.empleado = v.secuencia \n"
+                    + "          and ns.tipo = 'CESANTIA'\n"
+                    + "          AND not EXISTS (SELECT 'X' \n"
+                    + "                          FROM detallesnovedadessistema dns, novedades n, solucionesformulas sf \n"
+                    + "                          WHERE ns.secuencia = dns.novedadsistema  AND dns.novedad = n.secuencia AND N.secuencia = SF.novedad))";
+            Query query = em.createNativeQuery(qr, Empleados.class);
+            List<Empleados> novedadesnoliquidadas = query.getResultList();
+            return novedadesnoliquidadas;
+
+        } catch (Exception e) {
+            System.err.println("Error: (persistenciaEmpleados.consultarCesantiasnoLiquidadas)" + e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<NovedadesSistema> novedadescesantiasnoliquidadas(EntityManager em, BigInteger secuenciaEmpleado) {
+
+        try {
+            em.clear();
+            String qr = "select * from novedadessistema ns \n"
+                    + "                where NS.empleado = ? \n"
+                    + "                and ns.tipo = 'CESANTIA' \n"
+                    + "                AND not EXISTS (SELECT 'X' \n"
+                    + "                                FROM detallesnovedadessistema dns, novedades n, solucionesformulas sf\n"
+                    + "                                WHERE ns.secuencia = dns.novedadsistema \n"
+                    + "                                AND dns.novedad = n.secuencia\n"
+                    + "                                AND N.secuencia = SF.novedad)";
+            Query query = em.createNativeQuery(qr, NovedadesSistema.class);
+            //Query query = em.createNativeQuery(qr);
+            query.setParameter(1, secuenciaEmpleado);
+            List<NovedadesSistema> novedadesnoliquidadas = query.getResultList();
+            return novedadesnoliquidadas;
+
+        } catch (Exception e) {
+            System.err.println("Error: (persistenciaEmpleados.novedadescesantiasnoliquidadas)" + e);
+            return null;
+        }
+
+    }
+    
 }

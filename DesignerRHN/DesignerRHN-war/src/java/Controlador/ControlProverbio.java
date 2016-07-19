@@ -10,10 +10,12 @@ import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarRecordatoriosInterface;
+//import com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -37,7 +39,7 @@ import org.primefaces.context.RequestContext;
 public class ControlProverbio implements Serializable {
 
     @EJB
-   AdministrarRecordatoriosInterface administrarRecordatorios;
+    AdministrarRecordatoriosInterface administrarRecordatorios;
     @EJB
     AdministrarRastrosInterface administrarRastros;
 
@@ -97,8 +99,11 @@ public class ControlProverbio implements Serializable {
     //Modificar Detalles Tipos Cotizantes
     private List<Recordatorios> listaMensajesUsuariosModificar;
     private List<Recordatorios> listaMensajesUsuariosBorrar;
-    private String paginaAnterior,mensaje;
-    private int ano,dia,mes;
+    private String paginaAnterior, mensaje;
+    private int ano, dia, mes;
+    private List<Short> anios;
+    private Short anioactual;
+    private String infoRegistroProverbios, infoRegistroMsgUsuario;
 
     public ControlProverbio() {
         cambiosPagina = true;
@@ -135,6 +140,13 @@ public class ControlProverbio implements Serializable {
         //Inicializar LOVS
         proverbioSeleccionado = null;
         m = 0;
+        Date datofecha = new Date();
+        anioactual = new Short(String.valueOf(datofecha.getYear()));
+        anios = new ArrayList<Short>();
+        for (int i = (anioactual - 10); i < (anioactual + 10); i++) {
+            Short n = new Short(String.valueOf(i + 1900));
+            anios.add(n);
+        }
     }
 
     @PostConstruct
@@ -149,17 +161,42 @@ public class ControlProverbio implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
-    public void recibirPagina(String pagina){
+
+    public void recibirPagina(String pagina) {
         paginaAnterior = pagina;
+        listaProverbios = null;
+        listaMensajesUsuario = null;
+        getListaMensajesUsuario();
+        getListaProverbios();
+        if (!listaProverbios.isEmpty()) {
+            modificarInfoRegistroProverbios(listaProverbios.size());
+        } else {
+            modificarInfoRegistroProverbios(0);
+        }
+
+        if (!listaMensajesUsuario.isEmpty()) {
+            modificarInfoRegistroMsgUsuarios(listaMensajesUsuario.size());
+        } else {
+            modificarInfoRegistroMsgUsuarios(0);
+        }
     }
-    
-    public String redirigir(){
+
+    public String redirigir() {
         return paginaAnterior;
     }
-    
+
     //GUARDAR
     public void guardarCambiosProverbios() {
+        System.out.println("guardarCambiosProverbios : ");
+        System.out.println("listaProverbios" + listaProverbios);
+        System.out.println("listaProverbiosCrear" + listaProverbiosCrear);
+        System.out.println("listaProverbiosBorrar" + listaProverbiosBorrar);
+        System.out.println(" listaProverbiosModificar " + listaProverbiosModificar);
+        System.out.println("guardarMensajeUsuarios");
+        System.out.println("listaMensajesUsuario" + listaMensajesUsuario);
+        System.out.println("listaMensajesUsuariosCrear" + listaMensajesUsuariosCrear);
+        System.out.println("listaMensajesUsuariosBorrar" + listaMensajesUsuariosBorrar);
+        System.out.println("listaMensajesUsuariosModificar" + listaMensajesUsuariosModificar);
 
         if (guardado == false) {
             if (!listaProverbiosBorrar.isEmpty()) {
@@ -200,15 +237,15 @@ public class ControlProverbio implements Serializable {
         }
         listaMensajesUsuario = null;
         listaProverbios = null;
+        getListaMensajesUsuario();
+        getListaProverbios();
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosProverbios");
-        proverbioSeleccionado = null;
-        proverbioSeleccionado = null;
         context.update("form:datosMensajesUsuarios");
         guardado = true;
         permitirIndex = true;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
-        FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+        FacesMessage msg = new FacesMessage("Información", "Se guardaron los datos con éxito");
         FacesContext.getCurrentInstance().addMessage(null, msg);
         context.update("form:growl");
         mensajeUsuarioSeleccionado = null;
@@ -261,20 +298,13 @@ public class ControlProverbio implements Serializable {
 
     }
 
-    //EVENTO FILTRAR
-    public void eventoFiltrar() {
-        if (tipoLista == 0) {
-            tipoLista = 1;
-        }
-    }
-
     //FILTRADO
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0 && CualTabla == 0) {
             altoTabla = "91";
             pMensaje = (Column) c.getViewRoot().findComponent("form:datosProverbios:pMensaje");
-            pMensaje.setFilterStyle("width: 60px");
+            pMensaje.setFilterStyle("width: 85%");
             RequestContext.getCurrentInstance().update("form:datosProverbios");
             bandera = 1;
         } else if (bandera == 1 && CualTabla == 0) {
@@ -288,13 +318,13 @@ public class ControlProverbio implements Serializable {
         } else if (banderaNF == 0 && CualTabla == 1) {
             altoTablaNF = "91";
             mAno = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mAno");
-            mAno.setFilterStyle("width: 60px");
+            mAno.setFilterStyle("width: 85%");
             mMes = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMes");
-            mMes.setFilterStyle("width: 60px");
+            mMes.setFilterStyle("width: 85%");
             mDia = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mDia");
-            mDia.setFilterStyle("width: 60px");
+            mDia.setFilterStyle("width: 85%");
             mMensaje = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMensaje");
-            mMensaje.setFilterStyle("width: 60px");
+            mMensaje.setFilterStyle("width: 85%");
             RequestContext.getCurrentInstance().update("form:datosMensajesUsuarios");
             banderaNF = 1;
         } else if (banderaNF == 1 && CualTabla == 1) {
@@ -357,16 +387,13 @@ public class ControlProverbio implements Serializable {
             context.update("formularioDialogos:NuevoRegistroProverbio");
             context.execute("NuevoRegistroProverbio.show()");
         } else if (CualTabla == 1) {
+            Short year = new Short(String.valueOf(anioactual));
+            nuevoRegistroMensajesUsuarios.setAno(year);
             context.update("formularioDialogos:NuevoRegistroMensajeUsuario");
             context.execute("NuevoRegistroMensajeUsuario.show()");
         }
     }
-    //EVENTO FILTRARNF
-    public void eventoFiltrarNF() {
-        if (tipoListaNF == 0) {
-            tipoListaNF = 1;
-        }
-    }
+
     //AUTOCOMPLETAR
     public void modificarProverbio(Recordatorios proverbio, String confirmarCambio, String valorConfirmar) {
         proverbioSeleccionado = proverbio;
@@ -529,6 +556,7 @@ public class ControlProverbio implements Serializable {
             listaProverbiosCrear.add(nuevoProverbio);
             listaProverbios.add(nuevoProverbio);
             proverbioSeleccionado = nuevoProverbio;
+            modificarInfoRegistroProverbios(listaProverbios.size());
             nuevoProverbio = new Recordatorios();
             context.update("form:datosProverbios");
             if (guardado == true) {
@@ -538,14 +566,12 @@ public class ControlProverbio implements Serializable {
             cambiosPagina = false;
             context.update("form:ACEPTAR");
             context.execute("NuevoRegistroProverbio.hide()");
-            mensajeUsuarioSeleccionado = null;
         } else {
             context.update("formularioDialogos:validacionNuevoProverbio");
             context.execute("validacionNuevoProverbio.show()");
         }
     }
 
-   
     public void agregarNuevoMensajeUsuario() {
         int pasa = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -553,11 +579,11 @@ public class ControlProverbio implements Serializable {
             if (bandera == 1 && CualTabla == 0) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 altoTablaNF = "115";
-                mAno = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:ano");
+                mAno = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mAno");
                 mAno.setFilterStyle("display: none; visibility: hidden;");
-                mMes = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mes");
+                mMes = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMes");
                 mMes.setFilterStyle("display: none; visibility: hidden;");
-                mDia = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:dia");
+                mDia = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mDia");
                 mDia.setFilterStyle("display: none; visibility: hidden;");
                 mMensaje = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMensaje");
                 mMensaje.setFilterStyle("display: none; visibility: hidden;");
@@ -573,13 +599,15 @@ public class ControlProverbio implements Serializable {
             nuevoRegistroMensajesUsuarios.setTipo("RECORDATORIO");
             listaMensajesUsuariosCrear.add(nuevoRegistroMensajesUsuarios);
             listaMensajesUsuario.add(nuevoRegistroMensajesUsuarios);
+            modificarInfoRegistroMsgUsuarios(listaMensajesUsuario.size());
             mensajeUsuarioSeleccionado = nuevoRegistroMensajesUsuarios;
-            nuevoRegistroMensajesUsuarios = new Recordatorios();
             context.update("form:datosMensajesUsuarios");
+
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
+            nuevoRegistroMensajesUsuarios = new Recordatorios();
             cambiosPagina = false;
             context.update("form:ACEPTAR");
             context.execute("NuevoRegistroMensajeUsuario.hide()");
@@ -609,7 +637,6 @@ public class ControlProverbio implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:DuplicarRegistroProverbio");
             context.execute("DuplicarRegistroProverbio.show()");
-            proverbioSeleccionado = null;
         } else if (mensajeUsuarioSeleccionado != null && CualTabla == 1) {
             duplicarRegistroMensajesUsuarios = new Recordatorios();
             m++;
@@ -638,129 +665,130 @@ public class ControlProverbio implements Serializable {
     }
 
     public void seleccionarAno(String estadoAno, int indice, int celda) {
-        if (tipoLista == 0) {
-            if (estadoAno != null) {
-                if (estadoAno.equals("2005")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2005"));
-                } else if (estadoAno.equals("2006")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2006"));
-                } else if (estadoAno.equals("2007")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2007"));
-                } else if (estadoAno.equals("2008")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2008"));
-                } else if (estadoAno.equals("2009")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2009"));
-                } else if (estadoAno.equals("2010")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2010"));
-                } else if (estadoAno.equals("2011")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2011"));
-                } else if (estadoAno.equals("2012")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2012"));
-                } else if (estadoAno.equals("2013")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2013"));
-                } else if (estadoAno.equals("2014")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2014"));
-                } else if (estadoAno.equals("2015")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2015"));
-                } else if (estadoAno.equals("2016")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2016"));
-                } else if (estadoAno.equals("2017")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2017"));
-                } else if (estadoAno.equals("2018")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2018"));
-                } else if (estadoAno.equals("2019")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2019"));
-                } else if (estadoAno.equals("2020")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2020"));
-                } else if (estadoAno.equals("2021")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2021"));
-                } else if (estadoAno.equals("2022")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2022"));
-                } else if (estadoAno.equals("2023")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2023"));
-                } else if (estadoAno.equals("2024")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2024"));
-                } else if (estadoAno.equals("2025")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("2025"));
-                } else if (estadoAno.equalsIgnoreCase("TODOS LOS AÑOS")) {
-                    listaMensajesUsuario.get(indice).setAno(new Short("0"));
-                }
-            } else {
-                listaMensajesUsuario.get(indice).setAno(null);
-            }
-            if (!listaMensajesUsuariosCrear.contains(listaMensajesUsuario.get(indice))) {
-                if (listaMensajesUsuariosModificar.isEmpty()) {
-                    listaMensajesUsuariosModificar.add(listaMensajesUsuario.get(indice));
-                } else if (!listaMensajesUsuariosModificar.contains(listaMensajesUsuario.get(indice))) {
-                    listaMensajesUsuariosModificar.add(listaMensajesUsuario.get(indice));
-                }
-            }
-        } else {
-            if (estadoAno != null) {
-                if (estadoAno.equals("2005")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2005"));
-                } else if (estadoAno.equals("2006")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2006"));
-                } else if (estadoAno.equals("2007")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2007"));
-                } else if (estadoAno.equals("2008")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2008"));
-                } else if (estadoAno.equals("2009")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2009"));
-                } else if (estadoAno.equals("2010")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2010"));
-                } else if (estadoAno.equals("2011")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2011"));
-                } else if (estadoAno.equals("2012")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2012"));
-                } else if (estadoAno.equals("2013")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2013"));
-                } else if (estadoAno.equals("2014")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2014"));
-                } else if (estadoAno.equals("2015")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2015"));
-                } else if (estadoAno.equals("2016")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2016"));
-                } else if (estadoAno.equals("2017")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2017"));
-                } else if (estadoAno.equals("2018")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2018"));
-                } else if (estadoAno.equals("2019")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2019"));
-                } else if (estadoAno.equals("2020")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2020"));
-                } else if (estadoAno.equals("2021")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2021"));
-                } else if (estadoAno.equals("2022")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2022"));
-                } else if (estadoAno.equals("2023")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2023"));
-                } else if (estadoAno.equals("2024")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2024"));
-                } else if (estadoAno.equals("2025")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("2025"));
-                } else if (estadoAno.equalsIgnoreCase("TODOS LOS AÑOS")) {
-                    filtradosListaMensajesUsuario.get(indice).setAno(new Short("0"));
-                }
-            } else {
-                filtradosListaMensajesUsuario.get(indice).setAno(null);
-            }
-            if (!listaMensajesUsuariosCrear.contains(filtradosListaMensajesUsuario.get(indice))) {
-                if (listaMensajesUsuariosModificar.isEmpty()) {
-                    listaMensajesUsuariosModificar.add(filtradosListaMensajesUsuario.get(indice));
-                } else if (!listaMensajesUsuariosModificar.contains(filtradosListaMensajesUsuario.get(indice))) {
-                    listaMensajesUsuariosModificar.add(filtradosListaMensajesUsuario.get(indice));
-                }
+        mensajeUsuarioSeleccionado.setAno(new Short(estadoAno));
+//        if (tipoLista == 0) {
+////            if (estadoAno != null) {
+////                if (estadoAno.equals("2005")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2005"));
+////                } else if (estadoAno.equals("2006")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2006"));
+////                } else if (estadoAno.equals("2007")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2007"));
+////                } else if (estadoAno.equals("2008")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2008"));
+////                } else if (estadoAno.equals("2009")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2009"));
+////                } else if (estadoAno.equals("2010")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2010"));
+////                } else if (estadoAno.equals("2011")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2011"));
+////                } else if (estadoAno.equals("2012")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2012"));
+////                } else if (estadoAno.equals("2013")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2013"));
+////                } else if (estadoAno.equals("2014")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2014"));
+////                } else if (estadoAno.equals("2015")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2015"));
+////                } else if (estadoAno.equals("2016")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2016"));
+////                } else if (estadoAno.equals("2017")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2017"));
+////                } else if (estadoAno.equals("2018")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2018"));
+////                } else if (estadoAno.equals("2019")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2019"));
+////                } else if (estadoAno.equals("2020")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2020"));
+////                } else if (estadoAno.equals("2021")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2021"));
+////                } else if (estadoAno.equals("2022")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2022"));
+////                } else if (estadoAno.equals("2023")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2023"));
+////                } else if (estadoAno.equals("2024")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2024"));
+////                } else if (estadoAno.equals("2025")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("2025"));
+////                } else if (estadoAno.equalsIgnoreCase("TODOS LOS AÑOS")) {
+////                    mensajeUsuarioSeleccionado.setAno(new Short("0"));
+////                }
+////            } else {
+////                mensajeUsuarioSeleccionado.setAno(null);
+////            }
+        if (!listaMensajesUsuariosCrear.contains(mensajeUsuarioSeleccionado)) {
+            if (listaMensajesUsuariosModificar.isEmpty()) {
+                listaMensajesUsuariosModificar.add(mensajeUsuarioSeleccionado);
+            } else if (!listaMensajesUsuariosModificar.contains(mensajeUsuarioSeleccionado)) {
+                listaMensajesUsuariosModificar.add(mensajeUsuarioSeleccionado);
             }
         }
-        if (guardado == true) {
-            guardado = false;
-            RequestContext.getCurrentInstance().update("form:ACEPTAR");
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        cambiosPagina = false;
-        context.update("form:ACEPTAR");
-        RequestContext.getCurrentInstance().update("form:datosMensajesUsuarios");
+//        } else {
+//            if (estadoAno != null) {
+//                if (estadoAno.equals("2005")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2005"));
+//                } else if (estadoAno.equals("2006")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2006"));
+//                } else if (estadoAno.equals("2007")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2007"));
+//                } else if (estadoAno.equals("2008")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2008"));
+//                } else if (estadoAno.equals("2009")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2009"));
+//                } else if (estadoAno.equals("2010")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2010"));
+//                } else if (estadoAno.equals("2011")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2011"));
+//                } else if (estadoAno.equals("2012")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2012"));
+//                } else if (estadoAno.equals("2013")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2013"));
+//                } else if (estadoAno.equals("2014")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2014"));
+//                } else if (estadoAno.equals("2015")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2015"));
+//                } else if (estadoAno.equals("2016")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2016"));
+//                } else if (estadoAno.equals("2017")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2017"));
+//                } else if (estadoAno.equals("2018")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2018"));
+//                } else if (estadoAno.equals("2019")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2019"));
+//                } else if (estadoAno.equals("2020")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2020"));
+//                } else if (estadoAno.equals("2021")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2021"));
+//                } else if (estadoAno.equals("2022")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2022"));
+//                } else if (estadoAno.equals("2023")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2023"));
+//                } else if (estadoAno.equals("2024")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2024"));
+//                } else if (estadoAno.equals("2025")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("2025"));
+//                } else if (estadoAno.equalsIgnoreCase("TODOS LOS AÑOS")) {
+//                    mensajeUsuarioSeleccionado.setAno(new Short("0"));
+//                }
+//            } else {
+//                mensajeUsuarioSeleccionado.setAno(null);
+//            }
+//            if (!listaMensajesUsuariosCrear.contains(mensajeUsuarioSeleccionado)) {
+//                if (listaMensajesUsuariosModificar.isEmpty()) {
+//                    listaMensajesUsuariosModificar.add(mensajeUsuarioSeleccionado);
+//                } else if (!listaMensajesUsuariosModificar.contains(mensajeUsuarioSeleccionado)) {
+//                    listaMensajesUsuariosModificar.add(mensajeUsuarioSeleccionado);
+//                }
+//            }
+//        }
+//        if (guardado == true) {
+//            guardado = false;
+//            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+//        }
+//        RequestContext context = RequestContext.getCurrentInstance();
+//        cambiosPagina = false;
+//        context.update("form:ACEPTAR");
+//        RequestContext.getCurrentInstance().update("form:datosMensajesUsuarios");
 
     }
 
@@ -768,79 +796,79 @@ public class ControlProverbio implements Serializable {
         if (tipoLista == 0) {
             if (estadoMes != null) {
                 if (estadoMes.equalsIgnoreCase("ENERO")) {
-                    listaMensajesUsuario.get(indice).setMes(new Short("1"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("1"));
                 } else if (estadoMes.equalsIgnoreCase("FEBRERO")) {
-                    listaMensajesUsuario.get(indice).setMes(new Short("2"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("2"));
                 } else if (estadoMes.equalsIgnoreCase("MARZO")) {
-                    listaMensajesUsuario.get(indice).setMes(new Short("3"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("3"));
                 } else if (estadoMes.equalsIgnoreCase("ABRIL")) {
-                    listaMensajesUsuario.get(indice).setMes(new Short("4"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("4"));
                 } else if (estadoMes.equalsIgnoreCase("MAYO")) {
-                    listaMensajesUsuario.get(indice).setMes(new Short("5"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("5"));
                 } else if (estadoMes.equalsIgnoreCase("JUNIO")) {
-                    listaMensajesUsuario.get(indice).setMes(new Short("6"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("6"));
                 } else if (estadoMes.equalsIgnoreCase("JULIO")) {
-                    listaMensajesUsuario.get(indice).setMes(new Short("7"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("7"));
                 } else if (estadoMes.equalsIgnoreCase("AGOSTO")) {
-                    listaMensajesUsuario.get(indice).setMes(new Short("8"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("8"));
                 } else if (estadoMes.equalsIgnoreCase("SEPTIEMBRE")) {
-                    listaMensajesUsuario.get(indice).setMes(new Short("9"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("9"));
                 } else if (estadoMes.equalsIgnoreCase("OCTUBRE")) {
-                    listaMensajesUsuario.get(indice).setMes(new Short("10"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("10"));
                 } else if (estadoMes.equalsIgnoreCase("NOVIEMBRE")) {
-                    listaMensajesUsuario.get(indice).setMes(new Short("11"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("11"));
                 } else if (estadoMes.equalsIgnoreCase("DICIEMBRE")) {
-                    listaMensajesUsuario.get(indice).setMes(new Short("12"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("12"));
                 } else if (estadoMes.equalsIgnoreCase("TODOS LOS MESES")) {
-                    listaMensajesUsuario.get(indice).setMes(new Short("0"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("0"));
                 }
             } else {
-                listaMensajesUsuario.get(indice).setMes(null);
+                mensajeUsuarioSeleccionado.setMes(null);
             }
-            if (!listaMensajesUsuariosCrear.contains(listaMensajesUsuario.get(indice))) {
+            if (!listaMensajesUsuariosCrear.contains(mensajeUsuarioSeleccionado)) {
                 if (listaMensajesUsuariosModificar.isEmpty()) {
-                    listaMensajesUsuariosModificar.add(listaMensajesUsuario.get(indice));
-                } else if (!listaMensajesUsuariosModificar.contains(listaMensajesUsuario.get(indice))) {
-                    listaMensajesUsuariosModificar.add(listaMensajesUsuario.get(indice));
+                    listaMensajesUsuariosModificar.add(mensajeUsuarioSeleccionado);
+                } else if (!listaMensajesUsuariosModificar.contains(mensajeUsuarioSeleccionado)) {
+                    listaMensajesUsuariosModificar.add(mensajeUsuarioSeleccionado);
                 }
             }
         } else {
             if (estadoMes != null) {
                 if (estadoMes.equalsIgnoreCase("ENERO")) {
-                    filtradosListaMensajesUsuario.get(indice).setMes(new Short("1"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("1"));
                 } else if (estadoMes.equalsIgnoreCase("FEBRERO")) {
-                    filtradosListaMensajesUsuario.get(indice).setMes(new Short("2"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("2"));
                 } else if (estadoMes.equalsIgnoreCase("MARZO")) {
-                    filtradosListaMensajesUsuario.get(indice).setMes(new Short("3"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("3"));
                 } else if (estadoMes.equalsIgnoreCase("ABRIL")) {
-                    filtradosListaMensajesUsuario.get(indice).setMes(new Short("4"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("4"));
                 } else if (estadoMes.equalsIgnoreCase("MAYO")) {
-                    filtradosListaMensajesUsuario.get(indice).setMes(new Short("5"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("5"));
                 } else if (estadoMes.equalsIgnoreCase("JUNIO")) {
-                    filtradosListaMensajesUsuario.get(indice).setMes(new Short("6"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("6"));
                 } else if (estadoMes.equalsIgnoreCase("JULIO")) {
-                    filtradosListaMensajesUsuario.get(indice).setMes(new Short("7"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("7"));
                 } else if (estadoMes.equalsIgnoreCase("AGOSTO")) {
-                    filtradosListaMensajesUsuario.get(indice).setMes(new Short("8"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("8"));
                 } else if (estadoMes.equalsIgnoreCase("SEPTIEMBRE")) {
-                    filtradosListaMensajesUsuario.get(indice).setMes(new Short("9"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("9"));
                 } else if (estadoMes.equalsIgnoreCase("OCTUBRE")) {
-                    filtradosListaMensajesUsuario.get(indice).setMes(new Short("10"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("10"));
                 } else if (estadoMes.equalsIgnoreCase("NOVIEMBRE")) {
-                    filtradosListaMensajesUsuario.get(indice).setMes(new Short("11"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("11"));
                 } else if (estadoMes.equalsIgnoreCase("DICIEMBRE")) {
-                    filtradosListaMensajesUsuario.get(indice).setMes(new Short("12"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("12"));
                 } else if (estadoMes.equalsIgnoreCase("TODOS LOS MESES")) {
-                    filtradosListaMensajesUsuario.get(indice).setMes(new Short("0"));
+                    mensajeUsuarioSeleccionado.setMes(new Short("0"));
                 }
             } else {
-                filtradosListaMensajesUsuario.get(indice).setMes(null);
+                mensajeUsuarioSeleccionado.setMes(null);
             }
-            if (!listaMensajesUsuariosCrear.contains(filtradosListaMensajesUsuario.get(indice))) {
+            if (!listaMensajesUsuariosCrear.contains(mensajeUsuarioSeleccionado)) {
                 if (listaMensajesUsuariosModificar.isEmpty()) {
-                    listaMensajesUsuariosModificar.add(filtradosListaMensajesUsuario.get(indice));
-                } else if (!listaMensajesUsuariosModificar.contains(filtradosListaMensajesUsuario.get(indice))) {
-                    listaMensajesUsuariosModificar.add(filtradosListaMensajesUsuario.get(indice));
+                    listaMensajesUsuariosModificar.add(mensajeUsuarioSeleccionado);
+                } else if (!listaMensajesUsuariosModificar.contains(mensajeUsuarioSeleccionado)) {
+                    listaMensajesUsuariosModificar.add(mensajeUsuarioSeleccionado);
                 }
             }
         }
@@ -860,155 +888,155 @@ public class ControlProverbio implements Serializable {
         if (tipoLista == 0) {
             if (estadoDia != null) {
                 if (estadoDia.equalsIgnoreCase("01")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("1"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("1"));
                 } else if (estadoDia.equalsIgnoreCase("02")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("2"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("2"));
                 } else if (estadoDia.equalsIgnoreCase("03")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("3"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("3"));
                 } else if (estadoDia.equalsIgnoreCase("04")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("4"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("4"));
                 } else if (estadoDia.equalsIgnoreCase("05")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("5"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("5"));
                 } else if (estadoDia.equalsIgnoreCase("06")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("6"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("6"));
                 } else if (estadoDia.equalsIgnoreCase("07")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("7"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("7"));
                 } else if (estadoDia.equalsIgnoreCase("08")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("8"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("8"));
                 } else if (estadoDia.equalsIgnoreCase("09")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("9"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("9"));
                 } else if (estadoDia.equalsIgnoreCase("10")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("10"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("10"));
                 } else if (estadoDia.equalsIgnoreCase("11")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("11"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("11"));
                 } else if (estadoDia.equalsIgnoreCase("12")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("12"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("12"));
                 } else if (estadoDia.equalsIgnoreCase("13")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("13"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("13"));
                 } else if (estadoDia.equalsIgnoreCase("14")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("14"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("14"));
                 } else if (estadoDia.equalsIgnoreCase("15")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("15"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("15"));
                 } else if (estadoDia.equalsIgnoreCase("16")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("16"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("16"));
                 } else if (estadoDia.equalsIgnoreCase("17")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("17"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("17"));
                 } else if (estadoDia.equalsIgnoreCase("18")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("18"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("18"));
                 } else if (estadoDia.equalsIgnoreCase("19")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("19"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("19"));
                 } else if (estadoDia.equalsIgnoreCase("20")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("20"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("20"));
                 } else if (estadoDia.equalsIgnoreCase("21")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("21"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("21"));
                 } else if (estadoDia.equalsIgnoreCase("22")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("22"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("22"));
                 } else if (estadoDia.equalsIgnoreCase("23")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("23"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("23"));
                 } else if (estadoDia.equalsIgnoreCase("24")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("24"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("24"));
                 } else if (estadoDia.equalsIgnoreCase("25")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("25"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("25"));
                 } else if (estadoDia.equalsIgnoreCase("26")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("26"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("26"));
                 } else if (estadoDia.equalsIgnoreCase("27")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("27"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("27"));
                 } else if (estadoDia.equalsIgnoreCase("28")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("28"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("28"));
                 } else if (estadoDia.equalsIgnoreCase("29")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("29"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("29"));
                 } else if (estadoDia.equalsIgnoreCase("30")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("30"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("30"));
                 } else if (estadoDia.equalsIgnoreCase("31")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("31"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("31"));
                 } else if (estadoDia.equalsIgnoreCase("TODOS LOS DIAS")) {
-                    listaMensajesUsuario.get(indice).setDia(new Short("0"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("0"));
                 }
             } else {
-                listaMensajesUsuario.get(indice).setDia(null);
+                mensajeUsuarioSeleccionado.setDia(null);
             }
-            if (!listaMensajesUsuariosCrear.contains(listaMensajesUsuario.get(indice))) {
+            if (!listaMensajesUsuariosCrear.contains(mensajeUsuarioSeleccionado)) {
                 if (listaMensajesUsuariosModificar.isEmpty()) {
-                    listaMensajesUsuariosModificar.add(listaMensajesUsuario.get(indice));
-                } else if (!listaMensajesUsuariosModificar.contains(listaMensajesUsuario.get(indice))) {
-                    listaMensajesUsuariosModificar.add(listaMensajesUsuario.get(indice));
+                    listaMensajesUsuariosModificar.add(mensajeUsuarioSeleccionado);
+                } else if (!listaMensajesUsuariosModificar.contains(mensajeUsuarioSeleccionado)) {
+                    listaMensajesUsuariosModificar.add(mensajeUsuarioSeleccionado);
                 }
             }
         } else {
             if (estadoDia != null) {
                 if (estadoDia.equalsIgnoreCase("01")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("1"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("1"));
                 } else if (estadoDia.equalsIgnoreCase("02")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("2"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("2"));
                 } else if (estadoDia.equalsIgnoreCase("03")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("3"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("3"));
                 } else if (estadoDia.equalsIgnoreCase("04")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("4"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("4"));
                 } else if (estadoDia.equalsIgnoreCase("05")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("5"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("5"));
                 } else if (estadoDia.equalsIgnoreCase("06")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("6"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("6"));
                 } else if (estadoDia.equalsIgnoreCase("07")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("7"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("7"));
                 } else if (estadoDia.equalsIgnoreCase("08")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("8"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("8"));
                 } else if (estadoDia.equalsIgnoreCase("09")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("9"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("9"));
                 } else if (estadoDia.equalsIgnoreCase("10")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("10"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("10"));
                 } else if (estadoDia.equalsIgnoreCase("11")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("11"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("11"));
                 } else if (estadoDia.equalsIgnoreCase("12")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("12"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("12"));
                 } else if (estadoDia.equalsIgnoreCase("13")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("13"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("13"));
                 } else if (estadoDia.equalsIgnoreCase("14")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("14"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("14"));
                 } else if (estadoDia.equalsIgnoreCase("15")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("15"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("15"));
                 } else if (estadoDia.equalsIgnoreCase("16")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("16"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("16"));
                 } else if (estadoDia.equalsIgnoreCase("17")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("17"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("17"));
                 } else if (estadoDia.equalsIgnoreCase("18")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("18"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("18"));
                 } else if (estadoDia.equalsIgnoreCase("19")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("19"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("19"));
                 } else if (estadoDia.equalsIgnoreCase("20")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("20"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("20"));
                 } else if (estadoDia.equalsIgnoreCase("21")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("21"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("21"));
                 } else if (estadoDia.equalsIgnoreCase("22")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("22"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("22"));
                 } else if (estadoDia.equalsIgnoreCase("23")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("23"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("23"));
                 } else if (estadoDia.equalsIgnoreCase("24")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("24"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("24"));
                 } else if (estadoDia.equalsIgnoreCase("25")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("25"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("25"));
                 } else if (estadoDia.equalsIgnoreCase("26")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("26"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("26"));
                 } else if (estadoDia.equalsIgnoreCase("27")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("27"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("27"));
                 } else if (estadoDia.equalsIgnoreCase("28")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("28"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("28"));
                 } else if (estadoDia.equalsIgnoreCase("29")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("29"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("29"));
                 } else if (estadoDia.equalsIgnoreCase("30")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("30"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("30"));
                 } else if (estadoDia.equalsIgnoreCase("31")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("31"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("31"));
                 } else if (estadoDia.equalsIgnoreCase("TODOS LOS DIAS")) {
-                    filtradosListaMensajesUsuario.get(indice).setDia(new Short("0"));
+                    mensajeUsuarioSeleccionado.setDia(new Short("0"));
                 }
             } else {
-                filtradosListaMensajesUsuario.get(indice).setMes(null);
+                mensajeUsuarioSeleccionado.setMes(null);
             }
-            if (!listaMensajesUsuariosCrear.contains(filtradosListaMensajesUsuario.get(indice))) {
+            if (!listaMensajesUsuariosCrear.contains(mensajeUsuarioSeleccionado)) {
                 if (listaMensajesUsuariosModificar.isEmpty()) {
-                    listaMensajesUsuariosModificar.add(filtradosListaMensajesUsuario.get(indice));
-                } else if (!listaMensajesUsuariosModificar.contains(filtradosListaMensajesUsuario.get(indice))) {
-                    listaMensajesUsuariosModificar.add(filtradosListaMensajesUsuario.get(indice));
+                    listaMensajesUsuariosModificar.add(mensajeUsuarioSeleccionado);
+                } else if (!listaMensajesUsuariosModificar.contains(mensajeUsuarioSeleccionado)) {
+                    listaMensajesUsuariosModificar.add(mensajeUsuarioSeleccionado);
                 }
             }
         }
@@ -1363,7 +1391,8 @@ public class ControlProverbio implements Serializable {
     //BORRAR VIGENCIA FORMAL
     public void borrarProverbio() {
 
-        if (proverbioSeleccionado != null && CualTabla == 0) {
+        if (proverbioSeleccionado != null) {
+            if (CualTabla == 0) {
                 if (!listaProverbiosModificar.isEmpty() && listaProverbiosModificar.contains(proverbioSeleccionado)) {
                     int modIndex = listaProverbiosModificar.indexOf(proverbioSeleccionado);
                     listaProverbiosModificar.remove(modIndex);
@@ -1375,20 +1404,21 @@ public class ControlProverbio implements Serializable {
                     listaProverbiosBorrar.add(proverbioSeleccionado);
                 }
                 listaProverbios.remove(proverbioSeleccionado);
-            if (tipoLista == 1) {
-                filtradosListaProverbios.remove(proverbioSeleccionado);
-            }
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosProverbios");
-            proverbioSeleccionado = null;
-            cambiosPagina = false;
-            context.update("form:ACEPTAR");
+                if (tipoLista == 1) {
+                    filtradosListaProverbios.remove(proverbioSeleccionado);
+                }
+                modificarInfoRegistroProverbios(listaProverbios.size());
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosProverbios");
+                proverbioSeleccionado = null;
+                cambiosPagina = false;
+                context.update("form:ACEPTAR");
 
-            if (guardado == true) {
-                guardado = false;
-                RequestContext.getCurrentInstance().update("form:ACEPTAR");
-            }
-        } else if (mensajeUsuarioSeleccionado != null && CualTabla == 1) {
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                }
+            } else if (CualTabla == 1) {
                 if (!listaMensajesUsuariosModificar.isEmpty() && listaMensajesUsuariosModificar.contains(mensajeUsuarioSeleccionado)) {
                     int modIndex = listaMensajesUsuariosModificar.indexOf(mensajeUsuarioSeleccionado);
                     listaMensajesUsuariosModificar.remove(modIndex);
@@ -1400,18 +1430,20 @@ public class ControlProverbio implements Serializable {
                     listaMensajesUsuariosBorrar.add(mensajeUsuarioSeleccionado);
                 }
                 listaMensajesUsuario.remove(mensajeUsuarioSeleccionado);
-            if (tipoListaNF == 1) {
-                filtradosListaMensajesUsuario.remove(mensajeUsuarioSeleccionado);
-            }
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosMensajesUsuarios");
-            cambiosPagina = false;
-            context.update("form:ACEPTAR");
-            mensajeUsuarioSeleccionado = null;
-            proverbioSeleccionado = null;
-            if (guardado == true) {
-                guardado = false;
-                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                if (tipoListaNF == 1) {
+                    filtradosListaMensajesUsuario.remove(mensajeUsuarioSeleccionado);
+                }
+                RequestContext context = RequestContext.getCurrentInstance();
+                modificarInfoRegistroMsgUsuarios(listaMensajesUsuario.size());
+                context.update("form:datosMensajesUsuarios");
+                cambiosPagina = false;
+                context.update("form:ACEPTAR");
+                mensajeUsuarioSeleccionado = null;
+                proverbioSeleccionado = null;
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                }
             }
         }
     }
@@ -1419,22 +1451,18 @@ public class ControlProverbio implements Serializable {
     public void verificarRastro() {
         if (CualTabla == 0) {
             RequestContext context = RequestContext.getCurrentInstance();
-            if (!listaProverbios.isEmpty()) {
-                if (proverbioSeleccionado != null) {
-                    int resultado = administrarRastros.obtenerTabla(proverbioSeleccionado.getSecuencia(), "recordatorios");
-                    if (resultado == 1) {
-                        context.execute("errorObjetosDB.show()");
-                    } else if (resultado == 2) {
-                        context.execute("confirmarRastro.show()");
-                    } else if (resultado == 3) {
-                        context.execute("errorRegistroRastro.show()");
-                    } else if (resultado == 4) {
-                        context.execute("errorTablaConRastro.show()");
-                    } else if (resultado == 5) {
-                        context.execute("errorTablaSinRastro.show()");
-                    }
-                } else {
-                    context.execute("seleccionarRegistro.show()");
+            if (proverbioSeleccionado != null) {
+                int resultado = administrarRastros.obtenerTabla(proverbioSeleccionado.getSecuencia(), "RECORDATORIOS");
+                if (resultado == 1) {
+                    context.execute("errorObjetosDB.show()");
+                } else if (resultado == 2) {
+                    context.execute("confirmarRastro.show()");
+                } else if (resultado == 3) {
+                    context.execute("errorRegistroRastro.show()");
+                } else if (resultado == 4) {
+                    context.execute("errorTablaConRastro.show()");
+                } else if (resultado == 5) {
+                    context.execute("errorTablaSinRastro.show()");
                 }
             } else {
                 if (administrarRastros.verificarHistoricosTabla("RECORDATORIOS")) {
@@ -1443,25 +1471,20 @@ public class ControlProverbio implements Serializable {
                     context.execute("errorRastroHistorico.show()");
                 }
             }
-            proverbioSeleccionado = null;
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
-            if (!listaMensajesUsuario.isEmpty()) {
-                if (proverbioSeleccionado != null) {
-                    int resultadoNF = administrarRastros.obtenerTabla(proverbioSeleccionado.getSecuencia(), "RECORDATORIOS");
-                    if (resultadoNF == 1) {
-                        context.execute("errorObjetosDBNF.show()");
-                    } else if (resultadoNF == 2) {
-                        context.execute("confirmarRastroNF.show()");
-                    } else if (resultadoNF == 3) {
-                        context.execute("errorRegistroRastroNF.show()");
-                    } else if (resultadoNF == 4) {
-                        context.execute("errorTablaConRastroNF.show()");
-                    } else if (resultadoNF == 5) {
-                        context.execute("errorTablaSinRastroNF.show()");
-                    }
-                } else {
-                    context.execute("seleccionarRegistroNF.show()");
+            if (mensajeUsuarioSeleccionado != null) {
+                int resultadoNF = administrarRastros.obtenerTabla(mensajeUsuarioSeleccionado.getSecuencia(), "RECORDATORIOS");
+                if (resultadoNF == 1) {
+                    context.execute("errorObjetosDBNF.show()");
+                } else if (resultadoNF == 2) {
+                    context.execute("confirmarRastroNF.show()");
+                } else if (resultadoNF == 3) {
+                    context.execute("errorRegistroRastroNF.show()");
+                } else if (resultadoNF == 4) {
+                    context.execute("errorTablaConRastroNF.show()");
+                } else if (resultadoNF == 5) {
+                    context.execute("errorTablaSinRastroNF.show()");
                 }
             } else {
                 if (administrarRastros.verificarHistoricosTabla("RECORDATORIOS")) {
@@ -1470,7 +1493,6 @@ public class ControlProverbio implements Serializable {
                     context.execute("errorRastroHistoricoNF.show()");
                 }
             }
-            proverbioSeleccionado = null;
         }
 
     }
@@ -1486,16 +1508,16 @@ public class ControlProverbio implements Serializable {
     public void limpiarDuplicarProverbio() {
         duplicarProverbio = new Recordatorios();
     }
-    
 
     public void limpiarDuplicarRegistroMensajeUsuario() {
         duplicarRegistroMensajesUsuarios = new Recordatorios();
     }
 
     public void confirmarDuplicar() {
-        listaProverbios.add(duplicarProverbio);
         listaProverbiosCrear.add(duplicarProverbio);
+        listaProverbios.add(duplicarProverbio);
         proverbioSeleccionado = duplicarProverbio;
+        modificarInfoRegistroProverbios(listaProverbios.size());
         RequestContext context = RequestContext.getCurrentInstance();
         cambiosPagina = false;
         context.update("form:ACEPTAR");
@@ -1520,8 +1542,9 @@ public class ControlProverbio implements Serializable {
     }
 
     public void confirmarDuplicarNF() {
-        listaMensajesUsuario.add(duplicarRegistroMensajesUsuarios);
         listaMensajesUsuariosCrear.add(duplicarRegistroMensajesUsuarios);
+        listaMensajesUsuario.add(duplicarRegistroMensajesUsuarios);
+        modificarInfoRegistroMsgUsuarios(listaMensajesUsuario.size());
         mensajeUsuarioSeleccionado = duplicarRegistroMensajesUsuarios;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosMensajesUsuarios");
@@ -1644,6 +1667,48 @@ public class ControlProverbio implements Serializable {
         guardado = true;
         permitirIndex = true;
         cambiosPagina = true;
+    }
+
+    public List<String> complete(String query) {
+        List<String> results = new ArrayList<String>();
+
+        int aux = Integer.parseInt(query);
+
+        for (int i = 0; i < 10; i++) {
+            results.add((Integer.toString(aux + i)));
+        }
+
+        return results;
+    }
+
+    //EVENTO FILTRAR
+    public void eventoFiltrar() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
+        modificarInfoRegistroProverbios(filtradosListaProverbios.size());
+    }
+
+    //EVENTO FILTRARNF
+    public void eventoFiltrarNF() {
+        if (tipoListaNF == 0) {
+            tipoListaNF = 1;
+        }
+        modificarInfoRegistroMsgUsuarios(filtradosListaMensajesUsuario.size());
+    }
+
+    public void eventoFiltrarMsgUsuarios() {
+        modificarInfoRegistroMsgUsuarios(filtradosListaMensajesUsuario.size());
+    }
+
+    public void modificarInfoRegistroProverbios(int valor) {
+        infoRegistroProverbios = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroProverbio");
+    }
+
+    public void modificarInfoRegistroMsgUsuarios(int valor) {
+        infoRegistroMsgUsuario = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroMsgUsuarios");
     }
 
     //Getter & Setters
@@ -1814,4 +1879,37 @@ public class ControlProverbio implements Serializable {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
+
+    public List<Short> getAnios() {
+        return anios;
+    }
+
+    public void setAnios(List<Short> anios) {
+        this.anios = anios;
+    }
+
+    public Short getAnioactual() {
+        return anioactual;
+    }
+
+    public void setAnioactual(Short anioactual) {
+        this.anioactual = anioactual;
+    }
+
+    public String getInfoRegistroProverbios() {
+        return infoRegistroProverbios;
+    }
+
+    public void setInfoRegistroProverbios(String infoRegistroProverbios) {
+        this.infoRegistroProverbios = infoRegistroProverbios;
+    }
+
+    public String getInfoRegistroMsgUsuario() {
+        return infoRegistroMsgUsuario;
+    }
+
+    public void setInfoRegistroMsgUsuario(String infoRegistroMsgUsuario) {
+        this.infoRegistroMsgUsuario = infoRegistroMsgUsuario;
+    }
+
 }
