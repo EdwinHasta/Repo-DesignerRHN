@@ -88,9 +88,9 @@ public class ControlMotivosCesantias implements Serializable {
     public void recibirPag(String pag) {
         paginaAnterior = pag;
         //contarRegistrosNovedades();
-        if (!listMotivosCesantias.isEmpty()) {
-            motivoCesantiaSeleccionado = listMotivosCesantias.get(0);
-        }
+//        if (!listMotivosCesantias.isEmpty()) {
+//            motivoCesantiaSeleccionado = listMotivosCesantias.get(0);
+//        }
     }
 
     public String volverPagAnterior() {
