@@ -5,7 +5,7 @@
  */
 package Controlador;
 
-import Administrar.AdministrarNovedadPagoParcialCesantias;
+import Administrar.AdministrarNovedadCesantiasRC;
 import Entidades.Empleados;
 import Entidades.MotivosCesantias;
 import Entidades.NovedadesSistema;
@@ -39,10 +39,10 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlNovedadPagoParcialCesantias implements Serializable {
+public class ControlNovedadCesantiasRC implements Serializable {
 
     @EJB
-    AdministrarNovedadPagoParcialCesantias administrarNovedadesPagoCesantias;
+    AdministrarNovedadCesantiasRC administrarNovedadesPagoCesantias;
     @EJB
     AdministrarRastrosInterface administrarRastros;
     @EJB
@@ -109,7 +109,7 @@ public class ControlNovedadPagoParcialCesantias implements Serializable {
     private BigDecimal provisionlov, provisioncesantias;
     private boolean todas, actuales;
 
-    public ControlNovedadPagoParcialCesantias() {
+    public ControlNovedadCesantiasRC() {
         listaEmpleadosNovedad = null;
         listaNovedadesBorrar = new ArrayList<NovedadesSistema>();
         listaNovedadesCrear = new ArrayList<NovedadesSistema>();

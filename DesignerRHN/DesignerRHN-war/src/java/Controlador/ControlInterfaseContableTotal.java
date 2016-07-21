@@ -71,14 +71,14 @@ public class ControlInterfaseContableTotal implements Serializable {
     private List<SolucionesNodos> listaGenerados;
     private List<SolucionesNodos> filtrarListaGenerados;
     private SolucionesNodos generadoTablaSeleccionado;
-    private int indexGenerado, cualCeldaGenerado;
+    private int cualCeldaGenerado;
     private SolucionesNodos editarGenerado;
     private int tipoListaGenerada, banderaGenerado;
     //
     private List<InterconTotal> listaInterconTotal;
     private List<InterconTotal> filtrarListaInterconTotal;
     private InterconTotal interconTablaSeleccionada;
-    private int indexIntercon, cualCeldaIntercon;
+    private int cualCeldaIntercon;
     private InterconTotal editarIntercon;
     private int tipoListaIntercon, banderaIntercon;
 
@@ -102,7 +102,7 @@ public class ControlInterfaseContableTotal implements Serializable {
     private int registroActual;
     //
     private boolean activarAgregar, activarOtros;
-    private boolean activarEnviar, activarDeshacer;
+    private boolean activarEnviar, activarDeshacer, activarLov;
     //
     private int tipoActualizacion;
     //
@@ -112,8 +112,6 @@ public class ControlInterfaseContableTotal implements Serializable {
     private String altoTablaGenerada;
     private Column interEmpleado, interTercero, interCuenta, interDebito, interCredito, interConcepto, interCentroCosto;
     private String altoTablaIntercon;
-    //
-    private BigInteger secRegistro, backUpSecRegistro;
     //
     private int tipoPlano;
     //
@@ -164,8 +162,8 @@ public class ControlInterfaseContableTotal implements Serializable {
         listaInterconTotal = null;
         generadoTablaSeleccionado = new SolucionesNodos();
         interconTablaSeleccionada = new InterconTotal();
-        indexGenerado = -1;
-        indexIntercon = -1;
+        generadoTablaSeleccionado = null;
+        interconTablaSeleccionada = null;
         cualCeldaGenerado = -1;
         cualCeldaIntercon = -1;
         editarGenerado = new SolucionesNodos();
@@ -178,6 +176,7 @@ public class ControlInterfaseContableTotal implements Serializable {
         permitirIndexParametro = true;
         indexParametroContable = -1;
         guardado = true;
+        activarLov = true;
     }
 
     @PostConstruct
@@ -510,10 +509,10 @@ public class ControlInterfaseContableTotal implements Serializable {
         String type = map.get("t"); // type attribute of node
         int indice = Integer.parseInt(type);
         int columna = Integer.parseInt(name);
-        indexGenerado = indice;
+        generadoTablaSeleccionado = listaGenerados.get(indice);
         cualCeldaGenerado = columna;
         indexParametroContable = -1;
-        indexIntercon = -1;
+        interconTablaSeleccionada = null;
         if (banderaIntercon == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
             altoTablaIntercon = "75";
@@ -545,14 +544,14 @@ public class ControlInterfaseContableTotal implements Serializable {
         String type = map.get("t"); // type attribute of node
         int indice = Integer.parseInt(type);
         int columna = Integer.parseInt(name);
-        indexIntercon = indice;
+        interconTablaSeleccionada = listaInterconTotal.get(indice);
         cualCeldaIntercon = columna;
         indexParametroContable = -1;
-        indexGenerado = -1;
+        generadoTablaSeleccionado = null;
         if (tipoListaIntercon == 0) {
-            secRegistro = listaInterconTotal.get(indexIntercon).getSecuencia();
+            interconTablaSeleccionada.getSecuencia();
         } else {
-            secRegistro = filtrarListaInterconTotal.get(indexIntercon).getSecuencia();
+            interconTablaSeleccionada.getSecuencia();
         }
         if (banderaGenerado == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
@@ -581,8 +580,8 @@ public class ControlInterfaseContableTotal implements Serializable {
     public void cambiarIndiceParametro(int indice) {
         if (permitirIndexParametro == true) {
             indexParametroContable = indice;
-            indexGenerado = -1;
-            indexIntercon = -1;
+            generadoTablaSeleccionado = null;
+            interconTablaSeleccionada = null;
             auxParametroEmpresa = parametroContableActual.getEmpresaRegistro().getNombre();
             auxParametroProceso = parametroContableActual.getProceso().getDescripcion();
             auxParametroFechaFinal = parametroContableActual.getFechafinalcontabilizacion();
@@ -956,7 +955,7 @@ public class ControlInterfaseContableTotal implements Serializable {
         Date fechaHasta = administrarInterfaseContableTotal.buscarFechaHastaVWActualesFechas();
         RequestContext context = RequestContext.getCurrentInstance();
         if (fechaDesde != null && fechaHasta != null) {
-            if ((fechaDesde.before(parametroContableActual.getFechainicialcontabilizacion()) && fechaHasta.after(parametroContableActual.getFechafinalcontabilizacion()))
+            if ((fechaHasta.after(parametroContableActual.getFechainicialcontabilizacion()) && fechaHasta.after(parametroContableActual.getFechafinalcontabilizacion()))
                     || (fechaDesde.before(parametroContableActual.getFechainicialcontabilizacion()) && fechaHasta.after(parametroContableActual.getFechafinalcontabilizacion()))) {
                 context.execute("errorVWActualesFechas.show()");
             } else {
@@ -984,11 +983,11 @@ public class ControlInterfaseContableTotal implements Serializable {
                     if (listaInterconTotal == null) {
                         listaInterconTotal = administrarInterfaseContableTotal.obtenerInterconTotalParametroContable(parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion());
                         if (listaInterconTotal != null) {
-                            if (listaInterconTotal.size() > 0) {
-                                activarDeshacer = false;
-                            } else {
-                                activarDeshacer = true;
-                            }
+//                            if (listaInterconTotal.size() > 0) {
+                            activarDeshacer = false;
+//                            } else {
+//                                activarDeshacer = true;
+//                            }
                         } else {
                             activarDeshacer = true;
                         }
@@ -1279,8 +1278,8 @@ public class ControlInterfaseContableTotal implements Serializable {
         cambiosParametro = false;
         guardado = true;
         indexParametroContable = -1;
-        indexGenerado = -1;
-        indexIntercon = -1;
+        generadoTablaSeleccionado = null;
+        interconTablaSeleccionada = null;
         context.update("form:ACEPTAR");
     }
 
@@ -1309,11 +1308,11 @@ public class ControlInterfaseContableTotal implements Serializable {
                 indexParametroContable = -1;
             }
         }
-        if (indexGenerado >= 0) {
+        if (generadoTablaSeleccionado != null) {
             if (tipoListaGenerada == 0) {
-                editarGenerado = listaGenerados.get(indexGenerado);
+                editarGenerado = generadoTablaSeleccionado;
             } else {
-                editarGenerado = filtrarListaGenerados.get(indexGenerado);
+                editarGenerado = generadoTablaSeleccionado;
             }
             if (cualCeldaGenerado == 0) {
                 context.update("formularioDialogos:editarProcesoGenerado");
@@ -1344,13 +1343,14 @@ public class ControlInterfaseContableTotal implements Serializable {
                 context.execute("editarConceptoGenerado.show()");
                 cualCeldaGenerado = -1;
             }
-            indexGenerado = -1;
+        } else{
+          RequestContext.getCurrentInstance().execute("form:seleccionarRegistro.show()");  
         }
-        if (indexIntercon >= 0) {
+        if (interconTablaSeleccionada != null) {
             if (tipoListaIntercon == 0) {
-                editarIntercon = listaInterconTotal.get(indexIntercon);
+                editarIntercon = interconTablaSeleccionada;
             } else {
-                editarIntercon = filtrarListaInterconTotal.get(indexIntercon);
+                editarIntercon = interconTablaSeleccionada;
             }
             if (cualCeldaIntercon == 0) {
                 context.update("formularioDialogos:editarEmpleadoIntercon");
@@ -1381,7 +1381,8 @@ public class ControlInterfaseContableTotal implements Serializable {
                 context.execute("editarCentroCostoIntercon.show()");
                 cualCeldaIntercon = -1;
             }
-            indexIntercon = -1;
+        } else{
+            RequestContext.getCurrentInstance().execute("form:seleccionarRegistro.show()");
         }
     }
 
@@ -1442,8 +1443,8 @@ public class ControlInterfaseContableTotal implements Serializable {
         cambiosParametro = false;
         guardado = true;
         indexParametroContable = -1;
-        indexGenerado = -1;
-        indexIntercon = -1;
+        generadoTablaSeleccionado = null;
+        interconTablaSeleccionada = null;
         activarEnviar = true;
         activarDeshacer = true;
         totalCGenerado = 0;
@@ -1761,10 +1762,10 @@ public class ControlInterfaseContableTotal implements Serializable {
         if (indexParametroContable >= 0) {
             exportPDF_PC();
         }
-        if (indexGenerado >= 0) {
+        if (generadoTablaSeleccionado != null) {
             exportPDF_G();
         }
-        if (indexIntercon >= 0) {
+        if (interconTablaSeleccionada != null) {
             exportPDF_I();
         }
     }
@@ -1776,7 +1777,7 @@ public class ControlInterfaseContableTotal implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "ParametrosContables_PDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        indexGenerado = -1;
+        generadoTablaSeleccionado = null;
     }
 
     public void exportPDF_G() throws IOException {
@@ -1786,7 +1787,7 @@ public class ControlInterfaseContableTotal implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "Generados_PDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        indexGenerado = -1;
+        generadoTablaSeleccionado = null;
     }
 
     public void exportPDF_I() throws IOException {
@@ -1796,17 +1797,17 @@ public class ControlInterfaseContableTotal implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "InterconTotal_PDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        indexIntercon = -1;
+        interconTablaSeleccionada = null;
     }
 
     public void validarExportXLS() throws IOException {
         if (indexParametroContable >= 0) {
             exportXLS_PC();
         }
-        if (indexGenerado >= 0) {
+        if (generadoTablaSeleccionado != null) {
             exportXLS_G();
         }
-        if (indexIntercon >= 0) {
+        if (interconTablaSeleccionada != null) {
             exportXLS_I();
         }
     }
@@ -1828,7 +1829,7 @@ public class ControlInterfaseContableTotal implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "Generados_XLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        indexGenerado = -1;
+        generadoTablaSeleccionado = null;
     }
 
     public void exportXLS_I() throws IOException {
@@ -1838,7 +1839,7 @@ public class ControlInterfaseContableTotal implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "InterconTotal_XLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        indexIntercon = -1;
+        interconTablaSeleccionada = null;
     }
 
     public String validarExportXML() {
@@ -1846,10 +1847,10 @@ public class ControlInterfaseContableTotal implements Serializable {
         if (indexParametroContable >= 0) {
             tabla = ":formExportar:datosParametroExportar";
         }
-        if (indexGenerado >= 0) {
+        if (generadoTablaSeleccionado != null) {
             tabla = ":formExportar:datosGenerarExportar";
         }
-        if (indexIntercon >= 0) {
+        if (interconTablaSeleccionada != null) {
             tabla = ":formExportar:datosInterconExportar";
         }
         return tabla;
@@ -1860,22 +1861,22 @@ public class ControlInterfaseContableTotal implements Serializable {
         if (indexParametroContable >= 0) {
             nombre = "ParametrosContables_XML";
         }
-        if (indexGenerado >= 0) {
+        if (generadoTablaSeleccionado != null) {
             nombre = "Generados_XML";
         }
-        if (indexIntercon >= 0) {
+        if (interconTablaSeleccionada != null) {
             nombre = "InterconTotal_XML";
         }
         return nombre;
     }
 
     public void eventoFiltrar() {
-        if (indexGenerado >= 0) {
+        if (generadoTablaSeleccionado != null) {
             if (tipoListaGenerada == 0) {
                 tipoListaGenerada = 1;
             }
         }
-        if (indexIntercon >= 0) {
+        if (interconTablaSeleccionada != null) {
             if (tipoListaIntercon == 0) {
                 tipoListaIntercon = 1;
             }
@@ -1884,7 +1885,7 @@ public class ControlInterfaseContableTotal implements Serializable {
 
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
-        if (indexGenerado >= 0) {
+        if (generadoTablaSeleccionado != null) {
             if (banderaGenerado == 0) {
                 altoTablaGenerada = "53";
                 genProceso = (Column) c.getViewRoot().findComponent("form:datosGenerados:genProceso");
@@ -1925,7 +1926,7 @@ public class ControlInterfaseContableTotal implements Serializable {
                 tipoListaGenerada = 0;
             }
         }
-        if (indexIntercon >= 0) {
+        if (interconTablaSeleccionada != null) {
             if (banderaIntercon == 0) {
                 altoTablaIntercon = "53";
                 interEmpleado = (Column) c.getViewRoot().findComponent("form:datosIntercon:interEmpleado");
@@ -1970,31 +1971,26 @@ public class ControlInterfaseContableTotal implements Serializable {
     }
 
     public void validarRastro() {
-        if (indexIntercon >= 0) {
+        if (interconTablaSeleccionada != null) {
             verificarRastro();
         }
     }
 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (listaInterconTotal != null) {
-            if (secRegistro != null) {
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "INTERCON_TOTAL");
-                backUpSecRegistro = secRegistro;
-                secRegistro = null;
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
+        if (interconTablaSeleccionada != null) {
+            int resultado = administrarRastros.obtenerTabla(interconTablaSeleccionada.getSecuencia(), "INTERCON_TOTAL");
+            interconTablaSeleccionada.getSecuencia();
+            if (resultado == 1) {
+                context.execute("errorObjetosDB.show()");
+            } else if (resultado == 2) {
+                context.execute("confirmarRastro.show()");
+            } else if (resultado == 3) {
+                context.execute("errorRegistroRastro.show()");
+            } else if (resultado == 4) {
+                context.execute("errorTablaConRastro.show()");
+            } else if (resultado == 5) {
+                context.execute("errorTablaSinRastro.show()");
             }
         } else {
             if (administrarRastros.verificarHistoricosTabla("INTERCON_TOTAL")) {
@@ -2004,9 +2000,28 @@ public class ControlInterfaseContableTotal implements Serializable {
             }
 
         }
-        indexIntercon = -1;
     }
 
+    public void modificarInfoRegistroEmpresas(int valor) {
+        infoRegistroEmpresa = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroEmpresa");
+    }
+
+    public void modificarInfoRegistroProcesos(int valor) {
+        infoRegistroProceso = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroProceso");
+    }
+
+    public void eventoFiltrarEmpresas() {
+        modificarInfoRegistroEmpresas(filtrarLovEmpresas.size());
+    }
+
+    public void eventoFiltrarProcesos() {
+        modificarInfoRegistroProcesos(filtrarLovProcesos.size());
+    }
+
+    
+/////////////////////SETS Y GETS/////////////////////////////
     public ActualUsuario getActualUsuarioBD() {
         if (actualUsuarioBD == null) {
             actualUsuarioBD = administrarInterfaseContableTotal.obtenerActualUsuario();
@@ -2110,11 +2125,11 @@ public class ControlInterfaseContableTotal implements Serializable {
 
     public String getInfoRegistroEmpresa() {
         getLovEmpresas();
-        if (lovEmpresas != null) {
-            infoRegistroEmpresa = "Cantidad de registros : " + lovEmpresas.size();
-        } else {
-            infoRegistroEmpresa = "Cantidad de registros : 0";
-        }
+//        if (lovEmpresas != null) {
+            modificarInfoRegistroEmpresas(lovEmpresas.size());
+//        } else {
+//            modificarInfoRegistroProcesos(0);
+//        }
         return infoRegistroEmpresa;
     }
 
@@ -2124,11 +2139,11 @@ public class ControlInterfaseContableTotal implements Serializable {
 
     public String getInfoRegistroProceso() {
         getLovProcesos();
-        if (lovProcesos != null) {
-            infoRegistroProceso = "Cantidad de registros : " + lovProcesos.size();
-        } else {
-            infoRegistroProceso = "Cantidad de registros : 0";
-        }
+//        if (lovProcesos != null) {
+         modificarInfoRegistroProcesos(lovProcesos.size());
+//        } else {
+//            modificarInfoRegistroProcesos(0);
+//        }
         return infoRegistroProceso;
     }
 
@@ -2315,22 +2330,6 @@ public class ControlInterfaseContableTotal implements Serializable {
         this.altoTablaIntercon = altoTablaIntercon;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
-    }
-
-    public BigInteger getBackUpSecRegistro() {
-        return backUpSecRegistro;
-    }
-
-    public void setBackUpSecRegistro(BigInteger backUpSecRegistro) {
-        this.backUpSecRegistro = backUpSecRegistro;
-    }
-
     public int getTipoPlano() {
         return tipoPlano;
     }
@@ -2453,6 +2452,14 @@ public class ControlInterfaseContableTotal implements Serializable {
 
     public DefaultStreamedContent getDownload() throws Exception {
         return download;
+    }
+
+    public boolean isActivarLov() {
+        return activarLov;
+    }
+
+    public void setActivarLov(boolean activarLov) {
+        this.activarLov = activarLov;
     }
 
 }

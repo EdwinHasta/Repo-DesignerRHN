@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author user
  */
-public interface AdministrarNovedadPagoParcialCesantiasInterface {
+public interface AdministrarNovedadlCesantiasRCInterface {
     public void obtenerConexion(String idSesion);
     public List<Empleados> empleadosCesantias();
     public List<VWActualesTiposTrabajadores> tiposTrabajadores();

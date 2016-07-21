@@ -61,10 +61,10 @@ public class ControlParametroAutoliq implements Serializable {
     private List<ParametrosAutoliq> listParametrosAutoliqModificar;
     private List<ParametrosAutoliq> listParametrosAutoliqBorrar;
     //
-    private int index, cualCelda, indexAUX;
+    private int cualCelda;
     private int bandera, tipoLista;
     private boolean permitirIndex, cambiosParametro;
-    private BigInteger secRegistro, backUpSecRegistro;
+    private BigInteger backUpSecRegistro;
     //
     //APORTES ENTIDADES//
     private List<AportesEntidades> listaAportesEntidades;
@@ -191,7 +191,7 @@ public class ControlParametroAutoliq implements Serializable {
         listAportesEntidadesBorrar = new ArrayList<AportesEntidades>();
         listAportesEntidadesModificar = new ArrayList<AportesEntidades>();
         //
-        index = -1;
+        parametroTablaSeleccionado = null;
         indexAporte = -1;
         cualCelda = -1;
         cualCeldaAporte = -1;
@@ -204,8 +204,7 @@ public class ControlParametroAutoliq implements Serializable {
         cambiosParametro = false;
         cambiosAporte = false;
         //
-        secRegistro = null;
-        secRegistroAporte = null;
+        parametroTablaSeleccionado = null;
         aceptar = true;
         guardado = true;
         //
@@ -274,20 +273,18 @@ public class ControlParametroAutoliq implements Serializable {
     public void modificarParametroAutoliq(int indice) {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoLista == 0) {
-            if (!listParametrosAutoliqCrear.contains(listaParametrosAutoliq.get(indice))) {
+            if (!listParametrosAutoliqCrear.contains(parametroTablaSeleccionado)) {
 
                 if (listParametrosAutoliqModificar.isEmpty()) {
-                    listParametrosAutoliqModificar.add(listaParametrosAutoliq.get(indice));
-                } else if (!listParametrosAutoliqModificar.contains(listaParametrosAutoliq.get(indice))) {
-                    listParametrosAutoliqModificar.add(listaParametrosAutoliq.get(indice));
+                    listParametrosAutoliqModificar.add(parametroTablaSeleccionado);
+                } else if (!listParametrosAutoliqModificar.contains(parametroTablaSeleccionado)) {
+                    listParametrosAutoliqModificar.add(parametroTablaSeleccionado);
                 }
                 if (guardado == true) {
                     guardado = false;
                     context.update("form:ACEPTAR");
                 }
             }
-            index = -1;
-            secRegistro = null;
             cambiosParametro = true;
             activoBtnsPaginas = true;
             context.update("form:btn2");
@@ -296,20 +293,18 @@ public class ControlParametroAutoliq implements Serializable {
             context.update("form:btn5");
             context.update("form:btn7");
         } else {
-            if (!listParametrosAutoliqCrear.contains(filtrarListaParametrosAutoliq.get(indice))) {
+            if (!listParametrosAutoliqCrear.contains(parametroTablaSeleccionado)) {
 
                 if (listParametrosAutoliqModificar.isEmpty()) {
-                    listParametrosAutoliqModificar.add(filtrarListaParametrosAutoliq.get(indice));
-                } else if (!listParametrosAutoliqModificar.contains(filtrarListaParametrosAutoliq.get(indice))) {
-                    listParametrosAutoliqModificar.add(filtrarListaParametrosAutoliq.get(indice));
+                    listParametrosAutoliqModificar.add(parametroTablaSeleccionado);
+                } else if (!listParametrosAutoliqModificar.contains(parametroTablaSeleccionado)) {
+                    listParametrosAutoliqModificar.add(parametroTablaSeleccionado);
                 }
                 if (guardado == true) {
                     guardado = false;
                     context.update("form:ACEPTAR");
                 }
             }
-            index = -1;
-            secRegistro = null;
             cambiosParametro = true;
             activoBtnsPaginas = true;
             context.update("form:btn2");
@@ -334,7 +329,7 @@ public class ControlParametroAutoliq implements Serializable {
                 context.update("form:ACEPTAR");
             }
             indexAporte = -1;
-            secRegistroAporte = null;
+            parametroTablaSeleccionado = null;
             cambiosAporte = true;
         } else {
             if (listAportesEntidadesModificar.isEmpty()) {
@@ -347,24 +342,24 @@ public class ControlParametroAutoliq implements Serializable {
                 context.update("form:ACEPTAR");
             }
             indexAporte = -1;
-            secRegistroAporte = null;
+            parametroTablaSeleccionado = null;
             cambiosAporte = true;
         }
         context.update("form:tablaInferiorIzquierda");
         context.update("form:tablaInferiorDerecha");
     }
 
-    public void modificarParametroAutoliq(int indice, String confirmarCambio, String valorConfirmar) {
-        index = indice;
+    public void modificarParametroAutoliq(ParametrosAutoliq parametro, String confirmarCambio, String valorConfirmar) {
+        parametroTablaSeleccionado = parametro;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("TIPOTRABAJADOR")) {
             if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listaParametrosAutoliq.get(indice).getTipotrabajador().setNombre(auxTipoTipoTrabajador);
+                    parametroTablaSeleccionado.getTipotrabajador().setNombre(auxTipoTipoTrabajador);
                 } else {
-                    filtrarListaParametrosAutoliq.get(indice).getTipotrabajador().setNombre(auxTipoTipoTrabajador);
+                    parametroTablaSeleccionado.getTipotrabajador().setNombre(auxTipoTipoTrabajador);
                 }
                 for (int i = 0; i < lovTiposTrabajadores.size(); i++) {
                     if (lovTiposTrabajadores.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
@@ -374,9 +369,9 @@ public class ControlParametroAutoliq implements Serializable {
                 }
                 if (coincidencias == 1) {
                     if (tipoLista == 0) {
-                        listaParametrosAutoliq.get(indice).setTipotrabajador(lovTiposTrabajadores.get(indiceUnicoElemento));
+                        parametroTablaSeleccionado.setTipotrabajador(lovTiposTrabajadores.get(indiceUnicoElemento));
                     } else {
-                        filtrarListaParametrosAutoliq.get(indice).setTipotrabajador(lovTiposTrabajadores.get(indiceUnicoElemento));
+                        parametroTablaSeleccionado.setTipotrabajador(lovTiposTrabajadores.get(indiceUnicoElemento));
                     }
                     lovTiposTrabajadores.clear();
                     getLovTiposTrabajadores();
@@ -389,9 +384,9 @@ public class ControlParametroAutoliq implements Serializable {
             } else {
                 coincidencias = 1;
                 if (tipoLista == 0) {
-                    listaParametrosAutoliq.get(indice).setTipotrabajador(new TiposTrabajadores());
+                    parametroTablaSeleccionado.setTipotrabajador(new TiposTrabajadores());
                 } else {
-                    filtrarListaParametrosAutoliq.get(indice).setTipotrabajador(new TiposTrabajadores());
+                    parametroTablaSeleccionado.setTipotrabajador(new TiposTrabajadores());
                 }
                 lovTiposTrabajadores.clear();
                 getLovTiposTrabajadores();
@@ -399,20 +394,19 @@ public class ControlParametroAutoliq implements Serializable {
         }
         if (coincidencias == 1) {
             if (tipoLista == 0) {
-                if (!listParametrosAutoliqCrear.contains(listaParametrosAutoliq.get(indice))) {
+                if (!listParametrosAutoliqCrear.contains(parametroTablaSeleccionado)) {
 
                     if (listParametrosAutoliqModificar.isEmpty()) {
-                        listParametrosAutoliqModificar.add(listaParametrosAutoliq.get(indice));
-                    } else if (!listParametrosAutoliqModificar.contains(listaParametrosAutoliq.get(indice))) {
-                        listParametrosAutoliqModificar.add(listaParametrosAutoliq.get(indice));
+                        listParametrosAutoliqModificar.add(parametroTablaSeleccionado);
+                    } else if (!listParametrosAutoliqModificar.contains(parametroTablaSeleccionado)) {
+                        listParametrosAutoliqModificar.add(parametroTablaSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                index = -1;
-                secRegistro = null;
+                parametroTablaSeleccionado = null;
                 cambiosParametro = true;
                 activoBtnsPaginas = true;
                 context.update("form:btn2");
@@ -421,20 +415,19 @@ public class ControlParametroAutoliq implements Serializable {
                 context.update("form:btn5");
                 context.update("form:btn7");
             } else {
-                if (!listParametrosAutoliqCrear.contains(filtrarListaParametrosAutoliq.get(indice))) {
+                if (!listParametrosAutoliqCrear.contains(parametroTablaSeleccionado)) {
 
                     if (listParametrosAutoliqModificar.isEmpty()) {
-                        listParametrosAutoliqModificar.add(filtrarListaParametrosAutoliq.get(indice));
-                    } else if (!listParametrosAutoliqModificar.contains(filtrarListaParametrosAutoliq.get(indice))) {
-                        listParametrosAutoliqModificar.add(filtrarListaParametrosAutoliq.get(indice));
+                        listParametrosAutoliqModificar.add(parametroTablaSeleccionado);
+                    } else if (!listParametrosAutoliqModificar.contains(parametroTablaSeleccionado)) {
+                        listParametrosAutoliqModificar.add(parametroTablaSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                index = -1;
-                secRegistro = null;
+                parametroTablaSeleccionado = null;
                 cambiosParametro = true;
                 activoBtnsPaginas = true;
                 context.update("form:btn2");
@@ -562,7 +555,7 @@ public class ControlParametroAutoliq implements Serializable {
                     context.update("form:ACEPTAR");
                 }
                 indexAporte = -1;
-                secRegistroAporte = null;
+                parametroTablaSeleccionado = null;
                 cambiosAporte = true;
             } else {
                 if (listAportesEntidadesModificar.isEmpty()) {
@@ -575,7 +568,7 @@ public class ControlParametroAutoliq implements Serializable {
                     context.update("form:ACEPTAR");
                 }
                 indexAporte = -1;
-                secRegistroAporte = null;
+                parametroTablaSeleccionado = null;
                 cambiosAporte = true;
             }
         }
@@ -691,7 +684,7 @@ public class ControlParametroAutoliq implements Serializable {
         String type = map.get("t"); // type attribute of node
         int indice = Integer.parseInt(type);
         int columna = Integer.parseInt(name);
-        cambiarIndice(indice, columna);
+        cambiarIndice(listaParametrosAutoliq.get(indice), columna);
     }
 
     public void posicionAporteEntidad() {
@@ -704,71 +697,110 @@ public class ControlParametroAutoliq implements Serializable {
         cambiarIndiceAporteEntidad(indice, columna);
     }
 
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(ParametrosAutoliq parametro, int celda) {
+//        if (permitirIndex == true) {
+//            RequestContext context = RequestContext.getCurrentInstance();
+//            if (index == indice) {
+//                RequestContext.getCurrentInstance().execute("operacionEnProceso.hide()");
+//                index = indice;
+//                cualCelda = celda;
+//                indexAUX = indice;
+//                if (tipoLista == 0) {
+//                     parametroTablaSeleccionado.getSecuencia();
+//                    auxTipoTipoTrabajador = parametroTablaSeleccionado.getTipotrabajador().getNombre();
+//                } else {
+//                    parametroTablaSeleccionado.getSecuencia();
+//                    auxTipoTipoTrabajador = parametroTablaSeleccionado.getTipotrabajador().getNombre();
+//                }
+//                if (banderaAporte == 1) {
+//                    desactivarFiltradoAporteEntidad();
+//                    banderaAporte = 0;
+//                    filtrarListaAportesEntidades = null;
+//                    tipoListaAporte = 0;
+//                }
+//                activoBtnsPaginas = false;
+//                numeroScrollAporte = 505;
+//                rowsAporteEntidad = 20;
+//                //context.update("form:datosAporteEntidad2");
+//                visibilidadMostrarTodos = "hidden";
+//                context.update("form:btn8");
+//                context.update("form:btn2");
+//                context.update("form:btn3");
+//                context.update("form:btn4");
+//                context.update("form:btn5");
+//                context.update("form:btn7");
+//                context.update("form:infoRegistroAporte");
+//                context.update("form:tablaSuperiorIzquierda");
+//                context.update("form:tablaSuperiorDerecha");
+//                context.update("form:tablaInferiorIzquierda");
+//                context.update("form:tablaInferiorDerecha");
+//                getParametroTablaSeleccionado();
+//            } else if (index != indice) {
+//                System.out.println("Inicio el cargue de informacion");
+//                visibilidadMostrarTodos = "hidden";
+//                context.update("form:btn8");
+//                index = indice;
+//                cualCelda = celda;
+//                indexAUX = indice;
+//                if (tipoLista == 0) {
+//                    parametroTablaSeleccionado.getSecuencia();
+//                    auxTipoTipoTrabajador = parametroTablaSeleccionado.getTipotrabajador().getNombre();
+//                    parametroTablaSeleccionado = parametroTablaSeleccionado;
+//                } else {
+//                    parametroTablaSeleccionado.getSecuencia();
+//                    auxTipoTipoTrabajador = parametroTablaSeleccionado.getTipotrabajador().getNombre();
+//                    parametroTablaSeleccionado = parametroTablaSeleccionado;
+//                }
+//                if (banderaAporte == 1) {
+//                    desactivarFiltradoAporteEntidad();
+//                    banderaAporte = 0;
+//                    filtrarListaAportesEntidades = null;
+//                    tipoListaAporte = 0;
+//                }
+//                activoBtnsPaginas = false;
+//                numeroScrollAporte = 505;
+//                rowsAporteEntidad = 20;
+//                cargarDatosNuevos();
+//            }
+//        }
+
         if (permitirIndex == true) {
             RequestContext context = RequestContext.getCurrentInstance();
-            if (index == indice) {
-                RequestContext.getCurrentInstance().execute("operacionEnProceso.hide()");
-                index = indice;
-                cualCelda = celda;
-                indexAUX = indice;
-                if (tipoLista == 0) {
-                    secRegistro = listaParametrosAutoliq.get(index).getSecuencia();
-                    auxTipoTipoTrabajador = listaParametrosAutoliq.get(index).getTipotrabajador().getNombre();
-                } else {
-                    secRegistro = filtrarListaParametrosAutoliq.get(index).getSecuencia();
-                    auxTipoTipoTrabajador = filtrarListaParametrosAutoliq.get(index).getTipotrabajador().getNombre();
-                }
-                if (banderaAporte == 1) {
-                    desactivarFiltradoAporteEntidad();
-                    banderaAporte = 0;
-                    filtrarListaAportesEntidades = null;
-                    tipoListaAporte = 0;
-                }
-                activoBtnsPaginas = false;
-                numeroScrollAporte = 505;
-                rowsAporteEntidad = 20;
-                //context.update("form:datosAporteEntidad2");
-                visibilidadMostrarTodos = "hidden";
-                context.update("form:btn8");
-                context.update("form:btn2");
-                context.update("form:btn3");
-                context.update("form:btn4");
-                context.update("form:btn5");
-                context.update("form:btn7");
-                context.update("form:infoRegistroAporte");
-                context.update("form:tablaSuperiorIzquierda");
-                context.update("form:tablaSuperiorDerecha");
-                context.update("form:tablaInferiorIzquierda");
-                context.update("form:tablaInferiorDerecha");
-                getParametroTablaSeleccionado();
-            } else if (index != indice) {
-                System.out.println("Inicio el cargue de informacion");
-                visibilidadMostrarTodos = "hidden";
-                context.update("form:btn8");
-                index = indice;
-                cualCelda = celda;
-                indexAUX = indice;
-                if (tipoLista == 0) {
-                    secRegistro = listaParametrosAutoliq.get(index).getSecuencia();
-                    auxTipoTipoTrabajador = listaParametrosAutoliq.get(index).getTipotrabajador().getNombre();
-                    parametroTablaSeleccionado = listaParametrosAutoliq.get(index);
-                } else {
-                    secRegistro = filtrarListaParametrosAutoliq.get(index).getSecuencia();
-                    auxTipoTipoTrabajador = filtrarListaParametrosAutoliq.get(index).getTipotrabajador().getNombre();
-                    parametroTablaSeleccionado = filtrarListaParametrosAutoliq.get(index);
-                }
-                if (banderaAporte == 1) {
-                    desactivarFiltradoAporteEntidad();
-                    banderaAporte = 0;
-                    filtrarListaAportesEntidades = null;
-                    tipoListaAporte = 0;
-                }
-                activoBtnsPaginas = false;
-                numeroScrollAporte = 505;
-                rowsAporteEntidad = 20;
-                cargarDatosNuevos();
+
+            RequestContext.getCurrentInstance().execute("operacionEnProceso.hide()");
+            parametroTablaSeleccionado = parametro;
+            cualCelda = celda;
+            if (tipoLista == 0) {
+                parametroTablaSeleccionado.getSecuencia();
+                auxTipoTipoTrabajador = parametroTablaSeleccionado.getTipotrabajador().getNombre();
+            } else {
+                parametroTablaSeleccionado.getSecuencia();
+                auxTipoTipoTrabajador = parametroTablaSeleccionado.getTipotrabajador().getNombre();
             }
+            if (banderaAporte == 1) {
+                desactivarFiltradoAporteEntidad();
+                banderaAporte = 0;
+                filtrarListaAportesEntidades = null;
+                tipoListaAporte = 0;
+            }
+            activoBtnsPaginas = false;
+            numeroScrollAporte = 505;
+            rowsAporteEntidad = 20;
+            //context.update("form:datosAporteEntidad2");
+            visibilidadMostrarTodos = "hidden";
+            context.update("form:btn8");
+            context.update("form:btn2");
+            context.update("form:btn3");
+            context.update("form:btn4");
+            context.update("form:btn5");
+            context.update("form:btn7");
+            context.update("form:infoRegistroAporte");
+            context.update("form:tablaSuperiorIzquierda");
+            context.update("form:tablaSuperiorDerecha");
+            context.update("form:tablaInferiorIzquierda");
+            context.update("form:tablaInferiorDerecha");
+            getParametroTablaSeleccionado();
+            cargarDatosNuevos();
         }
     }
 
@@ -803,7 +835,7 @@ public class ControlParametroAutoliq implements Serializable {
         if (permitirIndexAporte == true) {
             indexAporte = indice;
             cualCeldaAporte = celda;
-            index = -1;
+            parametroTablaSeleccionado = null;
             activoBtnsPaginas = true;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:btn2");
@@ -887,16 +919,14 @@ public class ControlParametroAutoliq implements Serializable {
             context.update("form:infoRegistroParametro");
             context.update("form:datosParametroAuto");
             k = 0;
-            index = -1;
             activoBtnsPaginas = true;
             context.update("form:btn2");
             context.update("form:btn3");
             context.update("form:btn4");
             context.update("form:btn5");
             context.update("form:btn7");
-            indexAUX = -1;
 
-            secRegistro = null;
+            parametroTablaSeleccionado = null;
             cambiosParametro = false;
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Parametro de Liquidacion con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -932,7 +962,7 @@ public class ControlParametroAutoliq implements Serializable {
             context.update("form:PanelTotal");
             k = 0;
             indexAporte = -1;
-            secRegistroAporte = null;
+            parametroTablaSeleccionado = null;
             cambiosAporte = false;
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Aporte Entidad con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -979,11 +1009,9 @@ public class ControlParametroAutoliq implements Serializable {
         listAportesEntidadesBorrar.clear();
         listAportesEntidadesModificar.clear();
         //
-        index = -1;
-        indexAUX = -1;
+        parametroTablaSeleccionado = null;
         indexAporte = -1;
-        secRegistro = null;
-        secRegistroAporte = null;
+        parametroTablaSeleccionado = null;
         k = 0;
         listaParametrosAutoliq = null;
         getListaParametrosAutoliq();
@@ -1012,11 +1040,11 @@ public class ControlParametroAutoliq implements Serializable {
 
     public void editarCelda() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index >= 0) {
+        if (parametroTablaSeleccionado != null) {
             if (tipoLista == 0) {
-                editarParametro = listaParametrosAutoliq.get(index);
+                editarParametro = parametroTablaSeleccionado;
             } else {
-                editarParametro = filtrarListaParametrosAutoliq.get(index);
+                editarParametro = parametroTablaSeleccionado;
             }
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarAnoD");
@@ -1031,14 +1059,15 @@ public class ControlParametroAutoliq implements Serializable {
                 context.execute("editarEmpresaD.show()");
                 cualCelda = -1;
             }
-            index = -1;
+            parametroTablaSeleccionado = null;
             activoBtnsPaginas = true;
             context.update("form:btn2");
             context.update("form:btn3");
             context.update("form:btn4");
             context.update("form:btn5");
             context.update("form:btn7");
-            secRegistro = null;
+        } else{
+            RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro.show()");
         }
         if (indexAporte >= 0) {
             if (tipoListaAporte == 0) {
@@ -1279,8 +1308,8 @@ public class ControlParametroAutoliq implements Serializable {
                 context.execute("editarTarifaMEND.show()");
                 cualCeldaAporte = -1;
             }
-            indexAporte = -1;
-            secRegistroAporte = null;
+        } else{
+            RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro.show()");
         }
     }
 
@@ -1329,6 +1358,7 @@ public class ControlParametroAutoliq implements Serializable {
                 listaParametrosAutoliq = new ArrayList<ParametrosAutoliq>();
             }
             listaParametrosAutoliq.add(nuevoParametro);
+            parametroTablaSeleccionado = nuevoParametro;
             nuevoParametro = new ParametrosAutoliq();
             nuevoParametro.setTipotrabajador(new TiposTrabajadores());
             nuevoParametro.setEmpresa(new Empresas());
@@ -1343,14 +1373,13 @@ public class ControlParametroAutoliq implements Serializable {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
-            index = -1;
+            parametroTablaSeleccionado = null;
             activoBtnsPaginas = true;
             context.update("form:btn2");
             context.update("form:btn3");
             context.update("form:btn4");
             context.update("form:btn5");
             context.update("form:btn7");
-            secRegistro = null;
             cambiosParametro = true;
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1362,7 +1391,7 @@ public class ControlParametroAutoliq implements Serializable {
         nuevoParametro = new ParametrosAutoliq();
         nuevoParametro.setTipotrabajador(new TiposTrabajadores());
         nuevoParametro.setEmpresa(new Empresas());
-        index = -1;
+        parametroTablaSeleccionado = null;
         activoBtnsPaginas = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:btn2");
@@ -1370,39 +1399,37 @@ public class ControlParametroAutoliq implements Serializable {
         context.update("form:btn4");
         context.update("form:btn5");
         context.update("form:btn7");
-        secRegistro = null;
     }
 
     public void duplicarParametroAutoliq() {
-        if (index >= 0) {
+        if (parametroTablaSeleccionado != null) {
             RequestContext context = RequestContext.getCurrentInstance();
             if (guardado == false) {
                 duplicarParametro = new ParametrosAutoliq();
                 if (tipoLista == 0) {
-                    duplicarParametro.setAno(listaParametrosAutoliq.get(index).getAno());
-                    duplicarParametro.setEmpresa(listaParametrosAutoliq.get(index).getEmpresa());
-                    duplicarParametro.setMes(listaParametrosAutoliq.get(index).getMes());
-                    duplicarParametro.setTipotrabajador(listaParametrosAutoliq.get(index).getTipotrabajador());
+                    duplicarParametro.setAno(parametroTablaSeleccionado.getAno());
+                    duplicarParametro.setEmpresa(parametroTablaSeleccionado.getEmpresa());
+                    duplicarParametro.setMes(parametroTablaSeleccionado.getMes());
+                    duplicarParametro.setTipotrabajador(parametroTablaSeleccionado.getTipotrabajador());
                 }
                 if (tipoLista == 1) {
-                    duplicarParametro.setAno(filtrarListaParametrosAutoliq.get(index).getAno());
-                    duplicarParametro.setEmpresa(filtrarListaParametrosAutoliq.get(index).getEmpresa());
-                    duplicarParametro.setMes(filtrarListaParametrosAutoliq.get(index).getMes());
-                    duplicarParametro.setTipotrabajador(filtrarListaParametrosAutoliq.get(index).getTipotrabajador());
+                    duplicarParametro.setAno(parametroTablaSeleccionado.getAno());
+                    duplicarParametro.setEmpresa(parametroTablaSeleccionado.getEmpresa());
+                    duplicarParametro.setMes(parametroTablaSeleccionado.getMes());
+                    duplicarParametro.setTipotrabajador(parametroTablaSeleccionado.getTipotrabajador());
 
                 }
                 visibilidadMostrarTodos = "hidden";
                 RequestContext.getCurrentInstance().update("form:btn8");
                 context.update("formularioDialogos:duplicarParametro");
                 context.execute("DuplicarRegistroParametro.show()");
-                index = -1;
+                parametroTablaSeleccionado = null;
                 activoBtnsPaginas = true;
                 context.update("form:btn2");
                 context.update("form:btn3");
                 context.update("form:btn4");
                 context.update("form:btn5");
                 context.update("form:btn7");
-                secRegistro = null;
             } else {
                 context.execute("confirmarGuardar.show()");
             }
@@ -1437,6 +1464,7 @@ public class ControlParametroAutoliq implements Serializable {
             duplicarParametro.setSecuencia(l);
             listaParametrosAutoliq.add(duplicarParametro);
             listParametrosAutoliqCrear.add(duplicarParametro);
+            parametroTablaSeleccionado = duplicarParametro;
             RequestContext context = RequestContext.getCurrentInstance();
 
             infoRegistroParametro = "Cantidad de registros : " + listaParametrosAutoliq.size();
@@ -1444,14 +1472,12 @@ public class ControlParametroAutoliq implements Serializable {
             context.update("form:infoRegistroParametro");
             context.update("form:datosParametroAuto");
             context.execute("DuplicarRegistroParametro.hide()");
-            index = -1;
             activoBtnsPaginas = true;
             context.update("form:btn2");
             context.update("form:btn3");
             context.update("form:btn4");
             context.update("form:btn5");
             context.update("form:btn7");
-            secRegistro = null;
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1472,7 +1498,7 @@ public class ControlParametroAutoliq implements Serializable {
     }
 
     public void validarBorradoPagina() {
-        if (index >= 0) {
+        if (parametroTablaSeleccionado != null) {
             int tam = 0;
             if (listaAportesEntidades != null) {
                 tam = listaAportesEntidades.size();
@@ -1489,33 +1515,19 @@ public class ControlParametroAutoliq implements Serializable {
     }
 
     public void borrarParametroAutoliq() {
-        if (tipoLista == 0) {
-            if (!listParametrosAutoliqModificar.isEmpty() && listParametrosAutoliqModificar.contains(listaParametrosAutoliq.get(index))) {
-                int modIndex = listParametrosAutoliqModificar.indexOf(listaParametrosAutoliq.get(index));
-                listParametrosAutoliqModificar.remove(modIndex);
-                listParametrosAutoliqBorrar.add(listaParametrosAutoliq.get(index));
-            } else if (!listParametrosAutoliqCrear.isEmpty() && listParametrosAutoliqCrear.contains(listaParametrosAutoliq.get(index))) {
-                int crearIndex = listParametrosAutoliqCrear.indexOf(listaParametrosAutoliq.get(index));
-                listParametrosAutoliqCrear.remove(crearIndex);
-            } else {
-                listParametrosAutoliqBorrar.add(listaParametrosAutoliq.get(index));
-            }
-            listaParametrosAutoliq.remove(index);
+        if (!listParametrosAutoliqModificar.isEmpty() && listParametrosAutoliqModificar.contains(parametroTablaSeleccionado)) {
+            int modIndex = listParametrosAutoliqModificar.indexOf(parametroTablaSeleccionado);
+            listParametrosAutoliqModificar.remove(modIndex);
+            listParametrosAutoliqBorrar.add(parametroTablaSeleccionado);
+        } else if (!listParametrosAutoliqCrear.isEmpty() && listParametrosAutoliqCrear.contains(parametroTablaSeleccionado)) {
+            int crearIndex = listParametrosAutoliqCrear.indexOf(parametroTablaSeleccionado);
+            listParametrosAutoliqCrear.remove(crearIndex);
+        } else {
+            listParametrosAutoliqBorrar.add(parametroTablaSeleccionado);
         }
+        listaParametrosAutoliq.remove(parametroTablaSeleccionado);
         if (tipoLista == 1) {
-            if (!listParametrosAutoliqModificar.isEmpty() && listParametrosAutoliqModificar.contains(filtrarListaParametrosAutoliq.get(index))) {
-                int modIndex = listParametrosAutoliqModificar.indexOf(filtrarListaParametrosAutoliq.get(index));
-                listParametrosAutoliqModificar.remove(modIndex);
-                listParametrosAutoliqBorrar.add(filtrarListaParametrosAutoliq.get(index));
-            } else if (!listParametrosAutoliqCrear.isEmpty() && listParametrosAutoliqCrear.contains(filtrarListaParametrosAutoliq.get(index))) {
-                int crearIndex = listParametrosAutoliqCrear.indexOf(filtrarListaParametrosAutoliq.get(index));
-                listParametrosAutoliqCrear.remove(crearIndex);
-            } else {
-                listParametrosAutoliqBorrar.add(filtrarListaParametrosAutoliq.get(index));
-            }
-            int VCIndex = listaParametrosAutoliq.indexOf(filtrarListaParametrosAutoliq.get(index));
-            listaParametrosAutoliq.remove(VCIndex);
-            filtrarListaParametrosAutoliq.remove(index);
+            filtrarListaParametrosAutoliq.remove(parametroTablaSeleccionado);
         }
 
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1524,14 +1536,13 @@ public class ControlParametroAutoliq implements Serializable {
 
         context.update("form:infoRegistroParametro");
         context.update("form:datosParametroAuto");
-        index = -1;
+        parametroTablaSeleccionado = null;
         activoBtnsPaginas = true;
         context.update("form:btn2");
         context.update("form:btn3");
         context.update("form:btn4");
         context.update("form:btn5");
         context.update("form:btn7");
-        secRegistro = null;
         cambiosParametro = true;
         if (guardado == true) {
             guardado = false;
@@ -1572,7 +1583,7 @@ public class ControlParametroAutoliq implements Serializable {
         context.update("form:tablaInferiorIzquierda");
         context.update("form:tablaInferiorDerecha");
         indexAporte = -1;
-        secRegistroAporte = null;
+        parametroTablaSeleccionado = null;
         cambiosAporte = true;
         if (guardado == true) {
             guardado = false;
@@ -1587,9 +1598,9 @@ public class ControlParametroAutoliq implements Serializable {
                 guardadoGeneral();
             }
             if (tipoLista == 0) {
-                administrarParametroAutoliq.borrarAportesEntidadesProcesoAutomatico(listaParametrosAutoliq.get(indexAUX).getEmpresa().getSecuencia(), listaParametrosAutoliq.get(indexAUX).getMes(), listaParametrosAutoliq.get(indexAUX).getAno());
+                administrarParametroAutoliq.borrarAportesEntidadesProcesoAutomatico(parametroTablaSeleccionado.getEmpresa().getSecuencia(), parametroTablaSeleccionado.getMes(), parametroTablaSeleccionado.getAno());
             } else {
-                administrarParametroAutoliq.borrarAportesEntidadesProcesoAutomatico(filtrarListaParametrosAutoliq.get(indexAUX).getEmpresa().getSecuencia(), filtrarListaParametrosAutoliq.get(indexAUX).getMes(), filtrarListaParametrosAutoliq.get(indexAUX).getAno());
+                administrarParametroAutoliq.borrarAportesEntidadesProcesoAutomatico(parametroTablaSeleccionado.getEmpresa().getSecuencia(), parametroTablaSeleccionado.getMes(), parametroTablaSeleccionado.getAno());
             }
             listaParametrosAutoliq = null;
             getListaParametrosAutoliq();
@@ -1610,7 +1621,7 @@ public class ControlParametroAutoliq implements Serializable {
             context.update("form:datosParametroAuto");
             context.update("form:tablaInferiorIzquierda");
             context.update("form:tablaInferiorDerecha");
-            indexAUX = -1;
+            parametroTablaSeleccionado = null;
             activoBtnsPaginas = true;
             context.update("form:btn2");
             context.update("form:btn3");
@@ -1641,11 +1652,11 @@ public class ControlParametroAutoliq implements Serializable {
                     short ano = 0;
                     short mes = 0;
                     if (tipoLista == 0) {
-                        ano = listaParametrosAutoliq.get(indexAUX).getAno();
-                        mes = listaParametrosAutoliq.get(indexAUX).getMes();
+                        ano = parametroTablaSeleccionado.getAno();
+                        mes = parametroTablaSeleccionado.getMes();
                     } else {
-                        ano = filtrarListaParametrosAutoliq.get(indexAUX).getAno();
-                        mes = filtrarListaParametrosAutoliq.get(indexAUX).getMes();
+                        ano = parametroTablaSeleccionado.getAno();
+                        mes = parametroTablaSeleccionado.getMes();
                     }
 
                     if ((parametroEstructura.getFechahastacausado().getMonth() + 1) != mes) {
@@ -1685,11 +1696,11 @@ public class ControlParametroAutoliq implements Serializable {
             String procesoInsertar = "";
             String procesoActualizar = "";
             if (tipoLista == 0) {
-                procesoInsertar = administrarParametroAutoliq.ejecutarPKGInsertar(parametroEstructura.getFechadesdecausado(), parametroEstructura.getFechahastacausado(), listaParametrosAutoliq.get(indexAUX).getTipotrabajador().getSecuencia(), listaParametrosAutoliq.get(indexAUX).getEmpresa().getSecuencia());
-                procesoActualizar = administrarParametroAutoliq.ejecutarPKGActualizarNovedades(listaParametrosAutoliq.get(indexAUX).getAno(), listaParametrosAutoliq.get(indexAUX).getMes(), listaParametrosAutoliq.get(indexAUX).getEmpresa().getSecuencia());
+                procesoInsertar = administrarParametroAutoliq.ejecutarPKGInsertar(parametroEstructura.getFechadesdecausado(), parametroEstructura.getFechahastacausado(), parametroTablaSeleccionado.getTipotrabajador().getSecuencia(), parametroTablaSeleccionado.getEmpresa().getSecuencia());
+                procesoActualizar = administrarParametroAutoliq.ejecutarPKGActualizarNovedades(parametroTablaSeleccionado.getAno(), parametroTablaSeleccionado.getMes(), parametroTablaSeleccionado.getEmpresa().getSecuencia());
             } else {
-                procesoInsertar = administrarParametroAutoliq.ejecutarPKGInsertar(parametroEstructura.getFechadesdecausado(), parametroEstructura.getFechahastacausado(), filtrarListaParametrosAutoliq.get(indexAUX).getTipotrabajador().getSecuencia(), filtrarListaParametrosAutoliq.get(indexAUX).getEmpresa().getSecuencia());
-                procesoActualizar = administrarParametroAutoliq.ejecutarPKGActualizarNovedades(filtrarListaParametrosAutoliq.get(indexAUX).getAno(), filtrarListaParametrosAutoliq.get(indexAUX).getMes(), filtrarListaParametrosAutoliq.get(indexAUX).getEmpresa().getSecuencia());
+                procesoInsertar = administrarParametroAutoliq.ejecutarPKGInsertar(parametroEstructura.getFechadesdecausado(), parametroEstructura.getFechahastacausado(), parametroTablaSeleccionado.getTipotrabajador().getSecuencia(), parametroTablaSeleccionado.getEmpresa().getSecuencia());
+                procesoActualizar = administrarParametroAutoliq.ejecutarPKGActualizarNovedades(parametroTablaSeleccionado.getAno(), parametroTablaSeleccionado.getMes(), parametroTablaSeleccionado.getEmpresa().getSecuencia());
             }
             if ((procesoInsertar.equals("PROCESO_EXITOSO")) && (procesoActualizar.equals("PROCESO_EXITOSO"))) {
                 listaParametrosAutoliq = null;
@@ -1703,7 +1714,7 @@ public class ControlParametroAutoliq implements Serializable {
                 infoRegistroAporte = "Cantidad de registros : 0";
                 disabledBuscar = true;
 
-                indexAUX = -1;
+                parametroTablaSeleccionado = null;
                 activoBtnsPaginas = true;
                 visibilidadMostrarTodos = "hidden";
                 RequestContext.getCurrentInstance().update("form:btn8");
@@ -1731,11 +1742,11 @@ public class ControlParametroAutoliq implements Serializable {
             short ano = 0;
             short mes = 0;
             if (tipoLista == 0) {
-                ano = listaParametrosAutoliq.get(indexAUX).getAno();
-                mes = listaParametrosAutoliq.get(indexAUX).getMes();
+                ano = parametroTablaSeleccionado.getAno();
+                mes = parametroTablaSeleccionado.getMes();
             } else {
-                ano = filtrarListaParametrosAutoliq.get(indexAUX).getAno();
-                mes = filtrarListaParametrosAutoliq.get(indexAUX).getMes();
+                ano = parametroTablaSeleccionado.getAno();
+                mes = parametroTablaSeleccionado.getMes();
             }
             Date fechaDesdeParametros;
 
@@ -1760,7 +1771,7 @@ public class ControlParametroAutoliq implements Serializable {
 
             parametroInforme = null;
             parametroEstructura = null;
-            indexAUX = -1;
+            parametroTablaSeleccionado = null;
             activoBtnsPaginas = true;
             context.update("form:PanelTotal");
             FacesMessage msg = new FacesMessage("Información", "Se realizo con éxito el cambio de fechas de ParametrosEstructuras y ParametrosReportes");
@@ -1787,11 +1798,11 @@ public class ControlParametroAutoliq implements Serializable {
                     short ano = 0;
                     short mes = 0;
                     if (tipoLista == 0) {
-                        ano = listaParametrosAutoliq.get(indexAUX).getAno();
-                        mes = listaParametrosAutoliq.get(indexAUX).getMes();
+                        ano = parametroTablaSeleccionado.getAno();
+                        mes = parametroTablaSeleccionado.getMes();
                     } else {
-                        ano = filtrarListaParametrosAutoliq.get(indexAUX).getAno();
-                        mes = filtrarListaParametrosAutoliq.get(indexAUX).getMes();
+                        ano = parametroTablaSeleccionado.getAno();
+                        mes = parametroTablaSeleccionado.getMes();
                     }
                     if ((parametroEstructura.getFechahastacausado().getMonth() + 1) != mes) {
                         fechasIgualesEstructura = false;
@@ -1825,9 +1836,9 @@ public class ControlParametroAutoliq implements Serializable {
                 guardadoGeneral();
             }
             if (tipoLista == 0) {
-                administrarParametroAutoliq.ejecutarPKGActualizarNovedades(listaParametrosAutoliq.get(indexAUX).getAno(), listaParametrosAutoliq.get(indexAUX).getMes(), listaParametrosAutoliq.get(indexAUX).getEmpresa().getSecuencia());
+                administrarParametroAutoliq.ejecutarPKGActualizarNovedades(parametroTablaSeleccionado.getAno(), parametroTablaSeleccionado.getMes(), parametroTablaSeleccionado.getEmpresa().getSecuencia());
             } else {
-                administrarParametroAutoliq.ejecutarPKGActualizarNovedades(filtrarListaParametrosAutoliq.get(indexAUX).getAno(), filtrarListaParametrosAutoliq.get(indexAUX).getMes(), filtrarListaParametrosAutoliq.get(indexAUX).getEmpresa().getSecuencia());
+                administrarParametroAutoliq.ejecutarPKGActualizarNovedades(parametroTablaSeleccionado.getAno(), parametroTablaSeleccionado.getMes(), parametroTablaSeleccionado.getEmpresa().getSecuencia());
             }
             listaParametrosAutoliq = null;
             getListaParametrosAutoliq();
@@ -1839,7 +1850,7 @@ public class ControlParametroAutoliq implements Serializable {
             listaAportesEntidades = null;
             infoRegistroAporte = "Cantidad de registros : 0";
             disabledBuscar = true;
-            indexAUX = -1;
+            parametroTablaSeleccionado = null;
             activoBtnsPaginas = true;
             visibilidadMostrarTodos = "hidden";
             RequestContext.getCurrentInstance().update("form:btn8");
@@ -1857,7 +1868,7 @@ public class ControlParametroAutoliq implements Serializable {
 
     public void activarCtrlF11() {
 
-        if (index >= 0) {
+        if (parametroTablaSeleccionado != null) {
             FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 0) {
                 altoTabla = "48";
@@ -2321,11 +2332,10 @@ public class ControlParametroAutoliq implements Serializable {
         listAportesEntidadesBorrar.clear();
         listAportesEntidadesModificar.clear();
         //
-        index = -1;
+        parametroTablaSeleccionado = null;
         activoBtnsPaginas = true;
         indexAporte = -1;
-        secRegistro = null;
-        secRegistroAporte = null;
+        parametroTablaSeleccionado = null;
         k = 0;
         listaParametrosAutoliq = null;
         listaAportesEntidades = null;
@@ -2335,8 +2345,8 @@ public class ControlParametroAutoliq implements Serializable {
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
 
-    public void asignarIndex(Integer indice, int LND, int dialogo) {
-        index = indice;
+    public void asignarIndex(ParametrosAutoliq parametro, int LND, int dialogo) {
+        parametroTablaSeleccionado = parametro;
         RequestContext context = RequestContext.getCurrentInstance();
         if (LND == 0) {
             tipoActualizacion = 0;
@@ -2379,21 +2389,21 @@ public class ControlParametroAutoliq implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaParametrosAutoliq.get(index).setTipotrabajador(tipoTrabajadorSeleccionado);
-                if (!listParametrosAutoliqCrear.contains(listaParametrosAutoliq.get(index))) {
+                parametroTablaSeleccionado.setTipotrabajador(tipoTrabajadorSeleccionado);
+                if (!listParametrosAutoliqCrear.contains(parametroTablaSeleccionado)) {
                     if (listParametrosAutoliqModificar.isEmpty()) {
-                        listParametrosAutoliqModificar.add(listaParametrosAutoliq.get(index));
-                    } else if (!listParametrosAutoliqModificar.contains(listaParametrosAutoliq.get(index))) {
-                        listParametrosAutoliqModificar.add(listaParametrosAutoliq.get(index));
+                        listParametrosAutoliqModificar.add(parametroTablaSeleccionado);
+                    } else if (!listParametrosAutoliqModificar.contains(parametroTablaSeleccionado)) {
+                        listParametrosAutoliqModificar.add(parametroTablaSeleccionado);
                     }
                 }
             } else {
-                filtrarListaParametrosAutoliq.get(index).setTipotrabajador(tipoTrabajadorSeleccionado);
-                if (!listParametrosAutoliqCrear.contains(filtrarListaParametrosAutoliq.get(index))) {
+                parametroTablaSeleccionado.setTipotrabajador(tipoTrabajadorSeleccionado);
+                if (!listParametrosAutoliqCrear.contains(parametroTablaSeleccionado)) {
                     if (listParametrosAutoliqModificar.isEmpty()) {
-                        listParametrosAutoliqModificar.add(filtrarListaParametrosAutoliq.get(index));
-                    } else if (!listParametrosAutoliqModificar.contains(filtrarListaParametrosAutoliq.get(index))) {
-                        listParametrosAutoliqModificar.add(filtrarListaParametrosAutoliq.get(index));
+                        listParametrosAutoliqModificar.add(parametroTablaSeleccionado);
+                    } else if (!listParametrosAutoliqModificar.contains(parametroTablaSeleccionado)) {
+                        listParametrosAutoliqModificar.add(parametroTablaSeleccionado);
                     }
                 }
             }
@@ -2414,7 +2424,7 @@ public class ControlParametroAutoliq implements Serializable {
         filtrarLovTiposTrabajadores = null;
         tipoTrabajadorSeleccionado = new TiposTrabajadores();
         aceptar = true;
-        index = -1;
+        parametroTablaSeleccionado = null;
 
         activoBtnsPaginas = true;
         context.update("form:btn2");
@@ -2422,11 +2432,11 @@ public class ControlParametroAutoliq implements Serializable {
         context.update("form:btn4");
         context.update("form:btn5");
         context.update("form:btn7");
-        secRegistro = null;
         tipoActualizacion = -1;/*
-        context.update("formularioLovTipoTrabajador:TipoTrabajadorDialogo");
-        context.update("formularioLovTipoTrabajador:lovTipoTrabajador");
-        context.update("formularioLovTipoTrabajador:aceptarTT");*/
+         context.update("formularioLovTipoTrabajador:TipoTrabajadorDialogo");
+         context.update("formularioLovTipoTrabajador:lovTipoTrabajador");
+         context.update("formularioLovTipoTrabajador:aceptarTT");*/
+
         context.reset("formularioLovTipoTrabajador:lovTipoTrabajador:globalFilter");
         context.execute("lovTipoTrabajador.clearFilters()");
         context.execute("TipoTrabajadorDialogo.hide()");
@@ -2436,7 +2446,7 @@ public class ControlParametroAutoliq implements Serializable {
         filtrarLovTiposTrabajadores = null;
         tipoTrabajadorSeleccionado = new TiposTrabajadores();
         aceptar = true;
-        index = -1;
+        parametroTablaSeleccionado = null;
         RequestContext context = RequestContext.getCurrentInstance();
         activoBtnsPaginas = true;
         context.update("form:btn2");
@@ -2444,7 +2454,6 @@ public class ControlParametroAutoliq implements Serializable {
         context.update("form:btn4");
         context.update("form:btn5");
         context.update("form:btn7");
-        secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
         context.reset("formularioLovTipoTrabajador:lovTipoTrabajador:globalFilter");
@@ -2464,18 +2473,18 @@ public class ControlParametroAutoliq implements Serializable {
         filtrarLovEmpresas = null;
         empresaSeleccionada = new Empresas();
         aceptar = true;
-        index = -1;
+        parametroTablaSeleccionado = null;
         activoBtnsPaginas = true;
         context.update("form:btn2");
         context.update("form:btn3");
         context.update("form:btn4");
         context.update("form:btn5");
         context.update("form:btn7");
-        secRegistro = null;
         tipoActualizacion = -1;/*
-        context.update("formularioLovEmpresa:EmpresaDialogo");
-        context.update("formularioLovEmpresa:lovEmpresa");
-        context.update("formularioLovEmpresa:aceptarE");*/
+         context.update("formularioLovEmpresa:EmpresaDialogo");
+         context.update("formularioLovEmpresa:lovEmpresa");
+         context.update("formularioLovEmpresa:aceptarE");*/
+
         context.reset("formularioLovEmpresa:lovEmpresa:globalFilter");
         context.execute("lovEmpresa.clearFilters()");
         context.execute("EmpresaDialogo.hide()");
@@ -2485,7 +2494,7 @@ public class ControlParametroAutoliq implements Serializable {
         filtrarLovEmpresas = null;
         empresaSeleccionada = new Empresas();
         aceptar = true;
-        index = -1;
+        parametroTablaSeleccionado = null;
         RequestContext context = RequestContext.getCurrentInstance();
         activoBtnsPaginas = true;
         context.update("form:btn2");
@@ -2493,7 +2502,6 @@ public class ControlParametroAutoliq implements Serializable {
         context.update("form:btn4");
         context.update("form:btn5");
         context.update("form:btn7");
-        secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
         context.reset("formularioLovEmpresa:lovEmpresa:globalFilter");
@@ -2532,11 +2540,12 @@ public class ControlParametroAutoliq implements Serializable {
         empleadoSeleccionado = new Empleados();
         aceptar = true;
         indexAporte = -1;
-        secRegistroAporte = null;
+        parametroTablaSeleccionado = null;
         tipoActualizacion = -1;/*
-        context.update("formularioLovEmpleado:EmpleadoDialogo");
-        context.update("formularioLovEmpleado:lovEmpleado");
-        context.update("formularioLovEmpleado:aceptarEMPL");*/
+         context.update("formularioLovEmpleado:EmpleadoDialogo");
+         context.update("formularioLovEmpleado:lovEmpleado");
+         context.update("formularioLovEmpleado:aceptarEMPL");*/
+
         context.reset("formularioLovEmpleado:lovEmpleado:globalFilter");
         context.execute("lovEmpleado.clearFilters()");
         context.execute("EmpleadoDialogo.hide()");
@@ -2548,7 +2557,7 @@ public class ControlParametroAutoliq implements Serializable {
         aceptar = true;
         indexAporte = -1;
 
-        secRegistroAporte = null;
+        parametroTablaSeleccionado = null;
         tipoActualizacion = -1;
         permitirIndexAporte = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -2587,11 +2596,12 @@ public class ControlParametroAutoliq implements Serializable {
         terceroSeleccionado = new Terceros();
         aceptar = true;
         indexAporte = -1;
-        secRegistroAporte = null;
+        parametroTablaSeleccionado = null;
         tipoActualizacion = -1;/*
-        context.update("formularioLovTercero:TerceroDialogo");
-        context.update("formularioLovTercero:lovTercero");
-        context.update("formularioLovTercero:aceptarT");*/
+         context.update("formularioLovTercero:TerceroDialogo");
+         context.update("formularioLovTercero:lovTercero");
+         context.update("formularioLovTercero:aceptarT");*/
+
         context.reset("formularioLovTercero:lovTercero:globalFilter");
         context.execute("lovTercero.clearFilters()");
         context.execute("TerceroDialogo.hide()");
@@ -2602,7 +2612,7 @@ public class ControlParametroAutoliq implements Serializable {
         terceroSeleccionado = new Terceros();
         aceptar = true;
         indexAporte = -1;
-        secRegistroAporte = null;
+        parametroTablaSeleccionado = null;
         tipoActualizacion = -1;
         permitirIndexAporte = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -2641,11 +2651,12 @@ public class ControlParametroAutoliq implements Serializable {
         tipoEntidadSeleccionado = new TiposEntidades();
         aceptar = true;
         indexAporte = -1;
-        secRegistroAporte = null;
+        parametroTablaSeleccionado = null;
         tipoActualizacion = -1;/*
-        context.update("formularioLovTipoEntidad:TipoEntidadDialogo");
-        context.update("formularioLovTipoEntidad:lovTipoEntidad");
-        context.update("formularioLovTipoEntidad:aceptarTE");*/
+         context.update("formularioLovTipoEntidad:TipoEntidadDialogo");
+         context.update("formularioLovTipoEntidad:lovTipoEntidad");
+         context.update("formularioLovTipoEntidad:aceptarTE");*/
+
         context.reset("formularioLovTipoEntidad:lovTipoEntidad:globalFilter");
         context.execute("lovTipoEntidad.clearFilters()");
         context.execute("TipoEntidadDialogo.hide()");
@@ -2656,7 +2667,7 @@ public class ControlParametroAutoliq implements Serializable {
         tipoEntidadSeleccionado = new TiposEntidades();
         aceptar = true;
         indexAporte = -1;
-        secRegistroAporte = null;
+        parametroTablaSeleccionado = null;
         tipoActualizacion = -1;
         permitirIndexAporte = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -2690,14 +2701,13 @@ public class ControlParametroAutoliq implements Serializable {
         filtrarLovAportesEntidades = null;
         aporteEntidadSeleccionado = new AportesEntidades();
         aceptar = true;
-        index = -1;
+        parametroTablaSeleccionado = null;
         activoBtnsPaginas = true;
         context.update("form:btn2");
         context.update("form:btn3");
         context.update("form:btn4");
         context.update("form:btn5");
         context.update("form:btn7");
-        secRegistro = null;
         tipoActualizacion = -1;
         visibilidadMostrarTodos = "visible";
         RequestContext.getCurrentInstance().update("form:btn8");
@@ -2705,10 +2715,10 @@ public class ControlParametroAutoliq implements Serializable {
 
         context.update("form:infoRegistroAporte");
         context.update("form:PanelTotal");
-/*
-        context.update("formularioLovAporteEntidad:BuscarAporteDialogo");
-        context.update("formularioLovAporteEntidad:lovBuscarAporte");
-        context.update("formularioLovAporteEntidad:aceptarBA");*/
+        /*
+         context.update("formularioLovAporteEntidad:BuscarAporteDialogo");
+         context.update("formularioLovAporteEntidad:lovBuscarAporte");
+         context.update("formularioLovAporteEntidad:aceptarBA");*/
         context.reset("formularioLovAporteEntidad:lovBuscarAporte:globalFilter");
         context.execute("lovBuscarAporte.clearFilters()");
         context.execute("BuscarAporteDialogo.hide()");
@@ -2718,7 +2728,7 @@ public class ControlParametroAutoliq implements Serializable {
         filtrarLovEmpresas = null;
         empresaSeleccionada = new Empresas();
         aceptar = true;
-        index = -1;
+        parametroTablaSeleccionado = null;
         RequestContext context = RequestContext.getCurrentInstance();
         activoBtnsPaginas = true;
         context.update("form:btn2");
@@ -2726,7 +2736,6 @@ public class ControlParametroAutoliq implements Serializable {
         context.update("form:btn4");
         context.update("form:btn5");
         context.update("form:btn7");
-        secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
         context.reset("formularioLovAporteEntidad:lovBuscarAporte:globalFilter");
@@ -2737,7 +2746,7 @@ public class ControlParametroAutoliq implements Serializable {
     public void mostrarTodosAporteEntidad() {
         visibilidadMostrarTodos = "hidden";
         RequestContext.getCurrentInstance().update("form:btn8");
-        index = indexAUX;
+        //index = indexAUX;
         indexAporte = -1;
         if (banderaAporte == 1) {
             desactivarFiltradoAporteEntidad();
@@ -2749,12 +2758,12 @@ public class ControlParametroAutoliq implements Serializable {
         numeroScrollAporte = 505;
         rowsAporteEntidad = 20;
         cargarDatosNuevos();
-        index = -1;
+        parametroTablaSeleccionado = null;
     }
 
     public void listaValoresBoton() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index >= 0) {
+        if (parametroTablaSeleccionado != null) {
             if (cualCelda == 2) {
                 context.update("formularioLovTipoTrabajador:TipoTrabajadorDialogo");
                 context.execute("TipoTrabajadorDialogo.show()");
@@ -2786,7 +2795,7 @@ public class ControlParametroAutoliq implements Serializable {
 
     public String exportXMLTabla() {
         String tabla = "";
-        if (index >= 0) {
+        if (parametroTablaSeleccionado != null) {
             tabla = ":formExportar:datosParametroAutoExportar";
         }
         if (indexAporte >= 0) {
@@ -2797,7 +2806,7 @@ public class ControlParametroAutoliq implements Serializable {
 
     public String exportXMLNombreArchivo() {
         String nombre = "";
-        if (index >= 0) {
+        if (parametroTablaSeleccionado != null) {
             nombre = "ParametrosAutoliquidacion_XML";
         }
         if (indexAporte >= 0) {
@@ -2807,7 +2816,7 @@ public class ControlParametroAutoliq implements Serializable {
     }
 
     public void validarExportPDF() throws IOException {
-        if (index >= 0) {
+        if (parametroTablaSeleccionado != null) {
             exportPDF();
         }
         if (indexAporte >= 0) {
@@ -2821,7 +2830,7 @@ public class ControlParametroAutoliq implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "ParametrosAutoliquidacion_PDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
+        parametroTablaSeleccionado = null;
         RequestContext context2 = RequestContext.getCurrentInstance();
         activoBtnsPaginas = true;
         context2.update("form:btn2");
@@ -2829,7 +2838,6 @@ public class ControlParametroAutoliq implements Serializable {
         context2.update("form:btn4");
         context2.update("form:btn5");
         context2.update("form:btn7");
-        secRegistro = null;
     }
 
     public void exportPDF_AE() throws IOException {
@@ -2839,11 +2847,11 @@ public class ControlParametroAutoliq implements Serializable {
         exporter.export(context, tabla, "AportesEntidades_PDF", false, false, "UTF-8", null, null);
         context.responseComplete();
         indexAporte = -1;
-        secRegistroAporte = null;
+        parametroTablaSeleccionado = null;
     }
 
     public void validarExportXLS() throws IOException {
-        if (index >= 0) {
+        if (parametroTablaSeleccionado != null) {
             exportXLS();
         }
         if (indexAporte >= 0) {
@@ -2857,7 +2865,7 @@ public class ControlParametroAutoliq implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "ParametrosAutoliquidacion_XLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
+        parametroTablaSeleccionado = null;
         RequestContext context2 = RequestContext.getCurrentInstance();
         activoBtnsPaginas = true;
         context2.update("form:btn2");
@@ -2865,7 +2873,6 @@ public class ControlParametroAutoliq implements Serializable {
         context2.update("form:btn4");
         context2.update("form:btn5");
         context2.update("form:btn7");
-        secRegistro = null;
     }
 
     public void exportXLS_AE() throws IOException {
@@ -2875,12 +2882,12 @@ public class ControlParametroAutoliq implements Serializable {
         exporter.export(context, tabla, "AportesEntidades_XLS", false, false, "UTF-8", null, null);
         context.responseComplete();
         indexAporte = -1;
-        secRegistroAporte = null;
+        parametroTablaSeleccionado = null;
     }
 
     public void eventoFiltrar() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index >= 0) {
+        if (parametroTablaSeleccionado != null) {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
@@ -2901,7 +2908,7 @@ public class ControlParametroAutoliq implements Serializable {
     }
 
     public void verificarRastroTablas() {
-        if (index >= 0) {
+        if (parametroTablaSeleccionado != null) {
             verificarRastro();
         }
         if (indexAporte >= 0) {
@@ -2911,24 +2918,19 @@ public class ControlParametroAutoliq implements Serializable {
 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (listaParametrosAutoliq != null) {
-            if (secRegistro != null) {
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "PARAMETROSAUTOLIQ");
-                backUpSecRegistro = secRegistro;
-                secRegistro = null;
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
+        if (parametroTablaSeleccionado != null) {
+            int resultado = administrarRastros.obtenerTabla(parametroTablaSeleccionado.getSecuencia(), "PARAMETROSAUTOLIQ");
+            backUpSecRegistro = parametroTablaSeleccionado.getSecuencia();
+            if (resultado == 1) {
+                context.execute("errorObjetosDB.show()");
+            } else if (resultado == 2) {
+                context.execute("confirmarRastro.show()");
+            } else if (resultado == 3) {
+                context.execute("errorRegistroRastro.show()");
+            } else if (resultado == 4) {
+                context.execute("errorTablaConRastro.show()");
+            } else if (resultado == 5) {
+                context.execute("errorTablaSinRastro.show()");
             }
         } else {
             if (administrarRastros.verificarHistoricosTabla("PARAMETROSAUTOLIQ")) {
@@ -2938,7 +2940,7 @@ public class ControlParametroAutoliq implements Serializable {
             }
 
         }
-        index = -1;
+        parametroTablaSeleccionado = null;
         activoBtnsPaginas = true;
         context.update("form:btn2");
         context.update("form:btn3");
@@ -2953,7 +2955,7 @@ public class ControlParametroAutoliq implements Serializable {
             if (secRegistroAporte != null) {
                 int resultado = administrarRastros.obtenerTabla(secRegistroAporte, "APORTESENTIDADES");
                 backUpSecRegistroAporte = secRegistroAporte;
-                secRegistroAporte = null;
+                parametroTablaSeleccionado = null;
                 if (resultado == 1) {
                     context.execute("errorObjetosDBAporte.show()");
                 } else if (resultado == 2) {
@@ -3161,12 +3163,12 @@ public class ControlParametroAutoliq implements Serializable {
     public List<AportesEntidades> getListaAportesEntidades() {
         try {
             if (listaAportesEntidades == null) {
-                if (index >= 0) {
+                if (parametroTablaSeleccionado != null) {
                     ParametrosAutoliq aux = null;
                     if (tipoLista == 0) {
-                        aux = listaParametrosAutoliq.get(index);
+                        aux = parametroTablaSeleccionado;
                     } else {
-                        aux = filtrarListaParametrosAutoliq.get(index);
+                        aux = parametroTablaSeleccionado;
                     }
                     listaAportesEntidades = administrarParametroAutoliq.consultarAportesEntidadesPorParametroAutoliq(aux.getEmpresa().getSecuencia(), aux.getMes(), aux.getAno());
                     if (listaAportesEntidades != null) {
@@ -3352,12 +3354,12 @@ public class ControlParametroAutoliq implements Serializable {
 
     public List<AportesEntidades> getLovAportesEntidades() {
         if (lovAportesEntidades == null) {
-            if (index >= 0) {
+            if (parametroTablaSeleccionado != null) {
                 ParametrosAutoliq aux = null;
                 if (tipoLista == 0) {
-                    aux = listaParametrosAutoliq.get(index);
+                    aux = parametroTablaSeleccionado;
                 } else {
-                    aux = filtrarListaParametrosAutoliq.get(index);
+                    aux = parametroTablaSeleccionado;
                 }
                 lovAportesEntidades = administrarParametroAutoliq.consultarAportesEntidadesPorParametroAutoliq(aux.getEmpresa().getSecuencia(), aux.getMes(), aux.getAno());
                 if (lovAportesEntidades != null) {

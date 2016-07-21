@@ -9,7 +9,7 @@ import Entidades.Empleados;
 import Entidades.MotivosCesantias;
 import Entidades.NovedadesSistema;
 import Entidades.VWActualesTiposTrabajadores;
-import InterfaceAdministrar.AdministrarNovedadPagoParcialCesantiasInterface;
+import InterfaceAdministrar.AdministrarNovedadlCesantiasRCInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaMotivosCesantiasInterface;
@@ -30,7 +30,7 @@ import javax.persistence.EntityManager;
  */
 @Stateful
 @LocalBean
-public class AdministrarNovedadPagoParcialCesantias implements AdministrarNovedadPagoParcialCesantiasInterface {
+public class AdministrarNovedadCesantiasRC implements AdministrarNovedadlCesantiasRCInterface {
 
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleados;

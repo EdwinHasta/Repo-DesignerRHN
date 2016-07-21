@@ -48,17 +48,17 @@ public class ControlMotivosCesantias implements Serializable {
     private MotivosCesantias editarMotivoCesantia;
     private MotivosCesantias motivoCesantiaSeleccionado;
     //otros
-    private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
+    private int cualCelda, tipoLista, tipoActualizacion, k, bandera;
     private BigInteger l;
     private boolean aceptar, guardado;
     //AutoCompletar
     private boolean permitirIndex;
     //RASTRO
-    private BigInteger secRegistro;
     private Column codigo, descripcion;
     //borrado
     private int registrosBorrados;
-    private String mensajeValidacion,paginaAnterior;
+    private String mensajeValidacion, paginaAnterior, infoRegistro,altoTabla;
+    private boolean activarLov;
 
     public ControlMotivosCesantias() {
         listMotivosCesantias = null;
@@ -70,6 +70,7 @@ public class ControlMotivosCesantias implements Serializable {
         nuevoMotivoCesantia = new MotivosCesantias();
         duplicarMotivoCesantia = new MotivosCesantias();
         guardado = true;
+        activarLov = true;
     }
 
     @PostConstruct
@@ -84,48 +85,35 @@ public class ControlMotivosCesantias implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void recibirPag(String pag) {
         paginaAnterior = pag;
-        //contarRegistrosNovedades();
-//        if (!listMotivosCesantias.isEmpty()) {
-//            motivoCesantiaSeleccionado = listMotivosCesantias.get(0);
-//        }
+        getListMotivosCesantias();
+        contarRegistros();
+        if (!listMotivosCesantias.isEmpty()) {
+            motivoCesantiaSeleccionado = listMotivosCesantias.get(0);
+        }
     }
 
     public String volverPagAnterior() {
         return paginaAnterior;
     }
-    
-    
-    
-    public void eventoFiltrar() {
-        try {
-            System.out.println("\n ENTRE A CONTROLMOTIVOSCESANTIAS EVENTOFILTRAR \n");
-            if (tipoLista == 0) {
-                tipoLista = 1;
-            }
-        } catch (Exception e) {
-            System.err.println("ERROR CONTROLMOTIVOSCESANTIAS EVENTOFILTRAR  ERROR =" + e.getMessage());
-        }
-    }
 
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(MotivosCesantias motivo, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
 
         if (permitirIndex == true) {
-            index = indice;
+            motivoCesantiaSeleccionado = motivo;
             cualCelda = celda;
-            secRegistro = listMotivosCesantias.get(index).getSecuencia();
+            motivoCesantiaSeleccionado.getSecuencia();
 
         }
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
 
-    public void asignarIndex(Integer indice, int LND, int dig) {
+    public void asignarIndex(MotivosCesantias motivo, int LND, int dig) {
         try {
             System.out.println("\n ENTRE A CONTROLMOTIVOSCESANTIAS ASIGNAR INDEX \n");
-            index = indice;
+            motivoCesantiaSeleccionado = motivo;
             if (LND == 0) {
                 tipoActualizacion = 0;
             } else if (LND == 1) {
@@ -163,10 +151,11 @@ public class ControlMotivosCesantias implements Serializable {
         borrarMotivosCesantias.clear();
         crearMotivosCesantias.clear();
         modificarMotivosCesantias.clear();
-        index = -1;
-        secRegistro = null;
+        motivoCesantiaSeleccionado = null;
         k = 0;
         listMotivosCesantias = null;
+        getListMotivosCesantias();
+        contarRegistros();
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -178,12 +167,13 @@ public class ControlMotivosCesantias implements Serializable {
         if (bandera == 0) {
 
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
-            codigo.setFilterStyle("width: 205px");
+            codigo.setFilterStyle("width: 85%");
             descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
-            descripcion.setFilterStyle("width: 550px");
+            descripcion.setFilterStyle("width: 85%");
             RequestContext.getCurrentInstance().update("form:datosTipoReemplazo");
             System.out.println("Activar");
             bandera = 1;
+            altoTabla ="222";
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
@@ -194,12 +184,13 @@ public class ControlMotivosCesantias implements Serializable {
             bandera = 0;
             filtrarMotivosCesantias = null;
             tipoLista = 0;
+            altoTabla ="246";
         }
     }
 
-    public void modificandoMotivoCensantia(int indice, String confirmarCambio, String valorConfirmar) {
+    public void modificandoMotivoCensantia(MotivosCesantias motivo, String confirmarCambio, String valorConfirmar) {
         System.err.println("ENTRE A MODIFICAR MOTIVOSCESANTIA");
-        index = indice;
+        motivoCesantiaSeleccionado = motivo;
 
         int contador = 0;
         int contadorGuardar = 0;
@@ -210,150 +201,48 @@ public class ControlMotivosCesantias implements Serializable {
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR MOTIVOEMBARGOS, CONFIRMAR CAMBIO ES N");
-            if (tipoLista == 0) {
-                if (!crearMotivosCesantias.contains(listMotivosCesantias.get(indice))) {
-                    if (listMotivosCesantias.get(indice).getCodigo() == a || listMotivosCesantias.get(indice).getCodigo().equals(null)) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else {
-                        for (int j = 0; j < listMotivosCesantias.size(); j++) {
-                            if (j != indice) {
-                                if (listMotivosCesantias.get(indice).getCodigo().equals(listMotivosCesantias.get(j).getCodigo())) {
-                                    contador++;
-                                }
-                            }
-                        }
-                        if (contador > 0) {
-                            mensajeValidacion = "CODIGOS REPETIDOS";
-                            banderita = false;
-                        } else {
-                            contadorGuardar++;
-                        }
 
-                    }
-                    if (listMotivosCesantias.get(indice).getNombre().isEmpty()) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else if (listMotivosCesantias.get(indice).getNombre().equals(" ")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else {
-                        contadorGuardar++;
-                    }
-                    if (listMotivosCesantias.get(indice).getNombre() == null) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else if (listMotivosCesantias.get(indice).getNombre().equals("")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else {
-                        contadorGuardar++;
-                    }
-                    if (contadorGuardar == 3) {
-                        if (modificarMotivosCesantias.isEmpty()) {
-                            modificarMotivosCesantias.add(listMotivosCesantias.get(indice));
-                        } else if (!modificarMotivosCesantias.contains(listMotivosCesantias.get(indice))) {
-                            modificarMotivosCesantias.add(listMotivosCesantias.get(indice));
-                        }
-                        if (guardado == true) {
-                            guardado = false;
-                        }
-
-                    } else {
-                        context.update("form:validacionModificar");
-                        context.execute("validacionModificar.show()");
-                        cancelarModificacion();
-                    }
-                    index = -1;
-                    secRegistro = null;
+            if (!crearMotivosCesantias.contains(motivoCesantiaSeleccionado)) {
+                if (motivoCesantiaSeleccionado.getCodigo() == a) {
+                    mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    banderita = false;
                 }
-            } else {
-
-                if (!crearMotivosCesantias.contains(filtrarMotivosCesantias.get(indice))) {
-                    if (filtrarMotivosCesantias.get(indice).getCodigo() == a) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else {
-
-                        for (int j = 0; j < listMotivosCesantias.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarMotivosCesantias.get(indice).getCodigo().equals(listMotivosCesantias.get(j).getCodigo())) {
-                                    contador++;
-                                }
-                            }
-                        }
-
-                        for (int j = 0; j < filtrarMotivosCesantias.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarMotivosCesantias.get(indice).getCodigo().equals(filtrarMotivosCesantias.get(j).getCodigo())) {
-                                    contador++;
-                                }
-                            }
-                        }
-                        if (contador > 0) {
-                            mensajeValidacion = "CODIGOS REPETIDOS";
-                            banderita = false;
-                        } else {
-                            contadorGuardar++;
-                        }
-
-                    }
-
-                    if (filtrarMotivosCesantias.get(indice).getNombre().isEmpty()) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else if (filtrarMotivosCesantias.get(indice).getNombre().equals(" ")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else {
-                        contadorGuardar++;
-                    }
-                    if (filtrarMotivosCesantias.get(indice).getNombre() == null) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else if (filtrarMotivosCesantias.get(indice).getNombre().equals("")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else {
-                        contadorGuardar++;
-                    }
-                    if (contadorGuardar == 3) {
-                        if (modificarMotivosCesantias.isEmpty()) {
-                            modificarMotivosCesantias.add(filtrarMotivosCesantias.get(indice));
-                        } else if (!modificarMotivosCesantias.contains(filtrarMotivosCesantias.get(indice))) {
-                            modificarMotivosCesantias.add(filtrarMotivosCesantias.get(indice));
-                        }
-                        if (guardado == true) {
-                            guardado = false;
-                        }
-
-                    } else {
-                        context.update("form:validacionModificar");
-                        context.execute("validacionModificar.show()");
-                        cancelarModificacion();
-                    }
-                    index = -1;
-                    secRegistro = null;
+                if (motivoCesantiaSeleccionado.getNombre() == null) {
+                    mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    banderita = false;
+                } else if (motivoCesantiaSeleccionado.getNombre().equals("")) {
+                    mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    banderita = false;
+                } else {
+                    contadorGuardar++;
                 }
 
+                if (modificarMotivosCesantias.isEmpty()) {
+                    modificarMotivosCesantias.add(motivoCesantiaSeleccionado);
+                } else if (!modificarMotivosCesantias.contains(motivoCesantiaSeleccionado)) {
+                    modificarMotivosCesantias.add(motivoCesantiaSeleccionado);
+                }
+                if (guardado == true) {
+                    guardado = false;
+                }
             }
-            context.update("form:datosTipoReemplazo");
-            context.update("form:ACEPTAR");
         }
-
+        context.update("form:datosTipoReemplazo");
+        context.update("form:ACEPTAR");
     }
+
     private BigInteger verificarEerPrestamos;
 
     public void verificarBorrado() {
         try {
             System.out.println("ESTOY EN VERIFICAR BORRADO tipoLista " + tipoLista);
-            System.out.println("secuencia borrado : " + listMotivosCesantias.get(index).getSecuencia());
+            System.out.println("secuencia borrado : " + motivoCesantiaSeleccionado.getSecuencia());
             if (tipoLista == 0) {
-                System.out.println("secuencia borrado : " + listMotivosCesantias.get(index).getSecuencia());
-                verificarEerPrestamos = administrarMotivosCesantias.contarNovedadesSistemasMotivoCesantia(listMotivosCesantias.get(index).getSecuencia());
+                System.out.println("secuencia borrado : " + motivoCesantiaSeleccionado.getSecuencia());
+                verificarEerPrestamos = administrarMotivosCesantias.contarNovedadesSistemasMotivoCesantia(motivoCesantiaSeleccionado.getSecuencia());
             } else {
-                System.out.println("secuencia borrado : " + filtrarMotivosCesantias.get(index).getSecuencia());
-                verificarEerPrestamos = administrarMotivosCesantias.contarNovedadesSistemasMotivoCesantia(filtrarMotivosCesantias.get(index).getSecuencia());
+                System.out.println("secuencia borrado : " + motivoCesantiaSeleccionado.getSecuencia());
+                verificarEerPrestamos = administrarMotivosCesantias.contarNovedadesSistemasMotivoCesantia(motivoCesantiaSeleccionado.getSecuencia());
             }
             if (!verificarEerPrestamos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado>0");
@@ -361,7 +250,7 @@ public class ControlMotivosCesantias implements Serializable {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
-                index = -1;
+                motivoCesantiaSeleccionado = null;
 
                 verificarEerPrestamos = new BigInteger("-1");
 
@@ -376,47 +265,34 @@ public class ControlMotivosCesantias implements Serializable {
 
     public void borrandoMotivosCesantias() {
 
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                System.out.println("Entro a borrandoMotivosCesantias");
-                if (!modificarMotivosCesantias.isEmpty() && modificarMotivosCesantias.contains(listMotivosCesantias.get(index))) {
-                    int modIndex = modificarMotivosCesantias.indexOf(listMotivosCesantias.get(index));
-                    modificarMotivosCesantias.remove(modIndex);
-                    borrarMotivosCesantias.add(listMotivosCesantias.get(index));
-                } else if (!crearMotivosCesantias.isEmpty() && crearMotivosCesantias.contains(listMotivosCesantias.get(index))) {
-                    int crearIndex = crearMotivosCesantias.indexOf(listMotivosCesantias.get(index));
-                    crearMotivosCesantias.remove(crearIndex);
-                } else {
-                    borrarMotivosCesantias.add(listMotivosCesantias.get(index));
-                }
-                listMotivosCesantias.remove(index);
+        if (motivoCesantiaSeleccionado != null) {
+            System.out.println("Entro a borrandoMotivosCesantias");
+            if (!modificarMotivosCesantias.isEmpty() && modificarMotivosCesantias.contains(motivoCesantiaSeleccionado)) {
+                int modIndex = modificarMotivosCesantias.indexOf(motivoCesantiaSeleccionado);
+                modificarMotivosCesantias.remove(modIndex);
+                borrarMotivosCesantias.add(motivoCesantiaSeleccionado);
+            } else if (!crearMotivosCesantias.isEmpty() && crearMotivosCesantias.contains(motivoCesantiaSeleccionado)) {
+                int crearIndex = crearMotivosCesantias.indexOf(motivoCesantiaSeleccionado);
+                crearMotivosCesantias.remove(crearIndex);
+            } else {
+                borrarMotivosCesantias.add(motivoCesantiaSeleccionado);
             }
+            listMotivosCesantias.remove(motivoCesantiaSeleccionado);
             if (tipoLista == 1) {
-                System.out.println("borrandoMotivosCesantias");
-                if (!modificarMotivosCesantias.isEmpty() && modificarMotivosCesantias.contains(filtrarMotivosCesantias.get(index))) {
-                    int modIndex = modificarMotivosCesantias.indexOf(filtrarMotivosCesantias.get(index));
-                    modificarMotivosCesantias.remove(modIndex);
-                    borrarMotivosCesantias.add(filtrarMotivosCesantias.get(index));
-                } else if (!crearMotivosCesantias.isEmpty() && crearMotivosCesantias.contains(filtrarMotivosCesantias.get(index))) {
-                    int crearIndex = crearMotivosCesantias.indexOf(filtrarMotivosCesantias.get(index));
-                    crearMotivosCesantias.remove(crearIndex);
-                } else {
-                    borrarMotivosCesantias.add(filtrarMotivosCesantias.get(index));
-                }
-                int VCIndex = listMotivosCesantias.indexOf(filtrarMotivosCesantias.get(index));
-                listMotivosCesantias.remove(VCIndex);
-                filtrarMotivosCesantias.remove(index);
+                filtrarMotivosCesantias.remove(motivoCesantiaSeleccionado);
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosTipoReemplazo");
             context.update("form:ACEPTAR");
-            index = -1;
-            secRegistro = null;
+            motivoCesantiaSeleccionado = null;
+            modificarInfoRegistro(listMotivosCesantias.size());
 
             if (guardado == true) {
                 guardado = false;
             }
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
 
     }
@@ -459,18 +335,18 @@ public class ControlMotivosCesantias implements Serializable {
             context.update("form:datosTipoReemplazo");
             k = 0;
         }
-        index = -1;
+        motivoCesantiaSeleccionado = null;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
 
     public void editarCelda() {
-        if (index >= 0) {
+        if (motivoCesantiaSeleccionado != null) {
             if (tipoLista == 0) {
-                editarMotivoCesantia = listMotivosCesantias.get(index);
+                editarMotivoCesantia = motivoCesantiaSeleccionado;
             }
             if (tipoLista == 1) {
-                editarMotivoCesantia = filtrarMotivosCesantias.get(index);
+                editarMotivoCesantia = motivoCesantiaSeleccionado;
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -485,10 +361,9 @@ public class ControlMotivosCesantias implements Serializable {
                 cualCelda = -1;
 
             }
-
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
-        index = -1;
-        secRegistro = null;
     }
 
     public void agregarNuevoMotivosCesantias() {
@@ -551,10 +426,10 @@ public class ControlMotivosCesantias implements Serializable {
             k++;
             l = BigInteger.valueOf(k);
             nuevoMotivoCesantia.setSecuencia(l);
-
             crearMotivosCesantias.add(nuevoMotivoCesantia);
-
             listMotivosCesantias.add(nuevoMotivoCesantia);
+            motivoCesantiaSeleccionado = nuevoMotivoCesantia;
+            modificarInfoRegistro(listMotivosCesantias.size());
             nuevoMotivoCesantia = new MotivosCesantias();
             context.update("form:datosTipoReemplazo");
             if (guardado == true) {
@@ -563,48 +438,42 @@ public class ControlMotivosCesantias implements Serializable {
             }
 
             context.execute("nuevoRegistroTiposReemplazos.hide()");
-            index = -1;
-            secRegistro = null;
 
         } else {
-            context.update("form:validacionNuevaCentroCosto");
-            context.execute("validacionNuevaCentroCosto.show()");
+            context.update("form:validacionNuevoMotivo");
+            context.execute("validacionNuevoMotivo.show()");
             contador = 0;
         }
     }
 
     public void limpiarNuevoMotivosCesantias() {
-        System.out.println("limpiarNuevoMotivosCesantias");
         nuevoMotivoCesantia = new MotivosCesantias();
-        secRegistro = null;
-        index = -1;
 
     }
 
-    //------------------------------------------------------------------------------
     public void duplicandoMotivosCesantias() {
         System.out.println("duplicandoMotivosCesantias");
-        if (index >= 0) {
+        if (motivoCesantiaSeleccionado != null) {
             duplicarMotivoCesantia = new MotivosCesantias();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
                 duplicarMotivoCesantia.setSecuencia(l);
-                duplicarMotivoCesantia.setCodigo(listMotivosCesantias.get(index).getCodigo());
-                duplicarMotivoCesantia.setNombre(listMotivosCesantias.get(index).getNombre());
+                duplicarMotivoCesantia.setCodigo(motivoCesantiaSeleccionado.getCodigo());
+                duplicarMotivoCesantia.setNombre(motivoCesantiaSeleccionado.getNombre());
             }
             if (tipoLista == 1) {
                 duplicarMotivoCesantia.setSecuencia(l);
-                duplicarMotivoCesantia.setCodigo(filtrarMotivosCesantias.get(index).getCodigo());
-                duplicarMotivoCesantia.setNombre(filtrarMotivosCesantias.get(index).getNombre());
+                duplicarMotivoCesantia.setCodigo(motivoCesantiaSeleccionado.getCodigo());
+                duplicarMotivoCesantia.setNombre(motivoCesantiaSeleccionado.getNombre());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTTR");
             context.execute("duplicarRegistroTiposReemplazos.show()");
-            index = -1;
-            secRegistro = null;
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
         }
     }
 
@@ -652,9 +521,9 @@ public class ControlMotivosCesantias implements Serializable {
             }
             listMotivosCesantias.add(duplicarMotivoCesantia);
             crearMotivosCesantias.add(duplicarMotivoCesantia);
+            motivoCesantiaSeleccionado = duplicarMotivoCesantia;
+            modificarInfoRegistro(listMotivosCesantias.size());
             context.update("form:datosTipoReemplazo");
-            index = -1;
-            secRegistro = null;
             if (guardado == true) {
                 guardado = false;
                 context.update("form:ACEPTAR");
@@ -669,6 +538,7 @@ public class ControlMotivosCesantias implements Serializable {
                 bandera = 0;
                 filtrarMotivosCesantias = null;
                 tipoLista = 0;
+                
             }
             duplicarMotivoCesantia = new MotivosCesantias();
             RequestContext.getCurrentInstance().execute("duplicarRegistroTiposReemplazos.hide()");
@@ -690,8 +560,6 @@ public class ControlMotivosCesantias implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "MOTIVOSCENSANTIAS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
     }
 
     public void exportXLS() throws IOException {
@@ -700,31 +568,25 @@ public class ControlMotivosCesantias implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "MOTIVOSCENSANTIAS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
     }
 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
-        if (!listMotivosCesantias.isEmpty()) {
-            if (secRegistro != null) {
-                System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "MOTIVOSCENSANTIAS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
-                System.out.println("resultado: " + resultado);
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
+        if (motivoCesantiaSeleccionado != null) {
+            System.out.println("lol 2");
+            int resultado = administrarRastros.obtenerTabla(motivoCesantiaSeleccionado.getSecuencia(), "MOTIVOSCENSANTIAS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+            System.out.println("resultado: " + resultado);
+            if (resultado == 1) {
+                context.execute("errorObjetosDB.show()");
+            } else if (resultado == 2) {
+                context.execute("confirmarRastro.show()");
+            } else if (resultado == 3) {
+                context.execute("errorRegistroRastro.show()");
+            } else if (resultado == 4) {
+                context.execute("errorTablaConRastro.show()");
+            } else if (resultado == 5) {
+                context.execute("errorTablaSinRastro.show()");
             }
         } else {
             if (administrarRastros.verificarHistoricosTabla("MOTIVOSCENSANTIAS")) { // igual acá
@@ -734,7 +596,31 @@ public class ControlMotivosCesantias implements Serializable {
             }
 
         }
-        index = -1;
+    }
+
+    public void eventoFiltrar() {
+        try {
+            System.out.println("\n ENTRE A CONTROLMOTIVOSCESANTIAS EVENTOFILTRAR \n");
+            if (tipoLista == 0) {
+                tipoLista = 1;
+            }
+            modificarInfoRegistro(filtrarMotivosCesantias.size());
+        } catch (Exception e) {
+            System.err.println("ERROR CONTROLMOTIVOSCESANTIAS EVENTOFILTRAR  ERROR =" + e.getMessage());
+        }
+    }
+
+    public void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistro");
+    }
+
+    public void contarRegistros() {
+        if (listMotivosCesantias != null) {
+            modificarInfoRegistro(listMotivosCesantias.size());
+        } else {
+            modificarInfoRegistro(0);
+        }
     }
 
     //--------///////////////////////---------------------*****//*/*/*/*/*/-****----
@@ -781,14 +667,6 @@ public class ControlMotivosCesantias implements Serializable {
         this.editarMotivoCesantia = editarMotivoCesantia;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
-    }
-
     public int getRegistrosBorrados() {
         return registrosBorrados;
     }
@@ -819,6 +697,38 @@ public class ControlMotivosCesantias implements Serializable {
 
     public void setPaginaAnterior(String paginaAnterior) {
         this.paginaAnterior = paginaAnterior;
+    }
+
+    public MotivosCesantias getMotivoCesantiaSeleccionado() {
+        return motivoCesantiaSeleccionado;
+    }
+
+    public void setMotivoCesantiaSeleccionado(MotivosCesantias motivoCesantiaSeleccionado) {
+        this.motivoCesantiaSeleccionado = motivoCesantiaSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public boolean isActivarLov() {
+        return activarLov;
+    }
+
+    public void setActivarLov(boolean activarLov) {
+        this.activarLov = activarLov;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
     }
 
     
