@@ -106,6 +106,7 @@ import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.Local;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 
@@ -113,6 +114,7 @@ import javax.persistence.EntityManager;
  *
  * @author Administrador
  */
+@Local
 @Stateful
 public class AdministrarPersonaIndividual implements AdministrarPersonaIndividualInterface {
 
@@ -658,6 +660,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     //@Override
+    @Override
     public BigInteger calcularNumeroEmpleadosEmpresa(BigInteger secuencia) {
         try {
             BigInteger valor = persistenciaEmpresas.calcularControlEmpleadosEmpresa(em, secuencia);
@@ -669,6 +672,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     //@Override
+    @Override
     public BigInteger obtenerMaximoEmpleadosEmpresa(BigInteger secuencia) {
         try {
             BigInteger valor = persistenciaEmpresas.obtenerMaximoEmpleadosEmpresa(em, secuencia);
@@ -850,14 +854,25 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             return null;
         }
     }
+//
+//    @Override
+//    public BigInteger crearNuevoEmpleado(BigInteger codigoEmpl, BigInteger secPers, BigInteger secEmpr) {
+//        try {
+//            return persistenciaEmpleado.crear(em, codigoEmpl, secPers, secEmpr);
+//        } catch (Exception e) {
+//            System.out.println("Error crearNuevaPersona Admi : " + e.toString());
+//            return null;
+//        }
+//    }
 
     @Override
-    public BigInteger crearNuevoEmpleado(BigInteger codigoEmpl, BigInteger secPers, BigInteger secEmpr) {
+    public void crearEmpl_Con_VCargo(BigInteger codigoEmpleado, BigInteger secPersona, BigInteger secEmpresa,
+            VigenciasCargos vigenciaCargo) {
         try {
-            return persistenciaEmpleado.crear(em, codigoEmpl, secPers, secEmpr);
+            persistenciaEmpleado.crearConVCargo(em, codigoEmpleado, secPersona, secEmpresa, vigenciaCargo.getCargo().getSecuencia(),
+                    vigenciaCargo.getEstructura().getSecuencia(), vigenciaCargo.getFechavigencia(), vigenciaCargo.getMotivocambiocargo().getSecuencia());
         } catch (Exception e) {
-            System.out.println("Error crearNuevaPersona Admi : " + e.toString());
-            return null;
+            System.err.println(this.getClass().getName() + " Error crearConVCargo() : " + e.toString());
         }
     }
 
@@ -874,11 +889,33 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
+    public VigenciasCargos obtenerUltimaVigenciaCargo(BigInteger secEmpleado, BigInteger empresa) {
+        try {
+            VigenciasCargos vCargo = persistenciaVigenciasCargos.buscarVigenciaCargoXEmpleado(em, secEmpleado, empresa);
+            System.out.println(this.getClass().getName() + " obtenerUltimaVigenciaCargo(), Si hay VCargo : " + vCargo);
+            return vCargo;
+        } catch (Exception e) {
+            System.out.println("Error obtenerUltimoRegistroEmpleado Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
     public void crearVigenciaCargo(VigenciasCargos vigencia) {
         try {
             persistenciaVigenciasCargos.crear(em, vigencia);
         } catch (Exception e) {
-            System.out.println("Error obtenerUltimoRegistroEmpleado Admi : " + e.toString());
+            System.out.println("Error crearVigenciaCargo Admi : " + e.toString());
+        }
+    }
+
+    @Override
+    public void modificarVigenciaCargo(VigenciasCargos vigencia) {
+        try {
+            System.out.println("Entro en modificarVigenciaCargo()");
+            persistenciaVigenciasCargos.editar(em, vigencia);
+        } catch (Exception e) {
+            System.out.println("Error modificarVigenciaCargo Admi : " + e.toString());
         }
     }
 
@@ -892,7 +929,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public void crearVigenciaTipoTrabajador(VigenciasTiposTrabajadores vigencia) {
+    public void crearVigenciaTipoTrabajador(VigenciasTiposTrabajadores vigencia
+    ) {
         try {
             persistenciaVigenciasTiposTrabajadores.crear(em, vigencia);
         } catch (Exception e) {
@@ -901,7 +939,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public void crearVigenciaReformaLaboral(VigenciasReformasLaborales vigencia) {
+    public void crearVigenciaReformaLaboral(VigenciasReformasLaborales vigencia
+    ) {
         try {
             persistenciaVigenciasReformasLaborales.crear(em, vigencia);
         } catch (Exception e) {
@@ -910,7 +949,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public void crearVigenciaSueldo(VigenciasSueldos vigencia) {
+    public void crearVigenciaSueldo(VigenciasSueldos vigencia
+    ) {
         try {
             persistenciaVigenciasSueldos.crear(em, vigencia);
         } catch (Exception e) {
@@ -919,7 +959,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public void crearVigenciaTipoContrato(VigenciasTiposContratos vigencia) {
+    public void crearVigenciaTipoContrato(VigenciasTiposContratos vigencia
+    ) {
         try {
             persistenciaVigenciasTiposContratos.crear(em, vigencia);
         } catch (Exception e) {
@@ -928,7 +969,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public void crearVigenciaNormaEmpleado(VigenciasNormasEmpleados vigencia) {
+    public void crearVigenciaNormaEmpleado(VigenciasNormasEmpleados vigencia
+    ) {
         try {
             persistenciaVigenciasNormasEmpleados.crear(em, vigencia);
         } catch (Exception e) {
@@ -937,7 +979,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public void crearVigenciaContrato(VigenciasContratos vigencia) {
+    public void crearVigenciaContrato(VigenciasContratos vigencia
+    ) {
         try {
             persistenciaVigenciasContratos.crear(em, vigencia);
         } catch (Exception e) {
@@ -946,7 +989,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public void crearVigenciaUbicacion(VigenciasUbicaciones vigencia) {
+    public void crearVigenciaUbicacion(VigenciasUbicaciones vigencia
+    ) {
         try {
             persistenciaVigenciasUbicaciones.crear(em, vigencia);
         } catch (Exception e) {
@@ -955,7 +999,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public void crearVigenciaJornada(VigenciasJornadas vigencia) {
+    public void crearVigenciaJornada(VigenciasJornadas vigencia
+    ) {
         try {
             persistenciaVigenciasJornadas.crear(em, vigencia);
         } catch (Exception e) {
@@ -964,7 +1009,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public void crearVigenciaFormaPago(VigenciasFormasPagos vigencia) {
+    public void crearVigenciaFormaPago(VigenciasFormasPagos vigencia
+    ) {
         try {
             persistenciaVigenciasFormasPagos.crear(em, vigencia);
         } catch (Exception e) {
@@ -972,6 +1018,10 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
         }
     }
 
+    /**
+     *
+     * @param vigencia
+     */
     @Override
     public void crearVigenciaAfiliacion(VigenciasAfiliaciones vigencia) {
         try {
@@ -986,7 +1036,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public void crearEstadoCivil(VigenciasEstadosCiviles estado) {
+    public void crearEstadoCivil(VigenciasEstadosCiviles estado
+    ) {
         try {
             persistenciaVigenciasEstadosCiviles.crear(em, estado);
         } catch (Exception e) {
@@ -995,7 +1046,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public void crearDireccion(Direcciones direccion) {
+    public void crearDireccion(Direcciones direccion
+    ) {
         try {
             persistenciaDirecciones.crear(em, direccion);
         } catch (Exception e) {
@@ -1004,7 +1056,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public void crearTelefono(Telefonos telefono) {
+    public void crearTelefono(Telefonos telefono
+    ) {
         try {
             persistenciaTelefonos.crear(em, telefono);
         } catch (Exception e) {
@@ -1013,7 +1066,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public void crearSets(Sets set) {
+    public void crearSets(Sets set
+    ) {
         try {
             persistenciaSets.crear(em, set);
         } catch (Exception e) {
@@ -1022,7 +1076,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public Procesos buscarProcesoPorCodigo(short codigo) {
+    public Procesos buscarProcesoPorCodigo(short codigo
+    ) {
         try {
             Procesos proceso = persistenciaProcesos.buscarProcesosPorCodigo(em, codigo);
             return proceso;
@@ -1044,7 +1099,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public void crearComprobante(Comprobantes comprobante) {
+    public void crearComprobante(Comprobantes comprobante
+    ) {
         try {
             persistenciaComprobantes.crear(em, comprobante);
         } catch (Exception e) {
@@ -1053,7 +1109,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public Comprobantes buscarComprobanteParaPrimerRegistroEmpleado(BigInteger secEmpleado) {
+    public Comprobantes buscarComprobanteParaPrimerRegistroEmpleado(BigInteger secEmpleado
+    ) {
         try {
             Comprobantes comprobante = persistenciaComprobantes.buscarComprobanteParaPrimerRegistroEmpleado(em, secEmpleado);
             return comprobante;
@@ -1064,7 +1121,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public void crearCortesProcesos(CortesProcesos corte) {
+    public void crearCortesProcesos(CortesProcesos corte
+    ) {
         try {
             persistenciaCortesProcesos.crear(em, corte);
         } catch (Exception e) {
@@ -1073,7 +1131,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public TiposTrabajadores buscarTipoTrabajadorPorCodigo(short codigo) {
+    public TiposTrabajadores buscarTipoTrabajadorPorCodigo(short codigo
+    ) {
         try {
             TiposTrabajadores tipo = persistenciaTiposTrabajadores.buscarTipoTrabajadorCodigoTiposhort(em, codigo);
             return tipo;

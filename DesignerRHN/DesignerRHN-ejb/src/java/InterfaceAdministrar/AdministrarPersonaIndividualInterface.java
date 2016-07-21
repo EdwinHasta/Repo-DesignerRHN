@@ -172,11 +172,27 @@ public interface AdministrarPersonaIndividualInterface {
 
     public Personas obtenerUltimoRegistroPersona(BigInteger documento);
 
-    public BigInteger crearNuevoEmpleado(BigInteger codigoEmpl, BigInteger secPers, BigInteger secEmpr);
+//    public BigInteger crearNuevoEmpleado(BigInteger codigoEmpl, BigInteger secPers, BigInteger secEmpr);
+    
+    public void crearEmpl_Con_VCargo( BigInteger codigoEmpleado, BigInteger secPersona, BigInteger secEmpresa, VigenciasCargos vigenciaCargo);
 
     public Empleados obtenerUltimoRegistroEmpleado(BigInteger empresa, BigInteger codigoEmpleado);
 
+    /**
+     *
+     * @param empresa
+     * @param secEmpleado
+     * @return
+     */
+    public VigenciasCargos obtenerUltimaVigenciaCargo(BigInteger empresa, BigInteger secEmpleado);
+    
     public void crearVigenciaCargo(VigenciasCargos vigencia);
+    
+    /**
+     *
+     * @param vigencia
+     */
+    public void modificarVigenciaCargo(VigenciasCargos vigencia);
 
     public void crearVigenciaLocalizacion(VigenciasLocalizaciones vigencia);
 

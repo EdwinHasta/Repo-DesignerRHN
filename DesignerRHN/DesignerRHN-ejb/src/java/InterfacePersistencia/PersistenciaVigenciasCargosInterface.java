@@ -32,10 +32,13 @@ public interface PersistenciaVigenciasCargosInterface {
     public void borrar(EntityManager em, VigenciasCargos vigenciasCargos);
     /**
      * Método encargado de buscar la VigenciaCargo con la secuencia dada por parámetro.
+     * @param em
      * @param secuencia Secuencia de la VigenciaCargo que se quiere encontrar.
      * @return Retorna la VigenciaCargo identificada con la secuencia dada por parámetro.
      */
     public VigenciasCargos buscarVigenciaCargo(EntityManager em, BigInteger secuencia);
+
+    public VigenciasCargos buscarVigenciaCargoXEmpleado(EntityManager em, BigInteger secuenciaEmpl, BigInteger secEmpresa);
     /**
      * Método encargado de buscar todas las VigenciasCargos existentes en la base de datos.
      * @return Retorna una lista de VigenciasCargos.

@@ -5,7 +5,6 @@ package Persistencia;
 
 import Entidades.Empleados;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 //import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,57 +18,55 @@ import Entidades.NovedadesSistema;
 //import org.apache.log4j.Logger;
 //import org.apache.log4j.PropertyConfigurator;
 
-/**
- * Clase Stateless. <br> Clase encargada de realizar operaciones sobre la tabla
- * 'Empleados' de la base de datos.
- *
- * @author betelgeuse
- */
 @Stateless
 public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
 
-    //private final static Logger logger = Logger.getLogger("connectionSout");
-    //private Date fechaDia;
-    //private final SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-
-    /*
-     * @PersistenceContext(unitName = "DesignerRHN-ejbPU") private EntityManager
-     * em;
-     */
     @Override
-    public BigInteger crear(EntityManager em, BigInteger codigoEmpleado, BigInteger secPersona, BigInteger secEmpresa) {
+    public void crear(EntityManager em, Empleados empleados) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
-        BigDecimal sec = null;
         try {
-            String sql = "SELECT CREAR_EMPLEADO2(?, ?, ?) FROM DUAL";
-//            String sql = "call CREAR_EMPLEADO2(?, ?, ?)";
-//            String sql = "SELECT CREAR_EMPL_CON_PROC(?, ?, ?) FROM DUAL";
-//            String sql = "exec CREAR_EMPL_CON_PROC(?, ?, ?)";
-//            String sql = "";
+            tx.begin();
+            em.merge(empleados);
+            tx.commit();
+        } catch (Exception e) {
+            //PropertyConfigurator.configure("log4j.properties");
+            //logger.error("Metodo: crear - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void crearConVCargo(EntityManager em, BigInteger codigoEmpleado, BigInteger secPersona, BigInteger secEmpresa,
+            BigInteger secCargo, BigInteger secEstructura, Date fechaIngreso, BigInteger secMotivoCargo) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+//            String sql = "SELECT CREAR_EMPLEADO_CON_VCARGO(?, ?, ?, ?, ?, ?, ?) FROM DUAL";
+            String sql = "call CREAR_EMPLEADO_CON_VCARGO(?, ?, ?, ?, ?, ?, ?)";
             Query query = em.createNativeQuery(sql);
             query.setParameter(1, codigoEmpleado);
             query.setParameter(2, secPersona);
             query.setParameter(3, secEmpresa);
+            query.setParameter(4, secCargo);
+            query.setParameter(5, secEstructura);
+            query.setParameter(6, fechaIngreso);
+            query.setParameter(7, secMotivoCargo);
 //            query.executeUpdate();
-            sec = (BigDecimal) query.getSingleResult();
-            System.out.println("Secuencia Nuevo empleado en String : " + sec);
-            BigInteger secuenciaCreado = null;
-            if (sec != null) {
-                secuenciaCreado = sec.toBigInteger();
-            }
-            System.out.println("PersistenciaEmpleados crear() se supone creo el empleado con codigo: " + codigoEmpleado + ", persona: " + secPersona + ", Y Retorno: " + secuenciaCreado);
-            return secuenciaCreado;
+            query.executeUpdate();
+            System.out.println("PersistenciaEmpleados crearConVCargo() se supone creo el empleado con V cargo");
         } catch (Exception e) {
-            //PropertyConfigurator.configure("log4j.properties");
-            //logger.error("Metodo: crear - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
-            System.out.println(this.getClass().getName() + ".crear()");
-            System.out.println("error al crear el empleado");
+            System.err.println(this.getClass().getName() + ".crear()");
+            System.err.println("error al crear el empleado");
             e.printStackTrace();
             if (tx.isActive()) {
                 tx.rollback();
             }
-            return null;
+        } finally {
+            tx.commit();
         }
     }
 
@@ -175,6 +172,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
 
     }
 
+    @Override
     public List<Empleados> consultarEmpleadosLiquidacionesLog(EntityManager em) {
         try {
             em.clear();
@@ -204,6 +202,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         }
     }
 
+    @Override
     public Empleados buscarEmpleadoSecuenciaPersona(EntityManager em, BigInteger secuencia) {
         try {
             em.clear();
@@ -495,8 +494,6 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             Empleados empl = (Empleados) query.getSingleResult();
             return empl;
         } catch (Exception e) {
-//            PropertyConfigurator.configure("log4j.properties");
-//            //logger.error("Metodo: buscarEmpleadoPorCodigoyEmpresa - PersistenciaEmpleados - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;
         }
     }
@@ -512,6 +509,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             query.setParameter(1, secuenciaEmpresa);
             query.setParameter(2, codigoEmpleado);
             Empleados empl = (Empleados) query.getSingleResult();
+            System.out.println("empleado Retornado : " + empl);
             return empl;
 //            em.clear();
 //            Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.empresa = :secuenciaEmpresa AND e.codigoempleado = :codigoEmpleado");

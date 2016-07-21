@@ -15,9 +15,13 @@ public interface PersistenciaEmpleadoInterface {
     /**
      * Método encargado de insertar un Empleado en la base de datos.
      *
+     * @param em
      * @param empleados Empleado que se quiere crear.
      */
-    public BigInteger crear(EntityManager em, BigInteger codigoEmpleado, BigInteger secPersona, BigInteger secEmpresa);
+    public void crear(EntityManager em, Empleados empleados);
+
+    public void crearConVCargo(EntityManager em, BigInteger codigoEmpleado, BigInteger secPersona, BigInteger secEmpresa,
+            BigInteger secCargo, BigInteger secEstructura, Date fechaIngreso, BigInteger motivoCargo);
 
     /**
      * Método encargado de modificar un Empleado de la base de datos. Este

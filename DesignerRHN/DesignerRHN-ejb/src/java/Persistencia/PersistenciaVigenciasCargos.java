@@ -7,8 +7,10 @@ import Entidades.Empleados;
 import Entidades.Papeles;
 import Entidades.VigenciasCargos;
 import InterfacePersistencia.PersistenciaVigenciasCargosInterface;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -22,6 +24,7 @@ import javax.persistence.criteria.CriteriaQuery;
  *
  * @author betelgeuse
  */
+@Local
 @Stateless
 public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosInterface {
 
@@ -97,6 +100,27 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
             em.clear();
             return em.find(VigenciasCargos.class, secuencia);
         } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public VigenciasCargos buscarVigenciaCargoXEmpleado(EntityManager em, BigInteger secuenciaEmpl, BigInteger secEmpresa) {
+        try {
+            System.out.println("buscarVigenciaCargoXEmpleado() secuenciaEmpl : " + secuenciaEmpl);
+            System.out.println("buscarVigenciaCargoXEmpleado() secEmpresa : " + secEmpresa);
+            em.clear();
+//            Query query = em.createNativeQuery("SELECT VC.* FROM EMPLEADOS E, VIGENCIASCARGOS VC, EMPRESAS EM WHERE VC.EMPLEADO = E.SECUENCIA AND E.EMPRESA = EM.SECUENCIA AND E.SECUENCIA = ?  AND EM.SECUENCIA = ?");
+            Query query = em.createQuery("SELECT v FROM Empleados e, VigenciasCargos v, Empresas em WHERE v.empleado.secuencia = e.secuencia AND e.empresa.secuencia = em.secuencia AND e.secuencia =:secuenciaEmpl  AND em.secuencia =:secEmpresa");
+            query.setParameter("secuenciaEmpl", secuenciaEmpl);
+            query.setParameter("secEmpresa", secEmpresa);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            VigenciasCargos vigCargo = (VigenciasCargos) query.getSingleResult();
+            System.out.println("buscarVigenciaCargoXEmpleado() secCargo : " + vigCargo);
+
+            return vigCargo;
+        } catch (Exception e) {
+            System.err.println(this.getClass().getName() + "buscarVigenciaCargoXEmpleado catch() ERROR : " + e);
             return null;
         }
     }
