@@ -202,5 +202,7 @@ public interface PersistenciaEmpleadoInterface {
     public List<Empleados> consultarCesantiasnoLiquidadas(EntityManager em);
 
     public List<NovedadesSistema> novedadescesantiasnoliquidadas(EntityManager em, BigInteger secuenciaEmpleado);
+    
+    public List<NovedadesSistema> todasnovedadescesantias(EntityManager em, BigInteger secuenciaEmpleado);
 
 }

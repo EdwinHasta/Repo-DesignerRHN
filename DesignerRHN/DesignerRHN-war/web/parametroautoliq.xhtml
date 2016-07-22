@@ -154,7 +154,7 @@
 
                             </p:dataTable> 
 
-                            <h:outputText id="infoRegistroParametro" value="#{controlParametroAutoliq.infoRegistroParametro}" style="position: absolute; left: 15px; top: 120px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroParametro" value="#{msg['infoRegistro']} #{controlParametroAutoliq.infoRegistroParametro}" style="position: absolute; left: 15px; top: 120px; font-weight: bold"/>
                         </fieldset>  
 
 
@@ -200,7 +200,7 @@
                                                  selection="#{controlParametroAutoliq.aporteTablaSeleccionado}" selectionMode="single"
                                                  >
                                         <p:ajax event="sort" onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" listener="#{controlParametroAutoliq.organizarTablas()}" />   
-                                        <p:ajax event="filter" onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" listener="#{controlParametroAutoliq.eventoFiltrar()}"/>
+<!--                                        <p:ajax event="filter" onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" listener="#{controlParametroAutoliq.eventoFiltrarAportes()}"/>-->
                                         <!-- NO SE OLVIDE !!! 
                                         <p:ajax event="filter" update=":form:tablaInferiorDerecha, :form:tablaInferiorIzquierda"/> -->
 
@@ -267,9 +267,9 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.empleado.persona.nombreCompleto}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.empleado.persona.nombreCompleto}" id="editarNombreEmpleadoAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE, 'EMPLEADO', infoAE.empleado.persona.nombreCompleto)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 3)}" />
-                                                        <p:ajax event="dblclick" listener="#{controlParametroAutoliq.asignarIndexAporte(indiceAE, 0, 1)}"/>
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE, 'EMPLEADO', infoAE.empleado.persona.nombreCompleto)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 3)}" />
+                                                        <p:ajax event="dblclick" listener="#{controlParametroAutoliq.asignarIndexAporte(infoAE, 0, 1)}"/>
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -290,7 +290,7 @@
                                                  selection="#{controlParametroAutoliq.aporteTablaSeleccionado}" selectionMode="single"
                                                  >
 
-                                        <p:ajax event="filter" onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" listener="#{controlParametroAutoliq.eventoFiltrar()}"/>
+                                        <p:ajax event="filter" onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" listener="#{controlParametroAutoliq.eventoFiltrarAportes()}"/>
                                         <p:ajax event="sort" onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" listener="#{controlParametroAutoliq.organizarTablas()}" />   
                                       <!--  <p:ajax event="sort" listener="#{controlRemoto.recargar()}" /> 
                                         <p:ajax event="filter" update=":form:tablaInferiorDerecha, :form:tablaInferiorIzquierda"/> -->
@@ -472,16 +472,17 @@
                                                  selection="#{controlParametroAutoliq.aporteTablaSeleccionado}" selectionMode="single"
                                                  rows="#{controlParametroAutoliq.rowsAporteEntidad}"
                                                  >
-
+                                        <p:ajax event="filter" onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" listener="#{controlParametroAutoliq.eventoFiltrarAportes()}"/>
+                                        
                                         <p:column  sortBy="#{infoAE.terceroRegistro.strNit}"  filterBy="#{infoAE.terceroRegistro.strNit}" 
                                                    filterMatchMode="contains" width="69" id="aporteNIT" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.terceroRegistro.nit}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.terceroRegistro.nit}" id="editarNITAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE, 'TERCERO', infoAE.terceroRegistro.nit)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 4)}" />
-                                                        <p:ajax event="dblclick" listener="#{controlParametroAutoliq.asignarIndexAporte(indiceAE, 0, 2)}"/>
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE, 'TERCERO', infoAE.terceroRegistro.nit)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 4)}" />
+                                                        <p:ajax event="dblclick" listener="#{controlParametroAutoliq.asignarIndexAporte(infoAE, 0, 2)}"/>
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -505,9 +506,9 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.tipoentidad.nombre}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.tipoentidad.nombre}" id="editarTipoEntidadAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE, 'TIPOENTIDAD', infoAE.tipoentidad.nombre)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 6)}" />
-                                                        <p:ajax event="dblclick" listener="#{controlParametroAutoliq.asignarIndexAporte(indiceAE, 0, 3)}"/>
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE, 'TIPOENTIDAD', infoAE.tipoentidad.nombre)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 6)}" />
+                                                        <p:ajax event="dblclick" listener="#{controlParametroAutoliq.asignarIndexAporte(infoAE, 0, 3)}"/>
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -523,8 +524,8 @@
                                                 </f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.cotizacion1}" id="editarEmpleadoAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 7)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 7)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -539,8 +540,8 @@
                                                 </f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.cotizacion2}" id="editarEmpleadorAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 8)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 8)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -554,8 +555,8 @@
                                                     </h:outputText>    </f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.cotizacion5}" id="editarAjustePatronalAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 9)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 9)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -569,8 +570,8 @@
                                                     </h:outputText>    </f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.novedad3}" id="editarSolidaridadAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 10)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 10)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -584,8 +585,8 @@
                                                     </h:outputText>    </f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.novedad4}" id="editarSubSistenciaAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 11)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 11)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -599,8 +600,8 @@
                                                     </h:outputText>    </f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.novedad5}" id="editarSubsPensionadosAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 12)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 12)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -615,8 +616,8 @@
                                                 </f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.salariobasico}" id="editarSalarioBasicoAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 13)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 13)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -630,8 +631,8 @@
                                                     </h:outputText>    </f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.ibc}" id="editarIBCAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 14)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 14)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -643,8 +644,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.ibcreferencia}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.ibcreferencia}" id="editarIBCReferenciaAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 15)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 15)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -656,8 +657,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.diascotizados}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.diascotizados}" id="editarDiasCotizadosAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 16)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 16)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -669,8 +670,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.tipoaportante}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.tipoaportante}" id="editarTipoAportanteAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 17)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 17)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -686,8 +687,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.ing}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.ing}" id="editarINGAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 18)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 18)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -703,8 +704,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.ret}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.ret}" id="editarRETAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 19)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 19)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -720,8 +721,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.tda}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.tda}" id="editarTDAAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 20)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 20)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -737,8 +738,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.taa}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.taa}" id="editarTAAAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 21)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 21)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -754,8 +755,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.vsp}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.vsp}" id="editarVSPAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 22)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 22)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -771,8 +772,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.vte}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.vte}" id="editarVTEAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 23)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 23)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -788,8 +789,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.vst}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.vst}" id="editarVSTAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 24)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 24)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -805,8 +806,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.sln}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.sln}" id="editarSLNAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 25)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 25)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -822,8 +823,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.ige}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.ige}" id="editarIGEAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 26)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 26)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -839,8 +840,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.lma}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.lma}" id="editarLMAAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 27)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 27)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -856,8 +857,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.vac}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.vac}" id="editarVACAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 28)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 28)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -873,8 +874,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.avp}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.avp}" id="editarAVPAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 29)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 29)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -890,8 +891,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.vct}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.vct}" id="editarVCTAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 30)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 30)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -907,8 +908,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.irp}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.irp}" id="editarIRPAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 31)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 31)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -924,8 +925,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.sus}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.sus}" id="editarSUSAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 32)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 32)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -941,8 +942,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.integral}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.integral}" id="editarINTEAporte" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 33)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 33)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -960,8 +961,8 @@
                                                     </h:outputText></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.tarifaeps}" id="editarTarifaEPSAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 34)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 34)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -979,8 +980,8 @@
                                                     </h:outputText></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.tarifaafp}" id="editarTarifaAAFPAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 35)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 35)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -998,8 +999,8 @@
                                                     </h:outputText></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.tarifactt}" id="editarTarifaACTTPAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 36)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 36)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1015,8 +1016,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.codigoctt}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.codigoctt}" id="editarCodigoCTTPAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 37)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 37)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1032,8 +1033,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.avpevalor}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.avpevalor}" id="editarAVPEValorAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 38)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 38)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1049,8 +1050,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.avppvalor}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.avppvalor}" id="editarAVPPValorAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 39)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 39)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1066,8 +1067,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.retcontavpvalor}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.retcontavpvalor}" id="editarRETCONTAValorAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 40)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 40)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1083,8 +1084,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.codigoneps}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.codigoneps}" id="editarCodigoNEPSAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 41)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 41)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1100,8 +1101,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.codigonafp}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.codigonafp}" id="editarCodigoNAFPAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 42)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 42)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1119,8 +1120,8 @@
                                                     </h:outputText></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.egvalor}" id="editarEGValorAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 43)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 43)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1136,8 +1137,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.egautorizacion}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.egautorizacion}" id="editarEGAutorizacionAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 44)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 44)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1155,8 +1156,8 @@
                                                     </h:outputText></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.maternidadvalor}" id="editarMaternidadValorAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 45)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 45)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1172,8 +1173,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.maternidadautorizacion}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.maternidadautorizacion}" id="editarMaternidadAutoAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 46)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 46)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1191,8 +1192,8 @@
                                                     </h:outputText></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.upcvalor}" id="editarUPCValorAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 47)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 47)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1204,8 +1205,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.tipo}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.tipo}" id="editarTipoAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 48)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 48)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1221,8 +1222,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.tipopensionado}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.tipopensionado}" id="editarTipoPensionadoAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 49)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 49)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1238,8 +1239,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.pensioncompartida}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.pensioncompartida}" id="editarPensionCompartidaAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 50)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 50)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1255,8 +1256,8 @@
                                                 <f:facet name="output"><h:outputText value="#{infoAE.extranjero}" /></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.extranjero}" id="editarExtranjeroAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 51)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 51)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1272,9 +1273,9 @@
                                                 </f:facet>  
                                                 <f:facet name="input">
                                                     <lnk:calendar id="editarFechaIngresoAporte" value="#{infoAE.fechaingreso}" height="12" width="99">
-                                                        <p:ajax event="dateSelect" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}" update="editarFechaIngresoAporte"/>
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}" />
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 52)}" />
+                                                        <p:ajax event="dateSelect" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}" update="editarFechaIngresoAporte"/>
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}" />
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 52)}" />
                                                     </lnk:calendar>
                                                 </f:facet>   
                                             </p:cellEditor>
@@ -1291,7 +1292,7 @@
                                                 <f:selectItem itemLabel="#{msg['subTipoCotizante6']}" itemValue="6" />  
                                                 <f:selectItem itemLabel="#{msg['subTipoCotizante0']}" itemValue="0" />  
                                                 <f:selectItem itemLabel="" itemValue="null" />  
-                                                <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}" process="@this" update="aporteSubTipoCotizante"/>
+                                                <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}" process="@this" update="aporteSubTipoCotizante"/>
                                             </p:selectOneMenu>
                                         </p:column>
 
@@ -1303,8 +1304,8 @@
                                                     </h:outputText></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.tarifacaja}" id="editarTarifaCajaAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 54)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 54)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1318,8 +1319,8 @@
                                                     </h:outputText></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.tarifasena}" id="editarTarifaSenaAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 55)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 55)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1334,8 +1335,8 @@
                                                     </h:outputText></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.tarifaicbf}" id="editarTarifaICBFAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 56)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 56)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1349,8 +1350,8 @@
                                                     </h:outputText></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.tarifaesap}" id="editarTarifaESAPAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 57)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 57)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1364,8 +1365,8 @@
                                                     </h:outputText></f:facet>  
                                                 <f:facet name="input">
                                                     <p:inputText  value="#{infoAE.tarifamen}" id="editarTarifaMENAporte" style="border-radius: 0px; width: 98.5%;"> 
-                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(indiceAE)}"/>
-                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(indiceAE, 58)}" />
+                                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarAporteEntidad(infoAE)}"/>
+                                                        <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndiceAporteEntidad(infoAE, 58)}" />
                                                     </p:inputText>
                                                 </f:facet>  
                                             </p:cellEditor>
@@ -1374,37 +1375,35 @@
                                     </p:dataTable>
                                 </div>
 
-                                <h:outputText id="infoRegistroAporte" value="#{controlParametroAutoliq.infoRegistroAporte}" style="position: absolute; left: 15px; top: 235px; font-weight: bold"/>
+                                <h:outputText id="infoRegistroAporte" value="#{msg['infoRegistro']} #{controlParametroAutoliq.infoRegistroAporte}" style="position: absolute; left: 15px; top: 235px; font-weight: bold"/>
                             </fieldset>
 
-                            <!--dsadasdasdsadssadsadsadsadsadsadsadsad -->
 
-
-                        <p:commandButton id="btn1" style="position: absolute; left: 5px; top: 440px;background-color: #1366D1;color: white" actionListener="#{controlParametroAutoliq.dispararDialogoBuscar()}" disabled="#{controlParametroAutoliq.disabledBuscar}"  value="#{msg['buscar']}" process="@this" />
-                        <p:tooltip value="#{msg['btn1']}" for="btn1"/>
-
-                        <p:commandButton id="btn2" disabled="#{controlParametroAutoliq.activoBtnsPaginas}" style="position: absolute; left: 95px; top: 440px;"   value="#{msg['novAuto']}" process="@this" />
+                        <p:commandButton id="btn2" disabled="#{controlParametroAutoliq.activoBtnsPaginas}" style="position: absolute; left: 10px; top: 440px;"   value="#{msg['novAuto']}" process="@this" />
                         <p:tooltip value="#{msg['btn2']}" for="btn2"/>
 
-                        <p:commandButton id="btn3" disabled="#{controlParametroAutoliq.activoBtnsPaginas}" style="position: absolute; left: 210px; top: 440px;"   value="#{msg['incaPag']}" process="@this" />
+                        <p:commandButton id="btn3" disabled="#{controlParametroAutoliq.activoBtnsPaginas}" style="position: absolute; left: 100px; top: 440px;"   value="#{msg['incaPag']}" process="@this" />
                         <p:tooltip value="#{msg['btn3']}" for="btn3"/>
 
-                        <p:commandButton id="btn4" disabled="#{controlParametroAutoliq.activoBtnsPaginas}" style="position: absolute; left: 350px; top: 440px;"   value="#{msg['eliminarToda']}" onclick="confirmarBorrarTodoAuto.show()" process="@this" />
+                        <p:commandButton id="btn4" disabled="#{controlParametroAutoliq.activoBtnsPaginas}" style="position: absolute; left: 220px; top: 440px;"   value="#{msg['eliminarToda']}" onclick="confirmarBorrarTodoAuto.show()" process="@this" />
                         <p:tooltip value="#{msg['btn4']}" for="btn4"/>
 
-                        <p:commandButton id="btn5" disabled="#{controlParametroAutoliq.activoBtnsPaginas}" style="position: absolute; left: 538px; top: 440px;"  value="#{msg['procesoLiq']}" actionListener="#{controlParametroAutoliq.procesoLiquidacionAporteEntidad()}" process="@this" />
+                        <p:commandButton id="btn5" disabled="#{controlParametroAutoliq.activoBtnsPaginas}" style="position: absolute; left: 390px; top: 440px;"  value="#{msg['procesoLiq']}" actionListener="#{controlParametroAutoliq.procesoLiquidacionAporteEntidad()}" process="@this" />
                         <p:tooltip value="#{msg['btn5']}" for="btn5"/>
 
-                        <p:commandButton id="btn6" style="position: absolute; left: 708px; top: 440px;"  value="#{msg['generacionArch']}" process="@this" />
+                        <p:commandButton id="btn6" style="position: absolute; left: 540px; top: 440px;"  value="#{msg['generacionArch']}" process="@this" />
                         <p:tooltip value="#{msg['btn6']}" for="btn6"/>
 
-                        <p:commandButton id="btn7" disabled="#{controlParametroAutoliq.activoBtnsPaginas}" style="position: absolute; left: 530px; top: 444px;width: 8px; height: 25px; border-color: black"  actionListener="#{controlParametroAutoliq.procesoAcumularDiferenciaAporteEntidad()}" value=" " process="@this" />
+                        <p:commandButton id="btn7" disabled="#{controlParametroAutoliq.activoBtnsPaginas}" style="position: absolute; left: 380px; top: 440px;width: 8px; height: 25px; border-color: black"  actionListener="#{controlParametroAutoliq.procesoAcumularDiferenciaAporteEntidad()}" value=" " process="@this" />
                         <p:tooltip value="#{msg['btn7']}" for="btn7"/>
                         
-                        <p:commandButton id="btn8" style="position: absolute; left: 5px; top: 480px;background-color: #1366D1;color: white;visibility: #{controlParametroAutoliq.visibilidadMostrarTodos}} " onclick="operacionEnProceso.show()" actionListener="#{controlParametroAutoliq.mostrarTodosAporteEntidad()}" value="#{msg['mostrarTodo']}" process="@this" />
-
-                        <p:commandButton style="position: absolute; left: 683px; top: 480px;" disabled="#{controlParametroAutoliq.guardado}" id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" onclick="confirmarGuardarSalida.show();" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 480px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlParametroAutoliq.salir()}" action="#{controlParametroAutoliq.redirigir()}" process="@this" />
+                        <p:commandButton id="btn1" style="position: absolute; left: 12px; top: 480px;background-color: #1366D1;color: white" actionListener="#{controlParametroAutoliq.dispararDialogoBuscar()}" disabled="#{controlParametroAutoliq.disabledBuscar}"  value="#{msg['buscar']}" process="@this" />
+                        <p:tooltip value="#{msg['btn1']}" for="btn1"/>
+                        
+                        <p:commandButton id="btn8" style="position: absolute; left: 95px; top: 480px;background-color: #1366D1;color: white;visibility: #{controlParametroAutoliq.visibilidadMostrarTodos}} " onclick="operacionEnProceso.show()" actionListener="#{controlParametroAutoliq.mostrarTodosAporteEntidad()}" value="#{msg['mostrarTodo']}" process="@this" />
+                        
+                        <p:commandButton style="position: absolute; left: 675px; top: 480px; position: absolute; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" disabled="#{controlParametroAutoliq.guardado}" id="ACEPTAR" value=" " onclick="confirmarGuardarSalida.show();" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 480px; position: absolute; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlParametroAutoliq.salir()}" action="#{controlParametroAutoliq.redirigir()}" process="@this" />
 
                         <p:remoteCommand name="posicionAporteEntidad" actionListener="#{controlParametroAutoliq.posicionAporteEntidad()}"/>
                         <p:remoteCommand name="posicionParametro" actionListener="#{controlParametroAutoliq.posicionParametro()}"/>
@@ -1422,24 +1421,25 @@
                                      filteredValue="#{controlParametroAutoliq.filtrarLovTiposTrabajadores}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioLovTipoTrabajador:aceptarTT"/>
                             <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarTipoTrabajador()}" process="@this" />
+                            <p:ajax event="filter" listener="#{controlParametroAutoliq.eventoFiltrarLovTipoTrabajador()}"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTT']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovTipoTrabajador.filter();" style="width:150px; position: relative; left: 50px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovTipoTrabajador.filter();" style="width: 150px; position: relative; left: 50px;" />  
                             </f:facet>
 
-                            <p:column filterBy="#{tipoT.nombre}"  filterMatchMode="contains">
+                            <p:column filterBy="#{tipoT.nombre}"  filterMatchMode="contains" filterStyle="width: 85%">
                                 <f:facet name="header">
-                                    <h:outputText style="text-align: center" value="#{msg['nombre']}" />
+                                    <h:outputText style="text-align: center;" value="#{msg['nombre']}" />
                                 </f:facet>
                                 <h:outputText  value="#{tipoT.nombre}" />
                             </p:column>
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroTipoTrabajador" value="#{controlParametroAutoliq.infoRegistroTipoTrabajador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroTipoTrabajador" value="#{msg['infoRegistro']} #{controlParametroAutoliq.infoRegistroTipoTrabajador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
-                        <p:commandButton id="aceptarTT" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" actionListener="#{controlParametroAutoliq.actualizarTipoTrabajador()}" process="@this"/>
+                        <p:commandButton id="aceptarTT" icon="ui-icon-check" style="position: relative; left: 225px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" actionListener="#{controlParametroAutoliq.actualizarTipoTrabajador()}" process="@this"/>
                         
-                        <p:commandButton id="atrasTT" style="position: relative; left: 230px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlParametroAutoliq.cancelarCambioTipoTrabajador()}" process="@this"/>
+                        <p:commandButton id="atrasTT" style="position: relative; left: 225px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" actionListener="#{controlParametroAutoliq.cancelarCambioTipoTrabajador()}" process="@this"/>
                     </p:dialog> 
                     
                 </h:form>
@@ -1453,24 +1453,25 @@
                                      filteredValue="#{controlParametroAutoliq.filtrarLovEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioLovEmpresa:aceptarE"/>
                             <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarEmpresa()}" process="@this" />
+                            <p:ajax event="filter" listener="#{controlParametroAutoliq.eventoFiltrarLovEmpresas()}"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpresa.filter();" style="width:150px; position: relative; left: -40px;" />  
                             </f:facet>
 
-                            <p:column filterBy="#{empresa.nombre}" filterMatchMode="contains" >
+                            <p:column filterBy="#{empresa.nombre}" filterMatchMode="contains" filterStyle="width: 85%" >
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['nombre']}" />
                                 </f:facet>
                                 <h:outputText  value="#{empresa.nombre}" />
                             </p:column>
-                            <p:column filterBy="#{empresa.nit}" width="90" filterMatchMode="contains" filterStyle="width: 80px">
+                            <p:column filterBy="#{empresa.nit}" width="90" filterMatchMode="contains" filterStyle="width: 85%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['nit']}" />
                                 </f:facet>
                                 <h:outputText  value="#{empresa.nit}" />
                             </p:column>
-                            <p:column filterBy="#{empresa.codigo}" width="90" filterMatchMode="contains" filterStyle="width: 80px">
+                            <p:column filterBy="#{empresa.codigo}" width="90" filterMatchMode="contains" filterStyle="width: 85%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['codigo']}" />
                                 </f:facet>
@@ -1478,7 +1479,7 @@
                             </p:column>
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroEmpresa" value="#{controlParametroAutoliq.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroEmpresa" value="#{msg['infoRegistro']} #{controlParametroAutoliq.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarE" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" actionListener="#{controlParametroAutoliq.actualizarEmpresa()}" process="@this"/>
                         
@@ -1496,12 +1497,13 @@
                                      filteredValue="#{controlParametroAutoliq.filtrarLovTiposEntidades}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioLovTipoEntidad:aceptarTE"/>
                             <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarTipoEntidad()}" process="@this" />
+                            <p:ajax event="filter" listener="#{controlParametroAutoliq.eventoFiltrarLovTipoEntidades()}"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTE']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovTipoEntidad.filter();" style="width:150px; position: relative; left: 50px;" />  
                             </f:facet>
 
-                            <p:column filterBy="#{tipoE.nombre}"  filterMatchMode="contains">
+                            <p:column filterBy="#{tipoE.nombre}"  filterMatchMode="contains" filterStyle="width: 85%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['nombre']}" />
                                 </f:facet>
@@ -1509,7 +1511,7 @@
                             </p:column>
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroTipoEntidad" value="#{controlParametroAutoliq.infoRegistroTipoEntidad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroTipoEntidad" value="#{msg['infoRegistro']} #{controlParametroAutoliq.infoRegistroTipoEntidad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarTE" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}"  actionListener="#{controlParametroAutoliq.actualizarTipoEntidad()}"  process="@this"/>
                         
@@ -1527,19 +1529,20 @@
                                      filteredValue="#{controlParametroAutoliq.filtrarLovEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioLovEmpleado:aceptarEMPL"/>
                             <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarEmpleado()}" process="@this" />
+                            <p:ajax event="filter" listener="#{controlParametroAutoliq.eventoFiltrarEmpleados()}"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEMPL']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovEmpleado.filter();" style="width:150px; position: relative; left: 50px;" />  
                             </f:facet>
 
-                            <p:column filterBy="#{empleado.codigoempleado}" filterStyle="width: 70px" width="80" filterMatchMode="contains">
+                            <p:column filterBy="#{empleado.codigoempleado}" filterStyle="width: 85%" width="80" filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['codigo']}" />
                                 </f:facet>
                                 <h:outputText  value="#{empleado.codigoempleado}" />
                             </p:column>
 
-                            <p:column filterBy="#{empleado.persona.nombreCompleto}"  filterMatchMode="contains">
+                            <p:column filterBy="#{empleado.persona.nombreCompleto}"  filterStyle="width: 85%" filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['nombre']}" />
                                 </f:facet>
@@ -1547,7 +1550,7 @@
                             </p:column>
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroEmpleado" value="#{controlParametroAutoliq.infoRegistroEmpleado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroEmpleado" value="#{msg['infoRegistro']} #{controlParametroAutoliq.infoRegistroEmpleado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarEMPL" icon="ui-icon-check" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}"  actionListener="#{controlParametroAutoliq.actualizarEmpleado()}" process="@this"/>
                         
@@ -1565,24 +1568,25 @@
                                      filteredValue="#{controlParametroAutoliq.filtrarLovTerceros}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioLovTercero:aceptarT"/>
                             <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarTercero()}" process="@this" />
+                            <p:ajax event="filter" listener="#{controlParametroAutoliq.eventoFiltrarLovTerceros()}"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovTercero.filter();" style="width:150px; position: relative; left: -40px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovTercero.filter();" style="width:200px; position: relative; left: -40px;" />  
                             </f:facet>
 
-                            <p:column filterBy="#{tercero.nombre}" filterMatchMode="contains" >
+                            <p:column filterBy="#{tercero.nombre}" filterMatchMode="contains" filterStyle="width: 85%" >
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['nombre']}" />
                                 </f:facet>
                                 <h:outputText  value="#{tercero.nombre}" />
                             </p:column>
-                            <p:column filterBy="#{tercero.nit}" width="90" filterMatchMode="contains" filterStyle="width: 80px">
+                            <p:column filterBy="#{tercero.nit}" width="90" filterMatchMode="contains" filterStyle="width: 85%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['nit']}" />
                                 </f:facet>
                                 <h:outputText  value="#{tercero.nit}" />
                             </p:column>
-                            <p:column filterBy="#{tercero.empresa.nombre}" filterMatchMode="contains" >
+                            <p:column filterBy="#{tercero.empresa.nombre}" filterMatchMode="contains" filterStyle="width: 85%" >
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['empresa']}" />
                                 </f:facet>
@@ -1590,7 +1594,7 @@
                             </p:column>
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroTercero" value="#{controlParametroAutoliq.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroTercero" value="#{msg['infoRegistro']} #{controlParametroAutoliq.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarT" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}"  actionListener="#{controlParametroAutoliq.actualizarTercero()}"  process="@this"/>
                         
@@ -1608,24 +1612,25 @@
                                      filteredValue="#{controlParametroAutoliq.filtrarLovAportesEntidades}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlParametroAutoliq.activarAceptar()}" update=":formularioLovAporteEntidad:aceptarBA"/>
                             <p:ajax event="rowDblselect" listener="#{controlParametroAutoliq.actualizarAporteEntidad()}" process="@this" />
+                            <p:ajax event="filter" listener="#{controlParametroAutoliq.eventoFiltrarAporteEntidad()}"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarBA']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovBuscarAporte.filter();" style="width:150px; position: relative; left: -40px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovBuscarAporte.filter();" style="width:200px; position: relative; left: -40px;" />  
                             </f:facet>
 
-                            <p:column filterBy="#{buscarA.ano}" width="90" filterMatchMode="contains" filterStyle="width: 80px">
+                            <p:column filterBy="#{buscarA.ano}" width="90" filterMatchMode="contains" filterStyle="width: 85%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['ano']}" />
                                 </f:facet>
                                 <h:outputText  value="#{buscarA.ano}" />
                             </p:column>
-                            <p:column filterBy="#{buscarA.mes}" width="90" filterMatchMode="contains" filterStyle="width: 80px">
+                            <p:column filterBy="#{buscarA.mes}" width="90" filterMatchMode="contains" filterStyle="width: 85%">
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['mes']}" />
                                 </f:facet>
                                 <h:outputText  value="#{buscarA.mes}" />
                             </p:column>
-                            <p:column filterBy="#{buscarA.empleado.persona.nombreCompleto}" filterMatchMode="contains" >
+                            <p:column filterBy="#{buscarA.empleado.persona.nombreCompleto}" filterMatchMode="contains" filterStyle="width: 85%" >
                                 <f:facet name="header">
                                     <h:outputText style="text-align: center" value="#{msg['empleado']}" />
                                 </f:facet>
@@ -1634,7 +1639,7 @@
 
                         </p:dataTable>
 
-                        <h:outputText id="infoRegistroAporteEntidad" value="#{controlParametroAutoliq.infoRegistroAporteEntidad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <h:outputText id="infoRegistroAporteEntidad" value="#{msg['infoRegistro']} #{controlParametroAutoliq.infoRegistroAporteEntidad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
 
                         <p:commandButton id="aceptarBA" icon="ui-icon-check" style="position: relative; left: 330px" value="#{msg['aceptar']}" disabled="#{controlParametroAutoliq.aceptar}" actionListener="#{controlParametroAutoliq.actualizarAporteEntidad()}" process="@this"/>
                         
@@ -1648,120 +1653,120 @@
                     <p:dialog id="confirmarGuardarSalida" header="#{msg['atencion']}" widgetVar="confirmarGuardarSalida"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlParametroAutoliq.guardarYSalir()}" action="#{controlParametroAutoliq.redirigir()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlParametroAutoliq.cancelarYSalir()}" action="#{controlParametroAutoliq.redirigir()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarSalida.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlParametroAutoliq.guardarYSalir()}" action="#{controlParametroAutoliq.redirigir()}" style="position: absolute; top: 50px; left: 125px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlParametroAutoliq.cancelarYSalir()}" action="#{controlParametroAutoliq.redirigir()}" style="position: absolute; top: 50px; left: 190px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarSalida.hide();" style="position: absolute; top: 50px; left: 260px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlParametroAutoliq.guardadoGeneral()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlParametroAutoliq.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlParametroAutoliq.guardadoGeneral()}" style="position: absolute; top: 50px; left: 125px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlParametroAutoliq.cancelarModificacion()}" style="position: absolute; top: 50px; left: 190px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 260px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                    <p:dialog id="confirmarRastro" header="#{msg['informacion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlParametroAutoliq.backUpSecRegistro, 'ParametrosAutoliq', 'parametroAutoliqRastro')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" icon="ui-icon-check" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlParametroAutoliq.backUpSecRegistro, 'ParametrosAutoliq', 'parametroAutoliqRastro')}" style="position: absolute; top: 63px; left: 175px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" icon="ui-icon-close" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 240px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastroAporte" header="#{msg['atencion']}" widgetVar="confirmarRastroAporte"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                    <p:dialog id="confirmarRastroAporte" header="#{msg['informacion']}" widgetVar="confirmarRastroAporte"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastroAporte']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastroAporte.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlParametroAutoliq.backUpSecRegistroAporte, 'AportesEntidades', 'parametroAutoliqRastro')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastroAporte.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" icon="ui-icon-check" onclick="confirmarRastroAporte.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlParametroAutoliq.backUpSecRegistroAporte, 'AportesEntidades', 'parametroAutoliqRastro')}" style="position: absolute; top: 63px; left: 175px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" icon="ui-icon-close" onclick="confirmarRastroAporte.hide();" style="position: absolute; top: 63px; left: 240px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                    <p:dialog id="confirmarRastroHistorico" header="#{msg['informacion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('ParametrosAutoliq', 'parametroAutoliqRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" icon="ui-icon-check" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('ParametrosAutoliq', 'parametroAutoliqRastro')}" style="position: absolute; top: 60px; left: 175px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" icon="ui-icon-close" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 240px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastroHistoricoAporte" header="#{msg['atencion']}" widgetVar="confirmarRastroHistoricoAporte"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                    <p:dialog id="confirmarRastroHistoricoAporte" header="#{msg['informacion']}" widgetVar="confirmarRastroHistoricoAporte"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastroHistoricoAporte']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistoricoAporte.hide();" actionListener="#{controlRastro.historicosTabla('AportesEntidades', 'parametroAutoliqRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistoricoAporte.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" icon="ui-icon-check" onclick="confirmarRastroHistoricoAporte.hide();" actionListener="#{controlRastro.historicosTabla('AportesEntidades', 'parametroAutoliqRastro')}" style="position: absolute; top: 60px; left: 175px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" icon="ui-icon-close" onclick="confirmarRastroHistoricoAporte.hide();" style="position: absolute; top: 60px; left: 240px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" closable="true">  
+                    <p:dialog id="errorRastroHistorico" header="#{msg['error']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="errorRegistroRastro" header="#{msg['error']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                    <p:dialog id="errorTablaConRastro" header="#{msg['informacion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlParametroAutoliq.backUpSecRegistro, 'ParametrosAutoliq', 'parametroAutoliqRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" icon="ui-icon-check" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlParametroAutoliq.backUpSecRegistro, 'ParametrosAutoliq', 'parametroAutoliqRastro')}" style="position: absolute; top: 70px; left: 175px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" icon="ui-icon-close" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 70px; left: 240px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
+                    <p:dialog id="errorTablaSinRastro" header="#{msg['error']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="seleccionarRegistro" header="#{msg['error']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
+                        <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="errorObjetosDB" header="#{msg['error']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                        <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 8px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorObjetosDBAporte" header="#{msg['atencion']}" widgetVar="errorObjetosDBAporte"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="errorObjetosDBAporte" header="#{msg['error']}" widgetVar="errorObjetosDBAporte"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorObjetosDBAporte']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                        <h:outputText value="#{msg['errorObjetosDBAporte']}" style="position: absolute; left: 70px; top: 8px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegNullParametro" header="#{msg['atencion']}" widgetVar="errorRegNullParametro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="errorRegNullParametro" header="#{msg['error']}" widgetVar="errorRegNullParametro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorRegNullParametro']}" style="position: absolute; left: 70px; top: 18px; width: 185px; font-weight:bold;text-align: center" />
+                        <h:outputText value="#{msg['errorRegNullParametro']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorBorrarParametro" header="#{msg['atencion']}" widgetVar="errorBorrarParametro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="errorBorrarParametro" header="#{msg['error']}" widgetVar="errorBorrarParametro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorBorrarParametro']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarBorrarTodoAuto" header="#{msg['atencion']}" widgetVar="confirmarBorrarTodoAuto"  resizable="false" draggable="false" modal="true" height="85" width="290px"  closable="false">  
+                    <p:dialog id="confirmarBorrarTodoAuto" header="#{msg['informacion']}" widgetVar="confirmarBorrarTodoAuto"  resizable="false" draggable="false" modal="true" height="85" width="290px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarBorrarTodoAuto']}" style="position: absolute; left: 60px; top: 15px; width: 200px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="confirmarBorrarTodoAuto.hide();" actionListener="#{controlParametroAutoliq.borrarAporteEntidadProcesoAutomatico()}" style="position: absolute; top: 50px; left: 70px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarBorrarTodoAuto.hide();" style="position: absolute; top: 50px; left: 170px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarBorrarTodoAuto.hide();" style="position: absolute; top: 50px; left: 170px" process="@this" icon="ui-icon-close" />
                     </p:dialog>
 
                     <p:dialog id="errorProcesoLiquidacionFechas" header="#{msg['atencion']}" widgetVar="errorProcesoLiquidacionFechas"  resizable="false" draggable="false" modal="true" height="105" width="435" closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['errorProcesoLiquidacionFechas']}" style="position: absolute; left: 120px; top: 10px; width: 280px; font-weight:bold;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="errorProcesoLiquidacionFechas.hide();" actionListener="#{controlParametroAutoliq.cambiarFechasParametros()}" style="position: absolute; top: 70px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="errorProcesoLiquidacionFechas.hide();" style="position: absolute; top: 70px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="errorProcesoLiquidacionFechas.hide();" style="position: absolute; top: 70px; left: 307px" process="@this" icon="ui-icon-close" />
                     </p:dialog>
 
                     <p:dialog id="procesoLiquidacionOK" header="#{msg['atencion']}" widgetVar="procesoLiquidacionOK"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['procesoLiquidacionOK']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="procesoLiquidacionOK.hide();" actionListener="#{controlParametroAutoliq.procesoLiquidacionOK()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="procesoLiquidacionOK.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="procesoLiquidacionOK.hide();" style="position: absolute; top: 50px; left: 307px" process="@this" icon="ui-icon-close" />
                     </p:dialog>
 
                     <p:dialog id="acumularDiferenciaOK" header="#{msg['atencion']}" widgetVar="acumularDiferenciaOK"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['acumularDiferenciaOK']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="acumularDiferenciaOK.hide();" actionListener="#{controlParametroAutoliq.acumularDiferenciaOK()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="acumularDiferenciaOK.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="acumularDiferenciaOK.hide();" style="position: absolute; top: 50px; left: 307px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
                     <p:dialog id="errorAcumularDiferencia" header="#{msg['atencion']}" widgetVar="errorAcumularDiferencia"  resizable="false" draggable="false" modal="true" height="85" width="355px"  closable="true">  
@@ -1808,7 +1813,7 @@
                                 <p:ajax event="click" listener="#{controlParametroAutoliq.valoresBackupAutocompletar(1, 'TIPOTRABAJADOR')}" />
                                 <p:ajax event="change" listener="#{controlParametroAutoliq.autocompletarNuevoyDuplicadoParametroAutoliq('TIPOTRABAJADOR', controlParametroAutoliq.nuevoParametro.tipotrabajador.nombre, 1)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 130px;  " id="btnNuevaTipoTrabajador" icon="ui-icon-search" process="@this"  actionListener="#{controlParametroAutoliq.asignarIndex(indice,1,1)}"/>   
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 23px; border: none; position: absolute; left: 331px; top: 130px;  " id="btnNuevaTipoTrabajador" value="" process="@this"  actionListener="#{controlParametroAutoliq.asignarIndex(indice,1,1)}"/>   
                             <p:watermark for="nuevaTipoTrabajadorParametro" value="#{msg['tipoTrabajador']}" />
 
 
@@ -1818,11 +1823,11 @@
                                 <p:ajax event="click" listener="#{controlParametroAutoliq.valoresBackupAutocompletar(1, 'EMPRESA')}" />
                                 <p:ajax event="change" listener="#{controlParametroAutoliq.autocompletarNuevoyDuplicadoParametroAutoliq('EMPRESA', controlParametroAutoliq.nuevoParametro.empresa.nombre, 1)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 160px;  " id="btnNuevaEmpresa" icon="ui-icon-search" process="@this"  actionListener="#{controlParametroAutoliq.asignarIndex(indice,1,2)}"/>   
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 23px; border: none; position: absolute; left: 331px; top: 160px;  " id="btnNuevaEmpresa" value="" process="@this"  actionListener="#{controlParametroAutoliq.asignarIndex(indice,1,2)}"/>   
                             <p:watermark for="nuevaEmpresaParametro" value="#{msg['empresa']}"/>
 
                             <p:commandButton id="limpiarPA" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 195px;" icon="ui-icon-trash"  actionListener="#{controlParametroAutoliq.limpiarNuevaParametroAutoliq()}" update="nuevaParametro" process="@this"/>
-                            <p:commandButton id="agregarPA" value="#{msg['agregar']}" style="position: absolute; left: 190px; top: 195px;" icon="ui-icon-circle-check" process="@this" actionListener="#{controlParametroAutoliq.agregarNuevaParametroAutoliq()}"  />
+                            <p:commandButton id="agregarPA" value="#{msg['agregar']}" style="position: absolute; left: 180px; top: 195px;" icon="ui-icon-circle-check" process="@this" actionListener="#{controlParametroAutoliq.agregarNuevaParametroAutoliq()}"  />
                             <p:commandButton id="cancelarPA" value="#{msg['cancelar']}" style="position: absolute; left: 280px; top: 195px;" icon="ui-icon-circle-close" actionListener="#{controlParametroAutoliq.limpiarNuevaParametroAutoliq()}" update="nuevaParametro" onclick="NuevoRegistroParametro.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -1863,7 +1868,7 @@
                                 <p:ajax event="click" listener="#{controlParametroAutoliq.valoresBackupAutocompletar(1, 'TIPOTRABAJADOR')}" />
                                 <p:ajax event="change" listener="#{controlParametroAutoliq.autocompletarNuevoyDuplicadoParametroAutoliq('TIPOTRABAJADOR', controlParametroAutoliq.duplicarParametro.tipotrabajador.nombre, 2)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 130px;  " id="btnDuplicarTipoTrabajador" icon="ui-icon-search" process="@this"  actionListener="#{controlParametroAutoliq.asignarIndex(indice,2,1)}"/>   
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 23px; border: none; position: absolute; left: 331px; top: 130px;  " id="btnDuplicarTipoTrabajador" value="" process="@this"  actionListener="#{controlParametroAutoliq.asignarIndex(indice,2,1)}"/>   
                             <p:watermark for="duplicarTipoTrabajadorParametro" value="#{msg['tipoTrabajador']}" />
 
                             <strong><h:outputText value="*#{msg['empresaN']}" style="position: absolute; top: 165px; left: 50px" /></strong>
@@ -1872,263 +1877,263 @@
                                 <p:ajax event="click" listener="#{controlParametroAutoliq.valoresBackupAutocompletar(2, 'EMPRESA')}" />
                                 <p:ajax event="change" listener="#{controlParametroAutoliq.autocompletarNuevoyDuplicadoParametroAutoliq('EMPRESA', controlParametroAutoliq.duplicarParametro.empresa.nombre, 2)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 160px;  " id="btnDuplicarEmpresa" icon="ui-icon-search" process="@this"  actionListener="#{controlParametroAutoliq.asignarIndex(indice,2,2)}"/>   
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 23px; border: none; position: absolute; left: 331px; top: 160px;  " id="btnDuplicarEmpresa" value="" process="@this"  actionListener="#{controlParametroAutoliq.asignarIndex(indice,2,2)}"/>   
                             <p:watermark for="duplicarEmpresaParametro" value="#{msg['empresa']}"/>
 
                             <p:commandButton id="limpiarDuplicadoPA" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 195px;" icon="ui-icon-trash"  actionListener="#{controlParametroAutoliq.limpiarDuplicarParametroAutoliq()}" update="duplicarParametro" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoPA" value="#{msg['agregar']}" style="position: absolute; left: 190px; top: 195px;" icon="ui-icon-circle-check"  process="@this" actionListener="#{controlParametroAutoliq.confirmarDuplicarParametroAutoliq()}" />
+                            <p:commandButton id="agregarDuplicadoPA" value="#{msg['agregar']}" style="position: absolute; left: 180px; top: 195px;" icon="ui-icon-circle-check"  process="@this" actionListener="#{controlParametroAutoliq.confirmarDuplicarParametroAutoliq()}" />
                             <p:commandButton id="cancelarDuplicadoPA" value="#{msg['cancelar']}" style="position: absolute; left: 280px; top: 195px;" icon="ui-icon-circle-close" actionListener="#{controlParametroAutoliq.limpiarDuplicarParametroAutoliq()}" update="duplicarParametro" onclick="DuplicarRegistroParametro.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
                     <!-- -->
 
-                    <p:dialog id="editarAnoD" header="#{msg['editarAnoD']}" widgetVar="editarAnoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarParametro.ano}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarAnoD" header="#{msg['editarAnoD']}" widgetVar="editarAnoD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarParametro.ano}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTipoTrabajadorD" header="#{msg['editarTipoTrabajadorD']}" widgetVar="editarTipoTrabajadorD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarParametro.tipotrabajador.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarTipoTrabajadorD" header="#{msg['editarTipoTrabajadorD']}" widgetVar="editarTipoTrabajadorD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarParametro.tipotrabajador.nombre}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarEmpresaD" header="#{msg['editarEmpresaD']}" widgetVar="editarEmpresaD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarParametro.empresa.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarEmpresaD" header="#{msg['editarEmpresaD']}" widgetVar="editarEmpresaD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarParametro.empresa.nombre}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
                     <!-- -->
 
-                    <p:dialog id="editarCodEmplD" header="#{msg['editarCodEmplD']}" widgetVar="editarCodEmplD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.empleado.codigoempleado}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarCodEmplD" header="#{msg['editarCodEmplD']}" widgetVar="editarCodEmplD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.empleado.codigoempleado}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarAnoAD" header="#{msg['editarAnoAD']}" widgetVar="editarAnoAD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.ano}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarAnoAD" header="#{msg['editarAnoAD']}" widgetVar="editarAnoAD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.ano}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarMesAD" header="#{msg['editarMesAD']}" widgetVar="editarMesAD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.mes}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarMesAD" header="#{msg['editarMesAD']}" widgetVar="editarMesAD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.mes}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarNombreEmplD" header="#{msg['editarNombreEmplD']}" widgetVar="editarNombreEmplD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.empleado.persona.nombreCompleto}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarNombreEmplD" header="#{msg['editarNombreEmplD']}" widgetVar="editarNombreEmplD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.empleado.persona.nombreCompleto}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarNitTerceroD" header="#{msg['editarNitTerceroD']}" widgetVar="editarNitTerceroD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.terceroRegistro.nit}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarNitTerceroD" header="#{msg['editarNitTerceroD']}" widgetVar="editarNitTerceroD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.terceroRegistro.nit}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarNombreTerceroD" header="#{msg['editarNombreTerceroD']}" widgetVar="editarNombreTerceroD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.terceroRegistro.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarNombreTerceroD" header="#{msg['editarNombreTerceroD']}" widgetVar="editarNombreTerceroD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.terceroRegistro.nombre}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTipoEntidadD" header="#{msg['editarTipoEntidadD']}" widgetVar="editarTipoEntidadD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.terceroRegistro.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarTipoEntidadD" header="#{msg['editarTipoEntidadD']}" widgetVar="editarTipoEntidadD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.terceroRegistro.nombre}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarEmpleadoD" header="#{msg['editarEmpleadoD']}" widgetVar="editarEmpleadoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.cotizacion1}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarEmpleadoD" header="#{msg['editarEmpleadoD']}" widgetVar="editarEmpleadoD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.cotizacion1}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarEmpleadorD" header="#{msg['editarEmpleadorD']}" widgetVar="editarEmpleadorD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.cotizacion2}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarEmpleadorD" header="#{msg['editarEmpleadorD']}" widgetVar="editarEmpleadorD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.cotizacion2}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarAjustePatronalD" header="#{msg['editarAjustePatronalD']}" widgetVar="editarAjustePatronalD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.cotizacion5}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarAjustePatronalD" header="#{msg['editarAjustePatronalD']}" widgetVar="editarAjustePatronalD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.cotizacion5}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSolidaridadD" header="#{msg['editarSolidaridadD']}" widgetVar="editarSolidaridadD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.novedad3}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarSolidaridadD" header="#{msg['editarSolidaridadD']}" widgetVar="editarSolidaridadD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.novedad3}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSubSistenciaD" header="#{msg['editarSubSistenciaD']}" widgetVar="editarSubSistenciaD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.novedad4}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarSubSistenciaD" header="#{msg['editarSubSistenciaD']}" widgetVar="editarSubSistenciaD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.novedad4}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSubsPensionadosD" header="#{msg['editarSubsPensionadosD']}" widgetVar="editarSubsPensionadosD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.novedad5}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarSubsPensionadosD" header="#{msg['editarSubsPensionadosD']}" widgetVar="editarSubsPensionadosD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.novedad5}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSalarioBasicoD" header="#{msg['editarSalarioBasicoD']}" widgetVar="editarSalarioBasicoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.salariobasico}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarSalarioBasicoD" header="#{msg['editarSalarioBasicoD']}" widgetVar="editarSalarioBasicoD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.salariobasico}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarIBCD" header="#{msg['editarIBCD']}" widgetVar="editarIBCD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.ibc}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarIBCD" header="#{msg['editarIBCD']}" widgetVar="editarIBCD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.ibc}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarIBCReferenciaD" header="#{msg['editarIBCReferenciaD']}" widgetVar="editarIBCReferenciaD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.ibcreferencia}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarIBCReferenciaD" header="#{msg['editarIBCReferenciaD']}" widgetVar="editarIBCReferenciaD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.ibcreferencia}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarDiasCotizadosD" header="#{msg['editarDiasCotizadosD']}" widgetVar="editarDiasCotizadosD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.diascotizados}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarDiasCotizadosD" header="#{msg['editarDiasCotizadosD']}" widgetVar="editarDiasCotizadosD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.diascotizados}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTipoAportanteD" header="#{msg['editarTipoAportanteD']}" widgetVar="editarTipoAportanteD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tipoaportante}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarTipoAportanteD" header="#{msg['editarTipoAportanteD']}" widgetVar="editarTipoAportanteD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tipoaportante}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarINGD" header="#{msg['editarINGD']}" widgetVar="editarINGD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.ing}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarINGD" header="#{msg['editarINGD']}" widgetVar="editarINGD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.ing}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarRETD" header="#{msg['editarRETD']}" widgetVar="editarRETD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.ret}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarRETD" header="#{msg['editarRETD']}" widgetVar="editarRETD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.ret}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTDAD" header="#{msg['editarTDAD']}" widgetVar="editarTDAD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tda}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarTDAD" header="#{msg['editarTDAD']}" widgetVar="editarTDAD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tda}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTAAD" header="#{msg['editarTAAD']}" widgetVar="editarTAAD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.taa}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarTAAD" header="#{msg['editarTAAD']}" widgetVar="editarTAAD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.taa}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarVSPD" header="#{msg['editarVSPD']}" widgetVar="editarVSPD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.vsp}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarVSPD" header="#{msg['editarVSPD']}" widgetVar="editarVSPD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.vsp}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarVTED" header="#{msg['editarVTED']}" widgetVar="editarVTED" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.vte}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarVTED" header="#{msg['editarVTED']}" widgetVar="editarVTED" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.vte}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarVSTD" header="#{msg['editarVSTD']}" widgetVar="editarVSTD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.vst}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarVSTD" header="#{msg['editarVSTD']}" widgetVar="editarVSTD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.vst}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSLND" header="#{msg['editarSLND']}" widgetVar="editarSLND" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.sln}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarSLND" header="#{msg['editarSLND']}" widgetVar="editarSLND" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.sln}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarIGED" header="#{msg['editarIGED']}" widgetVar="editarIGED" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.ige}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarIGED" header="#{msg['editarIGED']}" widgetVar="editarIGED" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.ige}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarLMAD" header="#{msg['editarLMAD']}" widgetVar="editarLMAD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.lma}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarLMAD" header="#{msg['editarLMAD']}" widgetVar="editarLMAD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.lma}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarVCAD" header="#{msg['editarVCAD']}" widgetVar="editarVCAD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.vac}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarVCAD" header="#{msg['editarVCAD']}" widgetVar="editarVCAD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.vac}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarAVPD" header="#{msg['editarAVPD']}" widgetVar="editarAVPD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.avp}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarAVPD" header="#{msg['editarAVPD']}" widgetVar="editarAVPD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.avp}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarVCTD" header="#{msg['editarVCTD']}" widgetVar="editarVCTD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.vct}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarVCTD" header="#{msg['editarVCTD']}" widgetVar="editarVCTD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.vct}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarIRPD" header="#{msg['editarIRPD']}" widgetVar="editarIRPD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.irp}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarIRPD" header="#{msg['editarIRPD']}" widgetVar="editarIRPD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.irp}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSUSD" header="#{msg['editarSUSD']}" widgetVar="editarSUSD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.sus}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarSUSD" header="#{msg['editarSUSD']}" widgetVar="editarSUSD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.sus}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarINTED" header="#{msg['editarINTED']}" widgetVar="editarINTED" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.integral}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarINTED" header="#{msg['editarINTED']}" widgetVar="editarINTED" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.integral}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTarifaEPSD" header="#{msg['editarTarifaEPSD']}" widgetVar="editarTarifaEPSD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifaeps}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarTarifaEPSD" header="#{msg['editarTarifaEPSD']}" widgetVar="editarTarifaEPSD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifaeps}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTarifaAAFPD" header="#{msg['editarTarifaAAFPD']}" widgetVar="editarTarifaAAFPD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifaafp}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarTarifaAAFPD" header="#{msg['editarTarifaAAFPD']}" widgetVar="editarTarifaAAFPD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifaafp}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTarifaACTTD" header="#{msg['editarTarifaACTTD']}" widgetVar="editarTarifaACTTD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifactt}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarTarifaACTTD" header="#{msg['editarTarifaACTTD']}" widgetVar="editarTarifaACTTD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifactt}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarCodigoCTTD" header="#{msg['editarCodigoCTTD']}" widgetVar="editarCodigoCTTD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.codigoctt}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarCodigoCTTD" header="#{msg['editarCodigoCTTD']}" widgetVar="editarCodigoCTTD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.codigoctt}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarAvpeValorD" header="#{msg['editarAvpeValorD']}" widgetVar="editarAvpeValorD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.avpevalor}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarAvpeValorD" header="#{msg['editarAvpeValorD']}" widgetVar="editarAvpeValorD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.avpevalor}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarAvppValorD" header="#{msg['editarAvppValorD']}" widgetVar="editarAvppValorD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.avppvalor}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarAvppValorD" header="#{msg['editarAvppValorD']}" widgetVar="editarAvppValorD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.avppvalor}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarRetcontaValorD" header="#{msg['editarRetcontaValorD']}" widgetVar="editarRetcontaValorD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.retcontavpvalor}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarRetcontaValorD" header="#{msg['editarRetcontaValorD']}" widgetVar="editarRetcontaValorD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.retcontavpvalor}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarCodigoNEPSD" header="#{msg['editarCodigoNEPSD']}" widgetVar="editarCodigoNEPSD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.codigoneps}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarCodigoNEPSD" header="#{msg['editarCodigoNEPSD']}" widgetVar="editarCodigoNEPSD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.codigoneps}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarCodigoNAFPD" header="#{msg['editarCodigoNAFPD']}" widgetVar="editarCodigoNAFPD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.codigonafp}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarCodigoNAFPD" header="#{msg['editarCodigoNAFPD']}" widgetVar="editarCodigoNAFPD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.codigonafp}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarEgValorD" header="#{msg['editarEgValorD']}" widgetVar="editarEgValorD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.egvalor}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarEgValorD" header="#{msg['editarEgValorD']}" widgetVar="editarEgValorD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.egvalor}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarEgAutorizacionD" header="#{msg['editarEgAutorizacionD']}" widgetVar="editarEgAutorizacionD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.egautorizacion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarEgAutorizacionD" header="#{msg['editarEgAutorizacionD']}" widgetVar="editarEgAutorizacionD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.egautorizacion}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarMaternidadValorD" header="#{msg['editarMaternidadValorD']}" widgetVar="editarMaternidadValorD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.maternidadvalor}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarMaternidadValorD" header="#{msg['editarMaternidadValorD']}" widgetVar="editarMaternidadValorD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.maternidadvalor}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarMaternidadAutoD" header="#{msg['editarMaternidadAutoD']}" widgetVar="editarMaternidadAutoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.maternidadautorizacion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarMaternidadAutoD" header="#{msg['editarMaternidadAutoD']}" widgetVar="editarMaternidadAutoD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.maternidadautorizacion}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarUpcValorD" header="#{msg['editarUpcValorD']}" widgetVar="editarUpcValorD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.upcvalor}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarUpcValorD" header="#{msg['editarUpcValorD']}" widgetVar="editarUpcValorD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.upcvalor}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTipoD" header="#{msg['editarTipoD']}" widgetVar="editarTipoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tipo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarTipoD" header="#{msg['editarTipoD']}" widgetVar="editarTipoD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tipo}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTPD" header="#{msg['editarTPD']}" widgetVar="editarTPD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tipopensionado}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarTPD" header="#{msg['editarTPD']}" widgetVar="editarTPD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tipopensionado}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarPCD" header="#{msg['editarPCD']}" widgetVar="editarPCD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.pensioncompartida}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarPCD" header="#{msg['editarPCD']}" widgetVar="editarPCD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.pensioncompartida}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarEXTRD" header="#{msg['editarEXTRD']}" widgetVar="editarEXTRD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.extranjero}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarEXTRD" header="#{msg['editarEXTRD']}" widgetVar="editarEXTRD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.extranjero}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaIngreso" header="#{msg['editarFechaIngreso']}" widgetVar="editarFechaIngreso" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.fechaingreso}" style="overflow: auto; width: 200px; height: 40px" readonly="true">
+                    <p:dialog id="editarFechaIngreso" header="#{msg['editarFechaIngreso']}" widgetVar="editarFechaIngreso" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.fechaingreso}" style="overflow: auto; width: 360px; height: 60px" readonly="true">
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:inputTextarea>    
                     </p:dialog>
 
-                    <p:dialog id="editarTarifaCajaD" header="#{msg['editarTarifaCajaD']}" widgetVar="editarTarifaCajaD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifacaja}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarTarifaCajaD" header="#{msg['editarTarifaCajaD']}" widgetVar="editarTarifaCajaD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifacaja}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTarifaSenaD" header="#{msg['editarTarifaSenaD']}" widgetVar="editarTarifaSenaD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifasena}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarTarifaSenaD" header="#{msg['editarTarifaSenaD']}" widgetVar="editarTarifaSenaD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifasena}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTarifaICBFD" header="#{msg['editarTarifaICBFD']}" widgetVar="editarTarifaICBFD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifaicbf}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarTarifaICBFD" header="#{msg['editarTarifaICBFD']}" widgetVar="editarTarifaICBFD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifaicbf}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTarifaESAPD" header="#{msg['editarTarifaESAPD']}" widgetVar="editarTarifaESAPD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifaesap}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarTarifaESAPD" header="#{msg['editarTarifaESAPD']}" widgetVar="editarTarifaESAPD" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifaesap}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTarifaMEND" header="#{msg['editarTarifaMEND']}" widgetVar="editarTarifaMEND" resizable="false" draggable="false" modal="true" height="55" width="240" >  
-                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifamen}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarTarifaMEND" header="#{msg['editarTarifaMEND']}" widgetVar="editarTarifaMEND" resizable="false" draggable="false" modal="true" height="80" width="400" >  
+                        <p:inputTextarea value="#{controlParametroAutoliq.editarAporteEntidad.tarifamen}" style="overflow: auto; width: 360px; height: 60px" readonly="true"/>
                     </p:dialog>
                     
                     <p:dialog id="operacionEnProceso" header="#{msg['atencion']}" widgetVar="operacionEnProceso"  resizable="false" draggable="false" modal="true" height="65" width="350px" style="font-size: 12px" closable="false">  

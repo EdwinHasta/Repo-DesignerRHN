@@ -25,5 +25,6 @@ public interface AdministrarNovedadlCesantiasRCInterface {
     public List<MotivosCesantias> consultarMotivosCesantias();
     public List<Empleados>empleadoscesantiasnoliquidados();
     public List<NovedadesSistema> novedadesnoliquidadas(BigInteger secuenciaEmpleado);
+    public List<NovedadesSistema> todasnovedadescesantias(BigInteger secuenciaEmpleado);
     
 }

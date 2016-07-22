@@ -76,4 +76,9 @@ public class AdministrarNovedadCesantiasRC implements AdministrarNovedadlCesanti
         return persistenciaEmpleados.novedadescesantiasnoliquidadas(em, secuenciaEmpleado);
     }
 
+    @Override
+    public List<NovedadesSistema> todasnovedadescesantias(BigInteger secuenciaEmpleado) {
+        return persistenciaEmpleados.todasnovedadescesantias(em, secuenciaEmpleado);
+    }
+
 }

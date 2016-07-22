@@ -809,5 +809,22 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         }
 
     }
+
+    @Override
+    public List<NovedadesSistema> todasnovedadescesantias(EntityManager em, BigInteger secuenciaEmpleado) {
+        try {
+            em.clear();
+            String qr = "SELECT * FROM NOVEDADESSISTEMA N WHERE N.EMPLEADO = ? AND N.TIPO='CESANTIA'";
+            Query query = em.createNativeQuery(qr, NovedadesSistema.class);
+            //Query query = em.createNativeQuery(qr);
+            query.setParameter(1, secuenciaEmpleado);
+            List<NovedadesSistema> todasnovedades = query.getResultList();
+            return todasnovedades;
+
+        } catch (Exception e) {
+            System.err.println("Error: (persistenciaEmpleados.todasnovedadescesantias)" + e);
+            return null;
+        }
+    }
     
 }

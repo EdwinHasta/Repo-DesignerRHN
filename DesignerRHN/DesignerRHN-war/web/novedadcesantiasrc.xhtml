@@ -14,7 +14,7 @@
         <ui:composition template="/template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <f:loadBundle basename="Recursos.novedadpagoparcialcesantias" var="msg" />
+                    <f:loadBundle basename="Recursos.novedadcesantiasrc" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">    
 
@@ -119,9 +119,9 @@
                         <p:commandButton style="width: 150px; height: 30px; background-image: url(Imagenes/Iconos/buscardbL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;
                                          position: absolute; left: 650px; top: 100px; " id="btnBuscarEmpleados" actionListener="#{controlNovedadCesantiasRC.abrirLista(0)}"  value="" process="@this"/>
                         <p:commandButton style="width: 150px; height: 30px; background-image: url(Imagenes/Iconos/todosdbL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; 
-                                         position: absolute;left: 650px; top: 130px;" id="btnMostrarTodos" widgetVar="btnMostrarTodos" value="" 
+                                         position: absolute;left: 650px; top: 135px;" id="btnMostrarTodos" widgetVar="btnMostrarTodos" value="" 
                                          actionListener="#{controlNovedadCesantiasRC.mostrarTodos()}" disabled="#{controlNovedadCesantiasRC.activarMTodos}" process="@this"/>
-                        <p:commandButton style="position: absolute; left: 650px; top: 160px; background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 160px; height: 40px; color: white;" icon="ui-icon-extlink" id="NOLIQUIDADAS" value="Emp. no liquidados" actionListener="#{controlNovedadCesantiasRC.empleadosCesantiasNoLiquidadas()}" disabled="#{controlNovedadCesantiasRC.actuales}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 650px; top: 170px; background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 150px; height: 35px; color: white;" icon="ui-icon-extlink" id="NOLIQUIDADAS" value="No liquidados" actionListener="#{controlNovedadCesantiasRC.empleadosCesantiasNoLiquidadas()}" disabled="#{controlNovedadCesantiasRC.actuales}" process="@this" />
                         <p:tooltip  for="NOLIQUIDADAS" value="#{msg['emplnoliq']}" />
 
                         <fieldset style="position: absolute; left: 10px; top: 240px; width: 830px; height: 220px; border-radius: 10px; ">
@@ -140,7 +140,7 @@
                                           filterStyle="display: none; visibility: hidden;" sortBy="#{novedades.fechainicialdisfrute}" filterBy="#{novedades.fechainicialdisfrute}" >                                  
 
                                     <f:facet name="header">
-                                        <h:outputText id="headerfechacorte" value="Fecha Corte Cesantías" />
+                                        <h:outputText id="headerfechacorte" value="F.Corte Ces" />
                                         <p:tooltip  for="headerfechacorte" value="Fecha Corte Cesantías" />
                                     </f:facet> 
                                     <p:cellEditor>  
@@ -169,7 +169,7 @@
                                 <p:column  id="fechacorteintcesantias" style="text-align: center" headerText="Fecha Corte Intereses Cesantías"  filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"
                                            sortBy= "#{novedades.fechacortecesantia}" filterBy="#{novedades.fechacortecesantia}">     
                                     <f:facet name="header">
-                                        <h:outputText id="headerfechacorteint" value="Fecha Corte Int" />
+                                        <h:outputText id="headerfechacorteint" value="F.Corte Int" />
                                         <p:tooltip  for="headerfechacorteint" value="Fecha Corte Intereses de Cesantías" />
                                     </f:facet> 
 
@@ -248,7 +248,7 @@
                                 <p:column id="valorsolicitado" style="text-align: center" headerText="Valor Solicitado"  filterMatchMode="contains"  width="80" filterStyle="display: none; visibility: hidden;"
                                           sortBy="#{novedades.valorsolicitado}" filterBy="#{novedades.valorsolicitado}">                                  
                                     <f:facet name="header">
-                                        <h:outputText id="headervalorsolicitado" value="Valor Solicitado" />
+                                        <h:outputText id="headervalorsolicitado" value="Vlr Solicitado" />
                                         <p:tooltip  for="headervalorsolicitado" value="Valor Solicitado" />
                                     </f:facet>
                                     <p:cellEditor>  
@@ -268,7 +268,7 @@
                                 <p:column id="motivocesantia" style="text-align: center" headerText="Motivo Cesantías" filterMatchMode="contains"   filterStyle="display: none; visibility: hidden;"
                                           sortBy="#{novedades.motivocesantia}" filterBy="#{novedades.motivocesantia.nombre}">                                  
                                     <f:facet name="header">
-                                        <h:outputText id="headermotivocesantia" value="Motivo Cesantía" />
+                                        <h:outputText id="headermotivocesantia" value="Mot. Cesantía" />
                                         <p:tooltip  for="headermotivocesantia" value="Motivo Cesantía" />
                                     </f:facet>
 
@@ -341,8 +341,11 @@
                             </p:dataTable>
                             <h:outputText id="infoRegistroNovedad" value="#{msg['infoRegistros']} #{controlNovedadCesantiasRC.infoRegistroNovedadCesantias}  " style="position: relative; left: 10px; top: 15px; font-weight: bold"/>
                         </fieldset>
-                        <p:commandButton style="position: absolute; left: 15px; top: 480px; background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 160px; height: 40px; color: white;" icon="ui-icon-extlink" id="NOVNOLIQUIDADAS" value="Nov. no Liquidadas" actionListener="#{controlNovedadCesantiasRC.novedadesCesantiasNoLiquidadas()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 15px; top: 480px; text-align: right ; background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 170px; height: 40px; color: white;" icon="ui-icon-extlink" id="NOVNOLIQUIDADAS" value="Nov. No Liquidadas" actionListener="#{controlNovedadCesantiasRC.novedadesCesantiasNoLiquidadas()}" process="@this" />
                         <p:tooltip  for="NOVNOLIQUIDADAS" value="#{msg['noliq']}" />
+
+                        <p:commandButton style="position: absolute; left: 190px; top: 480px; background-image: url(Imagenes/Iconos/boton.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 150px; height: 40px; color: white;" icon="ui-icon-extlink" id="TODASNOV" value="Todas" actionListener="#{controlNovedadCesantiasRC.novedadesTodas()}" process="@this" />
+                        <p:tooltip  for="TODASNOV" value="Todas las novedades" />
                     </p:panel>
                 </h:form>
                 <!--//////////////////////-->
@@ -359,8 +362,6 @@
                             <div id="posicionFechaCorteCesantia" style=" position: absolute; top: 60px; left: 220px">
                                 <lnk:calendar id="nuevaFechaInicial" value="#{controlNovedadCesantiasRC.nuevaNovedad.fechainicialdisfrute}" >
                                     <p:ajax event="dateSelect" update="nuevaFechaInicial" process="@this" />
-                                    <p:ajax event="change" listener="#{controlNovedadCesantiasRC.autocompletar(1)}" process="@this" />
-
                                 </lnk:calendar>
                             </div>
 
@@ -374,26 +375,35 @@
 
                             <strong><h:outputText value="#{msg['vlrCesantias']}" style=" position: absolute; top: 145px" /></strong>
                             <p:inputText id="vlrcesantias" value="#{controlNovedadCesantiasRC.nuevaNovedad.valorcesantia}" 
-                                         style=" width: 122px; position: absolute; left: 220px; top: 140px; text-transform: uppercase" onclick="select();" >
+                                         style=" width: 122px; position: absolute; left: 220px; top: 140px; text-transform: uppercase; text-align: right;" onclick="select();" >
                             </p:inputText>
                             <pe:keyFilter for="vlrcesantias" mask="num"/>
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/generarReporte.png) ;background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; top: 140px; left: 355px; " value="" 
+                                             actionListener="#{controlNovedadCesantiasRC.autocompletarVlrCesantias(1)}" />
 
                             <strong><h:outputText value="#{msg['vlrintcesantias']}" style=" position: absolute; top: 185px" /></strong>
                             <p:inputText id="vlrintcesantias" value="#{controlNovedadCesantiasRC.nuevaNovedad.valorinterescesantia}" 
-                                         style=" width: 122px; position: absolute; left: 220px; top: 180px; text-transform: uppercase" onclick="select();">
+                                         style=" width: 122px; position: absolute; left: 220px; top: 180px; text-transform: uppercase; text-align: right;" onclick="select();">
                             </p:inputText>
                             <pe:keyFilter for="vlrintcesantias" mask="num"/>
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/generarReporte.png) ;background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; top: 180px; left: 355px; " value="" 
+                                             actionListener="#{controlNovedadCesantiasRC.autocompletarVlrIntCesantias(1)}" />
 
                             <strong><h:outputText value="#{msg['vlrsolicitado']}" style=" position: absolute; top: 225px" /></strong>
-                            <p:inputText id="vlrsolicitado" value="#{controlNovedadCesantiasRC.nuevaNovedad.valorsolicitado}" 
-                                         style=" width: 122px; position: absolute; left: 220px; top: 220px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="vlrsolicitado" value="#{controlNovedadCesantiasRC.nuevaNovedad.valorsolicitado} " readonly="true" 
+                                         style=" width: 122px; position: absolute; left: 220px; top: 220px; text-transform: uppercase; text-align: right;" onclick="select();">
                             </p:inputText>
                             <pe:keyFilter for="vlrsolicitado" mask="num"/>
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/generarReporte.png) ;background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; top: 220px; left: 355px; " value="" 
+                                             actionListener="#{controlNovedadCesantiasRC.autocompletarVlrSolicitado(1)}" />
 
                             <strong><h:outputText value="#{msg['motcesantias']}" style=" position: absolute; top: 265px" /></strong>
-                            <p:inputText id="motivoces" value="#{controlNovedadCesantiasRC.nuevaNovedad.motivocesantia}" 
-                                         style=" width: 122px; position: absolute; left: 220px; top: 260px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="motivoces" value="#{controlNovedadCesantiasRC.nuevaNovedad.motivocesantia.nombre}"  readonly="true"
+                                         style=" width: 122px; position: absolute; left: 220px; top: 260px; text-align: right; " onclick="select();">
                                 <p:ajax event="dblclick" listener="#{controlNovedadCesantiasRC.asignarIndex(novedades,5, 1)}"/>
+                                <p:ajax event="click" listener="#{controlNovedadCesantiasRC.autocompletar(2,'MOTIVO')}"/>
+                                <p:ajax event="change" listener="#{controlNovedadCesantiasRC.valoresautocompletarnuevo('MOTIVO', controlNovedadCesantiasRC.nuevaNovedad.motivocesantia.nombre, 1)}" />
+                                <p:ajax event="dblclick" listener="#{controlNovedadCesantiasRC.asignarIndex(novedades, 5,1)}"/>
                             </p:inputText>
                             <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; left: 355px; top: 260px; "
                                              id="btnNuevoMotivo" actionListener="#{controlNovedadCesantiasRC.asignarIndex(novedades, 5,1)}" value="" process="@this" />
@@ -427,7 +437,6 @@
                             <div id="duplicarposicionFechaCorteCesantia" style=" position: absolute; top: 60px; left: 200px">
                                 <lnk:calendar id="duplicarnuevaFechaInicial" value="#{controlNovedadCesantiasRC.duplicarNovedad.fechainicialdisfrute}" >
                                     <p:ajax event="dateSelect" update="duplicarnuevaFechaInicial"  process="@this"/>
-                                    <p:ajax event="change" update="duplicarnuevaFechaInicial" listener="#{controlNovedadCesantiasRC.autocompletar(2)}" process="@this"/>
                                 </lnk:calendar>
                             </div>
 
@@ -441,25 +450,34 @@
 
                             <strong><h:outputText value="#{msg['vlrCesantias']}" style=" position: absolute; top: 145px" /></strong>
                             <p:inputText id="duplicarvlrcesantias" value="#{controlNovedadCesantiasRC.duplicarNovedad.valorcesantia}" 
-                                         style=" width: 122px; position: absolute; left: 200px; top: 140px; text-transform: uppercase" onclick="select();">
+                                         style=" width: 122px; position: absolute; left: 200px; top: 140px; text-transform: uppercase; text-align: right;" onclick="select();">
                             </p:inputText>
-                            <pe:keyFilter for="vlrcesantias" mask="num"/>
+                            <pe:keyFilter for="duplicarvlrcesantias" mask="num"/>
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/generarReporte.png) ;background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; top: 140px; left: 355px; " value="" 
+                                             actionListener="#{controlNovedadCesantiasRC.autocompletarVlrCesantias(2)}" />
 
                             <strong><h:outputText value="#{msg['vlrintcesantias']}" style=" position: absolute; top: 185px" /></strong>
                             <p:inputText  id="duplicarvlrintcesantias" value="#{controlNovedadCesantiasRC.duplicarNovedad.valorinterescesantia}" 
-                                          style=" width: 122px; position: absolute; left: 200px; top: 180px; text-transform: uppercase" onclick="select();">
+                                          style=" width: 122px; position: absolute; left: 200px; top: 180px; text-transform: uppercase; text-align: right;" onclick="select();">
                             </p:inputText>
-                            <pe:keyFilter for="vlrintcesantias" mask="num"/>
+                            <pe:keyFilter for="duplicarvlrintcesantias" mask="num"/>
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/generarReporte.png) ;background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; top: 180px; left: 355px; " value="" 
+                                             actionListener="#{controlNovedadCesantiasRC.autocompletarVlrIntCesantias(2)}" />
+
 
                             <strong><h:outputText value="#{msg['vlrsolicitado']}" style=" position: absolute; top: 225px" /></strong>
                             <p:inputText id="duplicarvlrsolicitado" value="#{controlNovedadCesantiasRC.duplicarNovedad.valorsolicitado}" 
-                                         style=" width: 122px; position: absolute; left: 200px; top: 220px; text-transform: uppercase" onclick="select();">
+                                         style=" width: 122px; position: absolute; left: 200px; top: 220px; text-transform: uppercase; text-align: right;" onclick="select();">
                             </p:inputText>
-                            <pe:keyFilter for="vlrsolicitado" mask="num"/>
+                            <pe:keyFilter for="duplicarvlrsolicitado" mask="num"/>
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/generarReporte.png) ;background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; top: 220px; left: 355px; " value="" 
+                                             actionListener="#{controlNovedadCesantiasRC.autocompletarVlrSolicitado(2)}" />
 
                             <strong><h:outputText value="#{msg['motcesantias']}" style=" position: absolute; top: 265px;" /></strong>
                             <p:inputText  id="duplicarmotivoces" value="#{controlNovedadCesantiasRC.duplicarNovedad.motivocesantia.nombre}" 
-                                          style=" width: 122px; position: absolute; left: 200px; top: 260px; text-transform: uppercase" onclick="select();">
+                                          style=" width: 122px; position: absolute; left: 200px; top: 260px; text-transform: uppercase" readonly="true" onclick="select();">
+                                <p:ajax event="click" listener="#{controlNovedadCesantiasRC.autocompletar(2,'MOTIVO')}"/>
+                                <p:ajax event="change" listener="#{controlNovedadCesantiasRC.valoresautocompletarnuevo('MOTIVO', controlNovedadCesantiasRC.duplicarNovedad.motivocesantia.nombre, 2)}" />
                                 <p:ajax event="dblclick" listener="#{controlNovedadCesantiasRC.asignarIndex(novedades, 5,2)}"/>
                             </p:inputText>
                             <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; left: 335px; top: 260px; "
@@ -639,7 +657,7 @@
                         <p:commandButton id="atrasP" value="#{msg['cancelar']}" icon="ui-icon-close" style="position: absolute; top: 305px; left: 345px; height: 30px; width: 90px;"  actionListener="#{controlNovedadCesantiasRC.cancelarCambioMotivoCesantias()}"  process="@this"/>
 
                     </p:dialog>
-                    
+
                     <!-- DIALOGOS RASTROS -->
 
                     <p:dialog id="confirmarRastro" header="#{msg['informacion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
