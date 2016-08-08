@@ -45,7 +45,8 @@ public class ExportarPDFTablasAnchas extends PDFExporter {
         try {
             Document document = new Document();
             document.addAuthor("Designer Software LTDA");
-            document.setPageSize(PageSize.A2.rotate());
+            //document.setPageSize(PageSize.A2.rotate());
+            document.setPageSize(PageSize.B0.rotate());
             document.setMargins(-130, -130, 20, 20);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter.getInstance(document, baos);

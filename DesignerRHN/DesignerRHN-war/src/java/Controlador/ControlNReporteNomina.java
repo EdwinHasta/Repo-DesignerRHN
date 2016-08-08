@@ -8,6 +8,7 @@ import Entidades.*;
 import InterfaceAdministrar.AdministarReportesInterface;
 import InterfaceAdministrar.AdministrarNReportesNominaInterface;
 import java.io.*;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -113,7 +114,7 @@ public class ControlNReporteNomina implements Serializable {
     private int casillaInforReporte;
     //
     private Date fechaDesde, fechaHasta;
-    private BigInteger emplDesde, emplHasta;
+    private BigDecimal emplDesde, emplHasta;
     //
     private boolean activoMostrarTodos, activoBuscarReporte;
     //VISUALIZAR REPORTE PDF
@@ -841,7 +842,7 @@ public class ControlNReporteNomina implements Serializable {
                     context.execute("EmpleadoDesdeDialogo.show()");
                 }
             } else {
-                parametroDeInforme.setCodigoempleadodesde(new BigInteger("0"));
+                parametroDeInforme.setCodigoempleadodesde(new BigDecimal("0"));
                 parametroModificacion = parametroDeInforme;
                 listValEmpleados.clear();
                 getListValEmpleados();
@@ -880,7 +881,7 @@ public class ControlNReporteNomina implements Serializable {
                     }
                 } else {
                     System.out.println("Entre al else en  ControlNReporteNomina.autocompletarGeneral");
-                    parametroDeInforme.setCodigoempleadohasta(new BigInteger("9999999999999999999999"));
+                    parametroDeInforme.setCodigoempleadohasta(new BigDecimal("9999999999999999999999"));
                     parametroModificacion = parametroDeInforme;
                     listValEmpleados.clear();
                     getListValEmpleados();

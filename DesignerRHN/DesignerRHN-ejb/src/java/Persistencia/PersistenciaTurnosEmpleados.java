@@ -7,6 +7,7 @@ package Persistencia;
 
 import Entidades.TurnosEmpleados;
 import InterfacePersistencia.PersistenciaTurnosEmpleadosInterface;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -51,7 +52,7 @@ public class PersistenciaTurnosEmpleados implements PersistenciaTurnosEmpleadosI
     }
 
     @Override
-    public int ejecutarPKG_CONTARNOVEDADESLIQ(EntityManager em, Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta) {
+    public int ejecutarPKG_CONTARNOVEDADESLIQ(EntityManager em, Date fechaDesde, Date fechaHasta, BigDecimal emplDesde, BigDecimal emplHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -74,7 +75,7 @@ public class PersistenciaTurnosEmpleados implements PersistenciaTurnosEmpleadosI
     }
 
     @Override
-    public void ejecutarPKG_ELIMINARLIQUIDACION(EntityManager em, Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta) {
+    public void ejecutarPKG_ELIMINARLIQUIDACION(EntityManager em, Date fechaDesde, Date fechaHasta, BigDecimal emplDesde, BigDecimal emplHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {

@@ -110,7 +110,6 @@ public class ControlConcepto implements Serializable {
         conceptoSeleccionado = null;
         activoDetalle = true;
         altoTabla = "205";
-        conjuntoC = new LinkedHashMap<String, String>();
         listaUnidades = null;
         listaTerceros = null;
         listaEmpresas = null;
@@ -144,6 +143,7 @@ public class ControlConcepto implements Serializable {
         permitirIndex = true;
         verCambioEmpresa = false;
         verCambioEstado = false;
+        conjuntoC = new LinkedHashMap<String, String>();
         int i = 0;
         conjuntoC.put("45", "45");
         while (i <= 43) {

@@ -6,6 +6,7 @@
 package InterfacePersistencia;
 
 import Entidades.ParametrosTiempos;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -29,11 +30,11 @@ public interface PersistenciaParametrosTiemposInterface {
 
     public void ejecutarPKG_INSERTARCUADRILLA(EntityManager em, BigInteger cuadrilla, Date fechaDesde, Date fechaHasta);
 
-    public void ejecutarPKG_SIMULARTURNOSEMPLEADOS(EntityManager em, Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta);
+    public void ejecutarPKG_SIMULARTURNOSEMPLEADOS(EntityManager em, Date fechaDesde, Date fechaHasta, BigDecimal emplDesde, BigDecimal emplHasta);
 
-    public void ejecutarPKG_LIQUIDAR(EntityManager em, Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta, String formulaLiquidacion);
+    public void ejecutarPKG_LIQUIDAR(EntityManager em, Date fechaDesde, Date fechaHasta, BigDecimal emplDesde, BigDecimal emplHasta, String formulaLiquidacion);
 
-    public void ejecutarPKG_ELIMINARSIMULACION(EntityManager em, BigInteger cuadrilla, Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta);
+    public void ejecutarPKG_ELIMINARSIMULACION(EntityManager em, BigInteger cuadrilla, Date fechaDesde, Date fechaHasta, BigDecimal emplDesde, BigDecimal emplHasta);
 
     public void ejecutarPKG_EliminarProgramacion(EntityManager em, Date fechaDesde, Date fechaHasta);
 }

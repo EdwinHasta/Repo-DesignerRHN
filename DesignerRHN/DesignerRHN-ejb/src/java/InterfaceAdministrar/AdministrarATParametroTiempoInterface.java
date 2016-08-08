@@ -9,6 +9,7 @@ import Entidades.ActualUsuario;
 import Entidades.Cuadrillas;
 import Entidades.Empleados;
 import Entidades.ParametrosTiempos;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -35,17 +36,17 @@ public interface AdministrarATParametroTiempoInterface {
 
     public void ejecutarPKG_INSERTARCUADRILLA(BigInteger cuadrilla, Date fechaDesde, Date fechaHasta);
 
-    public void ejecutarPKG_SIMULARTURNOSEMPLEADOS(Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta);
+    public void ejecutarPKG_SIMULARTURNOSEMPLEADOS(Date fechaDesde, Date fechaHasta, BigDecimal emplDesde, BigDecimal emplHasta);
 
-    public void ejecutarPKG_LIQUIDAR(Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta, String formulaLiquidacion);
+    public void ejecutarPKG_LIQUIDAR(Date fechaDesde, Date fechaHasta, BigDecimal emplDesde, BigDecimal emplHasta, String formulaLiquidacion);
 
     public void ejecutarPKG_EliminarProgramacion(Date fechaDesde, Date fechaHasta);
 
-    public void ejecutarPKG_ELIMINARSIMULACION(BigInteger cuadrilla, Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta);
+    public void ejecutarPKG_ELIMINARSIMULACION(BigInteger cuadrilla, Date fechaDesde, Date fechaHasta, BigDecimal emplDesde, BigDecimal emplHasta);
 
-    public int ejecutarPKG_CONTARNOVEDADESLIQ(Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta);
+    public int ejecutarPKG_CONTARNOVEDADESLIQ(Date fechaDesde, Date fechaHasta, BigDecimal emplDesde, BigDecimal emplHasta);
 
-    public void ejecutarPKG_ELIMINARLIQUIDACION(Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta);
+    public void ejecutarPKG_ELIMINARLIQUIDACION(Date fechaDesde, Date fechaHasta, BigDecimal emplDesde, BigDecimal emplHasta);
 
     public void modificarParametroTiempo(ParametrosTiempos parametro);
 

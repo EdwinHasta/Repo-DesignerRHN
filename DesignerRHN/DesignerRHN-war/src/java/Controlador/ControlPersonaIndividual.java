@@ -3,7 +3,6 @@ package Controlador;
 import Entidades.*;
 import InterfaceAdministrar.AdministrarCarpetaPersonalInterface;
 import InterfaceAdministrar.AdministrarPersonaIndividualInterface;
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -2926,9 +2925,9 @@ public class ControlPersonaIndividual implements Serializable {
         //if (nuevoEmpleado.getEmpresa() != null) {
         //empleado = administrarPersonaIndividual.buscarEmpleadoPorCodigoyEmpresa(nuevaPersona.getNumerodocumento(), nuevoEmpleado.getEmpresa());
         if (nuevoEmpleado.getEmpresa() != null) {
-            empleado = administrarPersonaIndividual.buscarEmpleadoPorCodigoyEmpresa(nuevaPersona.getNumerodocumento(), nuevoEmpleado.getEmpresa().getSecuencia());
+            empleado = administrarPersonaIndividual.buscarEmpleadoPorCodigoyEmpresa(new BigDecimal(nuevaPersona.getNumerodocumento()), nuevoEmpleado.getEmpresa().getSecuencia());
         } else {
-            empleado = administrarPersonaIndividual.buscarEmpleadoPorCodigoyEmpresa(nuevaPersona.getNumerodocumento(), null);
+            empleado = administrarPersonaIndividual.buscarEmpleadoPorCodigoyEmpresa(new BigDecimal(nuevaPersona.getNumerodocumento()), null);
         }
         if (persona != null && empleado != null) {
             nuevaPersona.setNumerodocumento(null);
@@ -2957,7 +2956,7 @@ public class ControlPersonaIndividual implements Serializable {
                 }
             }
         }
-        nuevoEmpleado.setCodigoempleado(nuevaPersona.getNumerodocumento());
+        nuevoEmpleado.setCodigoempleado(new BigDecimal(nuevaPersona.getNumerodocumento()));
         context.update("form:codigoEmpleadoModPersonal");
     }
 

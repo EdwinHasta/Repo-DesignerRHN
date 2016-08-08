@@ -1,6 +1,7 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import javax.persistence.*;
 
@@ -10,14 +11,14 @@ import javax.persistence.*;
  */
 @Entity
 @SqlResultSetMapping(name = "PruebaEmpleadosAsignacionBasica",
-entities = {
-    @EntityResult(entityClass = PruebaEmpleados.class,
-    fields = {
-        @FieldResult(name = "codigo", column = "CODIGO"),
-        @FieldResult(name = "nombre", column = "NOMBRE"),
-        @FieldResult(name = "valor", column = "VALOR"),
-        @FieldResult(name = "tipo", column = "TIPO"),})
-})
+        entities = {
+            @EntityResult(entityClass = PruebaEmpleados.class,
+                    fields = {
+                        @FieldResult(name = "codigo", column = "CODIGO"),
+                        @FieldResult(name = "nombre", column = "NOMBRE"),
+                        @FieldResult(name = "valor", column = "VALOR"),
+                        @FieldResult(name = "tipo", column = "TIPO"),})
+        })
 
 public class PruebaEmpleados implements Serializable {
 
@@ -25,7 +26,7 @@ public class PruebaEmpleados implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private BigInteger id;
-    private BigInteger codigo;
+    private BigDecimal codigo;
     private String nombre;
     private BigInteger valor;
     private String tipo;
@@ -38,11 +39,11 @@ public class PruebaEmpleados implements Serializable {
         this.id = id;
     }
 
-    public BigInteger getCodigo() {
+    public BigDecimal getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(BigInteger codigo) {
+    public void setCodigo(BigDecimal codigo) {
         this.codigo = codigo;
     }
 

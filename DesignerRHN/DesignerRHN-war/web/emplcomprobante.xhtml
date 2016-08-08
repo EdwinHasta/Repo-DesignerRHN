@@ -206,10 +206,9 @@
                             <div id="superiorIzquierdo" style="height: 40px; width: 300px; overflow-y: hidden; position: relative; top: -15px;" >
                                 <p:dataTable id="tablaSuperiorIzquierda" var="solucionNodoEmpleado" style=" width: 300px; position: relative; top: 18px; height: 10px; font-size: 11px;" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleado}"
                                              rowKey="#{solucionNodoEmpleado.secuencia}" widgetVar="tablaSuperiorIzquierda" styleClass="hide-row-names" filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleado}"
-                                             selection="#{controlEmplComprobantes.empleadoTablaSeleccionado}" selectionMode="single"
-                                             >
+                                             selection="#{controlEmplComprobantes.empleadoTablaSeleccionado}" selectionMode="single">
 
-                                    <p:ajax event="sort" listener="#{controlEmplComprobantes.organizarTablasEmpleado()}" />   
+                                    <p:ajax event="sort" listener="#{controlEmplComprobantes.organizarTablasEmpleado()}"/>   
                                     <!-- <p:ajax event="filter" update=":form:tablaInferiorDerecha, :form:tablaInferiorIzquierda"/> -->
                                     <p:column width="0.5"/>
                                     <p:column id="codigoSNE" headerText="#{msg['codigo']}" width="45" sortBy="#{solucionNodoEmpleado.concepto.codigo}"  filterBy="#{solucionNodoEmpleado.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" />
@@ -217,13 +216,12 @@
                                 </p:dataTable>
                             </div>
 
-                            <div id="inferiorIzquierda"  style="height: 70px; width: 320px; overflow-y: hidden; position: relative; top: -15px;" >
+                            <div id="inferiorIzquierda" style="height: 70px; width: 320px; overflow-y: hidden; position: relative; top: -15px;">
                                 <p:dataTable id="tablaInferiorIzquierda" var="solucionNodoEmpleado" style=" width: 250px; height: 10px; font-size: 11px;" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleado}"
                                              rowKey="#{solucionNodoEmpleado.secuencia}" scrollable="true" scrollWidth="300" 
                                              widgetVar="tablaInferiorIzquierda" styleClass="hide-column-names" rowIndexVar="indiceEM"
                                              filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleado}" emptyMessage="#{msg['vacio']}"
-                                             selection="#{controlEmplComprobantes.empleadoTablaSeleccionado}" selectionMode="single"
-                                             >
+                                             selection="#{controlEmplComprobantes.empleadoTablaSeleccionado}" selectionMode="single">
 
                                     <p:column width="20" style="text-align: center; padding: 0px"> 
                                         <p:commandButton value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 19px; height: 19px" actionListener="#{controlEmplComprobantes.parcialSolucionNodo(indiceEM, 0)}"/>

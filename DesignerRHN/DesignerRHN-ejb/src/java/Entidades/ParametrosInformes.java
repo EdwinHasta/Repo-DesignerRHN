@@ -1,6 +1,7 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.*;
@@ -15,7 +16,6 @@ import javax.validation.constraints.Size;
 @Table(name = "PARAMETROSINFORMES")
 public class ParametrosInformes implements Serializable {
 
-    
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -30,9 +30,9 @@ public class ParametrosInformes implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechahasta;
     @Column(name = "CODIGOEMPLEADODESDE")
-    private BigInteger codigoempleadodesde;
+    private BigDecimal codigoempleadodesde;
     @Column(name = "CODIGOEMPLEADOHASTA")
-    private BigInteger codigoempleadohasta;
+    private BigDecimal codigoempleadohasta;
     @Column(name = "CONCEPTO")
     private BigInteger concepto;
     @Size(max = 15)
@@ -207,19 +207,19 @@ public class ParametrosInformes implements Serializable {
         this.fechahasta = fechahasta;
     }
 
-    public BigInteger getCodigoempleadodesde() {
+    public BigDecimal getCodigoempleadodesde() {
         return codigoempleadodesde;
     }
 
-    public void setCodigoempleadodesde(BigInteger codigoempleadodesde) {
+    public void setCodigoempleadodesde(BigDecimal codigoempleadodesde) {
         this.codigoempleadodesde = codigoempleadodesde;
     }
 
-    public BigInteger getCodigoempleadohasta() {
+    public BigDecimal getCodigoempleadohasta() {
         return codigoempleadohasta;
     }
 
-    public void setCodigoempleadohasta(BigInteger codigoempleadohasta) {
+    public void setCodigoempleadohasta(BigDecimal codigoempleadohasta) {
         this.codigoempleadohasta = codigoempleadohasta;
     }
 

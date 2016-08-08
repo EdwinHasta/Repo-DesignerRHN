@@ -13,6 +13,7 @@ import Entidades.ParametrosContables;
 import Entidades.ParametrosEstructuras;
 import Entidades.Procesos;
 import Entidades.SolucionesNodos;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -57,21 +58,21 @@ public interface AdministrarInterfaseContableDynamicsPSInterface {
 
     public int contarProcesosContabilizadosInterconDynamics(Date fechaInicial, Date fechaFinal);
 
-    public void cerrarProcesoContable(Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta);
+    public void cerrarProcesoContable(Date fechaInicial, Date fechaFinal, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta);
 
     public List<Empleados> buscarEmpleadosEmpresa();
 
-    public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger emplDesde, BigInteger emplHasta);
+    public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigDecimal emplDesde, BigDecimal emplHasta);
 
     public Integer conteoContabilizacionesDynamics(Date fechaIni, Date fechaFin);
 
     public void ejecutarPKGRecontabilizar(Date fechaIni, Date fechaFin);
 
-    public void actualizarFlagContabilizacionDeshacerDynamics(Date fechaIni, Date fechaFin, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta);
+    public void actualizarFlagContabilizacionDeshacerDynamics(Date fechaIni, Date fechaFin, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta);
 
-    public void deleteInterconDynamics(Date fechaIni, Date fechaFin, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta);
+    public void deleteInterconDynamics(Date fechaIni, Date fechaFin, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta);
 
-    public void ejecutarPKGUbicarnuevointercon_DYNAMICS(BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta);
+    public void ejecutarPKGUbicarnuevointercon_DYNAMICS(BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta);
 
     public void anularComprobantesCerrados(Date fechaIni, Date fechaFin, BigInteger proceso);
 
@@ -79,6 +80,6 @@ public interface AdministrarInterfaseContableDynamicsPSInterface {
 
     public Date obtenerFechaMaxInterconDynamics();
     
-    public void actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(Date fechaIni, Date fechaFin, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta);
+    public void actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(Date fechaIni, Date fechaFin, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta);
 
 }

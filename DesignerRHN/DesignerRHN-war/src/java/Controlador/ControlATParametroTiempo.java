@@ -10,6 +10,7 @@ import InterfaceAdministrar.AdministrarATParametroTiempoInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class ControlATParametroTiempo implements Serializable {
     private List<ParametrosTiempos> listaParametrosTiemposExport;
     //
     private String auxParametroCuadrilla;
-    private BigInteger auxParametroEmplDesde, auxParametroEmplHasta;
+    private BigDecimal auxParametroEmplDesde, auxParametroEmplHasta;
     private Date auxParametroFechaDesde, auxParametroFechaHasta;
     private String auxParametroHoraDesde, auxParametroHoraHasta;
     private int posicionParametroTiempo;
@@ -344,7 +345,7 @@ public class ControlATParametroTiempo implements Serializable {
                     context.execute("EmpleadoDialogo.show()");
                 }
             } else {
-                parametroTiempoUsuarioBD.setCodigoempleadodesde(new BigInteger("0"));
+                parametroTiempoUsuarioBD.setCodigoempleadodesde(new BigDecimal("0"));
                 if (guardado == true) {
                     guardado = false;
                 }
@@ -374,7 +375,7 @@ public class ControlATParametroTiempo implements Serializable {
                     context.execute("EmpleadoDialogo.show()");
                 }
             } else {
-                parametroTiempoUsuarioBD.setCodigoempleadohasta(new BigInteger("9999999999999999999999999999999"));
+                parametroTiempoUsuarioBD.setCodigoempleadohasta(new BigDecimal("9999999999999999999999999999999"));
                 if (guardado == true) {
                     guardado = false;
                 }

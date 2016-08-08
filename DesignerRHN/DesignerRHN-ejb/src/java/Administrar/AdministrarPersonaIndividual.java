@@ -683,7 +683,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
         }
     }
 
-    public Empleados buscarEmpleadoPorCodigoyEmpresa(BigInteger codigo, BigInteger empresa) {
+    public Empleados buscarEmpleadoPorCodigoyEmpresa(BigDecimal codigo, BigInteger empresa) {
         try {
             Empleados empl = persistenciaEmpleado.buscarEmpleadoPorCodigoyEmpresa(em, codigo, empresa);
             return empl;
@@ -866,7 +866,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
 //    }
 
     @Override
-    public void crearEmpl_Con_VCargo(BigInteger codigoEmpleado, BigInteger secPersona, BigInteger secEmpresa,
+    public void crearEmpl_Con_VCargo(BigDecimal codigoEmpleado, BigInteger secPersona, BigInteger secEmpresa,
             VigenciasCargos vigenciaCargo) {
         try {
             persistenciaEmpleado.crearConVCargo(em, codigoEmpleado, secPersona, secEmpresa, vigenciaCargo.getCargo().getSecuencia(),
@@ -877,7 +877,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public Empleados obtenerUltimoRegistroEmpleado(BigInteger empresa, BigInteger codigoEmpleado) {
+    public Empleados obtenerUltimoRegistroEmpleado(BigInteger empresa, BigDecimal codigoEmpleado) {
         try {
 //            System.out.println("Admin..PersonaInd.. obtenerUltimoRegistroEmpleado() empresa : " + empresa + ",  codigoEmpleado : " + codigoEmpleado);
             Empleados empleado = persistenciaEmpleado.obtenerUltimoEmpleadoAlmacenado(em, empresa, codigoEmpleado);

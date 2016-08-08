@@ -1,6 +1,7 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.*;
@@ -59,9 +60,9 @@ public class ParametrosContables implements Serializable {
     @Column(name = "ULTIMONUMERODOCUMENTO")
     private BigInteger ultimonumerodocumento;
     @Column(name = "CODIGOEMPLEADODESDE")
-    private BigInteger codigoempleadodesde;
+    private BigDecimal codigoempleadodesde;
     @Column(name = "CODIGOEMPLEADOHASTA")
-    private BigInteger codigoempleadohasta;
+    private BigDecimal codigoempleadohasta;
     @Size(max = 10)
     @Column(name = "DOCUMENTOALTERNATIVO")
     private String documentoalternativo;
@@ -209,19 +210,11 @@ public class ParametrosContables implements Serializable {
         this.ultimonumerodocumento = ultimonumerodocumento;
     }
 
-    public BigInteger getCodigoempleadodesde() {
-        return codigoempleadodesde;
-    }
-
-    public void setCodigoempleadodesde(BigInteger codigoempleadodesde) {
-        this.codigoempleadodesde = codigoempleadodesde;
-    }
-
     public String getStrCodigoEmpleadoDesde() {
         getCodigoempleadodesde();
-        if(codigoempleadodesde != null){
+        if (codigoempleadodesde != null) {
             strCodigoEmpleadoDesde = codigoempleadodesde.toString();
-        } else{
+        } else {
             strCodigoEmpleadoDesde = "";
         }
         return strCodigoEmpleadoDesde;
@@ -233,9 +226,9 @@ public class ParametrosContables implements Serializable {
 
     public String getStrCodigoEmpleadoHasta() {
         getCodigoempleadohasta();
-        if(codigoempleadohasta != null){
+        if (codigoempleadohasta != null) {
             strCodigoEmpleadoHasta = codigoempleadohasta.toString();
-        } else{
+        } else {
             strCodigoEmpleadoHasta = "";
         }
         return strCodigoEmpleadoHasta;
@@ -245,11 +238,19 @@ public class ParametrosContables implements Serializable {
         this.strCodigoEmpleadoHasta = strCodigoEmpleadoHasta;
     }
 
-    public BigInteger getCodigoempleadohasta() {
+    public BigDecimal getCodigoempleadodesde() {
+        return codigoempleadodesde;
+    }
+
+    public void setCodigoempleadodesde(BigDecimal codigoempleadodesde) {
+        this.codigoempleadodesde = codigoempleadodesde;
+    }
+
+    public BigDecimal getCodigoempleadohasta() {
         return codigoempleadohasta;
     }
 
-    public void setCodigoempleadohasta(BigInteger codigoempleadohasta) {
+    public void setCodigoempleadohasta(BigDecimal codigoempleadohasta) {
         this.codigoempleadohasta = codigoempleadohasta;
     }
 

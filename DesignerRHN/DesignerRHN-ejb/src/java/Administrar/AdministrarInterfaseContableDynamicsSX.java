@@ -28,6 +28,7 @@ import InterfacePersistencia.PersistenciaProcesosInterface;
 import InterfacePersistencia.PersistenciaSolucionesNodosInterface;
 import InterfacePersistencia.PersistenciaUsuariosInterfasesInterface;
 import InterfacePersistencia.PersistenciaVWActualesFechasInterface;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -266,7 +267,7 @@ public class AdministrarInterfaseContableDynamicsSX implements AdministrarInterf
     }
 
     @Override
-    public void cerrarProcesoContable(Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+    public void cerrarProcesoContable(Date fechaInicial, Date fechaFinal, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta) {
         try {
             persistenciaInterconDynamics.cerrarProcesoContabilizacion(em, fechaInicial, fechaFinal, proceso, emplDesde, emplHasta);
         } catch (Exception e) {
@@ -286,7 +287,7 @@ public class AdministrarInterfaseContableDynamicsSX implements AdministrarInterf
     }
 
     @Override
-    public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger emplDesde, BigInteger emplHasta) {
+    public void ejecutarPKGCrearArchivoPlano(Date fechaIni, Date fechaFin, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigDecimal emplDesde, BigDecimal emplHasta) {
         try {
             persistenciaInterconDynamics.ejecutarPKGCrearArchivoPlano_SX(em, fechaIni, fechaFin, proceso, descripcionProceso, nombreArchivo, emplDesde, emplHasta);
         } catch (Exception e) {
@@ -315,7 +316,7 @@ public class AdministrarInterfaseContableDynamicsSX implements AdministrarInterf
     }
 
     @Override
-    public void actualizarFlagContabilizacionDeshacerDynamics(Date fechaIni, Date fechaFin, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+    public void actualizarFlagContabilizacionDeshacerDynamics(Date fechaIni, Date fechaFin, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta) {
         try {
             persistenciaInterconDynamics.actualizarFlagContabilizacionDeshacerDynamics(em, fechaIni, fechaFin, proceso, emplDesde, emplHasta);
         } catch (Exception e) {
@@ -324,7 +325,7 @@ public class AdministrarInterfaseContableDynamicsSX implements AdministrarInterf
     }
 
     @Override
-    public void deleteInterconDynamics(Date fechaIni, Date fechaFin, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+    public void deleteInterconDynamics(Date fechaIni, Date fechaFin, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta) {
         try {
             persistenciaInterconDynamics.deleteInterconDynamics(em, fechaIni, fechaFin, proceso, emplDesde, emplHasta);
         } catch (Exception e) {
@@ -333,7 +334,7 @@ public class AdministrarInterfaseContableDynamicsSX implements AdministrarInterf
     }
     
     @Override 
-    public void actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(Date fechaIni, Date fechaFin, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+    public void actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(Date fechaIni, Date fechaFin, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta) {
         try {
             persistenciaInterconDynamics.actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(em, fechaIni, fechaFin, proceso, emplDesde, emplHasta);
         } catch (Exception e) {
@@ -342,7 +343,7 @@ public class AdministrarInterfaseContableDynamicsSX implements AdministrarInterf
     }
 
     @Override
-    public void ejecutarPKGUbicarnuevointercon_DYNAMICS(BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+    public void ejecutarPKGUbicarnuevointercon_DYNAMICS(BigInteger secuencia, Date fechaIni, Date fechaFin, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta) {
         try {
             persistenciaInterconDynamics.ejecutarPKGUbicarnuevointercon_DYNAMICS(em, secuencia, fechaIni, fechaFin, proceso, emplDesde, emplHasta);
         } catch (Exception e) {

@@ -11,6 +11,7 @@ import InterfaceAdministrar.AdministrarATCuadrillaInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,7 +59,7 @@ public class ControlATCuadrilla implements Serializable {
     private List<DetallesTurnosRotativos> filtrarListaDetallesTurnosRotativos;
     private DetallesTurnosRotativos detalleSeleccionado;
     private short auxDetalleOrden;
-    private BigInteger auxDetalleCodigo;
+    private BigDecimal auxDetalleCodigo;
     private String auxDetalleEmpleado;
 
     //

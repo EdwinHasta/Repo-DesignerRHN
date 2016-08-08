@@ -123,7 +123,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
-    public void cerrarProcesoContabilizacion(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+    public void cerrarProcesoContabilizacion(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigDecimal empleadoDesde, BigDecimal empleadoHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -151,7 +151,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
-    public void cerrarProcesoContabilizacion_PL(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+    public void cerrarProcesoContabilizacion_PL(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigDecimal empleadoDesde, BigDecimal empleadoHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -180,7 +180,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
-    public void ejecutarPKGCrearArchivoPlano(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+    public void ejecutarPKGCrearArchivoPlano(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigDecimal empleadoDesde, BigDecimal empleadoHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -204,7 +204,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
-    public void ejecutarPKGCrearArchivoPlano_PACIFIC(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+    public void ejecutarPKGCrearArchivoPlano_PACIFIC(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigDecimal empleadoDesde, BigDecimal empleadoHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -228,7 +228,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
-    public void ejecutarPKGCrearArchivoPlano_PROLUB(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+    public void ejecutarPKGCrearArchivoPlano_PROLUB(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigDecimal empleadoDesde, BigDecimal empleadoHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -252,7 +252,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
-    public void ejecutarPKGCrearArchivoPlano_VT(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+    public void ejecutarPKGCrearArchivoPlano_VT(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigDecimal empleadoDesde, BigDecimal empleadoHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -276,7 +276,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
-    public void ejecutarPKGCrearArchivoPlano_MAMUT(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+    public void ejecutarPKGCrearArchivoPlano_MAMUT(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigDecimal empleadoDesde, BigDecimal empleadoHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -300,7 +300,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
     
     @Override
-    public void ejecutarPKGCrearArchivoPlano_SX(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+    public void ejecutarPKGCrearArchivoPlano_SX(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigDecimal empleadoDesde, BigDecimal empleadoHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -324,7 +324,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
     
     @Override
-    public void ejecutarPKGCrearArchivoPlano_CPS(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+    public void ejecutarPKGCrearArchivoPlano_CPS(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigDecimal empleadoDesde, BigDecimal empleadoHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -348,7 +348,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
     
     @Override
-    public void ejecutarPKGCrearArchivoPlano_YV(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+    public void ejecutarPKGCrearArchivoPlano_YV(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigDecimal empleadoDesde, BigDecimal empleadoHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -372,7 +372,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
-    public void ejecutarPKGCrearArchivoPlano_PL(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigInteger empleadoDesde, BigInteger empleadoHasta) {
+    public void ejecutarPKGCrearArchivoPlano_PL(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, String descripcionProceso, String nombreArchivo, BigDecimal empleadoDesde, BigDecimal empleadoHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -415,7 +415,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
-    public void actualizarFlagContabilizacionDeshacerDynamics(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+    public void actualizarFlagContabilizacionDeshacerDynamics(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -453,7 +453,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
-    public void deleteInterconDynamics(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+    public void deleteInterconDynamics(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -481,7 +481,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
-    public void actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+    public void actualizarFlagContabilizacionDeshacerDynamics_NOT_EXITS(EntityManager em, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -520,7 +520,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
-    public void ejecutarPKGUbicarnuevointercon_DYNAMICS(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+    public void ejecutarPKGUbicarnuevointercon_DYNAMICS(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -543,7 +543,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
-    public void ejecutarPKGUbicarnuevointercon_DYNAMICS_PACIFIC(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+    public void ejecutarPKGUbicarnuevointercon_DYNAMICS_PACIFIC(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -566,7 +566,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
-    public void ejecutarPKGUbicarnuevointercon_PLIN(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+    public void ejecutarPKGUbicarnuevointercon_PLIN(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -589,7 +589,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
-    public void ejecutarPKGUbicarnuevointercon_MAMUT(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+    public void ejecutarPKGUbicarnuevointercon_MAMUT(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -612,7 +612,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
     
     @Override
-    public void ejecutarPKGUbicarnuevointercon_YV(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+    public void ejecutarPKGUbicarnuevointercon_YV(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -635,7 +635,7 @@ public class PersistenciaInterconDynamics implements PersistenciaInterconDynamic
     }
 
     @Override
-    public void ejecutarPKGUbicarnuevointercon_PROLUB(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigInteger emplDesde, BigInteger emplHasta) {
+    public void ejecutarPKGUbicarnuevointercon_PROLUB(EntityManager em, BigInteger secuencia, Date fechaInicial, Date fechaFinal, BigInteger proceso, BigDecimal emplDesde, BigDecimal emplHasta) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {

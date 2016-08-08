@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -91,7 +92,7 @@ public class ControlNReporteBienestar implements Serializable {
     private int casillaInforReporte;
     //
     private Date fechaDesde, fechaHasta;
-    private BigInteger emplDesde, emplHasta;
+    private BigDecimal emplDesde, emplHasta;
     //
     private boolean activoMostrarTodos, activoBuscarReporte;
 
@@ -688,7 +689,7 @@ public class ControlNReporteBienestar implements Serializable {
                     context.execute("ActividadDialogo.show()");
                 }
             } else {
-                parametroDeInforme.setCodigoempleadodesde(new BigInteger("0"));
+                parametroDeInforme.setCodigoempleadodesde(new BigDecimal("0"));
                 parametroModificacion = parametroDeInforme;
                 listEmpleados.clear();
                 getListEmpleados();
@@ -718,7 +719,7 @@ public class ControlNReporteBienestar implements Serializable {
                     context.execute("ActividadDialogo.show()");
                 }
             } else {
-                parametroDeInforme.setCodigoempleadohasta(new BigInteger("9999999999999999999999"));
+                parametroDeInforme.setCodigoempleadohasta(new BigDecimal("9999999999999999999999"));
                 parametroModificacion = parametroDeInforme;
                 listEmpleados.clear();
                 getListEmpleados();

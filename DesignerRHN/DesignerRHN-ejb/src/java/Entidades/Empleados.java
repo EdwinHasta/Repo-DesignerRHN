@@ -1,6 +1,7 @@
 package Entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 //import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
@@ -27,7 +28,7 @@ public class Empleados implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Column(name = "CODIGOEMPLEADO")
-    private BigInteger codigoempleado;
+    private BigDecimal codigoempleado;
     @Column(name = "RUTATRANSPORTE")
     private Integer rutatransporte;
     /*@Column(name = "TELEFONO")
@@ -98,7 +99,7 @@ public class Empleados implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Empleados(BigInteger secuencia, BigInteger codigoempleado) {
+    public Empleados(BigInteger secuencia, BigDecimal codigoempleado) {
         this.secuencia = secuencia;
         this.codigoempleado = codigoempleado;
     }
@@ -111,11 +112,11 @@ public class Empleados implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public BigInteger getCodigoempleado() {
+    public BigDecimal getCodigoempleado() {
         return codigoempleado;
     }
 
-    public void setCodigoempleado(BigInteger codigoempleado) {
+    public void setCodigoempleado(BigDecimal codigoempleado) {
         this.codigoempleado = codigoempleado;
     }
 
@@ -329,14 +330,14 @@ public class Empleados implements Serializable {
             codigoempleadoSTR = codigoempleado.toString();
         } else {
             codigoempleadoSTR = " ";
-            codigoempleado = BigInteger.valueOf(0);
+            codigoempleado = BigDecimal.valueOf(0);
 
         }
         return codigoempleadoSTR;
     }
 
     public void setCodigoempleadoSTR(String codigoempleadoSTR) {
-        codigoempleado = new BigInteger(codigoempleadoSTR);
+        codigoempleado = new BigDecimal(codigoempleadoSTR);
         this.codigoempleadoSTR = codigoempleadoSTR;
     }
 

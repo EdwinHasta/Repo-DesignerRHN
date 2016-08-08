@@ -11,6 +11,7 @@ import InterfacePersistencia.PersistenciaCuadrillasInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaParametrosTiemposInterface;
 import InterfacePersistencia.PersistenciaTurnosEmpleadosInterface;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -124,7 +125,7 @@ public class AdministrarATParametroTiempo implements AdministrarATParametroTiemp
     }
     
     @Override
-    public void ejecutarPKG_SIMULARTURNOSEMPLEADOS(Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta) {
+    public void ejecutarPKG_SIMULARTURNOSEMPLEADOS(Date fechaDesde, Date fechaHasta, BigDecimal emplDesde, BigDecimal emplHasta) {
         try {
             persistenciaParametrosTiempos.ejecutarPKG_SIMULARTURNOSEMPLEADOS(em, fechaDesde, fechaHasta, emplDesde, emplHasta);
         } catch (Exception e) {
@@ -133,7 +134,7 @@ public class AdministrarATParametroTiempo implements AdministrarATParametroTiemp
     }
     
     @Override
-    public void ejecutarPKG_LIQUIDAR(Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta, String formulaLiquidacion) {
+    public void ejecutarPKG_LIQUIDAR(Date fechaDesde, Date fechaHasta, BigDecimal emplDesde, BigDecimal emplHasta, String formulaLiquidacion) {
         try {
             persistenciaParametrosTiempos.ejecutarPKG_LIQUIDAR(em, fechaDesde, fechaHasta, emplDesde, emplHasta, formulaLiquidacion);
         } catch (Exception e) {
@@ -151,7 +152,7 @@ public class AdministrarATParametroTiempo implements AdministrarATParametroTiemp
     }
     
     @Override
-    public void ejecutarPKG_ELIMINARSIMULACION(BigInteger cuadrilla, Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta) {
+    public void ejecutarPKG_ELIMINARSIMULACION(BigInteger cuadrilla, Date fechaDesde, Date fechaHasta, BigDecimal emplDesde, BigDecimal emplHasta) {
         try {
             persistenciaParametrosTiempos.ejecutarPKG_ELIMINARSIMULACION(em, cuadrilla, fechaDesde, fechaHasta, emplDesde, emplHasta);
         } catch (Exception e) {
@@ -160,7 +161,7 @@ public class AdministrarATParametroTiempo implements AdministrarATParametroTiemp
     }
     
     @Override
-    public int ejecutarPKG_CONTARNOVEDADESLIQ(Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta) {
+    public int ejecutarPKG_CONTARNOVEDADESLIQ(Date fechaDesde, Date fechaHasta, BigDecimal emplDesde, BigDecimal emplHasta) {
         try {
             int conteo = persistenciaTurnosEmpleados.ejecutarPKG_CONTARNOVEDADESLIQ(em, fechaDesde, fechaHasta, emplDesde, emplHasta);
             return conteo;
@@ -171,7 +172,7 @@ public class AdministrarATParametroTiempo implements AdministrarATParametroTiemp
     }
     
     @Override
-    public void ejecutarPKG_ELIMINARLIQUIDACION(Date fechaDesde, Date fechaHasta, BigInteger emplDesde, BigInteger emplHasta) {
+    public void ejecutarPKG_ELIMINARLIQUIDACION(Date fechaDesde, Date fechaHasta, BigDecimal emplDesde, BigDecimal emplHasta) {
         try {
             persistenciaTurnosEmpleados.ejecutarPKG_ELIMINARLIQUIDACION(em, fechaDesde, fechaHasta, emplDesde, emplHasta);
         } catch (Exception e) {

@@ -148,7 +148,7 @@ public interface AdministrarPersonaIndividualInterface {
 
     public Personas buscarPersonaPorNumeroDocumento(BigInteger numeroDocumento);
 
-    public Empleados buscarEmpleadoPorCodigoyEmpresa(BigInteger codigo, BigInteger empresa);
+    public Empleados buscarEmpleadoPorCodigoyEmpresa(BigDecimal codigo, BigInteger empresa);
 
     public String obtenerPreValidadContabilidad();
 
@@ -174,9 +174,9 @@ public interface AdministrarPersonaIndividualInterface {
 
 //    public BigInteger crearNuevoEmpleado(BigInteger codigoEmpl, BigInteger secPers, BigInteger secEmpr);
     
-    public void crearEmpl_Con_VCargo( BigInteger codigoEmpleado, BigInteger secPersona, BigInteger secEmpresa, VigenciasCargos vigenciaCargo);
+    public void crearEmpl_Con_VCargo( BigDecimal codigoEmpleado, BigInteger secPersona, BigInteger secEmpresa, VigenciasCargos vigenciaCargo);
 
-    public Empleados obtenerUltimoRegistroEmpleado(BigInteger empresa, BigInteger codigoEmpleado);
+    public Empleados obtenerUltimoRegistroEmpleado(BigInteger empresa, BigDecimal codigoEmpleado);
 
     /**
      *

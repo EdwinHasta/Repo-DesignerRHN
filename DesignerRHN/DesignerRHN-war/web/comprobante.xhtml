@@ -83,7 +83,6 @@
                                     <p:inputText value="#{controlComprobantes.parametroActual.empleado.codigoempleado}"  readonly="true" style="position: relative; top: -6px; height: 12px; width: 70px; left: -10px; display: block;"/>
                                     <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.nombreCompleto}" readonly="true" style="position: relative; top: -28px; height: 12px; left: 75px; width: 350px; display: inline-block;"/>
                                     <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.email}" readonly="true" style="position: relative; top: -28px; height: 12px; left: 80px; width: 240px; display: inline-block;"/>
-
                                 </div>
 
                                 <div>
@@ -118,7 +117,7 @@
 
                             <p:dataTable id="datosSolucionesNodosEmpleado" widgetVar="datosSolucionesNodosEmpleado" var="solucionNodoEmpleado" rowKey="#{solucionNodoEmpleado.secuencia}" style="width: 830px;" 
                                          value="#{controlComprobantes.listaSolucionesNodosEmpleado}" scrollable="true" rowIndexVar="indice" scrollHeight="#{controlComprobantes.altoScrollSolucionesNodosEmpleado}" 
-                                         scrollWidth="830" editable="true" editMode="cell" liveScroll="true" scrollRows="15"  filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleado}" 
+                                         scrollWidth="830" editable="true" editMode="cell" liveScroll="true" scrollRows="15" filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleado}" 
                                          selectionMode="single" selection="#{controlComprobantes.solucionNodoSeleccionada}" emptyMessage="#{msg['vacio']}">
 
                                 <p:column width="20" style="padding: 0px"> 

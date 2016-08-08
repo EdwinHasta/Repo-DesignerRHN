@@ -596,12 +596,12 @@ public class ControlEmpleadoIndividual implements Serializable {
     }
 
     public void refrescar() {
-        persona = null;
-        empleado = null;
         getEmpleado();
         datosEmpleado();
         RequestContext context = RequestContext.getCurrentInstance();
         guardado = true;
+        persona = null;
+        empleado = null;
         context.update("form");
         context.update("form:ACEPTAR");
     }

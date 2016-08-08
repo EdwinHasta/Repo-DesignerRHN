@@ -51,7 +51,7 @@
 
                                 <p:commandButton id="exportarXML" value="" actionListener="#{controlVigenciaSueldo.limpiarNuevaVS()}" ajax="false"
                                                  style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " >
-                                    <p:dataExporter type="xml"  target="#{controlVigenciaSueldo.exportXML()}" fileName="#{controlVigenciaSueldo.nombreXML}" encoding="UTF-8"/> 
+                                    <p:dataExporter type="xml" target="#{controlVigenciaSueldo.exportXML()}" fileName="#{controlVigenciaSueldo.nombreXML}" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 

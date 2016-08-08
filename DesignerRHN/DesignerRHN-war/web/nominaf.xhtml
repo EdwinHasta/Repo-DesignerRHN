@@ -453,7 +453,7 @@
                                         <h:outputText style=" position: absolute; left: 100px; top: 25px; width: 160px; text-align: justify" value="#{msg['textoestadisticas']}"/>
 
                                         <p:commandButton id="btnestadisticas" value=" " style="position: absolute; left: 5px; top: 8px; width: 90px; height: 90px; background-image: url(Imagenes/Iconos/interrogante.png);  background-repeat: no-repeat; background-size: 100% 100%; border: none;" 
-                                                         styleClass="bticon"/>
+                                                         actionListener="#{controlParametrosConjuntos.recibirPaginaAnterior('atrasNomina')}" action="estadisticas" styleClass="bticon"/>
                                     </fieldset>
 
                                     <fieldset style="position: absolute; border-radius: 10px; width: 500px; height: 250px; top: 7px; left: 284px;">
