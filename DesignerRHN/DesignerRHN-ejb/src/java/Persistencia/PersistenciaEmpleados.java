@@ -15,6 +15,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import org.omg.CORBA.INTERNAL;
 import Entidades.NovedadesSistema;
+import java.math.BigDecimal;
 //import org.apache.log4j.Logger;
 //import org.apache.log4j.PropertyConfigurator;
 
@@ -39,7 +40,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     }
 
     @Override
-    public void crearConVCargo(EntityManager em, BigInteger codigoEmpleado, BigInteger secPersona, BigInteger secEmpresa,
+    public void crearConVCargo(EntityManager em, BigDecimal codigoEmpleado, BigInteger secPersona, BigInteger secEmpresa,
             BigInteger secCargo, BigInteger secEstructura, Date fechaIngreso, BigInteger secMotivoCargo) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
@@ -482,7 +483,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     }
 
     @Override
-    public Empleados buscarEmpleadoPorCodigoyEmpresa(EntityManager em, BigInteger codigo, BigInteger empresa) {
+    public Empleados buscarEmpleadoPorCodigoyEmpresa(EntityManager em, BigDecimal codigo, BigInteger empresa) {
         try {
             em.clear();
 
@@ -499,7 +500,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     }
 
     @Override
-    public Empleados obtenerUltimoEmpleadoAlmacenado(EntityManager em, BigInteger secuenciaEmpresa, BigInteger codigoEmpleado) {
+    public Empleados obtenerUltimoEmpleadoAlmacenado(EntityManager em, BigInteger secuenciaEmpresa, BigDecimal codigoEmpleado) {
         try {
             System.out.println(this.getClass().getName() + "obtenerUltimoEmpleadoAlmacenado :");
             System.out.println("em" + em + ",  secuenciaEmpresa : " + secuenciaEmpresa + ",  codigoEmpleado : " + codigoEmpleado);
@@ -808,23 +809,6 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return null;
         }
 
-    }
-
-    @Override
-    public List<NovedadesSistema> todasnovedadescesantias(EntityManager em, BigInteger secuenciaEmpleado) {
-        try {
-            em.clear();
-            String qr = "SELECT * FROM NOVEDADESSISTEMA N WHERE N.EMPLEADO = ? AND N.TIPO='CESANTIA'";
-            Query query = em.createNativeQuery(qr, NovedadesSistema.class);
-            //Query query = em.createNativeQuery(qr);
-            query.setParameter(1, secuenciaEmpleado);
-            List<NovedadesSistema> todasnovedades = query.getResultList();
-            return todasnovedades;
-
-        } catch (Exception e) {
-            System.err.println("Error: (persistenciaEmpleados.todasnovedadescesantias)" + e);
-            return null;
-        }
     }
     
 }

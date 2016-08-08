@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import Entidades.NovedadesSistema;
+import java.math.BigDecimal;
 
 public interface PersistenciaEmpleadoInterface {
 
@@ -20,7 +21,7 @@ public interface PersistenciaEmpleadoInterface {
      */
     public void crear(EntityManager em, Empleados empleados);
 
-    public void crearConVCargo(EntityManager em, BigInteger codigoEmpleado, BigInteger secPersona, BigInteger secEmpresa,
+    public void crearConVCargo(EntityManager em, BigDecimal codigoEmpleado, BigInteger secPersona, BigInteger secEmpresa,
             BigInteger secCargo, BigInteger secEstructura, Date fechaIngreso, BigInteger motivoCargo);
 
     /**
@@ -169,9 +170,9 @@ public interface PersistenciaEmpleadoInterface {
 
     public List<BigInteger> buscarEmpleadosBusquedaAvanzadaCodigo(EntityManager em, String queryBusquedaAvanzada);
 
-    public Empleados buscarEmpleadoPorCodigoyEmpresa(EntityManager em, BigInteger codigo, BigInteger empresa);
+    public Empleados buscarEmpleadoPorCodigoyEmpresa(EntityManager em, BigDecimal codigo, BigInteger empresa);
 
-    public Empleados obtenerUltimoEmpleadoAlmacenado(EntityManager em, BigInteger secuenciaEmpresa, BigInteger codigoEmpleado);
+    public Empleados obtenerUltimoEmpleadoAlmacenado(EntityManager em, BigInteger secuenciaEmpresa, BigDecimal codigoEmpleado);
 
     public Empleados buscarEmpleadoSecuenciaPersona(EntityManager em, BigInteger secuencia);
 
@@ -202,7 +203,5 @@ public interface PersistenciaEmpleadoInterface {
     public List<Empleados> consultarCesantiasnoLiquidadas(EntityManager em);
 
     public List<NovedadesSistema> novedadescesantiasnoliquidadas(EntityManager em, BigInteger secuenciaEmpleado);
-    
-    public List<NovedadesSistema> todasnovedadescesantias(EntityManager em, BigInteger secuenciaEmpleado);
 
 }
