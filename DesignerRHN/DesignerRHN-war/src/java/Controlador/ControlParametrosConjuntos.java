@@ -2429,7 +2429,7 @@ public class ControlParametrosConjuntos implements Serializable {
     }
 
     public void seleccionPorcentajes() {
-        System.out.println("seleccionPorcentajes() : " + seleccionPorcentajes);
+//        System.out.println("seleccionPorcentajes() : " + seleccionPorcentajes);
         seleccionPorcentajes = true;
         if (!listaEstadisticas.isEmpty() && !listaEstadisticasLB.isEmpty()) {
             VWDSolucionesNodosN obj = new VWDSolucionesNodosN();

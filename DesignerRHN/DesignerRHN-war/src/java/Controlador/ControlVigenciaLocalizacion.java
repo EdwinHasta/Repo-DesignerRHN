@@ -2835,7 +2835,9 @@ public class ControlVigenciaLocalizacion implements Serializable {
     /**
      * Metodo que actualiza el centro costo seleccionado (vigencia prorrateo)
      */
+        
     public void actualizarCentroCostoVP() {
+        
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {// Si se trabaja sobre la tabla y no sobre un dialogo
             vigenciaProrrateoSeleccionada.setCentrocosto(centroCostoSeleccionado);

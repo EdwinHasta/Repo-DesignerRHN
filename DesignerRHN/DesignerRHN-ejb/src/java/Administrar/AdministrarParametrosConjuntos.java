@@ -16,6 +16,7 @@ import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaParametrosConjuntosInterface;
 import InterfacePersistencia.PersistenciaVWDSolucionesNodosNInterface;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -87,20 +88,32 @@ public class AdministrarParametrosConjuntos implements AdministrarParametrosConj
     @Override
     public List<VWDSolucionesNodosN> consultarDSolucionesNodosN(String vistaConsultar, Date fechaVig) {
         try {
-            return persistenciaVWDSolucionesNodosN.consultarDSolucionesNodosN(em, vistaConsultar, fechaVig);
+            List<VWDSolucionesNodosN> lista = persistenciaVWDSolucionesNodosN.consultarDSolucionesNodosN(em, vistaConsultar, fechaVig);
+            if (lista != null) {
+                return lista;
+            } else {
+                System.err.println("Error AdministrarParametrosConjuntos.consultarDSolucionesNodosN : La consulta retorno Null");
+                return new ArrayList<VWDSolucionesNodosN>();
+            }
         } catch (Exception e) {
             System.err.println("Error AdministrarParametrosConjuntos.consultarDSolucionesNodosN : " + e);
-            return null;
+            return new ArrayList<VWDSolucionesNodosN>();
         }
     }
 
     @Override
     public List<VWDSolucionesNodosN> consultarDSolucionesNodosNLB(String vistaConsultar, Date fechaVig) {
         try {
-            return persistenciaVWDSolucionesNodosN.consultarDSolucionesNodosNLB(em, vistaConsultar, fechaVig);
+            List<VWDSolucionesNodosN> lista = persistenciaVWDSolucionesNodosN.consultarDSolucionesNodosNLB(em, vistaConsultar, fechaVig);
+            if (lista != null) {
+                System.err.println("Error AdministrarParametrosConjuntos.consultarDSolucionesNodosNLB : La consulta retorno Null");
+                return lista;
+            } else {
+                return new ArrayList<VWDSolucionesNodosN>();
+            }
         } catch (Exception e) {
             System.err.println("Error AdministrarParametrosConjuntos.consultarDSolucionesNodosNLB : " + e);
-            return null;
+            return new ArrayList<VWDSolucionesNodosN>();
         }
     }
 

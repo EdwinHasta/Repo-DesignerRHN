@@ -341,6 +341,9 @@ public class ParametrosConjuntos implements Serializable {
     }
 
     public String getEstado() {
+        if( estado == null){
+            estado = "";
+        }
         return estado;
     }
 

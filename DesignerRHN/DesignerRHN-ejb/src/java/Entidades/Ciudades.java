@@ -61,6 +61,7 @@ public class Ciudades implements Serializable {
     }
 
     public void setNombre(String nombre) {
+        System.out.println("Ciudades setNombre() nombre : " + nombre);
         if (nombre != null) {
             this.nombre = nombre.toUpperCase();
         } else {

@@ -32,7 +32,7 @@ public class PersistenciaVWDSolucionesNodosN implements PersistenciaVWDSolucione
         try {
             List<VWDSolucionesNodosN> listaSN = new ArrayList<VWDSolucionesNodosN>();
             if (vistaConsultar.equals("VWDSOLUCIONESNODOS0")) {
-                DateFormat formatoF = new SimpleDateFormat("ddMMYYYY");
+                DateFormat formatoF = new SimpleDateFormat("ddMMyyyy");
                 String fecha = formatoF.format(fechaParametro);
                 em.clear();
                 String sqlQuery = "SELECT VW.*, E.CODIGOEMPLEADO CODIGOEMPLEADO, C.NOMBRE CARGO, ES.NOMBRE ESTRUCTURA\n"
@@ -70,7 +70,7 @@ public class PersistenciaVWDSolucionesNodosN implements PersistenciaVWDSolucione
         try {
             List<VWDSolucionesNodosN> listaSNLB = new ArrayList<VWDSolucionesNodosN>();
             if (vistaConsultar.equals("VWDSOLUCIONESNODOS0")) {
-                DateFormat formatoF = new SimpleDateFormat("ddMMYYYY");
+                DateFormat formatoF = new SimpleDateFormat("ddMMyyyy");
                 String fecha = formatoF.format(fechaParametro);
                 em.clear();
                 String sqlQuery = "SELECT VW.*, E.CODIGOEMPLEADO CODIGOEMPLEADO, C.NOMBRE CARGO, ES.NOMBRE ESTRUCTURA\n"

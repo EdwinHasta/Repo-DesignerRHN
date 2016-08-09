@@ -374,7 +374,7 @@
                         <p:commandButton style="position: absolute; left: 772px; top: 500px; height: 30px; width: 90px; background-image:  url(Imagenes/Iconos/cancelar.png); 
                                          background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlVigenciaSueldo.salir()}" action="nomina" process="@this" />
 
-                        <!-- DIALOGO L.O.V ESTATICO MOTIVO CAMBIO SUELDO     -->
+                        <!-- DIALOGO L.O.V ESTATICO MOTIVO CAMBIO SUELDO -->
                         <p:dialog header="#{msg['motivoM']}" widgetVar="MotivoCambioSueldoDialogo" draggable="false" resizable="false" closable="false" id="MotivoCambioSueldoDialogo"  
                                   showEffect="fade" hideEffect="fade" width="455" modal="true" height="340" >
                             <p:dataTable id="lovMotivoCambioSueldo" style=" width: 420px" var="motivoCS" value="#{controlVigenciaSueldo.listMotivosCambiosSueldos}" rowKey="#{motivoCS.secuencia}"
@@ -386,7 +386,7 @@
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarMotivoCambioSueldo()}" process="@this" update=":form:lovMotivoCambioSueldo" oncomplete="MotivoCambioSueldoDialogo.hide(), lovMotivoCambioSueldo.unselectAllRows()"/>
 
                                 <f:facet name="header">  
-                                    <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <h:outputText value="#{msg['buscarM']}" style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovMotivoCambioSueldo.filter();" value="#{filtrado}" style="width:140px; position: relative; left: 90px;" />  
                                 </f:facet>
                                 <p:column filterBy="#{motivoCS.codigo}" width="60" filterMatchMode="contains" filterStyle="width: 85%">
@@ -464,20 +464,20 @@
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciaSueldo.actualizarTipoEntidad()}" process="@this" oncomplete="TipoEntidadDialogo.hide()"/>
 
                                 <f:facet name="header">  
-                                    <h:outputText value="#{msg['buscarTE']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                    <p:inputText id="globalFilter" onkeyup="lovTipoEntidad.filter();" value="#{filtrado}" style="width:160px; position: relative; left: 40px;" />  
+                                    <h:outputText value="#{msg['buscarTE']}"  style="position: absolute; left: 27px; top: 14px"/>
+                                    <p:inputText id="globalFilter" onkeyup="lovTipoEntidad.filter();" value="#{filtrado}" style="width:160px; position: relative; left: 40px;"/>  
                                 </f:facet>
                                 <p:column filterBy="#{tipoE.codigo}" width="70" filterMatchMode="contains" filterStyle="width: 85%">
                                     <f:facet name="header">
-                                        <h:outputText style="text-align: center" value="#{msg['codigoTE']}" />
+                                        <h:outputText style="text-align: center" value="#{msg['codigoTE']}"/>
                                     </f:facet>
-                                    <h:outputText  value="#{tipoE.codigo}" />
+                                    <h:outputText  value="#{tipoE.codigo}"/>
                                 </p:column>
                                 <p:column filterBy="#{tipoE.nombre}" filterMatchMode="contains" filterStyle="width: 85%">
                                     <f:facet name="header">
-                                        <h:outputText value="#{msg['nombreTE']}" />
+                                        <h:outputText value="#{msg['nombreTE']}"/>
                                     </f:facet>
-                                    <h:outputText value="#{tipoE.nombre}" />
+                                    <h:outputText value="#{tipoE.nombre}"/>
                                 </p:column>
                             </p:dataTable>
 
@@ -486,7 +486,7 @@
                             <p:commandButton id="aceptarTE" style="position: relative; left: 150px; top: 15px;" value="#{msg['aceptar']}" disabled="#{controlVigenciaSueldo.aceptar}" 
                                              actionListener="#{controlVigenciaSueldo.actualizarTipoEntidad()}" process="@this" icon="ui-icon-check" onclick="TipoEntidadDialogo.hide()" />
 
-                            <p:commandButton id="atrasTE" style="position: relative; left: 150px; top: 15px;" value="#{msg['atras']}" actionListener="#{controlVigenciaSueldo.cancelarCambioTipoEntidad()}" 
+                            <p:commandButton id="atrasTE" style="position: relative; left: 150px; top: 15px;" value="#{msg['atras']}" actionListener="#{controlVigenciaSueldo.cancelarCambioTipoEntidad()}"
                                              process="@this" icon="ui-icon-arrowreturnthick-1-w" update=":form:lovTipoEntidad"/>
 
                         </p:dialog>
