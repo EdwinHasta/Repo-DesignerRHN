@@ -136,6 +136,8 @@ public class AdministarReportes implements AdministarReportesInterface {
             general = persistenciaGenerales.obtenerRutas(em);
             String nombreUsuario = persistenciaActualUsuario.actualAliasBD(em);
             String pathReporteGenerado = null;
+            System.out.println("general:  " + general);
+            System.out.println("nombreusuario: " + nombreUsuario);
             if (general != null && nombreUsuario != null) {
                 SimpleDateFormat formato = new SimpleDateFormat("ddMMyyyyhhmmss");
                 String fechaActual = formato.format(new Date());
@@ -145,6 +147,7 @@ public class AdministarReportes implements AdministarReportesInterface {
                 System.out.println("general.getPathreportes() : " + general.getPathreportes());
                 System.out.println("general.getUbicareportes() : " + general.getUbicareportes());
                 if (tipoReporte.equals("PDF")) {
+                    System.out.println("entró a PDF");
                     nombreArchivo = nombreArchivo + ".pdf";
                 } else if (tipoReporte.equals("XLSX")) {
                     nombreArchivo = nombreArchivo + ".xlsx";

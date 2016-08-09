@@ -369,7 +369,7 @@
                             <div id="posicionFechaCorteIntCesantia" style=" position: absolute; top: 100px; left: 220px">
                                 <lnk:calendar id="nuevaFechaInicialInt" value="#{controlNovedadCesantiasRC.nuevaNovedad.fechacortecesantia}" >
                                     <p:ajax event="dateSelect" update="nuevaFechaInicialInt" process="@this"/>
-                                    <p:ajax event="change" update="nuevaFechaInicialInt"  process="@this"/>
+                                    <!--<p:ajax event="change" update="nuevaFechaInicialInt"  process="@this"/>-->
                                 </lnk:calendar>
                             </div>
 
@@ -379,7 +379,7 @@
                             </p:inputText>
                             <pe:keyFilter for="vlrcesantias" mask="num"/>
                             <p:commandButton style="background-image: url(Imagenes/Iconos/generarReporte.png) ;background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; top: 140px; left: 355px; " value="" 
-                                             actionListener="#{controlNovedadCesantiasRC.autocompletarVlrCesantias(1)}" />
+                                             actionListener="#{controlNovedadCesantiasRC.autocompletarVlrCesantias()}" />
 
                             <strong><h:outputText value="#{msg['vlrintcesantias']}" style=" position: absolute; top: 185px" /></strong>
                             <p:inputText id="vlrintcesantias" value="#{controlNovedadCesantiasRC.nuevaNovedad.valorinterescesantia}" 
@@ -387,7 +387,7 @@
                             </p:inputText>
                             <pe:keyFilter for="vlrintcesantias" mask="num"/>
                             <p:commandButton style="background-image: url(Imagenes/Iconos/generarReporte.png) ;background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; top: 180px; left: 355px; " value="" 
-                                             actionListener="#{controlNovedadCesantiasRC.autocompletarVlrIntCesantias(1)}" />
+                                             actionListener="#{controlNovedadCesantiasRC.autocompletarVlrIntCesantias()}" />
 
                             <strong><h:outputText value="#{msg['vlrsolicitado']}" style=" position: absolute; top: 225px" /></strong>
                             <p:inputText id="vlrsolicitado" value="#{controlNovedadCesantiasRC.nuevaNovedad.valorsolicitado} " readonly="true" 
@@ -395,15 +395,15 @@
                             </p:inputText>
                             <pe:keyFilter for="vlrsolicitado" mask="num"/>
                             <p:commandButton style="background-image: url(Imagenes/Iconos/generarReporte.png) ;background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; top: 220px; left: 355px; " value="" 
-                                             actionListener="#{controlNovedadCesantiasRC.autocompletarVlrSolicitado(1)}" />
+                                             actionListener="#{controlNovedadCesantiasRC.autocompletarVlrSolicitado()}" />
 
                             <strong><h:outputText value="#{msg['motcesantias']}" style=" position: absolute; top: 265px" /></strong>
                             <p:inputText id="motivoces" value="#{controlNovedadCesantiasRC.nuevaNovedad.motivocesantia.nombre}"  readonly="true"
                                          style=" width: 122px; position: absolute; left: 220px; top: 260px; text-align: right; " onclick="select();">
                                 <p:ajax event="dblclick" listener="#{controlNovedadCesantiasRC.asignarIndex(novedades,5, 1)}"/>
-                                <p:ajax event="click" listener="#{controlNovedadCesantiasRC.autocompletar(2,'MOTIVO')}"/>
+<!--                                <p:ajax event="click" listener="#{controlNovedadCesantiasRC.autocompletar(2,'MOTIVO')}"/>
                                 <p:ajax event="change" listener="#{controlNovedadCesantiasRC.valoresautocompletarnuevo('MOTIVO', controlNovedadCesantiasRC.nuevaNovedad.motivocesantia.nombre, 1)}" />
-                                <p:ajax event="dblclick" listener="#{controlNovedadCesantiasRC.asignarIndex(novedades, 5,1)}"/>
+                                <p:ajax event="dblclick" listener="#{controlNovedadCesantiasRC.asignarIndex(novedades, 5,1)}"/>-->
                             </p:inputText>
                             <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; left: 355px; top: 260px; "
                                              id="btnNuevoMotivo" actionListener="#{controlNovedadCesantiasRC.asignarIndex(novedades, 5,1)}" value="" process="@this" />
@@ -433,7 +433,7 @@
 
                         <p:panel id="duplicarNovedad" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['fechacortecesantias']}" style=" position: absolute; top: 65px" /></strong>
+                           <strong><h:outputText value="#{msg['fechacortecesantias']}" style=" position: absolute; top: 65px" /></strong>
                             <div id="duplicarposicionFechaCorteCesantia" style=" position: absolute; top: 60px; left: 200px">
                                 <lnk:calendar id="duplicarnuevaFechaInicial" value="#{controlNovedadCesantiasRC.duplicarNovedad.fechainicialdisfrute}" >
                                     <p:ajax event="dateSelect" update="duplicarnuevaFechaInicial"  process="@this"/>
@@ -454,7 +454,7 @@
                             </p:inputText>
                             <pe:keyFilter for="duplicarvlrcesantias" mask="num"/>
                             <p:commandButton style="background-image: url(Imagenes/Iconos/generarReporte.png) ;background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; top: 140px; left: 355px; " value="" 
-                                             actionListener="#{controlNovedadCesantiasRC.autocompletarVlrCesantias(2)}" />
+                                             actionListener="#{controlNovedadCesantiasRC.autocompletarduplicarVlrCesantias()}" />
 
                             <strong><h:outputText value="#{msg['vlrintcesantias']}" style=" position: absolute; top: 185px" /></strong>
                             <p:inputText  id="duplicarvlrintcesantias" value="#{controlNovedadCesantiasRC.duplicarNovedad.valorinterescesantia}" 
@@ -462,7 +462,7 @@
                             </p:inputText>
                             <pe:keyFilter for="duplicarvlrintcesantias" mask="num"/>
                             <p:commandButton style="background-image: url(Imagenes/Iconos/generarReporte.png) ;background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; top: 180px; left: 355px; " value="" 
-                                             actionListener="#{controlNovedadCesantiasRC.autocompletarVlrIntCesantias(2)}" />
+                                             actionListener="#{controlNovedadCesantiasRC.autocompletarduplicarVlrIntCesantias()}" />
 
 
                             <strong><h:outputText value="#{msg['vlrsolicitado']}" style=" position: absolute; top: 225px" /></strong>
@@ -471,7 +471,7 @@
                             </p:inputText>
                             <pe:keyFilter for="duplicarvlrsolicitado" mask="num"/>
                             <p:commandButton style="background-image: url(Imagenes/Iconos/generarReporte.png) ;background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 23px; height: 23px; position: absolute; top: 220px; left: 355px; " value="" 
-                                             actionListener="#{controlNovedadCesantiasRC.autocompletarVlrSolicitado(2)}" />
+                                             actionListener="#{controlNovedadCesantiasRC.autocompletarduplicarVlrSolicitado()}" />
 
                             <strong><h:outputText value="#{msg['motcesantias']}" style=" position: absolute; top: 265px;" /></strong>
                             <p:inputText  id="duplicarmotivoces" value="#{controlNovedadCesantiasRC.duplicarNovedad.motivocesantia.nombre}" 
@@ -581,6 +581,24 @@
                         <p:commandButton value="Aceptar" icon="ui-icon-check" onclick="validacionNuevaNovedadEmpleado.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
+                      <p:dialog id="validacionvlrcesantias" header="#{msg['atencion']}" widgetVar="validacionvlrcesantias"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 20px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionvlrcesantias']}" style="position: absolute; left: 90px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" icon="ui-icon-check" onclick="validacionvlrcesantias.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+                    
+                     <p:dialog id="validacionvlrintcesantias" header="#{msg['atencion']}" widgetVar="validacionvlrintcesantias"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 20px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionvlrintcesantias']}" style="position: absolute; left: 90px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" icon="ui-icon-check" onclick="validacionvlrintcesantias.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+                    
+                     <p:dialog id="validacionvlrsolicitado" header="#{msg['atencion']}" widgetVar="validacionvlrsolicitado"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 20px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionvlrsolicitado']}" style="position: absolute; left: 90px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" icon="ui-icon-check" onclick="validacionvlrsolicitado.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+                    
                     <!-- L.O.V Empleado-->
                     <p:dialog header="Buscar Empleado" widgetVar="empleadosDialogo" draggable="false" resizable="false" id="empleadosDialogo" closable="false"  
                               showEffect="fade" hideEffect="fade" modal="true" width="646" height="330" >

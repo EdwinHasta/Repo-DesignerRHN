@@ -101,124 +101,134 @@
                             </p:dataTable>
                             <h:outputText id="infoRegistroProverbio" value="#{msg['infoRegistros']} #{controlProverbio.infoRegistroProverbios}" style="position: relative; left: 10px; top: 1px; font-weight: bold"/>
                         </fieldset>
-                        
+
                         <fieldset style="position: absolute; left: 10px; top: 277px;  height: 182px;width: 830px; border-radius: 10px; ">
                             <legend style="font-size: 14px; color: #14388B"><strong>#{msg['mensajedelusuario']}</strong></legend>
 
-                            <p:dataTable id="datosMensajesUsuarios" var="m" value="#{controlProverbio.listaMensajesUsuario}"   rowKey="#{m.secuencia}" rowIndexVar="indiceNF" style=" border: 1px;width: 820px"                           
+                            <p:dataTable id="datosMensajesUsuarios" var="m" value="#{controlProverbio.listaMensajesUsuario}"   rowKey="#{m.secuencia}" rowIndexVar="indiceNF" style=" border: 0px;width: 820px"                           
                                          scrollable="true" scrollHeight="#{controlProverbio.altoTablaNF}" liveScroll="true" scrollRows="10" filteredValue="#{controlProverbio.filtradosListaMensajesUsuario}" 
                                          emptyMessage="Vacio" scrollWidth="820"    editable="true" editMode="cell"  selectionMode="single" selection="#{controlProverbio.mensajeUsuarioSeleccionado}">
                                 <p:ajax event="filter" listener="#{controlProverbio.eventoFiltrarNF()}"/>
 
-                                <p:column style="padding: 0px; width: 20%" headerText="#{msg['ano']}" sortBy="#{m.estadoAno}" filterBy="#{m.estadoAno}" filterMatchMode="contains" id="mAno" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="padding: 0px;" headerText="#{msg['ano']}" sortBy="#{m.estadoAno}" filterBy="#{m.estadoAno}" filterMatchMode="contains" id="mAno" filterStyle="display: none; visibility: hidden;" >                                  
 
-                                    <p:selectOneMenu  id="editarAno" value="#{m.ano}" style="width: 167px">  
-                                        <f:selectItem itemLabel="" itemValue="null" />  
-                                        <f:selectItem itemLabel="#{msg['todoslosanos']}" itemValue="0" />  
-                                        <f:selectItem itemLabel="2005" itemValue="2005" />  
-                                        <f:selectItem itemLabel="2006" itemValue="2006" />  
-                                        <f:selectItem itemLabel="2007" itemValue="2007" />  
-                                        <f:selectItem itemLabel="2008" itemValue="2008" />  
-                                        <f:selectItem itemLabel="2009" itemValue="2009" />    
-                                        <f:selectItem itemLabel="2010" itemValue="2010" />
-                                        <f:selectItem itemLabel="2011" itemValue="2011" />
-                                        <f:selectItem itemLabel="2012" itemValue="2012" />
-                                        <f:selectItem itemLabel="2013" itemValue="2013" />
-                                        <f:selectItem itemLabel="2014" itemValue="2014" />
-                                        <f:selectItem itemLabel="2015" itemValue="2015" />
-                                        <f:selectItem itemLabel="2016" itemValue="2016" />
-                                        <f:selectItem itemLabel="2017" itemValue="2017" />
-                                        <f:selectItem itemLabel="2018" itemValue="2018" />
-                                        <f:selectItem itemLabel="2019" itemValue="2019" />
-                                        <f:selectItem itemLabel="2020" itemValue="2020" />
-                                        <f:selectItem itemLabel="2021" itemValue="2021" />
-                                        <f:selectItem itemLabel="2022" itemValue="2022" />
-                                        <f:selectItem itemLabel="2023" itemValue="2023" />
-                                        <f:selectItem itemLabel="2024" itemValue="2024" />
-                                        <f:selectItem itemLabel="2025" itemValue="2025" />
-                                        <p:ajax listener="#{controlProverbio.seleccionarAno(m.estadoAno, m, celda)}" event="change" update="editarAno" />
-                                    </p:selectOneMenu>
-
-                                    <f:facet name="footer">
-                                        <h:outputText value="" />
-                                    </f:facet>
+                                    <p:cellEditor>
+                                        <f:facet name ="output"><h:outputText id="outano" value="#{m.ano}" style="text-transform: uppercase"/> </f:facet>
+                                        <f:facet name="input">
+                                            <p:selectOneMenu  id="editarAno" value="#{m.ano}" style="width: 98.5%; height: 100%">  
+                                                <f:selectItem itemLabel="" itemValue="null" />  
+                                                <f:selectItem itemLabel="#{msg['todoslosanos']}" itemValue="0" />  
+                                                <f:selectItem itemLabel="2005" itemValue="2005" />  
+                                                <f:selectItem itemLabel="2006" itemValue="2006" />  
+                                                <f:selectItem itemLabel="2007" itemValue="2007" />  
+                                                <f:selectItem itemLabel="2008" itemValue="2008" />  
+                                                <f:selectItem itemLabel="2009" itemValue="2009" />    
+                                                <f:selectItem itemLabel="2010" itemValue="2010" />
+                                                <f:selectItem itemLabel="2011" itemValue="2011" />
+                                                <f:selectItem itemLabel="2012" itemValue="2012" />
+                                                <f:selectItem itemLabel="2013" itemValue="2013" />
+                                                <f:selectItem itemLabel="2014" itemValue="2014" />
+                                                <f:selectItem itemLabel="2015" itemValue="2015" />
+                                                <f:selectItem itemLabel="2016" itemValue="2016" />
+                                                <f:selectItem itemLabel="2017" itemValue="2017" />
+                                                <f:selectItem itemLabel="2018" itemValue="2018" />
+                                                <f:selectItem itemLabel="2019" itemValue="2019" />
+                                                <f:selectItem itemLabel="2020" itemValue="2020" />
+                                                <f:selectItem itemLabel="2021" itemValue="2021" />
+                                                <f:selectItem itemLabel="2022" itemValue="2022" />
+                                                <f:selectItem itemLabel="2023" itemValue="2023" />
+                                                <f:selectItem itemLabel="2024" itemValue="2024" />
+                                                <f:selectItem itemLabel="2025" itemValue="2025" />
+                                                <p:ajax listener="#{controlProverbio.seleccionarAno(m.estadoAno, m, celda)}" event="change" update="editarAno" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <f:facet name="footer">
+                                            <h:outputText value="" />
+                                        </f:facet>
+                                    </p:cellEditor>
                                 </p:column>
 
-                                <p:column style="padding: 0px;  width: 20%" headerText="#{msg['mes']}" sortBy="#{m.estadoMes}" filterBy="#{m.estadoMes}" filterMatchMode="contains" id="mMes" filterStyle="display: none; visibility: hidden;" >                                  
-
-                                    <p:selectOneMenu  id="editarMes" value="#{m.mes}" style="width: 167px">  
-                                        <f:selectItem itemLabel="" itemValue="null" />  
-                                        <f:selectItem itemLabel="#{msg['todoslosmeses']}" itemValue="0" />  
-                                        <f:selectItem itemLabel="#{msg['enero']}" itemValue="1" />  
-                                        <f:selectItem itemLabel="#{msg['febrero']}" itemValue="2" />  
-                                        <f:selectItem itemLabel="#{msg['marzo']}" itemValue="3" />  
-                                        <f:selectItem itemLabel="#{msg['abril']}" itemValue="4" />  
-                                        <f:selectItem itemLabel="#{msg['mayo']}" itemValue="5" />    
-                                        <f:selectItem itemLabel="#{msg['junio']}" itemValue="6" />
-                                        <f:selectItem itemLabel="#{msg['julio']}" itemValue="7" />
-                                        <f:selectItem itemLabel="#{msg['agosto']}" itemValue="8" />
-                                        <f:selectItem itemLabel="#{msg['septiembre']}" itemValue="9" />
-                                        <f:selectItem itemLabel="#{msg['octubre']}" itemValue="10" />
-                                        <f:selectItem itemLabel="#{msg['noviembre']}" itemValue="11" />
-                                        <f:selectItem itemLabel="#{msg['diciembre']}" itemValue="12" />
-                                        <p:ajax event="change" listener="#{controlProverbio.seleccionarMes(m.estadoMes, m, celda)}" update="editarMes"/>
-                                    </p:selectOneMenu>
-
-                                    <f:facet name="footer">
-                                        <h:outputText value="" />
-                                    </f:facet>
+                                <p:column style="padding: 0px;" headerText="#{msg['mes']}" sortBy="#{m.estadoMes}" filterBy="#{m.estadoMes}" filterMatchMode="contains" id="mMes" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>
+                                        <f:facet name ="output"><h:outputText id="outmes" value="#{m.mes}" style="text-transform: uppercase"/> </f:facet>
+                                        <f:facet name="input">
+                                            <p:selectOneMenu  id="editarMes" value="#{m.mes}" style="width: 98.5%; height: 100%">  
+                                                <f:selectItem itemLabel="" itemValue="null" />  
+                                                <f:selectItem itemLabel="#{msg['todoslosmeses']}" itemValue="0" />  
+                                                <f:selectItem itemLabel="#{msg['enero']}" itemValue="1" />  
+                                                <f:selectItem itemLabel="#{msg['febrero']}" itemValue="2" />  
+                                                <f:selectItem itemLabel="#{msg['marzo']}" itemValue="3" />  
+                                                <f:selectItem itemLabel="#{msg['abril']}" itemValue="4" />  
+                                                <f:selectItem itemLabel="#{msg['mayo']}" itemValue="5" />    
+                                                <f:selectItem itemLabel="#{msg['junio']}" itemValue="6" />
+                                                <f:selectItem itemLabel="#{msg['julio']}" itemValue="7" />
+                                                <f:selectItem itemLabel="#{msg['agosto']}" itemValue="8" />
+                                                <f:selectItem itemLabel="#{msg['septiembre']}" itemValue="9" />
+                                                <f:selectItem itemLabel="#{msg['octubre']}" itemValue="10" />
+                                                <f:selectItem itemLabel="#{msg['noviembre']}" itemValue="11" />
+                                                <f:selectItem itemLabel="#{msg['diciembre']}" itemValue="12" />
+                                                <p:ajax event="change" listener="#{controlProverbio.seleccionarMes(m.estadoMes, m, celda)}" update="editarMes"/>
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <f:facet name="footer">
+                                            <h:outputText value="" />
+                                        </f:facet>
+                                    </p:cellEditor>
                                 </p:column>
 
-                                <p:column style="padding: 0px;  width: 20%;" headerText="#{msg['dia']}" sortBy="#{m.estadoDia}" filterBy="#{m.estadoDia}" filterMatchMode="contains" id="mDia" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column style="padding: 0px;" headerText="#{msg['dia']}" sortBy="#{m.estadoDia}" filterBy="#{m.estadoDia}" filterMatchMode="contains" id="mDia" filterStyle="display: none; visibility: hidden;" >                                  
 
-                                    <p:selectOneMenu  id="editarDia" value="#{m.dia}"  style="width: 167px">  
-                                        <f:selectItem itemLabel="" itemValue="null" />  
-                                        <f:selectItem itemLabel="#{msg['todoslosdias']}" itemValue="0" />  
-                                        <f:selectItem itemLabel="01" itemValue="1" />  
-                                        <f:selectItem itemLabel="02" itemValue="2" />  
-                                        <f:selectItem itemLabel="03" itemValue="3" />  
-                                        <f:selectItem itemLabel="04" itemValue="4" />  
-                                        <f:selectItem itemLabel="05" itemValue="5" />    
-                                        <f:selectItem itemLabel="06" itemValue="6" />
-                                        <f:selectItem itemLabel="07" itemValue="7" />
-                                        <f:selectItem itemLabel="08" itemValue="8" />
-                                        <f:selectItem itemLabel="09" itemValue="9" />
-                                        <f:selectItem itemLabel="10" itemValue="10" />
-                                        <f:selectItem itemLabel="11" itemValue="11" />
-                                        <f:selectItem itemLabel="12" itemValue="12" />
-                                        <f:selectItem itemLabel="13" itemValue="13" />
-                                        <f:selectItem itemLabel="14" itemValue="14" />
-                                        <f:selectItem itemLabel="15" itemValue="15" />
-                                        <f:selectItem itemLabel="16" itemValue="16" />
-                                        <f:selectItem itemLabel="17" itemValue="17" />
-                                        <f:selectItem itemLabel="18" itemValue="18" />
-                                        <f:selectItem itemLabel="19" itemValue="19" />
-                                        <f:selectItem itemLabel="20" itemValue="20" />
-                                        <f:selectItem itemLabel="21" itemValue="21" />
-                                        <f:selectItem itemLabel="22" itemValue="22" />
-                                        <f:selectItem itemLabel="23" itemValue="23" />
-                                        <f:selectItem itemLabel="24" itemValue="24" />
-                                        <f:selectItem itemLabel="25" itemValue="25" />
-                                        <f:selectItem itemLabel="26" itemValue="26" />
-                                        <f:selectItem itemLabel="27" itemValue="27" />
-                                        <f:selectItem itemLabel="28" itemValue="28" />
-                                        <f:selectItem itemLabel="29" itemValue="29" />
-                                        <f:selectItem itemLabel="30" itemValue="30" />
-                                        <f:selectItem itemLabel="31" itemValue="31" />
-                                        <p:ajax event="change" listener="#{controlProverbio.seleccionarDia(m.estadoDia, m, celda)}" update="editarDia"/>
-                                    </p:selectOneMenu>
-
-                                    <h:inputText value="#{m.dia}"  style="width: 167px" />
-                                    <f:facet name="footer">
-                                        <h:outputText value="" />
-                                    </f:facet>
+                                    <p:cellEditor>
+                                        <f:facet name ="output"><h:outputText id="outdia" value="#{m.dia}" style="text-transform: uppercase"/> </f:facet>
+                                        <f:facet name="input">
+                                            <p:selectOneMenu  id="editarDia" value="#{m.dia}"  style="width: 98.5%; height: 100%">  
+                                                <f:selectItem itemLabel="" itemValue="null" />  
+                                                <f:selectItem itemLabel="#{msg['todoslosdias']}" itemValue="0" />  
+                                                <f:selectItem itemLabel="01" itemValue="1" />  
+                                                <f:selectItem itemLabel="02" itemValue="2" />  
+                                                <f:selectItem itemLabel="03" itemValue="3" />  
+                                                <f:selectItem itemLabel="04" itemValue="4" />  
+                                                <f:selectItem itemLabel="05" itemValue="5" />    
+                                                <f:selectItem itemLabel="06" itemValue="6" />
+                                                <f:selectItem itemLabel="07" itemValue="7" />
+                                                <f:selectItem itemLabel="08" itemValue="8" />
+                                                <f:selectItem itemLabel="09" itemValue="9" />
+                                                <f:selectItem itemLabel="10" itemValue="10" />
+                                                <f:selectItem itemLabel="11" itemValue="11" />
+                                                <f:selectItem itemLabel="12" itemValue="12" />
+                                                <f:selectItem itemLabel="13" itemValue="13" />
+                                                <f:selectItem itemLabel="14" itemValue="14" />
+                                                <f:selectItem itemLabel="15" itemValue="15" />
+                                                <f:selectItem itemLabel="16" itemValue="16" />
+                                                <f:selectItem itemLabel="17" itemValue="17" />
+                                                <f:selectItem itemLabel="18" itemValue="18" />
+                                                <f:selectItem itemLabel="19" itemValue="19" />
+                                                <f:selectItem itemLabel="20" itemValue="20" />
+                                                <f:selectItem itemLabel="21" itemValue="21" />
+                                                <f:selectItem itemLabel="22" itemValue="22" />
+                                                <f:selectItem itemLabel="23" itemValue="23" />
+                                                <f:selectItem itemLabel="24" itemValue="24" />
+                                                <f:selectItem itemLabel="25" itemValue="25" />
+                                                <f:selectItem itemLabel="26" itemValue="26" />
+                                                <f:selectItem itemLabel="27" itemValue="27" />
+                                                <f:selectItem itemLabel="28" itemValue="28" />
+                                                <f:selectItem itemLabel="29" itemValue="29" />
+                                                <f:selectItem itemLabel="30" itemValue="30" />
+                                                <f:selectItem itemLabel="31" itemValue="31" />
+                                                <p:ajax event="change" listener="#{controlProverbio.seleccionarDia(m.estadoDia, m, celda)}" update="editarDia"/>
+                                            </p:selectOneMenu>  
+                                        </f:facet>
+                                        <f:facet name="footer">
+                                            <h:outputText value="" />
+                                        </f:facet>
+                                    </p:cellEditor>
                                 </p:column>
 
                                 <p:column headerText="#{msg['mensaje']}"  sortBy="#{m.mensaje}" filterBy="#{m.mensaje}" filterMatchMode="contains" id="mMensaje" width="40%" filterStyle="display: none; visibility: hidden;" >                            
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{m.mensaje}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{m.mensaje}" id="editarMensaje2" style=" border-radius: 0px; width: 99.5%;text-transform: uppercase; height:12px" > 
+                                            <p:inputText value="#{m.mensaje}" id="editarMensaje2" style=" border-radius: 0px; width: 98.5%;text-transform: uppercase; " > 
                                                 <p:ajax event="select" listener="#{controlProverbio.cambiarIndiceNF(m, 3)}" />
                                                 <p:ajax event="change" listener="#{controlProverbio.modificarMensajeUsuario(m, 'N', m.mensaje)}" update="@this"/>
                                             </p:inputText>

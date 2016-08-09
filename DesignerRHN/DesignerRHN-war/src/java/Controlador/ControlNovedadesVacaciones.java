@@ -662,6 +662,7 @@ public class ControlNovedadesVacaciones implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listaNovedades = null;
+            contarRegistrosNovedades();
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosNovedadesEmpleado");
             guardado = true;
@@ -824,7 +825,6 @@ public class ControlNovedadesVacaciones implements Serializable {
                 context.execute("errorRastroHistorico.show()");
             }
         }
-        novedadSeleccionada = null;
        }
 
     //CANCELAR MODIFICACIONES

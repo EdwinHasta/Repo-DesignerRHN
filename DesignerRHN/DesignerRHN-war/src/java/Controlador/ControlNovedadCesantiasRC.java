@@ -89,7 +89,7 @@ public class ControlNovedadCesantiasRC implements Serializable {
     private boolean guardado;
     //COLUMNAS TABLA NOVEDADES
     private Column fechaCorteCesantias, fechaCorteIntCesantias, valorCesantias, valorIntCesantias, valorSolicitado, motivoCesantia, observacion, beneficiarios;
-    private String paginaAnterior,motivoCesantias;
+    private String paginaAnterior, motivoCesantias;
     private int altotabla;
     //variable para activar boton mostrar todos
     private boolean activarMTodos;
@@ -132,6 +132,7 @@ public class ControlNovedadCesantiasRC implements Serializable {
         nuevaNovedad.setFechasistema(new Date());
         nuevaNovedad.setMotivocesantia(new MotivosCesantias());
         duplicarNovedad = new NovedadesSistema();
+        duplicarNovedad.setFechainicialdisfrute(new Date());
         duplicarNovedad.setEstado("ABIERTO");
         duplicarNovedad.setDias(BigInteger.valueOf(0));
         duplicarNovedad.setPagarporfuera("S");
@@ -627,38 +628,54 @@ public class ControlNovedadCesantiasRC implements Serializable {
         }
     }
 
-    public void autocompletarVlrCesantias(int tiponuevo) {
-        if (tiponuevo == 1) {
-            nuevaNovedad.setValorcesantia(retornarprovisioncesantias().toBigInteger());
-            RequestContext.getCurrentInstance().update("formularioDialogos:vlrcesantias");
-        } else if (tiponuevo == 2) {
-            duplicarNovedad.setValorcesantia(retornarprovisioncesantias().toBigInteger());
-            RequestContext.getCurrentInstance().update("formularioDialogos:duplicarvlrcesantias");
+    public void autocompletarVlrCesantias() {
+        System.out.println("Entró a autocompletarVlrCesantias");
+        if(retornarprovision() != null){
+        nuevaNovedad.setValorcesantia(retornarprovisioncesantias().toBigInteger());
+        RequestContext.getCurrentInstance().update("formularioDialogos:vlrcesantias");
+        } else {
+        RequestContext.getCurrentInstance().execute("formularioDialogos:validacionvlrcesantias");
+        }
+        
+    }
+
+    public void autocompletarVlrIntCesantias() {
+        System.out.println("Entró a autocompletarVlrIntCesantias");
+        if(retornarprovision() != null){
+        nuevaNovedad.setValorinterescesantia(retornarprovision().toBigInteger());
+        RequestContext.getCurrentInstance().update("formularioDialogos:vlrintcesantias");
+        } else {
+        RequestContext.getCurrentInstance().execute("formularioDialogos:validacionvlrintcesantias");
         }
     }
 
-    public void autocompletarVlrIntCesantias(int tiponuevo) {
-//        RequestContext.getCurrentInstance().update("formularioDialogos:nuevanovedadpagoparcialcesantias");
-        if (tiponuevo == 1) {
-            nuevaNovedad.setValorinterescesantia(retornarprovision().toBigInteger());
-            RequestContext.getCurrentInstance().update("formularioDialogos:vlrintcesantias");
-        } 
-        else if (tiponuevo == 2) {
-            duplicarNovedad.setValorinterescesantia(retornarprovision().toBigInteger());
-            RequestContext.getCurrentInstance().update("formularioDialogos:duplicarvlrintcesantias");
-        }
-    }
-
-    public void autocompletarVlrSolicitado(int tiponuevo) {
-        if (tiponuevo == 1) {
+    public void autocompletarVlrSolicitado() {
+        System.out.println("Entró a autocompletarVlrSolicitado");
+        if(retornarprovision() != null && retornarprovisioncesantias() != null){
         nuevaNovedad.setValorsolicitado(sumarvalorsolicitado(nuevaNovedad.getValorcesantia(), nuevaNovedad.getValorinterescesantia()));
         RequestContext.getCurrentInstance().update("formularioDialogos:vlrsolicitado");
-
         }
-        else if (tiponuevo == 2) {
+        else{
+        RequestContext.getCurrentInstance().execute("formularioDialogos:validacionvlrsolicitado");
+        }
+    }
+
+    public void autocompletarduplicarVlrSolicitado() {
+        System.out.println("Entró a autocompletarduplicarVlrSolicitado");
         duplicarNovedad.setValorsolicitado(sumarvalorsolicitado(duplicarNovedad.getValorcesantia(), duplicarNovedad.getValorinterescesantia()));
         RequestContext.getCurrentInstance().update("formularioDialogos:duplicarvlrsolicitado");
-        }
+    }
+
+    public void autocompletarduplicarVlrIntCesantias() {
+        System.out.println("Entró a autocompletarduplicaVlrIntCesantias");
+        duplicarNovedad.setValorinterescesantia(retornarprovision().toBigInteger());
+        RequestContext.getCurrentInstance().update("formularioDialogos:duplicarvlrintcesantias");
+    }
+
+    public void autocompletarduplicarVlrCesantias() {
+        System.out.println("Entró a autocompletarduplicaVlrCesantias");
+        duplicarNovedad.setValorcesantia(retornarprovisioncesantias().toBigInteger());
+        RequestContext.getCurrentInstance().update("formularioDialogos:duplicarvlrcesantias");
     }
 
     public void cambiarEmpleado() {
@@ -740,15 +757,13 @@ public class ControlNovedadCesantiasRC implements Serializable {
         } else if (tipoActualizacion == 1) {
             nuevaNovedad.setMotivocesantia(motivoCesantiaSeleccionado);
             context.update("formularioDialogos:motivoces");
-        } 
-        else if (tipoActualizacion == 2) {
+        } else if (tipoActualizacion == 2) {
             duplicarNovedad.setMotivocesantia(motivoCesantiaSeleccionado);
             context.update("formularioDialogos:duplicarmotivoces");
         }
         listaFiltrarMotivosCesantiasLOV = null;
         motivoCesantiaSeleccionado = null;
         aceptar = true;
-        novedadSeleccionada = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:lovmotivoscesantias:globalFilter");
@@ -872,7 +887,7 @@ public class ControlNovedadCesantiasRC implements Serializable {
             guardado = true;
             permitirIndex = true;
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
-            FacesMessage msg = new FacesMessage("Información", "Se gurdaron los datos con éxito");
+            FacesMessage msg = new FacesMessage("Información", "Se guardaron los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
             k = 0;
@@ -885,7 +900,6 @@ public class ControlNovedadCesantiasRC implements Serializable {
         listaFiltrarMotivosCesantiasLOV = null;
         motivoCesantiaSeleccionado = null;
         aceptar = true;
-        novedadSeleccionada = null;
         provisioncesantias = null;
         provisionlov = null;
         tipoActualizacion = -1;
@@ -895,6 +909,8 @@ public class ControlNovedadCesantiasRC implements Serializable {
         context.reset("formularioDialogos:lovmotivoscesantias:globalFilter");
         context.execute("lovmotivoscesantias.clearFilters()");
         context.execute("motivoscesantiasDialogo.hide()");
+        limpiarDuplicarNovedad();
+        limpiarNuevaNovedad();
     }
 
     //////SUMAR VALOR CESANTIA E INT CESANTIAS PARA SACAR EL VALOR SOLICITADO
@@ -1077,21 +1093,19 @@ public class ControlNovedadCesantiasRC implements Serializable {
         return provisioncesantias;
     }
 
-    public void autocompletar(int tipoNuevo,String campo){
-        
-        if(campo.equals("MOTIVO")){
-        if(tipoNuevo == 1){
-        motivo = nuevaNovedad.getMotivocesantia().getNombre();
-        } else if(tipoNuevo == 2){
-        motivo = duplicarNovedad.getMotivocesantia().getNombre();
+    public void autocompletar(int tipoNuevo, String campo) {
+
+        if (campo.equals("MOTIVO")) {
+            if (tipoNuevo == 1) {
+                motivo = nuevaNovedad.getMotivocesantia().getNombre();
+            } else if (tipoNuevo == 2) {
+                motivo = duplicarNovedad.getMotivocesantia().getNombre();
+            }
+
         }
-        
     }
-    }
-    
-    
-    
-    public void valoresautocompletarnuevo(String confirmarCambio, String valorConfirmar, int tipoNuevo){
+
+    public void valoresautocompletarnuevo(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1129,6 +1143,7 @@ public class ControlNovedadCesantiasRC implements Serializable {
             }
         }
     }
+
     ///////////////////////GETS Y SETS////////////////////////////////////////////////
     public List<Empleados> getListaEmpleadosNovedad() {
         if (listaEmpleadosNovedad == null) {

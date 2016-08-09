@@ -62,7 +62,7 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
             System.out.println("alias: " + alias);
             return alias;
         } catch (Exception e) {
-            System.out.println("Sali con errores");
+            System.out.println("persistenciaActualUsuario .actualAliasBD  :    Sali con errores");
             //PropertyConfigurator.configure("log4j.properties");
             //logger.error("Metodo: actualAliasBD - PersistenciaActualUsuario - Fecha : " + format.format(fechaDia) + " - Error : " + e.toString());
             return null;

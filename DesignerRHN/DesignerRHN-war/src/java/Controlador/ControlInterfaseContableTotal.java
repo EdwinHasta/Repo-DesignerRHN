@@ -2,6 +2,7 @@ package Controlador;
 
 import Entidades.ActualUsuario;
 import Entidades.Empresas;
+import Entidades.Inforeportes;
 import Entidades.InterconTotal;
 import Entidades.ParametrosContables;
 import Entidades.ParametrosEstructuras;
@@ -10,11 +11,13 @@ import Entidades.SolucionesNodos;
 import Entidades.UsuariosInterfases;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
+import InterfaceAdministrar.AdministarReportesInterface;
 import InterfaceAdministrar.AdministrarInterfaseContableTotalInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +36,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.fill.AsynchronousFilllListener;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.primefaces.component.column.Column;
@@ -55,6 +62,8 @@ public class ControlInterfaseContableTotal implements Serializable {
     AdministrarInterfaseContableTotalInterface administrarInterfaseContableTotal;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    @EJB
+    AdministarReportesInterface administarReportes;
 
     private ActualUsuario actualUsuarioBD;
     //
@@ -93,6 +102,12 @@ public class ControlInterfaseContableTotal implements Serializable {
     private String infoRegistroProceso;
     //
     private String paginaAnterior;
+    //
+    private StreamedContent reporte;
+    private String pathReporteGenerado = null;
+    private String nombreReporte, tipoReporte;
+    private Inforeportes reporteSeleccionado;
+    private String cabezeraVisor;
     //
     private boolean guardado;
     private Date fechaDeParametro;
@@ -133,6 +148,8 @@ public class ControlInterfaseContableTotal implements Serializable {
     private FTPClient ftpClient;
     private DefaultStreamedContent download;
     private UsuariosInterfases usuarioInterfaseContabilizacion;
+      private boolean estadoReporte;
+    private String resultadoReporte;
 
     public ControlInterfaseContableTotal() {
         ftpClient = new FTPClient();
@@ -164,6 +181,8 @@ public class ControlInterfaseContableTotal implements Serializable {
         interconTablaSeleccionada = new InterconTotal();
         generadoTablaSeleccionado = null;
         interconTablaSeleccionada = null;
+        lovEmpresas = null;
+        lovProcesos = null;
         cualCeldaGenerado = -1;
         cualCeldaIntercon = -1;
         editarGenerado = new SolucionesNodos();
@@ -177,6 +196,9 @@ public class ControlInterfaseContableTotal implements Serializable {
         indexParametroContable = -1;
         guardado = true;
         activarLov = true;
+        nombreReporte = "CifraControl";
+        tipoReporte = "PDF";
+        estadoReporte = false;
     }
 
     @PostConstruct
@@ -185,6 +207,7 @@ public class ControlInterfaseContableTotal implements Serializable {
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarInterfaseContableTotal.obtenerConexion(ses.getId());
+            administarReportes.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
             System.out.println("Error postconstruct ControlVigenciasCargos: " + e);
@@ -204,6 +227,10 @@ public class ControlInterfaseContableTotal implements Serializable {
         getListaParametrosContables();
         parametroContableActual = null;
         getParametroContableActual();
+        getLovEmpresas();
+        modificarInfoRegistroEmpresas(lovEmpresas.size());
+        getLovProcesos();
+        modificarInfoRegistroProcesos(lovProcesos.size());
     }
 
     public String redirigir() {
@@ -760,8 +787,8 @@ public class ControlInterfaseContableTotal implements Serializable {
             guardadoGeneral();
             String descripcionProceso = administrarInterfaseContableTotal.obtenerDescripcionProcesoArchivo(parametroContableActual.getProceso().getSecuencia());
             nombreArchivo = "Interfase_Total_" + descripcionProceso;
-            //String pathServidorWeb = administrarInterfaseContableTotal.obtenerPathServidorWeb();
-            //System.out.println("pathServidorWeb : " + pathServidorWeb);
+            String pathServidorWeb = administrarInterfaseContableTotal.obtenerPathServidorWeb();
+            System.out.println("pathServidorWeb : " + pathServidorWeb);
             pathProceso = administrarInterfaseContableTotal.obtenerPathProceso();
             administrarInterfaseContableTotal.ejecutarPKGCrearArchivoPlano(tipoPlano, parametroContableActual.getFechainicialcontabilizacion(), parametroContableActual.getFechafinalcontabilizacion(), parametroContableActual.getProceso().getSecuencia(), descripcionProceso);
             rutaArchivo = "";
@@ -776,6 +803,10 @@ public class ControlInterfaseContableTotal implements Serializable {
 
     public void conectarAlFTP() {
         try {
+            System.out.println("server remoto : " + usuarioInterfaseContabilizacion.getServernameremoto() );
+            System.out.println("usuario remoto : " + usuarioInterfaseContabilizacion.getUsuarioremoto());
+            System.out.println("password remoto : " + usuarioInterfaseContabilizacion.getPasswordremoto());
+            
             ftpClient.connect(usuarioInterfaseContabilizacion.getServernameremoto());
             ftpClient.login(usuarioInterfaseContabilizacion.getUsuarioremoto(), usuarioInterfaseContabilizacion.getPasswordremoto());
             ftpClient.enterLocalPassiveMode();
@@ -788,19 +819,21 @@ public class ControlInterfaseContableTotal implements Serializable {
     public void descargarArchivoFTP() throws IOException {
         try {
             usuarioInterfaseContabilizacion = administrarInterfaseContableTotal.obtenerUsuarioInterfaseContabilizacion();
+            System.out.println("usuario interfase contabilzación: " + usuarioInterfaseContabilizacion);
             conectarAlFTP();
             int tamPath = pathProceso.length();
             String rutaX = "";
             for (int i = 2; i < tamPath; i++) {
                 rutaX = rutaX + pathProceso.charAt(i) + "";
             }
+            System.out.println("rutaX : " + rutaX);
             String remoteFile1 = rutaX + nombreArchivo + ".txt";
             File downloadFile1 = new File(pathProceso + nombreArchivo + ".txt");
             OutputStream outputStream1 = new BufferedOutputStream(new FileOutputStream(downloadFile1));
             boolean success = ftpClient.retrieveFile(remoteFile1, outputStream1);
             outputStream1.close();
             if (success) {
-                System.out.println("File #1 has been downloaded successfully.");
+                System.out.println("Archivo #1 ha sido descargado exitosamente.");
             } else {
                 System.out.println("Ni mierda !");
             }
@@ -1196,7 +1229,7 @@ public class ControlInterfaseContableTotal implements Serializable {
             parametroContableActual = null;
             getParametroContableActual();
             cambiosParametro = false;
-            FacesMessage msg = new FacesMessage("Información", "Se guardarón los datos con éxito");
+            FacesMessage msg = new FacesMessage("Información", "Se guardaron los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             RequestContext.getCurrentInstance().update("form:growl");
             context.update("form:PanelTotal");
@@ -1343,8 +1376,8 @@ public class ControlInterfaseContableTotal implements Serializable {
                 context.execute("editarConceptoGenerado.show()");
                 cualCeldaGenerado = -1;
             }
-        } else{
-          RequestContext.getCurrentInstance().execute("form:seleccionarRegistro.show()");  
+        } else {
+            RequestContext.getCurrentInstance().execute("form:seleccionarRegistro.show()");
         }
         if (interconTablaSeleccionada != null) {
             if (tipoListaIntercon == 0) {
@@ -1381,7 +1414,7 @@ public class ControlInterfaseContableTotal implements Serializable {
                 context.execute("editarCentroCostoIntercon.show()");
                 cualCeldaIntercon = -1;
             }
-        } else{
+        } else {
             RequestContext.getCurrentInstance().execute("form:seleccionarRegistro.show()");
         }
     }
@@ -1509,6 +1542,7 @@ public class ControlInterfaseContableTotal implements Serializable {
         context.reset("form:lovEmpresa:globalFilter");
         context.execute("lovEmpresa.clearFilters()");
         context.execute("EmpresaDialogo.hide()");
+        context.update("form:EmpresaDialogo.hide()");
     }
 
     public void actualizarProceso() {
@@ -1550,6 +1584,7 @@ public class ControlInterfaseContableTotal implements Serializable {
         context.reset("form:lovProceso:globalFilter");
         context.execute("lovProceso.clearFilters()");
         context.execute("ProcesoDialogo.hide()");
+        context.update("form:ProcesoDialogo");
     }
 
     public void listaValoresBoton() {
@@ -2020,6 +2055,167 @@ public class ControlInterfaseContableTotal implements Serializable {
         modificarInfoRegistroProcesos(filtrarLovProcesos.size());
     }
 
+    public void generarReporte() {
+        System.out.println(this.getClass().getName() + ".generarReporte()");
+        RequestContext context = RequestContext.getCurrentInstance();
+//        seleccionRegistro(reporte);
+        context.execute("generandoReporte.show();");
+        context.execute("generarDocumentoReporte();");
+    }
+
+//    public void seleccionRegistro(Inforeportes reporte) {
+//        System.out.println(this.getClass().getName() + ".seleccionRegistro()");
+//        RequestContext context = RequestContext.getCurrentInstance();
+//        reporteSeleccionado = reporte;
+//        RequestContext.getCurrentInstance().update("formParametros");
+//        context.update("form:reportesLaboral");
+//    }
+    public void generarDocumentoReporte() {
+        RequestContext context = RequestContext.getCurrentInstance();
+            System.out.println("nombreReporte antes de entrar" + nombreReporte);
+        if (nombreReporte != null) {
+            System.out.println("nombreReporte después de entrar" + nombreReporte);
+            System.out.println("generando reporte - ingreso al 2 if");
+            pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
+        }
+        if (pathReporteGenerado != null) {
+            System.out.println("generando reporte - ingreso al 3 if");
+            context.execute("validarDescargaReporte();");
+        } else {
+            System.out.println("generando reporte - ingreso al 3 if else");
+            context.execute("generandoReporte.hide();");
+            context.update("formularioDialogos:errorGenerandoReporte");
+            context.execute("errorGenerandoReporte.show();");
+        }
+    }
+
+    public void generarArchivoReporte(JasperPrint print) {
+        System.out.println(this.getClass().getName() + ".generarArchivoReporte()");
+        if (print != null && tipoReporte != null) {
+            pathReporteGenerado = administarReportes.crearArchivoReporte(print, tipoReporte);
+            validarDescargaReporte();
+        }
+    }
+    
+      public AsynchronousFilllListener listener() {
+        System.out.println(this.getClass().getName() + ".listener()");
+        return new AsynchronousFilllListener() {
+            //RequestContext context = c;
+
+            @Override
+            public void reportFinished(JasperPrint jp) {
+                System.out.println(this.getClass().getName() + ".listener().reportFinished()");
+                try {
+                    estadoReporte = true;
+                    resultadoReporte = "Exito";
+                 //  RequestContext.getCurrentInstance().execute("formularioDialogos:generandoReporte");
+//                    generarArchivoReporte(jp);
+                } catch (Exception e) {
+                    System.out.println("ControlNReporteNomina reportFinished ERROR: " + e.toString());
+                }
+            }
+
+            @Override
+            public void reportCancelled() {
+                System.out.println(this.getClass().getName() + ".listener().reportCancelled()");
+                estadoReporte = true;
+                resultadoReporte = "Cancelación";
+            }
+
+            @Override
+            public void reportFillError(Throwable e) {
+                System.out.println(this.getClass().getName() + ".listener().reportFillError()");
+                if (e.getCause() != null) {
+                    pathReporteGenerado = "ControlInterfaseContableTotal reportFillError Error: " + e.toString() + "\n" + e.getCause().toString();
+                } else {
+                    pathReporteGenerado = "ControlInterfaseContableTotal reportFillError Error: " + e.toString();
+                }
+                estadoReporte = true;
+                resultadoReporte = "Se estallo";
+            }
+        };
+    }
+    
+    
+    public void validarDescargaReporte() {
+        System.out.println(this.getClass().getName() + ".validarDescargaReporte()");
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("generandoReporte.hide();");
+        if (pathReporteGenerado != null && !pathReporteGenerado.startsWith("Error:")) {
+            System.out.println("validar descarga reporte - ingreso al if 1");
+            if (!tipoReporte.equals("PDF")) {
+                System.out.println("validar descarga reporte - ingreso al if 2");
+                context.execute("descargarReporte.show();");
+            } else {
+                System.out.println("validar descarga reporte - ingreso al if 2 else");
+                FileInputStream fis;
+                try {
+                    fis = new FileInputStream(new File(pathReporteGenerado));
+                    reporte = new DefaultStreamedContent(fis, "application/pdf");
+                } catch (FileNotFoundException ex) {
+                    System.out.println("validar descarga reporte - ingreso al catch 1");
+                    System.out.println(ex.getCause());
+                    reporte = null;
+                }
+                if (reporte != null) {
+                    System.out.println("validar descarga reporte - ingreso al if 3");
+                    if (reporteSeleccionado != null) {
+                        System.out.println("validar descarga reporte - ingreso al if 4");
+                        //cabezeraVisor = "Reporte - " + reporteSeleccionado.getNombre();
+                        cabezeraVisor = "Reporte - " + nombreReporte;
+                    } else {
+                        System.out.println("validar descarga reporte - ingreso al if 4 else ");
+                        cabezeraVisor = "Reporte - ";
+                    }
+                    context.update("formularioDialogos:verReportePDF");
+                    context.execute("verReportePDF.show();");
+                }
+                //pathReporteGenerado = null;
+            }
+        } else {
+            System.out.println("validar descarga reporte - ingreso al if 1 else");
+            context.update("formularioDialogos:errorGenerandoReporte");
+            context.execute("errorGenerandoReporte.show();");
+        }
+    }
+
+    public void reiniciarStreamedContent() {
+        System.out.println(this.getClass().getName() + ".reiniciarStreamedContent()");
+        reporte = null;
+    }
+
+    public void cancelarReporte() {
+        System.out.println(this.getClass().getName() + ".cancelarReporte()");
+        administarReportes.cancelarReporte();
+    }
+
+      public void exportarReporte() throws IOException {
+        System.out.println(this.getClass().getName() + ".exportarReporte()");
+        if (pathReporteGenerado != null) {
+            
+            File reporteF = new File(pathReporteGenerado);
+            System.out.println("reporteF:  " + reporteF);
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            System.out.println("ctx:  " + ctx);
+            FileInputStream fis = new FileInputStream(reporteF);
+            System.out.println("fis:   " + fis);
+            byte[] bytes = new byte[1024];
+            int read;
+            if (!ctx.getResponseComplete()) {
+                String fileName = reporteF.getName();
+                HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
+                response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+                ServletOutputStream out = response.getOutputStream();
+
+                while ((read = fis.read(bytes)) != -1) {
+                    out.write(bytes, 0, read);
+                }
+                out.flush();
+                out.close();
+                ctx.responseComplete();
+            }
+        }
+    }
     
 /////////////////////SETS Y GETS/////////////////////////////
     public ActualUsuario getActualUsuarioBD() {
@@ -2050,7 +2246,9 @@ public class ControlInterfaseContableTotal implements Serializable {
     }
 
     public List<Empresas> getLovEmpresas() {
+        if(lovEmpresas == null){
         lovEmpresas = administrarInterfaseContableTotal.lovEmpresas();
+        }
         return lovEmpresas;
     }
 
@@ -2075,7 +2273,9 @@ public class ControlInterfaseContableTotal implements Serializable {
     }
 
     public List<Procesos> getLovProcesos() {
+        if(lovProcesos == null){
         lovProcesos = administrarInterfaseContableTotal.lovProcesos();
+        }
         return lovProcesos;
     }
 
@@ -2124,12 +2324,6 @@ public class ControlInterfaseContableTotal implements Serializable {
     }
 
     public String getInfoRegistroEmpresa() {
-        getLovEmpresas();
-//        if (lovEmpresas != null) {
-            modificarInfoRegistroEmpresas(lovEmpresas.size());
-//        } else {
-//            modificarInfoRegistroProcesos(0);
-//        }
         return infoRegistroEmpresa;
     }
 
@@ -2138,12 +2332,6 @@ public class ControlInterfaseContableTotal implements Serializable {
     }
 
     public String getInfoRegistroProceso() {
-        getLovProcesos();
-//        if (lovProcesos != null) {
-         modificarInfoRegistroProcesos(lovProcesos.size());
-//        } else {
-//            modificarInfoRegistroProcesos(0);
-//        }
         return infoRegistroProceso;
     }
 
@@ -2460,6 +2648,62 @@ public class ControlInterfaseContableTotal implements Serializable {
 
     public void setActivarLov(boolean activarLov) {
         this.activarLov = activarLov;
+    }
+
+    public Inforeportes getReporteSeleccionado() {
+        return reporteSeleccionado;
+    }
+
+    public void setReporteSeleccionado(Inforeportes reporteSeleccionado) {
+        this.reporteSeleccionado = reporteSeleccionado;
+    }
+
+    public String getPathReporteGenerado() {
+        return pathReporteGenerado;
+    }
+
+    public void setPathReporteGenerado(String pathReporteGenerado) {
+        this.pathReporteGenerado = pathReporteGenerado;
+    }
+
+    public String getNombreReporte() {
+        return nombreReporte;
+    }
+
+    public void setNombreReporte(String nombreReporte) {
+        this.nombreReporte = nombreReporte;
+    }
+
+    public String getTipoReporte() {
+        return tipoReporte;
+    }
+
+    public void setTipoReporte(String tipoReporte) {
+        this.tipoReporte = tipoReporte;
+    }
+
+    public String getCabezeraVisor() {
+        return cabezeraVisor;
+    }
+
+    public void setCabezeraVisor(String cabezeraVisor) {
+        this.cabezeraVisor = cabezeraVisor;
+    }
+
+    public String getPathProceso() {
+        return pathProceso;
+    }
+
+    public void setPathProceso(String pathProceso) {
+        this.pathProceso = pathProceso;
+    }
+
+    public StreamedContent getReporte() {
+        return reporte;
+    }
+
+    public void setReporte(StreamedContent reporte) {
+        this.reporte = reporte;
     }
 
 }

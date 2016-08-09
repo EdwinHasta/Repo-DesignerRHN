@@ -17,7 +17,7 @@
                     <f:loadBundle basename="Recursos.parametroautoliq" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">  
+                    <p:panel  id="PanelTotal" header="Novedades AutoLiquidaciones" styleClass="panelTotal">  
 
                         <p:toolbar styleClass="cssToolbar">  
                             <p:toolbarGroup align="left"> 
@@ -72,8 +72,9 @@
                                 <p:separator style="position: relative; top: -9px"/>
 
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none; " actionListener="#{controlParametroAutoliq.cancelarModificacion()}" process="@this"
-                                                 onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()"
-                                                 />  
+                                                  oncomplete="window.location.reload(),operacionEnProceso.show()" onclick="operacionEnProceso.show()"
+                                                 /> 
+                                <p:separator style="position: relative; top: -9px"/>
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none; " actionListener="#{controlParametroAutoliq.salir()}" action="#{controlParametroAutoliq.redirigir()}" process="@this"/>  
@@ -85,15 +86,16 @@
                         <p:commandButton value="" style="position: absolute; top: 80px; left: 10px; background-image: url(Imagenes/Iconos/logoArrobaDesigner.png); background-size: 100% 100%; background-repeat: no-repeat; width: 60px; height: 60px " process="@this"/>  
                         <strong><h:outputText value="#{msg['textInfo']}" style="position: absolute; top: 80px; left: 80px; width: 350px;"/></strong>
 
-                        <fieldset style="position: absolute; left: 445px; top: 30px;width: 400px; height: 125px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 445px; top: 70px;width: 400px; height: 100px; border-radius: 10px; ">
                             <legend style="color: blue;text-align:left"><strong>#{msg['parametroautoliq']}</strong></legend>
 
-                            <p:dataTable id="datosParametroAuto" var="infoPA" rowKey="#{infoPA.secuencia}" rowIndexVar="indice" style="border: 1px; width: 385px"  scrollWidth="400"                      
+                            <p:dataTable id="datosParametroAuto" var="infoPA" rowKey="#{infoPA.secuencia}" rowIndexVar="indice" style="border: 0px; width: 385px"  scrollWidth="400"                      
                                          value="#{controlParametroAutoliq.listaParametrosAutoliq}" scrollable="true" scrollHeight="#{controlParametroAutoliq.altoTabla}" 
                                          filteredValue="#{controlParametroAutoliq.filtrarListaParametrosAutoliq}" emptyMessage="#{msg['vacio']}" selectionMode="single"
                                          editable="true" editMode="cell" selection="#{controlParametroAutoliq.parametroTablaSeleccionado}" >
 
                                 <p:ajax event="filter" listener="#{controlParametroAutoliq.eventoFiltrar()}"/>
+                                 <f:event type="preRenderView" listener="#{controlParametroAutoliq.recordarSeleccion()}"/>
 
                                 <p:column headerText="#{msg['ano']}" sortBy="#{infoPA.ano}" filterBy="#{infoPA.ano}" 
                                           filterMatchMode="contains" id="parametroAno" width="30" filterStyle="display: none; visibility: hidden;" >                                  
@@ -122,7 +124,7 @@
                                         <f:selectItem itemLabel="#{msg['octubre']}" itemValue="10" />  
                                         <f:selectItem itemLabel="#{msg['noviembre']}" itemValue="11" />  
                                         <f:selectItem itemLabel="#{msg['diciembre']}" itemValue="12" />  
-                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarParametroAutoliq(indice)}" process="@this" update="parametroMes"/>
+                                        <p:ajax event="change" listener="#{controlParametroAutoliq.modificarParametroAutoliq(infoPA)}" process="@this" update="parametroMes"/>
                                     </p:selectOneMenu>
                                 </p:column>
 
@@ -132,9 +134,9 @@
                                         <f:facet name="output"><h:outputText value="#{infoPA.tipotrabajador.nombre}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText onselect="operacionEnProceso.show()" value="#{infoPA.tipotrabajador.nombre}" id="editarTipoTrabajador" style="border-radius: 0px; width: 98.5%;text-transform: uppercase"> 
-                                                <p:ajax event="change" listener="#{controlParametroAutoliq.modificarParametroAutoliq(indice, 'TIPOTRABAJADOR', info.tipotrabajador.nombre)}"/>
-                                                <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndice(indice, 2)}" process="@this"/>
-                                                <p:ajax event="dblclick" listener="#{controlParametroAutoliq.asignarIndex(indice, 0, 1)}"/>
+                                                <p:ajax event="change" listener="#{controlParametroAutoliq.modificarParametroAutoliq(infoPA, 'TIPOTRABAJADOR', info.tipotrabajador.nombre)}"/>
+                                                <p:ajax event="select" listener="#{controlParametroAutoliq.cambiarIndice(infoPA, 2)}"  process="@this"/>
+                                                <p:ajax event="dblclick" listener="#{controlParametroAutoliq.asignarIndex(infoPA, 0, 1)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -154,7 +156,7 @@
 
                             </p:dataTable> 
 
-                            <h:outputText id="infoRegistroParametro" value="#{msg['infoRegistro']} #{controlParametroAutoliq.infoRegistroParametro}" style="position: absolute; left: 15px; top: 120px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroParametro" value="#{msg['infoRegistro']} #{controlParametroAutoliq.infoRegistroParametro}" style="position: relative; top: 1px; font-weight: bold"/>
                         </fieldset>  
 
 
@@ -181,7 +183,7 @@
                                     var $win = $(document.getElementById('inferiorDerecha'));
                                     var $num = #{controlParametroAutoliq.obtenerNumeroScrollAporte()};
                                     $win.scroll(function() {
-                                        if ($win.height() + $win.scrollTop() == $num) {
+                                        if ($win.height() + $win.scrollTop() === $num) {
                                             operacionEnProceso.show();
                                             pruebaRemota();
                                         }
@@ -191,11 +193,11 @@
 
                             <p:remoteCommand name="pruebaRemota" actionListener="#{controlParametroAutoliq.pruebaRemota()}"/>
 
-                            <fieldset  style="position: absolute; left: 10px; top: 180px;width: 835px; height: 240px; border-radius: 10px; ">
+                            <fieldset  style="position: absolute; left: 10px; top: 190px;width: 835px; height: 233px; border-radius: 10px; ">
                                 <legend style="color: blue;text-align:left"><strong>#{msg['aportesEntidades']}</strong></legend>
 
                                 <div  id="superiorIzquierdo" style="height: 325px; width: 350px; overflow-y: hidden; position: absolute; top: -5px" >
-                                    <p:dataTable id="tablaSuperiorIzquierda" var="infoAE"  rowKey="#{infoAE.secuencia}" style=" width: 350px; position: relative; top: 18px;" value="#{controlParametroAutoliq.listaAportesEntidades}"
+                                    <p:dataTable id="tablaSuperiorIzquierda" var="infoAE"  rowKey="#{infoAE.secuencia}" style=" width: 340px; position: relative; top: 18px;" value="#{controlParametroAutoliq.listaAportesEntidades}"
                                                  widgetVar="tablaSuperiorIzquierda" styleClass="hide-row-names" filteredValue="#{controlParametroAutoliq.filtrarListaAportesEntidades}"
                                                  selection="#{controlParametroAutoliq.aporteTablaSeleccionado}" selectionMode="single"
                                                  >
@@ -210,7 +212,7 @@
                                                   filterMatchMode="contains" id="aporteAno" width="30" filterStyle="display: none; visibility: hidden;" />
                                         <p:column headerText="#{msg['mes']}" style="height: 16px" sortBy="#{infoAE.mes}" filterBy="#{infoAE.mes}" 
                                                   filterMatchMode="contains" id="aporteMes" width="20" filterStyle="display: none; visibility: hidden;" />
-                                        <p:column headerText="#{msg['nombreEmpleado']}" style="height: 16px" sortBy="#{infoAE.empleado.persona.nombreCompleto}" filterBy="#{infoAE.empleado.persona.nombreCompleto}" 
+                                        <p:column headerText="#{msg['nombreEmpleado']}" style="height: 16px; padding: 0px; margin: 0px;" sortBy="#{infoAE.empleado.persona.nombreCompleto}" filterBy="#{infoAE.empleado.persona.nombreCompleto}" 
                                                   filterMatchMode="contains" width="123" id="aporteNombreEmpleado" filterStyle="display: none; visibility: hidden;"   />
                                     </p:dataTable>
                                 </div>
@@ -225,7 +227,7 @@
                                                  rows="#{controlParametroAutoliq.rowsAporteEntidad}"
                                                  >
 
-                                        <p:column   style="height: 16px" sortBy="#{infoAE.empleado.codigoempleado}" filterBy="#{infoAEempleado.empleado.codigoempleado}" 
+                                        <p:column   style="height: 20px" sortBy="#{infoAE.empleado.codigoempleado}" filterBy="#{infoAEempleado.empleado.codigoempleado}" 
                                                     filterMatchMode="contains" id="aporteCodigoEmpleado" width="91" filterStyle="display: none; visibility: hidden;" >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.empleado.codigoempleado}" /></f:facet>  
@@ -237,7 +239,7 @@
                                             </p:cellEditor>
                                         </p:column>  
 
-                                        <p:column  style="height: 16px" sortBy="#{infoAE.ano}" filterBy="#{infoAE.ano}" 
+                                        <p:column  style="height: 20px" sortBy="#{infoAE.ano}" filterBy="#{infoAE.ano}" 
                                                    filterMatchMode="contains" id="aporteAno" width="29" filterStyle="display: none; visibility: hidden;" >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.ano}" /></f:facet>  
@@ -249,7 +251,7 @@
                                             </p:cellEditor>
                                         </p:column>  
 
-                                        <p:column style="height: 16px" sortBy="#{infoAE.mes}" filterBy="#{infoAE.mes}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.mes}" filterBy="#{infoAE.mes}" 
                                                   filterMatchMode="contains" id="aporteMes" width="23" filterStyle="display: none; visibility: hidden;" >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.mes}" /></f:facet>  
@@ -261,7 +263,7 @@
                                             </p:cellEditor>
                                         </p:column>  
 
-                                        <p:column  style="height: 16px" sortBy="#{infoAE.empleado.persona.nombreCompleto}" filterBy="#{infoAE.empleado.persona.nombreCompleto}" 
+                                        <p:column  style="height: 20px" sortBy="#{infoAE.empleado.persona.nombreCompleto}" filterBy="#{infoAE.empleado.persona.nombreCompleto}" 
                                                    filterMatchMode="contains" width="123" id="aporteNombreEmpleado" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.empleado.persona.nombreCompleto}" /></f:facet>  
@@ -277,7 +279,7 @@
                                     </p:dataTable>
                                 </div>
 
-                                <div id="inferiorDerechaSubtotalesEmpleado" style="height: 42px; width: 504px; overflow-y: hidden; position: absolute; left: 347px; top: 207px;" >
+                                <div id="inferiorDerechaSubtotalesEmpleado" style="width: 504px; overflow-y: hidden; position: absolute; left: 347px; top: 215px;" >
                                     <fieldset style="width: 4435px; visibility: hidden"></fieldset>
 
                                 </div>
@@ -465,16 +467,16 @@
 
 
                                 <div id="inferiorDerecha" style="height: #{controlParametroAutoliq.altoDivTablaInferiorDerecha}; width: 504px; overflow-x: hidden; position: absolute; left: 347px; top: #{controlParametroAutoliq.topDivTablaInferiorDerecha};" >
-                                    <p:dataTable id="tablaInferiorDerecha" style="width: 4425px;overflow: hidden" rowIndexVar="indiceAE" value="#{controlParametroAutoliq.listaAportesEntidades}"
+                                    <p:dataTable id="tablaInferiorDerecha" style="width: 4425px;overflow: hidden;" rowIndexVar="indiceAE" value="#{controlParametroAutoliq.listaAportesEntidades}"
                                                  var="infoAE"  rowKey="#{infoAE.secuencia}" scrollable="true" scrollWidth="5650"  
                                                  widgetVar="tablaInferiorDerecha" styleClass="hide-column-names"   editable="true" editMode="cell" 
-                                                 filteredValue="#{controlParametroAutoliq.filtrarListaAportesEntidades}" emptyMessage="..."
+                                                 filteredValue="#{controlParametroAutoliq.filtrarListaAportesEntidades}" emptyMessage=""
                                                  selection="#{controlParametroAutoliq.aporteTablaSeleccionado}" selectionMode="single"
                                                  rows="#{controlParametroAutoliq.rowsAporteEntidad}"
                                                  >
                                         <p:ajax event="filter" onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" listener="#{controlParametroAutoliq.eventoFiltrarAportes()}"/>
                                         
-                                        <p:column  sortBy="#{infoAE.terceroRegistro.strNit}"  filterBy="#{infoAE.terceroRegistro.strNit}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.terceroRegistro.strNit}"  filterBy="#{infoAE.terceroRegistro.strNit}" 
                                                    filterMatchMode="contains" width="69" id="aporteNIT" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.terceroRegistro.nit}" /></f:facet>  
@@ -488,7 +490,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.terceroRegistro.nombre}" filterBy="#{infoAE.terceroRegistro.nombre}" 
+                                        <p:column style="height: 20px"  sortBy="#{infoAE.terceroRegistro.nombre}" filterBy="#{infoAE.terceroRegistro.nombre}" 
                                                    filterMatchMode="contains" id="aporteTercero" width="96" filterStyle="display: none; visibility: hidden;" >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.terceroRegistro.nombre}" /></f:facet>  
@@ -500,7 +502,7 @@
                                             </p:cellEditor>
                                         </p:column>  
 
-                                        <p:column  sortBy="#{infoAE.tipoentidad.nombre}" filterBy="#{infoAE.tipoentidad.nombre}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.tipoentidad.nombre}" filterBy="#{infoAE.tipoentidad.nombre}" 
                                                    filterMatchMode="contains" width="77" id="aporteTipoEntidad" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.tipoentidad.nombre}" /></f:facet>  
@@ -514,7 +516,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.cotizacion1}" filterBy="#{infoAE.cotizacion1}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.cotizacion1}" filterBy="#{infoAE.cotizacion1}" 
                                                    filterMatchMode="contains" width="59" id="aporteEmpleado" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output">
@@ -531,7 +533,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.cotizacion2}" filterBy="#{infoAE.cotizacion2}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.cotizacion2}" filterBy="#{infoAE.cotizacion2}" 
                                                    filterMatchMode="contains" width="64" id="aporteEmpleador" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.cotizacion2}" >
@@ -547,7 +549,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.cotizacion5}" filterBy="#{infoAE.cotizacion5}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.cotizacion5}" filterBy="#{infoAE.cotizacion5}" 
                                                    filterMatchMode="contains" width="96" id="aporteAjustePatronal" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.cotizacion5}" >
@@ -562,7 +564,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column sortBy="#{infoAE.novedad3}" filterBy="#{infoAE.novedad3}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.novedad3}" filterBy="#{infoAE.novedad3}" 
                                                   filterMatchMode="contains" width="68" id="aporteSolidaridadl" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.novedad3}" >
@@ -577,7 +579,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.novedad4}" filterBy="#{infoAE.novedad4}" 
+                                        <p:column  style="height: 20px" sortBy="#{infoAE.novedad4}" filterBy="#{infoAE.novedad4}" 
                                                    filterMatchMode="contains" width="78" id="aporteSubSistencia" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.novedad4}" >
@@ -592,7 +594,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.novedad5}" filterBy="#{infoAE.novedad5}" 
+                                        <p:column style="height: 20px"  sortBy="#{infoAE.novedad5}" filterBy="#{infoAE.novedad5}" 
                                                    filterMatchMode="contains" width="111" id="aporteSubsPensionados" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.novedad5}" >
@@ -607,7 +609,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.salariobasico}" filterBy="#{infoAE.salariobasico}" 
+                                        <p:column style="height: 20px"  sortBy="#{infoAE.salariobasico}" filterBy="#{infoAE.salariobasico}" 
                                                    filterMatchMode="contains" width="83" id="aporteSalarioBasico" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.salariobasico}" >
@@ -623,7 +625,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.ibc}" filterBy="#{infoAE.ibc}" 
+                                        <p:column style="height: 20px"  sortBy="#{infoAE.ibc}" filterBy="#{infoAE.ibc}" 
                                                    filterMatchMode="contains" width="56" id="aporteIBC" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.ibc}" >
@@ -638,7 +640,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.ibcreferencia}" filterBy="#{infoAE.ibcreferencia}" 
+                                        <p:column  style="height: 20px" sortBy="#{infoAE.ibcreferencia}" filterBy="#{infoAE.ibcreferencia}" 
                                                    filterMatchMode="contains" width="89" id="aporteIBCReferencia" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.ibcreferencia}" /></f:facet>  
@@ -651,7 +653,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.diascotizados}" filterBy="#{infoAE.diascotizados}" 
+                                        <p:column style="height: 20px"  sortBy="#{infoAE.diascotizados}" filterBy="#{infoAE.diascotizados}" 
                                                    filterMatchMode="contains" width="89" id="aporteDiasCotizados" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.diascotizados}" /></f:facet>  
@@ -664,7 +666,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.tipoaportante}" filterBy="#{infoAE.tipoaportante}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.tipoaportante}" filterBy="#{infoAE.tipoaportante}" 
                                                    filterMatchMode="contains" width="94" id="aporteTipoAportante" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.tipoaportante}" /></f:facet>  
@@ -677,7 +679,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.ing}" filterBy="#{infoAE.ing}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.ing}" filterBy="#{infoAE.ing}" 
                                                    filterMatchMode="contains" width="21" id="aporteING" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textING" />
@@ -694,7 +696,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.ret}" filterBy="#{infoAE.ret}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.ret}" filterBy="#{infoAE.ret}" 
                                                    filterMatchMode="contains" width="23" id="aporteRET" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textRET" />
@@ -711,7 +713,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.tda}" filterBy="#{infoAE.tda}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.tda}" filterBy="#{infoAE.tda}" 
                                                    filterMatchMode="contains" width="25" id="aporteTDA" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textTDA" />
@@ -728,7 +730,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.taa}" filterBy="#{infoAE.taa}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.taa}" filterBy="#{infoAE.taa}" 
                                                    filterMatchMode="contains" width="25" id="aporteTAA" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textTAA" />
@@ -745,7 +747,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.vsp}" filterBy="#{infoAE.vsp}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.vsp}" filterBy="#{infoAE.vsp}" 
                                                    filterMatchMode="contains" width="24" id="aporteVSP" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textVSP" />
@@ -762,7 +764,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.vte}" filterBy="#{infoAE.vte}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.vte}" filterBy="#{infoAE.vte}" 
                                                    filterMatchMode="contains" width="22" id="aporteVTE" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textVTE" />
@@ -779,7 +781,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.vst}" filterBy="#{infoAE.vst}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.vst}" filterBy="#{infoAE.vst}" 
                                                    filterMatchMode="contains" width="23" id="aporteVST" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textVST" />
@@ -796,7 +798,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.sln}" filterBy="#{infoAE.sln}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.sln}" filterBy="#{infoAE.sln}" 
                                                    filterMatchMode="contains" width="23" id="aporteSLN" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textSLN" />
@@ -813,7 +815,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.ige}" filterBy="#{infoAE.ige}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.ige}" filterBy="#{infoAE.ige}" 
                                                    filterMatchMode="contains" width="20" id="aporteIGE" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textIGE" />
@@ -830,7 +832,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.lma}" filterBy="#{infoAE.lma}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.lma}" filterBy="#{infoAE.lma}" 
                                                    filterMatchMode="contains" width="27" id="aporteLMA" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textLMA" />
@@ -847,7 +849,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.vac}" filterBy="#{infoAE.vac}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.vac}" filterBy="#{infoAE.vac}" 
                                                    filterMatchMode="contains" width="25" id="aporteVAC" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textVCA" />
@@ -864,7 +866,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.avp}" filterBy="#{infoAE.avp}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.avp}" filterBy="#{infoAE.avp}" 
                                                    filterMatchMode="contains" width="25" id="aporteAVP" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textAVP" />
@@ -881,7 +883,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.vct}" filterBy="#{infoAE.vct}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.vct}" filterBy="#{infoAE.vct}" 
                                                    filterMatchMode="contains" width="23" id="aporteVCT" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textVCT" />
@@ -898,7 +900,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.irp}" filterBy="#{infoAE.irp}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.irp}" filterBy="#{infoAE.irp}" 
                                                    filterMatchMode="contains" width="22" id="aporteIRP" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textIRP"/>
@@ -915,7 +917,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.sus}" filterBy="#{infoAE.sus}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.sus}" filterBy="#{infoAE.sus}" 
                                                    filterMatchMode="contains" width="24" id="aporteSUS" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textSUS" />
@@ -932,7 +934,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.integral}" filterBy="#{infoAE.integral}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.integral}" filterBy="#{infoAE.integral}" 
                                                    filterMatchMode="contains" width="27" id="aporteINTE" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textINTE" />
@@ -949,7 +951,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.tarifaeps}" filterBy="#{infoAE.tarifaeps}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.tarifaeps}" filterBy="#{infoAE.tarifaeps}" 
                                                    filterMatchMode="contains" width="61" id="aporteTarifaEPS" filterStyle="display: none; visibility: hidden;">
                                             <f:facet name="header">
                                                 <h:outputText id="textTEPS" />
@@ -968,7 +970,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.tarifaafp}" filterBy="#{infoAE.tarifaafp}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.tarifaafp}" filterBy="#{infoAE.tarifaafp}" 
                                                    filterMatchMode="contains" width="70" id="aporteTarifaAAFP" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textTAFP" />
@@ -987,7 +989,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.tarifactt}" filterBy="#{infoAE.tarifactt}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.tarifactt}" filterBy="#{infoAE.tarifactt}" 
                                                    filterMatchMode="contains" width="69" id="aporteTarifaACTT" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textTCTT" />
@@ -1006,7 +1008,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.codigoctt}" filterBy="#{infoAE.codigoctt}" 
+                                        <p:column style="height: 20px"  sortBy="#{infoAE.codigoctt}" filterBy="#{infoAE.codigoctt}" 
                                                    filterMatchMode="contains" width="69" id="aporteCodigoCTT" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textCodCTT" />
@@ -1023,7 +1025,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.avpevalor}" filterBy="#{infoAE.avpevalor}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.avpevalor}" filterBy="#{infoAE.avpevalor}" 
                                                    filterMatchMode="contains" width="67"  id="aporteAVPEValor" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textAVPEValor" />
@@ -1040,7 +1042,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.avppvalor}" filterBy="#{infoAE.avppvalor}" 
+                                        <p:column style="height: 20px"  sortBy="#{infoAE.avppvalor}" filterBy="#{infoAE.avppvalor}" 
                                                    filterMatchMode="contains" width="68" id="aporteAVPPValor" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textAVPPValor" />
@@ -1057,7 +1059,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.retcontavpvalor}" filterBy="#{infoAE.retcontavpvalor}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.retcontavpvalor}" filterBy="#{infoAE.retcontavpvalor}" 
                                                    filterMatchMode="contains" width="99" id="aporteRETCONTAValor" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textRETCONTA" />
@@ -1074,7 +1076,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.codigoneps}" filterBy="#{infoAE.codigoneps}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.codigoneps}" filterBy="#{infoAE.codigoneps}" 
                                                    filterMatchMode="contains" width="78" id="aporteCodigoNEPS" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textCodNEPS" />
@@ -1091,7 +1093,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.codigonafp}" filterBy="#{infoAE.codigonafp}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.codigonafp}" filterBy="#{infoAE.codigonafp}" 
                                                    filterMatchMode="contains" width="78" id="aporteCodigoNAFP" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textCodNAFP" />
@@ -1108,7 +1110,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.egvalor}" filterBy="#{infoAE.egvalor}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.egvalor}" filterBy="#{infoAE.egvalor}" 
                                                    filterMatchMode="contains" width="50" id="aporteEGValor" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textEGValor" />
@@ -1127,7 +1129,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.egautorizacion}" filterBy="#{infoAE.egautorizacion}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.egautorizacion}" filterBy="#{infoAE.egautorizacion}" 
                                                    filterMatchMode="contains" width="96" id="aporteEGAutorizacion" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textEGAuto" />
@@ -1144,7 +1146,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.maternidadvalor}" filterBy="#{infoAE.maternidadvalor}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.maternidadvalor}" filterBy="#{infoAE.maternidadvalor}" 
                                                    filterMatchMode="contains" width="105" id="aporteMaternidadValor" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textMatValor" />
@@ -1163,7 +1165,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.maternidadautorizacion}" filterBy="#{infoAE.maternidadautorizacion}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.maternidadautorizacion}" filterBy="#{infoAE.maternidadautorizacion}" 
                                                    filterMatchMode="contains" width="151" id="aporteMaternidadAuto" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textMatAuto" />
@@ -1180,7 +1182,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.upcvalor}" filterBy="#{infoAE.upcvalor}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.upcvalor}" filterBy="#{infoAE.upcvalor}" 
                                                    filterMatchMode="contains" width="59" id="aporteUPCValor" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textUPCValor" />
@@ -1199,7 +1201,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.tipo}" filterBy="#{infoAE.tipo}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.tipo}" filterBy="#{infoAE.tipo}" 
                                                    filterMatchMode="contains" width="89" id="aporteTipo" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.tipo}" /></f:facet>  
@@ -1212,7 +1214,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.tipopensionado}" filterBy="#{infoAE.tipopensionado}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.tipopensionado}" filterBy="#{infoAE.tipopensionado}" 
                                                    filterMatchMode="contains" width="15" id="aporteTipoPensionado" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textTP" />
@@ -1229,7 +1231,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.pensioncompartida}" filterBy="#{infoAE.pensioncompartida}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.pensioncompartida}" filterBy="#{infoAE.pensioncompartida}" 
                                                    filterMatchMode="contains" width="16" id="aportePensionCompartida" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textPC" />
@@ -1246,7 +1248,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.extranjero}" filterBy="#{infoAE.extranjero}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.extranjero}" filterBy="#{infoAE.extranjero}" 
                                                    filterMatchMode="contains" width="31" id="aporteExtranjero" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <f:facet name="header">
                                                 <h:outputText id="textEXTR" />
@@ -1263,7 +1265,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.fechaingreso}" filterBy="#{infoAE.fechaingreso}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.fechaingreso}" filterBy="#{infoAE.fechaingreso}" 
                                                    filterMatchMode="contains" width="85" id="aporteFechaIngreso" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output">
@@ -1281,7 +1283,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column style="padding:0px"  sortBy="#{infoAE.subtipocotizanteSTR}" filterBy="#{infoAE.subtipocotizanteSTR}"
+                                        <p:column style="height: 20px;padding:0px"  sortBy="#{infoAE.subtipocotizanteSTR}" filterBy="#{infoAE.subtipocotizanteSTR}"
                                                   width="117" filterMatchMode="contains" id="aporteSubTipoCotizante" filterStyle="display: none; visibility: hidden;"  >                                  
                                             <p:selectOneMenu value="#{infoAE.subtipocotizante}" id="editarSubTipoCotizanteAporte"  style="width: 117px;font-weight: bold;text-transform: uppercase;"  >  
                                                 <f:selectItem itemLabel="#{msg['subTipoCotizante1']}" itemValue="1" />  
@@ -1296,7 +1298,7 @@
                                             </p:selectOneMenu>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.tarifacaja}" filterBy="#{infoAE.tarifacaja}" 
+                                        <p:column style="height: 20px"  sortBy="#{infoAE.tarifacaja}" filterBy="#{infoAE.tarifacaja}" 
                                                    filterMatchMode="contains" width="64" id="aporteTarifaCaja" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.tarifacaja}" >
@@ -1311,7 +1313,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.tarifasena}" filterBy="#{infoAE.tarifasena}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.tarifasena}" filterBy="#{infoAE.tarifasena}" 
                                                    filterMatchMode="contains" width="68" id="aporteTarifaSena" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.tarifasena}" >
@@ -1327,7 +1329,7 @@
                                         </p:column>
 
 
-                                        <p:column  sortBy="#{infoAE.tarifaicbf}" filterBy="#{infoAE.tarifaicbf}" 
+                                        <p:column style="height: 20px"  sortBy="#{infoAE.tarifaicbf}" filterBy="#{infoAE.tarifaicbf}" 
                                                    filterMatchMode="contains" width="65" id="aporteTarifaICBF" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.tarifaicbf}" >
@@ -1342,7 +1344,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.tarifaesap}" filterBy="#{infoAE.tarifaesap}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.tarifaesap}" filterBy="#{infoAE.tarifaesap}" 
                                                    filterMatchMode="contains" width="71" id="aporteTarifaESAP" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.tarifaesap}" >
@@ -1357,7 +1359,7 @@
                                             </p:cellEditor>
                                         </p:column>
 
-                                        <p:column  sortBy="#{infoAE.tarifamen}" filterBy="#{infoAE.tarifamen}" 
+                                        <p:column style="height: 20px" sortBy="#{infoAE.tarifamen}" filterBy="#{infoAE.tarifamen}" 
                                                    filterMatchMode="contains" width="63" id="aporteTarifaMEN" filterStyle="display: none; visibility: hidden;"   >                                  
                                             <p:cellEditor>  
                                                 <f:facet name="output"><h:outputText value="#{infoAE.tarifamen}" >
@@ -1375,35 +1377,38 @@
                                     </p:dataTable>
                                 </div>
 
-                                <h:outputText id="infoRegistroAporte" value="#{msg['infoRegistro']} #{controlParametroAutoliq.infoRegistroAporte}" style="position: absolute; left: 15px; top: 235px; font-weight: bold"/>
+                                <h:outputText id="infoRegistroAporte" value="#{msg['infoRegistro']} #{controlParametroAutoliq.infoRegistroAporte}" style="position: relative; left: 10px; top: 230px; font-weight: bold"/>
                             </fieldset>
 
 
-                        <p:commandButton id="btn2" disabled="#{controlParametroAutoliq.activoBtnsPaginas}" style="position: absolute; left: 10px; top: 440px;"   value="#{msg['novAuto']}" process="@this" />
-                        <p:tooltip value="#{msg['btn2']}" for="btn2"/>
+                                
+                            <p:commandButton id="novedadauto"  style="position: absolute; left: 20px; top: 460px;" action="novedadauto" actionListener="#{controlNovedadAutoLiquidacion.recibirPag('novedadautoliq')}" oncomplete="#{controlNovedadAutoLiquidacion.recibirParametros(controlParametroAutoliq.parametroTablaSeleccionado.ano,controlParametroAutoliq.parametroTablaSeleccionado.mes,controlParametroAutoliq.parametroTablaSeleccionado.empresa.secuencia)}"  value="#{msg['novAuto']}" process="@this" />
+                            <!--onclick="#/{controlNovedadAutoLiquidacion.recibirParametros(infoPA.ano, infoPA.mes, infoPA.empresa.secuencia)}"-->
+                        <p:tooltip value="#{msg['btn2']}" for="novedadauto"/>
 
-                        <p:commandButton id="btn3" disabled="#{controlParametroAutoliq.activoBtnsPaginas}" style="position: absolute; left: 100px; top: 440px;"   value="#{msg['incaPag']}" process="@this" />
-                        <p:tooltip value="#{msg['btn3']}" for="btn3"/>
+                        <p:commandButton id="incaPag"  style="position: absolute; left: 110px; top: 460px;"   value="#{msg['incaPag']}" action="odiscabeceras" actionListener="#{controlOdiCabecera.recibirPag('odicabecera')}" oncomplete="#{controlOdiCabecera.recibirParametros(controlParametroAutoliq.parametroTablaSeleccionado.ano,controlParametroAutoliq.parametroTablaSeleccionado.mes,controlParametroAutoliq.parametroTablaSeleccionado.empresa.secuencia)}" process="@this"/>
+                        <p:tooltip value="#{msg['btn3']}" for="incaPag"/>
 
-                        <p:commandButton id="btn4" disabled="#{controlParametroAutoliq.activoBtnsPaginas}" style="position: absolute; left: 220px; top: 440px;"   value="#{msg['eliminarToda']}" onclick="confirmarBorrarTodoAuto.show()" process="@this" />
-                        <p:tooltip value="#{msg['btn4']}" for="btn4"/>
+                        <p:commandButton id="eliminarToda" style="position: absolute; left: 235px; top: 460px;"   value="#{msg['eliminarToda']}" onclick="confirmarBorrarTodoAuto.show()" process="@this" />
+                        <p:tooltip value="#{msg['btn4']}" for="eliminarToda"/>
 
-                        <p:commandButton id="btn5" disabled="#{controlParametroAutoliq.activoBtnsPaginas}" style="position: absolute; left: 390px; top: 440px;"  value="#{msg['procesoLiq']}" actionListener="#{controlParametroAutoliq.procesoLiquidacionAporteEntidad()}" process="@this" />
-                        <p:tooltip value="#{msg['btn5']}" for="btn5"/>
+                        <p:commandButton id="procesoLiq" style="position: absolute; left: 405px; top: 460px;"  value="#{msg['procesoLiq']}" actionListener="#{controlParametroAutoliq.procesoLiquidacionAporteEntidad()}" process="@this" />
+                        <p:tooltip value="#{msg['btn5']}" for="procesoLiq"/>
 
-                        <p:commandButton id="btn6" style="position: absolute; left: 540px; top: 440px;"  value="#{msg['generacionArch']}" process="@this" />
-                        <p:tooltip value="#{msg['btn6']}" for="btn6"/>
+                        <p:commandButton id="generacionArch" style="position: absolute; left: 555px; top: 460px;"  value="#{msg['generacionArch']}" process="@this" />
+                        <p:tooltip value="#{msg['btn6']}" for="generacionArch"/>
 
-                        <p:commandButton id="btn7" disabled="#{controlParametroAutoliq.activoBtnsPaginas}" style="position: absolute; left: 380px; top: 440px;width: 8px; height: 25px; border-color: black"  actionListener="#{controlParametroAutoliq.procesoAcumularDiferenciaAporteEntidad()}" value=" " process="@this" />
-                        <p:tooltip value="#{msg['btn7']}" for="btn7"/>
+                        <p:commandButton id="acumDif"  style="position: absolute; left: 387px; top: 460px;width: 1px; height: 18px; border-color: black"  actionListener="#{controlParametroAutoliq.procesoAcumularDiferenciaAporteEntidad()}" value=" " process="@this" />
+                        <p:tooltip value="#{msg['btn7']}" for="acumDif"/>
+                        <!--disabled="#/{controlParametroAutoliq.activoBtnsPaginas}"-->
                         
-                        <p:commandButton id="btn1" style="position: absolute; left: 12px; top: 480px;background-color: #1366D1;color: white" actionListener="#{controlParametroAutoliq.dispararDialogoBuscar()}" disabled="#{controlParametroAutoliq.disabledBuscar}"  value="#{msg['buscar']}" process="@this" />
-                        <p:tooltip value="#{msg['btn1']}" for="btn1"/>
+                        <p:commandButton id="buscar" style="position: absolute; left: 20px; top: 490px;width: 150px; height: 30px; background-image: url(Imagenes/Iconos/buscardbL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlParametroAutoliq.dispararDialogoBuscar()}"  value=" " process="@this" />
+                        <p:tooltip value="#{msg['btn1']}" for="buscar"/>
                         
-                        <p:commandButton id="btn8" style="position: absolute; left: 95px; top: 480px;background-color: #1366D1;color: white;visibility: #{controlParametroAutoliq.visibilidadMostrarTodos}} " onclick="operacionEnProceso.show()" actionListener="#{controlParametroAutoliq.mostrarTodosAporteEntidad()}" value="#{msg['mostrarTodo']}" process="@this" />
+                        <p:commandButton id="mostrarTodos" style="position: absolute; left: 200px; top: 490px;  width: 150px; height: 30px; background-image: url(Imagenes/Iconos/todosdbL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; " onclick="operacionEnProceso.show()" actionListener="#{controlParametroAutoliq.mostrarTodosAporteEntidad()}" value="" process="@this" />
                         
-                        <p:commandButton style="position: absolute; left: 675px; top: 480px; position: absolute; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" disabled="#{controlParametroAutoliq.guardado}" id="ACEPTAR" value=" " onclick="confirmarGuardarSalida.show();" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 480px; position: absolute; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlParametroAutoliq.salir()}" action="#{controlParametroAutoliq.redirigir()}" process="@this" />
+                        <p:commandButton style="position: relative; left: 675px; top: 490px; position: absolute; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" disabled="#{controlParametroAutoliq.guardado}" id="ACEPTAR" value=" " onclick="confirmarGuardarSalida.show();" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 490px; position: absolute; width: 90px; height: 30px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlParametroAutoliq.salir()}" action="#{controlParametroAutoliq.redirigir()}" process="@this" />
 
                         <p:remoteCommand name="posicionAporteEntidad" actionListener="#{controlParametroAutoliq.posicionAporteEntidad()}"/>
                         <p:remoteCommand name="posicionParametro" actionListener="#{controlParametroAutoliq.posicionParametro()}"/>
@@ -1744,7 +1749,7 @@
                     <p:dialog id="confirmarBorrarTodoAuto" header="#{msg['informacion']}" widgetVar="confirmarBorrarTodoAuto"  resizable="false" draggable="false" modal="true" height="85" width="290px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarBorrarTodoAuto']}" style="position: absolute; left: 60px; top: 15px; width: 200px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="confirmarBorrarTodoAuto.hide();" actionListener="#{controlParametroAutoliq.borrarAporteEntidadProcesoAutomatico()}" style="position: absolute; top: 50px; left: 70px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="confirmarBorrarTodoAuto.hide(); operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlParametroAutoliq.borrarAporteEntidadProcesoAutomatico()}" style="position: absolute; top: 50px; left: 70px" process="@this" icon="ui-icon-check" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarBorrarTodoAuto.hide();" style="position: absolute; top: 50px; left: 170px" process="@this" icon="ui-icon-close" />
                     </p:dialog>
 
@@ -1758,14 +1763,14 @@
                     <p:dialog id="procesoLiquidacionOK" header="#{msg['atencion']}" widgetVar="procesoLiquidacionOK"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['procesoLiquidacionOK']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="procesoLiquidacionOK.hide();" actionListener="#{controlParametroAutoliq.procesoLiquidacionOK()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="procesoLiquidacionOK.hide(); operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlParametroAutoliq.procesoLiquidacionOK()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="procesoLiquidacionOK.hide();" style="position: absolute; top: 50px; left: 307px" process="@this" icon="ui-icon-close" />
                     </p:dialog>
 
                     <p:dialog id="acumularDiferenciaOK" header="#{msg['atencion']}" widgetVar="acumularDiferenciaOK"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['acumularDiferenciaOK']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="acumularDiferenciaOK.hide();" actionListener="#{controlParametroAutoliq.acumularDiferenciaOK()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="acumularDiferenciaOK.hide();operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlParametroAutoliq.acumularDiferenciaOK()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="acumularDiferenciaOK.hide();" style="position: absolute; top: 50px; left: 307px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
@@ -1809,21 +1814,21 @@
 
                             <strong><h:outputText value="#{msg['tipoTrabajadorN']}" style="position: absolute; top: 135px; left: 50px" /></strong>
                             <p:inputText id="nuevaTipoTrabajadorParametro" value="#{controlParametroAutoliq.nuevoParametro.tipotrabajador.nombre}" style="width: 122px; position: absolute; left: 200px; top: 130px;text-transform: uppercase">
-                                <p:ajax event="dblclick" listener="#{controlParametroAutoliq.asignarIndex(indice,1, 1)}"/>
+                                <p:ajax event="dblclick" listener="#{controlParametroAutoliq.asignarIndex(infoPA,1, 1)}"/>
                                 <p:ajax event="click" listener="#{controlParametroAutoliq.valoresBackupAutocompletar(1, 'TIPOTRABAJADOR')}" />
                                 <p:ajax event="change" listener="#{controlParametroAutoliq.autocompletarNuevoyDuplicadoParametroAutoliq('TIPOTRABAJADOR', controlParametroAutoliq.nuevoParametro.tipotrabajador.nombre, 1)}" />
                             </p:inputText>
-                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 23px; border: none; position: absolute; left: 331px; top: 130px;  " id="btnNuevaTipoTrabajador" value="" process="@this"  actionListener="#{controlParametroAutoliq.asignarIndex(indice,1,1)}"/>   
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 23px; border: none; position: absolute; left: 331px; top: 130px;  " id="btnNuevaTipoTrabajador" value="" process="@this"  actionListener="#{controlParametroAutoliq.asignarIndex(infoPA,1,1)}"/>   
                             <p:watermark for="nuevaTipoTrabajadorParametro" value="#{msg['tipoTrabajador']}" />
 
 
                             <strong><h:outputText value="*#{msg['empresaN']}" style="position: absolute; top: 165px; left: 50px" /></strong>
                             <p:inputText id="nuevaEmpresaParametro" value="#{controlParametroAutoliq.nuevoParametro.empresa.nombre}" style="width: 122px; position: absolute; left: 200px; top: 160px;text-transform: uppercase">
-                                <p:ajax event="dblclick" listener="#{controlParametroAutoliq.asignarIndex(indice,1, 2)}"/>
+                                <p:ajax event="dblclick" listener="#{controlParametroAutoliq.asignarIndex(infoPA,1, 2)}"/>
                                 <p:ajax event="click" listener="#{controlParametroAutoliq.valoresBackupAutocompletar(1, 'EMPRESA')}" />
                                 <p:ajax event="change" listener="#{controlParametroAutoliq.autocompletarNuevoyDuplicadoParametroAutoliq('EMPRESA', controlParametroAutoliq.nuevoParametro.empresa.nombre, 1)}" />
                             </p:inputText>
-                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 23px; border: none; position: absolute; left: 331px; top: 160px;  " id="btnNuevaEmpresa" value="" process="@this"  actionListener="#{controlParametroAutoliq.asignarIndex(indice,1,2)}"/>   
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 23px; border: none; position: absolute; left: 331px; top: 160px;  " id="btnNuevaEmpresa" value="" process="@this"  actionListener="#{controlParametroAutoliq.asignarIndex(infoPA,1,2)}"/>   
                             <p:watermark for="nuevaEmpresaParametro" value="#{msg['empresa']}"/>
 
                             <p:commandButton id="limpiarPA" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 195px;" icon="ui-icon-trash"  actionListener="#{controlParametroAutoliq.limpiarNuevaParametroAutoliq()}" update="nuevaParametro" process="@this"/>
@@ -1864,20 +1869,20 @@
 
                             <strong><h:outputText value="#{msg['tipoTrabajadorN']}" style="position: absolute; top: 135px; left: 50px" /></strong>
                             <p:inputText id="duplicarTipoTrabajadorParametro" value="#{controlParametroAutoliq.duplicarParametro.tipotrabajador.nombre}" style="width: 122px; position: absolute; left: 200px; top: 130px;text-transform: uppercase">
-                                <p:ajax event="dblclick" listener="#{controlParametroAutoliq.asignarIndex(indice,2,1)}"/>
+                                <p:ajax event="dblclick" listener="#{controlParametroAutoliq.asignarIndex(infoPA,2,1)}"/>
                                 <p:ajax event="click" listener="#{controlParametroAutoliq.valoresBackupAutocompletar(1, 'TIPOTRABAJADOR')}" />
                                 <p:ajax event="change" listener="#{controlParametroAutoliq.autocompletarNuevoyDuplicadoParametroAutoliq('TIPOTRABAJADOR', controlParametroAutoliq.duplicarParametro.tipotrabajador.nombre, 2)}" />
                             </p:inputText>
-                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 23px; border: none; position: absolute; left: 331px; top: 130px;  " id="btnDuplicarTipoTrabajador" value="" process="@this"  actionListener="#{controlParametroAutoliq.asignarIndex(indice,2,1)}"/>   
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 23px; border: none; position: absolute; left: 331px; top: 130px;  " id="btnDuplicarTipoTrabajador" value="" process="@this"  actionListener="#{controlParametroAutoliq.asignarIndex(infoPA,2,1)}"/>   
                             <p:watermark for="duplicarTipoTrabajadorParametro" value="#{msg['tipoTrabajador']}" />
 
                             <strong><h:outputText value="*#{msg['empresaN']}" style="position: absolute; top: 165px; left: 50px" /></strong>
                             <p:inputText id="duplicarEmpresaParametro" value="#{controlParametroAutoliq.duplicarParametro.empresa.nombre}" style="width: 122px; position: absolute; left: 200px; top: 160px;text-transform: uppercase">
-                                <p:ajax event="dblclick" listener="#{controlParametroAutoliq.asignarIndex(indice,2,1)}"/>
+                                <p:ajax event="dblclick" listener="#{controlParametroAutoliq.asignarIndex(infoPA,2,1)}"/>
                                 <p:ajax event="click" listener="#{controlParametroAutoliq.valoresBackupAutocompletar(2, 'EMPRESA')}" />
                                 <p:ajax event="change" listener="#{controlParametroAutoliq.autocompletarNuevoyDuplicadoParametroAutoliq('EMPRESA', controlParametroAutoliq.duplicarParametro.empresa.nombre, 2)}" />
                             </p:inputText>
-                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 23px; border: none; position: absolute; left: 331px; top: 160px;  " id="btnDuplicarEmpresa" value="" process="@this"  actionListener="#{controlParametroAutoliq.asignarIndex(indice,2,2)}"/>   
+                            <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 23px; border: none; position: absolute; left: 331px; top: 160px;  " id="btnDuplicarEmpresa" value="" process="@this"  actionListener="#{controlParametroAutoliq.asignarIndex(infoPA,2,2)}"/>   
                             <p:watermark for="duplicarEmpresaParametro" value="#{msg['empresa']}"/>
 
                             <p:commandButton id="limpiarDuplicadoPA" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 195px;" icon="ui-icon-trash"  actionListener="#{controlParametroAutoliq.limpiarDuplicarParametroAutoliq()}" update="duplicarParametro" process="@this"/>

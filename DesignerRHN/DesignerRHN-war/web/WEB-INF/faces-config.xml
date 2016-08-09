@@ -5438,7 +5438,7 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-     <navigation-rule>
+    <navigation-rule>
         <from-view-id>/novedadcesantiasrc.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedad</from-outcome>
@@ -5455,7 +5455,7 @@
         </navigation-case>
     </navigation-rule>
     
-        <navigation-rule>
+    <navigation-rule>
         <from-view-id>/novedadcesantiasrc.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>motivocesantias</from-outcome>
@@ -5464,11 +5464,64 @@
         </navigation-case>
     </navigation-rule>
     
-      <navigation-rule>
+    <navigation-rule>
         <from-view-id>/motivocesantia.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasmotivocesantias</from-outcome>
             <to-view-id>/novedadcesantiasrc.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/parametroautoliq.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadauto</from-outcome>
+            <to-view-id>/novedadautoliq.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/novedadautoliq.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasnovedadauto</from-outcome>
+            <to-view-id>/parametroautoliq.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/parametroautoliq.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>odiscabeceras</from-outcome>
+            <to-view-id>/odicabecera.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/odicabecera.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasodiscabeceras</from-outcome>
+            <to-view-id>/parametroautoliq.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+      <navigation-rule>
+        <from-view-id>/nominaf.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>estadisticas</from-outcome>
+            <to-view-id>/estadisticas.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/estadisticas.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasNomina</from-outcome>
+            <to-view-id>/nominaf.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
