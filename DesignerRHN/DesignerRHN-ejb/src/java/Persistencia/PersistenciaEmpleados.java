@@ -131,7 +131,6 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
      */
     @Override
     public List<Empleados> buscarEmpleados(EntityManager em) {
-        System.out.println(this.getClass().getName() + ".buscarEmpleados()");
         List<Empleados> listaEmpleados = null;
         try {
             em.clear();

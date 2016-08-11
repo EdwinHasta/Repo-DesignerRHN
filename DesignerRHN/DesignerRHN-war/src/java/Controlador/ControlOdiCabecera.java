@@ -13,8 +13,11 @@ import Entidades.RelacionesIncapacidades;
 import Entidades.SucursalesPila;
 import Entidades.Terceros;
 import Entidades.TiposEntidades;
+import Exportar.ExportarPDF;
+import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarOdiCabeceraInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -28,6 +31,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -91,7 +96,7 @@ public class ControlOdiCabecera implements Serializable {
     private boolean aceptar;
     private int tipoActualizacion; //Activo/Desactivo Crtl + F11
     private int bandera;
-    private boolean permitirIndex, activarlov;
+    private boolean permitirIndex, activarlov, editarDetalles;
     private int altotabla;
     private String paginaAnterior;
     private BigInteger l, auxiliar, secuenciaParametro, anioParametro, mesParametro;
@@ -134,14 +139,25 @@ public class ControlOdiCabecera implements Serializable {
         nuevaOdiCabecera.setAnio(anioParametro);
         nuevaOdiCabecera.setMes(mesParametro);
         duplicarOdiCabecera = new OdisCabeceras();
+        duplicarOdiCabecera.setEmpresa(new Empresas());
+        duplicarOdiCabecera.setSucursalpila(new SucursalesPila());
+        duplicarOdiCabecera.setTercero(new Terceros());
+        duplicarOdiCabecera.setTipoentidad(new TiposEntidades());
+        duplicarOdiCabecera.setCheckDetalles(false);
+        duplicarOdiCabecera.setAnio(anioParametro);
+        duplicarOdiCabecera.setMes(mesParametro);
+        nuevaOdiDetalles = new OdisDetalles();
+        nuevaOdiDetalles.setEmpleado(new Empleados());
+        nuevaOdiDetalles.setOdicabecera(odiCabeceraSeleccionada);
         editarOdiCabecera = new OdisCabeceras();
-        altotabla = 91;
+        altotabla = 85;
         aceptar = true;
         guardado = true;
         tipoLista = 0;
         permitirIndex = true;
         activarlov = true;
         incluirdetalles = false;
+        editarDetalles = true;
 
     }
 
@@ -430,7 +446,7 @@ public class ControlOdiCabecera implements Serializable {
             } else if (origen.equals("EP")) {
                 duplicarOdiCabecera.setOrigenincapacidad("EP");
             }
-            RequestContext.getCurrentInstance().update("formularioDialogos:duplicarorigen");
+            RequestContext.getCurrentInstance().update("formularioDialogos:dupOrigen");
         }
     }
 
@@ -460,12 +476,14 @@ public class ControlOdiCabecera implements Serializable {
         nuevaOdiDetalles = new OdisDetalles();
         nuevaOdiDetalles.setEmpleado(new Empleados());
         nuevaOdiDetalles.setRelacionincapacidad(new RelacionesIncapacidades());
+        nuevaOdiDetalles.setOdicabecera(odiCabeceraSeleccionada);
     }
 
     public void limpiarDuplicarOdiDetalles() {
         duplicarOdiDetalles = new OdisDetalles();
         duplicarOdiDetalles.setEmpleado(new Empleados());
         duplicarOdiDetalles.setRelacionincapacidad(new RelacionesIncapacidades());
+        duplicarOdiDetalles.setOdicabecera(odiCabeceraSeleccionada);
     }
 
     public void asignarIndex(OdisCabeceras odicabecera, int dlg, int LND) {
@@ -505,47 +523,127 @@ public class ControlOdiCabecera implements Serializable {
         }
     }
 
-    /*
-     public void exportPDF() throws IOException {
-     DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosNovedadesExportar");
-     FacesContext context = FacesContext.getCurrentInstance();
-     Exporter exporter = new ExportarPDF();
-     exporter.export(context, tabla, "NovedadAutoLiquidacionPDF", false, false, "UTF-8", null, null);
-     context.responseComplete();
-     }
+    public void seleccionarExportarPDF() throws IOException {
+        if (OdiDetallesSeleccionada != null) {
+            validarExportPDFDetalles();
+        } else if (odiCabeceraSeleccionada != null) {
+            validarExportPDF();
+        } else if (OdiDetallesSeleccionada == null && odiCabeceraSeleccionada == null) {
+            validarExportPDF();
+        }
+    }
 
-     public void exportXLS() throws IOException {
-     DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosNovedadesExportar");
-     FacesContext context = FacesContext.getCurrentInstance();
-     Exporter exporter = new ExportarXLS();
-     exporter.export(context, tabla, "NovedadAutoLiquidacionXLS", false, false, "UTF-8", null, null);
-     context.responseComplete();
-     }
+    public void seleccionarExportarXLS() throws IOException {
+        if (OdiDetallesSeleccionada != null) {
+            exportDetallesXLS();
+        } else if (odiCabeceraSeleccionada != null) {
+            exportXLS();
+        } else if (OdiDetallesSeleccionada == null && odiCabeceraSeleccionada == null) {
+            exportXLS();
+        }
+    }
 
-     public String exportXMLTabla() {
-     String tabla = "";
-     if (odiCabeceraSeleccionada != null) {
-     tabla = ":formExportar:datosNovedadesExportar";
-     }
+    
+    public void seleccionarExportarXML() throws IOException {
+        if (OdiDetallesSeleccionada != null) {
+            exportXMLTablaDetalles();
+        } else if (odiCabeceraSeleccionada != null) {
+            exportXMLTabla();
+        } else if (OdiDetallesSeleccionada == null && odiCabeceraSeleccionada == null) {
+            exportXMLTabla();
+        }
+    }
 
-     return tabla;
-     }
+    public void nombreXML(){
+        if (OdiDetallesSeleccionada != null) {
+            exportXMLNombreArchivoDetalles();
+        } else if (odiCabeceraSeleccionada != null) {
+            exportXMLNombreArchivo();
+        } else if (OdiDetallesSeleccionada == null && odiCabeceraSeleccionada == null) {
+            exportXMLNombreArchivo();
+        }
+    }
+    
+    public void exportPDF() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosCabeceraExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarPDF();
+        exporter.export(context, tabla, "OdiCabeceraPDF", false, false, "UTF-8", null, null);
+        context.responseComplete();
+    }
 
-     public String exportXMLNombreArchivo() {
-     String nombre = "";
-     if (odiCabeceraSeleccionada != null) {
-     nombre = "ParametrosAutoliquidacion_XML";
-     }
+    public void exportPDFDetalles() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosDetallesExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarPDF();
+        exporter.export(context, tabla, "OdiDetallePDF", false, false, "UTF-8", null, null);
+        context.responseComplete();
+    }
 
-     return nombre;
-     }
+    public void exportXLS() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosCabeceraExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarXLS();
+        exporter.export(context, tabla, "OdiCabeceraXLS", false, false, "UTF-8", null, null);
+        context.responseComplete();
+    }
 
-     public void validarExportPDF() throws IOException {
-     if (odiCabeceraSeleccionada != null) {
-     exportPDF();
-     }
-     }
-     */
+    public void exportDetallesXLS() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosDetallesExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarXLS();
+        exporter.export(context, tabla, "OdiDetallesXLS", false, false, "UTF-8", null, null);
+        context.responseComplete();
+    }
+
+    public String exportXMLTabla() {
+        String tabla = "";
+        if (odiCabeceraSeleccionada != null) {
+            tabla = ":formExportar:datosCabeceraExportar";
+        }
+
+        return tabla;
+    }
+
+    public String exportXMLNombreArchivo() {
+        String nombre = "";
+        if (odiCabeceraSeleccionada != null) {
+            nombre = "odiCabecera_XML";
+        }
+
+        return nombre;
+    }
+
+    public String exportXMLTablaDetalles() {
+        String tabla = "";
+        if (OdiDetallesSeleccionada != null) {
+            tabla = ":formExportar:datosDetallesExportar";
+        }
+
+        return tabla;
+    }
+
+    public String exportXMLNombreArchivoDetalles() {
+        String nombre = "";
+        if (OdiDetallesSeleccionada != null) {
+            nombre = "odiDetalle_XML";
+        }
+
+        return nombre;
+    }
+
+    public void validarExportPDF() throws IOException {
+        if (odiCabeceraSeleccionada != null) {
+            exportPDF();
+        }
+    }
+
+    public void validarExportPDFDetalles() throws IOException {
+        if (OdiDetallesSeleccionada != null) {
+            exportPDFDetalles();
+        }
+    }
+
     public void guardarCambios() {
         try {
             if (guardado == false) {
@@ -582,29 +680,28 @@ public class ControlOdiCabecera implements Serializable {
                     }
                     listaOdiDetallesBorrar.clear();
                 }
-//                if (!listaOdiDetallesCrear.isEmpty()) {
-//                    System.out.println("entra a crear Detalles");
-//                    for (int i = 0; i < listaOdiDetallesCrear.size(); i++) {
-//                        administrarOdiCabecera.crearDetalle(listaOdiDetallesCrear.get(i));
-//                    }
-//                    listaOdiDetallesCrear.clear();
-//                    System.out.println("sale de crear Detalles");
-//                }
-//                if (!listaOdiDetallesModificar.isEmpty()) {
-//                    System.out.println("entra a modificar Detalles");
-//                    for (int i = 0; i < listaOdiDetallesModificar.size(); i++) {
-//                        administrarOdiCabecera.editarDetalle(listaOdiDetallesModificar.get(i));
-//                    }
-//                    System.out.println("sale de modificar Detalles");
-//                    listaOdiDetallesModificar.clear();
-//                }
-
+                if (!listaOdiDetallesCrear.isEmpty()) {
+                    System.out.println("entra a crear Detalles");
+                    for (int i = 0; i < listaOdiDetallesCrear.size(); i++) {
+                        administrarOdiCabecera.crearDetalle(listaOdiDetallesCrear.get(i));
+                    }
+                    listaOdiDetallesCrear.clear();
+                    System.out.println("sale de crear Detalles");
+                }
+                if (!listaOdiDetallesModificar.isEmpty()) {
+                    System.out.println("entra a modificar Detalles");
+                    for (int i = 0; i < listaOdiDetallesModificar.size(); i++) {
+                        administrarOdiCabecera.editarDetalle(listaOdiDetallesModificar.get(i));
+                    }
+                    System.out.println("sale de modificar Detalles");
+                    listaOdiDetallesModificar.clear();
+                }
                 listaOdiCabecera = null;
                 getListaOdiCabecera();
                 modificarInfoRegistroOdicabecera(listaOdiCabecera.size());
-//                listaOdiDetalles = null;
-//                getListaOdiDetalles();
-//                modificarInfoRegistroOdiDetalles(listaOdiDetalles.size());
+                listaOdiDetalles = null;
+                getListaOdiDetalles();
+                modificarInfoRegistroOdiDetalles(listaOdiDetalles.size());
                 guardado = true;
                 permitirIndex = true;
                 RequestContext.getCurrentInstance().update("form:datosCabecera");
@@ -720,9 +817,7 @@ public class ControlOdiCabecera implements Serializable {
             numcertificado.setFilterStyle("width: 85%");
             valorcobrado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalles:valorcobrado");
             valorcobrado.setFilterStyle("width: 85%");
-            altotabla = 91;
-//            altoScrollSolucionesNodosEmpleado = "72";
-//            altoScrollSolucionesNodosEmpleador = "72";
+            altotabla = 85;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosCabecera");
             context.update("form:datosDetalles");
@@ -766,9 +861,7 @@ public class ControlOdiCabecera implements Serializable {
             numcertificado.setFilterStyle("display: none; visibility: hidden;");
             valorcobrado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalles:valorcobrado");
             valorcobrado.setFilterStyle("display: none; visibility: hidden;");
-            altotabla = 115;
-//            altoScrollSolucionesNodosEmpleado = "95";
-//            altoScrollSolucionesNodosEmpleador = "95";
+            altotabla = 109;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosCabecera");
             context.update("form:datosDetalles");
@@ -786,7 +879,7 @@ public class ControlOdiCabecera implements Serializable {
 //        odiCabeceraSeleccionada = null;
 
         if (bandera == 1) {
-            altotabla = 91;
+            altotabla = 85;
             empresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCabecera:empresa");
             empresa.setFilterStyle("display: none; visibility: hidden;");
             sucursal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCabecera:sucursal");
@@ -835,17 +928,6 @@ public class ControlOdiCabecera implements Serializable {
         nuevaOdiCabecera.setTercero(new Terceros());
         nuevaOdiCabecera.setEmpresa(new Empresas());
         nuevaOdiCabecera.setSucursalpila(new SucursalesPila());
-
-//        System.out.println("año :" +odiCabeceraSeleccionada.getAnio());
-//        System.out.println("mes:  " + odiCabeceraSeleccionada.getMes());
-//        System.out.println("empresa :"+ odiCabeceraSeleccionada.getEmpresa());
-//        System.out.println("sucursal :" + odiCabeceraSeleccionada.getSucursalpila());
-//        System.out.println("tipo entidad :" + odiCabeceraSeleccionada.getTipoentidad());
-//        System.out.println("tercero :" + odiCabeceraSeleccionada.getTercero());
-//        System.out.println("valor : " + odiCabeceraSeleccionada.getValortotal());
-//        System.out.println("num auto: " + odiCabeceraSeleccionada.getNumeroautorizacion());
-//        System.out.println("detalles : " +odiCabeceraSeleccionada.getIncluirdetalles());
-//        System.out.println("origen incapacidad : " + odiCabeceraSeleccionada.getOrigenincapacidad());
     }
 
     public void agregarNuevaOdiDetalles() {
@@ -854,13 +936,15 @@ public class ControlOdiCabecera implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            altotabla = 91;
+            altotabla = 85;
             empleado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalles:empleado");
             empleado.setFilterStyle("display: none; visibility: hidden;");
             numdetalle = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalles:numdetalle");
             numdetalle.setFilterStyle("display: none; visibility: hidden;");
             observacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalles:observacion");
             observacion.setFilterStyle("display: none; visibility: hidden;");
+            valor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalles:valor");
+            valor.setFilterStyle("display: none; visibility: hidden;");
             relacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalles:relacion");
             relacion.setFilterStyle("display: none; visibility: hidden;");
             numcertificado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalles:numcertificado");
@@ -881,7 +965,7 @@ public class ControlOdiCabecera implements Serializable {
         listaOdiDetalles.add(nuevaOdiDetalles);
         OdiDetallesSeleccionada = nuevaOdiDetalles;
         nuevaOdiDetalles = new OdisDetalles();
-        nuevaOdiDetalles.setEmpleado(empleadoSeleccionado);
+        nuevaOdiDetalles.setEmpleado(new Empleados());
         modificarInfoRegistroOdiDetalles(listaOdiDetalles.size());
         context.update("form:datosDetalles");
         context.execute("nuevoDetalle.hide()");
@@ -891,7 +975,7 @@ public class ControlOdiCabecera implements Serializable {
         }
     }
 
-    public void duplicarOdiCabecera() {
+    public void duplicandoOdiCabecera() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (odiCabeceraSeleccionada != null) {
             duplicarOdiCabecera = new OdisCabeceras();
@@ -921,8 +1005,8 @@ public class ControlOdiCabecera implements Serializable {
                 duplicarOdiCabecera.setMes(odiCabeceraSeleccionada.getMes());
             }
             // deshabilitarBotonLov();
-            context.update("formularioDialogos:duplicarOdiCabecera");
-            context.execute("duplicarOdiCabecera.show()");
+            context.update("formularioDialogos:duplicarCabecera");
+            context.execute("duplicarCabecera.show()");
         } else if (OdiDetallesSeleccionada != null) {
             duplicarOdiDetalles = new OdisDetalles();
 
@@ -963,13 +1047,13 @@ public class ControlOdiCabecera implements Serializable {
         modificarInfoRegistroOdicabecera(listaOdiCabecera.size());
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosCabecera");
-        context.execute("duplicarOdiCabecera.hide()");
+        context.execute("duplicarCabecera.hide()");
         if (guardado == true) {
             guardado = false;
             context.update("form:ACEPTAR");
         }
         if (bandera == 1) {
-            altotabla = 91;
+            altotabla = 85;
             empresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCabecera:empresa");
             empresa.setFilterStyle("display: none; visibility: hidden;");
             sucursal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCabecera:sucursal");
@@ -1018,7 +1102,7 @@ public class ControlOdiCabecera implements Serializable {
             context.update("form:ACEPTAR");
         }
         if (bandera == 1) {
-            altotabla = 91;
+            altotabla = 85;
             empleado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalles:empleado");
             empleado.setFilterStyle("display: none; visibility: hidden;");
             numdetalle = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalles:numdetalle");
@@ -1551,10 +1635,10 @@ public class ControlOdiCabecera implements Serializable {
             //deshabilitarBotonLov();
             context.update("form:datosDetalles");
         } else if (tipoActualizacion == 1) {
-            nuevaOdiCabecera.setTipoentidad(tipoEntidadSeleccionada);
-            context.update("formularioDialogos:nuevoDetalle");
+            nuevaOdiDetalles.setEmpleado(empleadoSeleccionado);
+            context.update("formularioDialogos:nuevoOdiDetalle");
         } else if (tipoActualizacion == 2) {
-            duplicarOdiCabecera.setTipoentidad(tipoEntidadSeleccionada);
+            duplicarOdiDetalles.setEmpleado(empleadoSeleccionado);
             context.update("formularioDialogos:duplicarOdiDetalle");
         }
         filtrarLovEmpleados = null;
@@ -1563,10 +1647,10 @@ public class ControlOdiCabecera implements Serializable {
         tipoActualizacion = -1;
         context.reset("formularioDialogos:LOVEmpleados:globalFilter");
         context.execute("LOVEmpleados.clearFilters()");
-        context.execute("empleadosDialogo.hide()");
         context.update("formularioDialogos:empleadosDialogo");
         context.update("formularioDialogos:LOVEmpleados");
-        context.update("formularioDialogos:aceptarTE");
+        context.update("formularioDialogos:aceptarE");
+        context.execute("empleadosDialogo.hide()");
 
     }
 
@@ -1713,7 +1797,7 @@ public class ControlOdiCabecera implements Serializable {
                 } else if (tipoNuevo == 2) {
                     context.update("formularioDialogos:duplicarTipoEntidad");
                 }
-                context.update("formularioDIalogos:tercerosDialogo");
+                context.update("formularioDialogos:tercerosDialogo");
                 context.execute("tercerosDialogo.show()");
             }
         }
@@ -1748,8 +1832,42 @@ public class ControlOdiCabecera implements Serializable {
                     context.update("formularioDialogos:duplicarTipoEntidad");
                 }
             }
-            context.update("formularioDIalogos:tiposEntidadesDialogo");
+            context.update("formularioDialogos:tiposEntidadesDialogo");
             context.execute("tiposEntidadesDialogo.show()");
+        }
+
+        if (confirmarCambio.equalsIgnoreCase("EMPLEADO")) {
+            if (tipoNuevo == 1) {
+                nuevaOdiDetalles.getEmpleado().getPersona().setNombreCompleto(nuevaOdiDetalles.getEmpleado().getPersona().getNombreCompleto());
+            } else if (tipoNuevo == 2) {
+                duplicarOdiDetalles.getEmpleado().getPersona().setNombreCompleto(nuevaOdiDetalles.getEmpleado().getPersona().getNombreCompleto());
+            }
+            for (int i = 0; i < lovEmpleados.size(); i++) {
+                if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                if (tipoNuevo == 1) {
+                    nuevaOdiDetalles.setEmpleado(lovEmpleados.get(indiceUnicoElemento));
+                    context.update("formularioDialogos:nuevoEmpleado");
+                } else if (tipoNuevo == 2) {
+                    duplicarOdiDetalles.setEmpleado(lovEmpleados.get(indiceUnicoElemento));
+                    context.update("formularioDialogos:duplicarEmpleado");
+                }
+                lovEmpleados.clear();
+                getLovEmpleados();
+            } else {
+                tipoActualizacion = tipoNuevo;
+                if (tipoNuevo == 1) {
+                    context.update("formularioDialogos:nuevoEmpleado");
+                } else if (tipoNuevo == 2) {
+                    context.update("formularioDialogos:duplicarEmpleado");
+                }
+            }
+            context.update("formularioDialogos:empleadosDialogo");
+            context.execute("empleadosDialogo.show()");
         }
 
     }
@@ -1797,7 +1915,7 @@ public class ControlOdiCabecera implements Serializable {
     public void cancelarModificacion() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            altotabla = 91;
+            altotabla = 85;
             empresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCabecera:empresa");
             empresa.setFilterStyle("display: none; visibility: hidden;");
             sucursal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCabecera:sucursal");
@@ -1859,7 +1977,7 @@ public class ControlOdiCabecera implements Serializable {
         limpiarNuevaOdiDetalles();
         limpiarDuplicarOdiCabecera();
         limpiarDuplicarOdiDetalles();
-        altotabla = 115;
+        altotabla = 109;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosCabecera");
         context.update("form:datosDetalles");
@@ -1880,7 +1998,7 @@ public class ControlOdiCabecera implements Serializable {
     public void salir() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            altotabla = 91;
+            altotabla = 85;
             empresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCabecera:empresa");
             empresa.setFilterStyle("display: none; visibility: hidden;");
             sucursal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCabecera:sucursal");
@@ -1956,19 +2074,18 @@ public class ControlOdiCabecera implements Serializable {
         modificarInfoRegistroOdicabecera(filtrarListaOdiCabecera.size());
     }
 
+    public void recolectarINP(){
+        
+    }
+    
     public void checkdetalles() {
         if (nuevaOdiCabecera.isCheckDetalles() == false) {
             nuevaOdiCabecera.setIncluirdetalles("N");
         } else if (nuevaOdiCabecera.isCheckDetalles() == true) {
             nuevaOdiCabecera.setIncluirdetalles("S");
         }
-        System.out.println("nueva cabecera incluir detalles :" + nuevaOdiCabecera.getIncluirdetalles());
     }
 
-//    public void addMessage() {
-//        String summary = incluirdetalles ? "Checked" : "Unchecked";
-//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
-//    }
     public void eventoFiltrarDetalles() {
         if (tipoLista == 1) {
             tipoLista = 0;
@@ -2039,6 +2156,29 @@ public class ControlOdiCabecera implements Serializable {
     public void modificarInfoRegistroRelaciones(int valor) {
         infoRegistroRelacionesIncapacidades = String.valueOf(valor);
         RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroRelaciones");
+    }
+
+    public void validarCheckDetalles() {
+        if (odiCabeceraSeleccionada != null) {
+            if (odiCabeceraSeleccionada.getIncluirdetalles().equals("S")) {
+                RequestContext.getCurrentInstance().update("formularioDialogos:nuevoDetalle");
+                RequestContext.getCurrentInstance().execute("nuevoDetalle.show()");
+            } else {
+                RequestContext.getCurrentInstance().execute("form:validarCheckDetalles.show()");
+            }
+        } else {
+            RequestContext.getCurrentInstance().execute("seleccionarRegistro.show()");
+        }
+    }
+
+    public void habilitartabla() {
+        editarDetalles = false;
+        RequestContext.getCurrentInstance().update("form:datosDetalles");
+    }
+
+    public void deshabilitartabla() {
+        editarDetalles = true;
+        RequestContext.getCurrentInstance().update("form:datosDetalles");
     }
 
     ////SETS Y GETS///////////
@@ -2437,6 +2577,14 @@ public class ControlOdiCabecera implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public boolean isEditarDetalles() {
+        return editarDetalles;
+    }
+
+    public void setEditarDetalles(boolean editarDetalles) {
+        this.editarDetalles = editarDetalles;
     }
 
 }

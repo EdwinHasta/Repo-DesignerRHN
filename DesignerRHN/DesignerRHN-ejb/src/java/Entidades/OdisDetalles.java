@@ -32,11 +32,11 @@ public class OdisDetalles implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @NotNull
-    @JoinColumn(name = "ODISCABECERAS", referencedColumnName = "SECUENCIA")
+    @JoinColumn(name = "ODICABECERA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private OdisCabeceras odicabecera;
     @NotNull
-    @JoinColumn(name = "EMPLEADOS", referencedColumnName = "SECUENCIA")
+    @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Empleados empleado;
     @JoinColumn(name = "RELACIONINCAPACIDAD", referencedColumnName = "SECUENCIA")

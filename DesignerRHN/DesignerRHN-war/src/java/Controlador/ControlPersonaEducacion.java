@@ -1828,7 +1828,7 @@ public class ControlPersonaEducacion implements Serializable {
             vigenciaFormalSeleccionada = null;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVigenciasFormalesPersona");
-            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesMessage msg = new FacesMessage("Información", "Se guardaron los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
             guardado = true;

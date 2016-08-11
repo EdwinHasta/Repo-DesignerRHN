@@ -137,9 +137,7 @@ public class PersistenciaOdiCabecera implements PersistenciaOdiCabeceraInterface
     public List<Empleados> lovEmpleados(EntityManager em) {
         try {
             em.clear();
-            String qr = "SELECT EMP.SECUENCIA SECUENCIA,\n"
-                    + "CONCAT(CONCAT(CONCAT(CONCAT(PER.PRIMERAPELLIDO,' '),\n"
-                    + "PER.SEGUNDOAPELLIDO),' '),PER.NOMBRE) NOMBREPERSONA\n"
+            String qr = "SELECT EMP.*\n"
                     + "FROM   PERSONAS PER,\n"
                     + "       EMPLEADOS EMP\n"
                     + "WHERE  EMP.PERSONA=PER.SECUENCIA\n"

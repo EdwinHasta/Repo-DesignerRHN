@@ -243,25 +243,25 @@ public class ControlParametroAutoliq implements Serializable {
         if (listaParametrosAutoliq != null) {
             modificarInfoRegistroParametro(listaParametrosAutoliq.size());
         }
-        cargarListas();
+//        cargarListas();
     }
 
-    public void cargarListas() {
-        getLovAportesEntidades();
-        modificarInfoRegistroAportesEntidades(lovAportesEntidades.size());
-        getLovEmpleados();
-        modificarInfoRegistroEmpleados(lovEmpleados.size());
-        getLovEmpresas();
-        modificarInfoRegistroEmpresa(lovEmpresas.size());
-        getLovTerceros();
-        modificarInfoRegistroTercero(lovTerceros.size());
-        getLovTiposEntidades();
-        modificarInfoRegistroTiposEntidades(lovTiposEntidades.size());
-        getLovTiposTrabajadores();
-        modificarInfoRegistroTiposTrabajadores(lovTiposTrabajadores.size());
-        getListaAportesEntidades();
-        modificarInfoRegistroAporte(listaAportesEntidades.size());
-    }
+//    public void cargarListas() {
+//        getLovAportesEntidades();
+//        modificarInfoRegistroAportesEntidades(lovAportesEntidades.size());
+//        getLovEmpleados();
+//        modificarInfoRegistroEmpleados(lovEmpleados.size());
+//        getLovEmpresas();
+//        modificarInfoRegistroEmpresa(lovEmpresas.size());
+//        getLovTerceros();
+//        modificarInfoRegistroTercero(lovTerceros.size());
+//        getLovTiposEntidades();
+//        modificarInfoRegistroTiposEntidades(lovTiposEntidades.size());
+//        getLovTiposTrabajadores();
+//        modificarInfoRegistroTiposTrabajadores(lovTiposTrabajadores.size());
+//        getListaAportesEntidades();
+//        modificarInfoRegistroAporte(listaAportesEntidades.size());
+//    }
 
     public String redirigir() {
         return paginaAnterior;
