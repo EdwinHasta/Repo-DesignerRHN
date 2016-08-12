@@ -11,42 +11,42 @@
         <ui:composition template="/template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    
+
                     <f:loadBundle basename="Recursos.cerrarliquidacion" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
-                    
+
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal" >  
-                        
+
                         <fieldset style="position: absolute; left: 10px; top: 75px; width: 830px; height: 390px; border-radius: 10px; ">
                             <legend style="color: blue;text-align: left; font-weight: bold">#{msg['parametros']}</legend>
-                            
+
                             <p:commandButton id="btnBorrarComprobantes" value="" ondblclick="abrirLiquidacion()" style="background-image: url(Imagenes/Iconos/nom_cerrar.png); width: 140px; height: 140px; background-repeat: no-repeat; background-size: 100% 100%;; z-index: 1; position: absolute; top: 20px; left: 10px"/>
-                            
+
                             <p:panel id="panelInf" style="border: none;">
                                 <h:outputText value="#{msg['totaltrabajadores']}" style="font-weight: bold; position: absolute; top: 25px; left: 180px"/>
                                 <p:inputText value="#{controlCerrarLiquidacion.totalEmpleadosParaLiquidar}" style="position: absolute; left: 310px; top: 20px; width: 80px;" readonly="true"/>
-                                
+
                                 <h:outputText value="#{msg['fechainicial']}" style="font-weight: bold; position: absolute; top: 65px; left: 180px"/>
                                 <p:inputText value="#{controlCerrarLiquidacion.parametroEstructura.fechadesdecausado}" style="position: absolute; left: 310px; width: 80px; top: 60px" readonly="true">
                                     <f:convertDateTime pattern="dd/MM/yyyy" />
                                 </p:inputText>
-                                
+
                                 <h:outputText value="#{msg['fechafinal']}" style="font-weight: bold; position: absolute; left: 180px; top: 105px"/>
                                 <p:inputText value="#{controlCerrarLiquidacion.parametroEstructura.fechahastacausado}" style="position: absolute; left: 310px; width: 80px; top: 100px" readonly="true">
                                     <f:convertDateTime pattern="dd/MM/yyyy" />
                                 </p:inputText>
-                                
+
                                 <h:outputText value="#{msg['fechapago']}" style="font-weight: bold; position: absolute; top: 145px; left: 180px"/>
                                 <p:inputText value="#{controlCerrarLiquidacion.parametroEstructura.fechasistema}" style="position: absolute; left: 310px; width: 80px; top: 140px" readonly="true">
                                     <f:convertDateTime pattern="dd/MM/yyyy" />
                                 </p:inputText>
-                                
+
                                 <h:outputText value="#{msg['estructura']}" style="font-weight: bold; position: absolute; top: 25px; left: 450px"/>
                                 <p:inputText value="#{controlCerrarLiquidacion.parametroEstructura.estructura.nombre}" style="position: absolute; left: 570px; width: 250px; top: 20px" readonly="true"/>
-                                
+
                                 <h:outputText value="#{msg['proceso']}" style="font-weight: bold; position: absolute; top: 65px; left: 450px"/>
                                 <p:inputText value="#{controlCerrarLiquidacion.parametroEstructura.proceso.descripcion}" style="position: absolute; left: 570px; width: 250px; top: 60px" readonly="true" /> 
-                                
+
                                 <h:outputText value="#{msg['tipotrabajador']}" style="font-weight: bold; position: absolute; top: 105px; left: 450px"/>
                                 <p:inputText value="#{controlCerrarLiquidacion.parametroEstructura.tipotrabajador.nombre}" style="position: absolute; left: 570px; width: 250px; top: 100px" readonly="true" /> 
                             </p:panel>
@@ -59,7 +59,7 @@
                                              selection="#{controlCerrarLiquidacion.empleadoTablaSeleccionado}" selectionMode="single">
 
                                     <p:ajax event="filter" listener="#{controlCerrarLiquidacion.eventoFiltrar()}"/>
-                                    
+
                                     <p:column id="codigoEmpleado" headerText="#{msg['codigo']}" sortBy="#{empleadoParametro.empleado.codigoempleado}" width="80" filterBy="#{empleadoParametro.empleado.codigoempleado}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"  > 
                                         <p:cellEditor>  
                                             <f:facet name="output">
@@ -88,13 +88,13 @@
                         </fieldset>
                         <p:commandButton value=""  style="position: absolute; top: 485px; left: 660px;  height: 30px; width: 90px; background-image: url(Imagenes/Iconos/aceptar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" onclick="confirmarCerrar.show();"/>
                         <p:commandButton value="" style="position: absolute; top: 485px; left: 755px;  height: 30px; width: 90px; background-image: url(Imagenes/Iconos/cancelar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlCerrarLiquidacion.salir()}" action="nomina" process="@this"/>
-                        
+
                         <p:toolbar styleClass="cssToolbar">
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none; " disabled="true" process="@this" />
                                 <p:tooltip for="guardarRapido" value="#{msg['guardar']}" />
-                                
+
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none; " disabled="true" process="@this"/>
                                 <p:tooltip  for="editar" value="#{msg['editar']}" />
 
@@ -120,7 +120,7 @@
                                 <p:tooltip for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                
+
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none; "  disabled="true" process="@this"/> 
                                 <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
@@ -129,16 +129,16 @@
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none; "  disabled="true" process="@this"/>  
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
-                                
+
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none; " disabled="true" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                
+
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none; " disabled="true" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
-                                
+
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; border: none; " actionListener="#{controlCerrarLiquidacion.salir()}" action="nomina" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
@@ -146,28 +146,28 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        
+
                     </p:panel>
 
                     <p:remoteCommand name="abrirLiquidacion" actionListener="#{controlCerrarLiquidacion.confirmarAbrirLiquidacion()}"/>  
                 </h:form>
                 <h:form id="formularioDialogos">
-                    
-                    
+
+
                     <p:dialog id="confirmarCerrar" header="#{msg['atencion']}" widgetVar="confirmarCerrar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarCerrar']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarCerrar.hide();" actionListener="#{controlCerrarLiquidacion.confirmarCierreLiquidacion()}" style="position: absolute; top: 55px; left: 155px" oncomplete="liquidacionRealizada.show()" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarCerrar.hide();operacionEnProceso.show()" actionListener="#{controlCerrarLiquidacion.confirmarCierreLiquidacion()}" style="position: absolute; top: 55px; left: 155px" oncomplete="operacionEnProceso.hide();liquidacionRealizada.show()" process="@this" icon="ui-icon-check" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarCerrar.hide();" actionListener="#{controlCerrarLiquidacion.salir()}" action="nomina" style="position: absolute; top: 55px; left: 220px" process="@this" icon="ui-icon-close" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarCerrar.hide();" style="position: absolute; top: 55px; left: 290px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
-                    
-                    <p:dialog id="liquidacionRealizada" header="#{msg['atencion']}" widgetVar="liquidacionRealizada"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
-                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+
+                    <p:dialog id="liquidacionRealizada" header="#{msg['informacion']}" widgetVar="liquidacionRealizada"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['liquidacioncerrada']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="liquidacionRealizada.hide();" actionListener="#{controlCerrarLiquidacion.confirmarCierreLiquidacion()}" action="nomina" style="position: absolute; top: 55px; left: 155px" process="@this" icon="ui-icon-check" />
                     </p:dialog>
-                    
+
                     <p:dialog id="confirmarCerrarConteoFallo" header="#{msg['atencion']}" widgetVar="confirmarCerrarConteoFallo"  resizable="false" draggable="false" modal="true" height="145" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/Iconos/alerta.png" width="70" height="50" style="position: absolute; left: 20px; top: 30px;"  />
                         <h:outputText value="#{msg['confirmarCerrarConteoFallo']}" style="position: absolute; left: 100px; top: 20px; width: 280px; text-align: justify" />
@@ -188,7 +188,14 @@
                         <h:outputText value="#{msg['errorComprobante']}" style="position: absolute; left: 100px; top: 20px; width: 280px;" />
                         <p:commandButton icon="ui-icon-check" value="#{msg['aceptar']}" onclick="errorComprobante.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
+
+                    <p:dialog id="operacionEnProceso" header="#{msg['informacion']}" widgetVar="operacionEnProceso"  resizable="false" draggable="false" modal="true" height="65" width="350px" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/Iconos/cargando.gif" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['operacionProceso']}" style="font-size: 12px; position: absolute; left: 95px; top: 20px; width: 240px; font-weight:bold;" />
+                    </p:dialog>
+
                 </h:form>
+
                 <h:form id="formExportar">
                     <p:dataTable id="datosEmpleadosParametrosExportar" var="infoExp" style="visibility: hidden; display: none;"                           
                                  value="#{controlCerrarLiquidacion.listaParametros}"> 

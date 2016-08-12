@@ -1807,9 +1807,9 @@ public class ControlNReporteNomina implements Serializable {
             public void reportFillError(Throwable e) {
                 System.out.println(this.getClass().getName() + ".listener().reportFillError()");
                 if (e.getCause() != null) {
-                    pathReporteGenerado = "ControlNReporteNomina reportFillError Error: " + e.toString() + "\n" + e.getCause().toString();
+                    pathReporteGenerado = "ControlNReportePersonal reportFillError Error: " + e.toString() + "\n" + e.getCause().toString();
                 } else {
-                    pathReporteGenerado = "ControlNReporteNomina reportFillError Error: " + e.toString();
+                    pathReporteGenerado = "ControlNReportePersonal reportFillError Error: " + e.toString();
                 }
                 estadoReporte = true;
                 resultadoReporte = "Se estallo";

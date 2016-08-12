@@ -162,11 +162,6 @@ public class ControlParametroAutoliq implements Serializable {
 //        infoRegistroAporte = "Cantidad de registros : 0";
 //        infoRegistroParametro = "Cantidad de registros : 0";
         numero = 7;
-        altoDivTablaInferiorIzquierda = "195px";
-        topDivTablaInferiorIzquierda = "37px";
-
-        altoDivTablaInferiorDerecha = "195px";
-        topDivTablaInferiorDerecha = "37px";
         activoBtnsPaginas = false;
         disabledBuscar = true;
         altoTabla = "50";
@@ -190,6 +185,7 @@ public class ControlParametroAutoliq implements Serializable {
         listParametrosAutoliqModificar = new ArrayList<ParametrosAutoliq>();
         listParametrosAutoliqBorrar = new ArrayList<ParametrosAutoliq>();
 
+        listaAportesEntidades = null;
         listAportesEntidadesBorrar = new ArrayList<AportesEntidades>();
         listAportesEntidadesModificar = new ArrayList<AportesEntidades>();
         //
@@ -228,7 +224,7 @@ public class ControlParametroAutoliq implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarParametroAutoliq.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
-            numeroScrollAporte = 505;
+            numeroScrollAporte = 600;
             rowsAporteEntidad = 20;
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
@@ -240,9 +236,14 @@ public class ControlParametroAutoliq implements Serializable {
         paginaAnterior = pagina;
         listaParametrosAutoliq = null;
         getListaParametrosAutoliq();
+        getListaAportesEntidades();
         if (listaParametrosAutoliq != null) {
             modificarInfoRegistroParametro(listaParametrosAutoliq.size());
         }
+        if(listaAportesEntidades != null){
+            modificarInfoRegistroAporte(listaAportesEntidades.size());
+        }
+        
 //        cargarListas();
     }
 
@@ -271,21 +272,21 @@ public class ControlParametroAutoliq implements Serializable {
         return numeroScrollAporte;
     }
 
-    public void pruebaRemota() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        int tam = 0;
-        if (tipoListaAporte == 0) {
-            tam = listaAportesEntidades.size();
-        } else {
-            tam = filtrarListaAportesEntidades.size();
-        }
-        if (rowsAporteEntidad < tam) {
-            rowsAporteEntidad = rowsAporteEntidad + 20;
-            numeroScrollAporte = numeroScrollAporte + 500;
-            context.execute("operacionEnProceso.hide()");
-            context.update("form:PanelTotal");
-        }
-    }
+//    public void pruebaRemota() {
+//        RequestContext context = RequestContext.getCurrentInstance();
+//        int tam = 0;
+//        if (tipoListaAporte == 0) {
+//            tam = listaAportesEntidades.size();
+//        } else {
+//            tam = filtrarListaAportesEntidades.size();
+//        }
+//        if (rowsAporteEntidad < tam) {
+//            rowsAporteEntidad = rowsAporteEntidad + 20;
+//            numeroScrollAporte = numeroScrollAporte + 500;
+//            context.execute("operacionEnProceso.hide()");
+//            context.update("form:PanelTotal");
+//        }
+//    }
 
     public void modificarParametroAutoliq(ParametrosAutoliq parametro) {
         RequestContext context = RequestContext.getCurrentInstance();
@@ -359,8 +360,7 @@ public class ControlParametroAutoliq implements Serializable {
             }
             cambiosAporte = true;
         }
-        context.update("form:tablaInferiorIzquierda");
-        context.update("form:tablaInferiorDerecha");
+        context.update("form:tablaAportesEntidades");
     }
 
     public void modificarParametroAutoliq(ParametrosAutoliq parametro, String confirmarCambio, String valorConfirmar) {
@@ -452,11 +452,6 @@ public class ControlParametroAutoliq implements Serializable {
         context.update("form:datosParametroAuto");
     }
 
-    public void organizarTablasEmpleador() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:tablaInferiorIzquierda");
-        context.update("form:tablaInferiorDerecha");
-    }
 
     public void modificarAporteEntidad(AportesEntidades aporte, String confirmarCambio, String valorConfirmar) {
         aporteTablaSeleccionado = aporte;
@@ -580,8 +575,7 @@ public class ControlParametroAutoliq implements Serializable {
                 cambiosAporte = true;
             }
         }
-        context.update("form:tablaInferiorIzquierda");
-        context.update("form:tablaInferiorDerecha");
+        context.update("form:tablaAportesEntidades");
     }
 
     public void valoresBackupAutocompletar(int tipoNuevo, String Campo) {
@@ -740,10 +734,7 @@ public class ControlParametroAutoliq implements Serializable {
             context.update("form:procesoLiq");
             context.update("form:acumDif");
             context.update("form:infoRegistroAporte");
-            context.update("form:tablaSuperiorIzquierda");
-            context.update("form:tablaSuperiorDerecha");
-            context.update("form:tablaInferiorIzquierda");
-            context.update("form:tablaInferiorDerecha");
+            context.update("form:tablaAportesEntidades");
             getParametroTablaSeleccionado();
             cargarDatosNuevos();
         }
@@ -785,10 +776,10 @@ public class ControlParametroAutoliq implements Serializable {
                 auxTipoEntidad = aporteTablaSeleccionado.getTipoentidad().getNombre();
                 if (cualCeldaAporte >= 0 && cualCeldaAporte <= 3) {
                     //aporteTablaSeleccionado = aporteTablaSeleccionado;
-                    context.update("form:tablaInferiorDerecha");
+                    context.update("form:tablaAportesEntidades");
                 } else if (cualCeldaAporte >= 4) {
                     //aporteTablaSeleccionado = aporteTablaSeleccionado;
-                    context.update("form:tablaInferiorIzquierda");
+                    context.update("form:tablaAportesEntidades");
                 }
             } else {
                 aporteTablaSeleccionado.getSecuencia();
@@ -797,10 +788,10 @@ public class ControlParametroAutoliq implements Serializable {
                 auxTipoEntidad = aporteTablaSeleccionado.getTipoentidad().getNombre();
                 if (cualCeldaAporte >= 0 && cualCeldaAporte <= 3) {
                     // aporteTablaSeleccionado = aporteTablaSeleccionado;
-                    context.update("form:tablaInferiorDerecha");
+                    context.update("form:tablaAportesEntidades");
                 } else if (cualCeldaAporte >= 4) {
                     // aporteTablaSeleccionado = aporteTablaSeleccionado;
-                    context.update("form:tablaInferiorIzquierda");
+                    context.update("form:tablaAportesEntidades");
                 }
             }
         }
@@ -1484,8 +1475,7 @@ public class ControlParametroAutoliq implements Serializable {
         modificarInfoRegistroAporte(listaAportesEntidades.size());
 
         context.update("form:infoRegistroAporte");
-        context.update("form:tablaInferiorIzquierda");
-        context.update("form:tablaInferiorDerecha");
+        context.update("form:tablaAportesEntidades");
         aporteTablaSeleccionado = null;
         parametroTablaSeleccionado = null;
         cambiosAporte = true;
@@ -1517,8 +1507,7 @@ public class ControlParametroAutoliq implements Serializable {
                     context.update("form:infoRegistroAporte");
                     context.update("form:infoRegistroParametro");
                     context.update("form:datosParametroAuto");
-                    context.update("form:tablaInferiorIzquierda");
-                    context.update("form:tablaInferiorDerecha");
+                    context.update("form:tablaAportesEntidades");
                     activoBtnsPaginas = true;
                     context.update("form:novedadauto");
                     context.update("form:incaPag");
@@ -1793,9 +1782,7 @@ public class ControlParametroAutoliq implements Serializable {
 //            getListaAportesEntidades();
 //            modificarInfoRegistroAporte(listaAportesEntidades.size());
             guardadoGeneral();
-            context.update("form:tablaInferiorIzquierda");
-            context.update("form:tablaInferiorDerecha");
-//            context.execute("window.location.reload()");
+            context.update("form:tablaAportesEntidades");
 
         } catch (Exception e) {
             System.out.println("Error acumularDiferenciaOK Controlador : " + e.toString());
@@ -1807,7 +1794,7 @@ public class ControlParametroAutoliq implements Serializable {
 
     public void activarCtrlF11() {
 
-        if (parametroTablaSeleccionado != null) {
+//        if (parametroTablaSeleccionado != null) {
             FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 0) {
                 altoTabla = "26";
@@ -1819,6 +1806,7 @@ public class ControlParametroAutoliq implements Serializable {
                 parametroEmpresa.setFilterStyle("width: 85%");
                 RequestContext.getCurrentInstance().update("form:datosParametroAuto");
                 bandera = 1;
+                activarFiltradoAporteEntidad();
             } else if (bandera == 1) {
                 altoTabla = "50";
                 parametroAno = (Column) c.getViewRoot().findComponent("form:datosParametroAuto:parametroAno");
@@ -1831,204 +1819,204 @@ public class ControlParametroAutoliq implements Serializable {
                 bandera = 0;
                 filtrarListaParametrosAutoliq = null;
                 tipoLista = 0;
-            }
-        }
-        if (aporteTablaSeleccionado != null) {
-            if (banderaAporte == 0) {
-                activarFiltradoAporteEntidad();
-                banderaAporte = 1;
-            } else if (banderaAporte == 1) {
                 desactivarFiltradoAporteEntidad();
-                banderaAporte = 0;
-                filtrarListaAportesEntidades = null;
-                tipoListaAporte = 0;
             }
-        }
+//        }
+//        if (aporteTablaSeleccionado != null) {
+//            if (banderaAporte == 0) {
+//                activarFiltradoAporteEntidad();
+//                banderaAporte = 1;
+//            } else if (banderaAporte == 1) {
+//                desactivarFiltradoAporteEntidad();
+//                banderaAporte = 0;
+//                filtrarListaAportesEntidades = null;
+//                tipoListaAporte = 0;
+//            }
+//        }
     }
 
     public void desactivarFiltradoAporteEntidad() {
         FacesContext c = FacesContext.getCurrentInstance();
         altoTablaAporte = "180";
 
-        aporteCodigoEmpleado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:aporteCodigoEmpleado");
+        aporteCodigoEmpleado = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteCodigoEmpleado");
         aporteCodigoEmpleado.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteAno = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:aporteAno");
+        aporteAno = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteAno");
         aporteAno.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteMes = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:aporteMes");
+        aporteMes = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteMes");
         aporteMes.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteNombreEmpleado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:aporteNombreEmpleado");
+        aporteNombreEmpleado = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteNombreEmpleado");
         aporteNombreEmpleado.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteNIT = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteNIT");
+        aporteNIT = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteNIT");
         aporteNIT.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteTercero = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTercero");
+        aporteTercero = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTercero");
         aporteTercero.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteTipoEntidad = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTipoEntidad");
+        aporteTipoEntidad = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTipoEntidad");
         aporteTipoEntidad.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteEmpleado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteEmpleado");
+        aporteEmpleado = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteEmpleado");
         aporteEmpleado.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteEmpleador = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteEmpleador");
+        aporteEmpleador = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteEmpleador");
         aporteEmpleador.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteAjustePatronal = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteAjustePatronal");
+        aporteAjustePatronal = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteAjustePatronal");
         aporteAjustePatronal.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteSolidaridadl = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteSolidaridadl");
+        aporteSolidaridadl = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteSolidaridadl");
         aporteSolidaridadl.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteSubSistencia = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteSubSistencia");
+        aporteSubSistencia = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteSubSistencia");
         aporteSubSistencia.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteSubsPensionados = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteSubsPensionados");
+        aporteSubsPensionados = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteSubsPensionados");
         aporteSubsPensionados.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteSalarioBasico = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteSalarioBasico");
+        aporteSalarioBasico = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteSalarioBasico");
         aporteSalarioBasico.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteIBC = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteIBC");
+        aporteIBC = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteIBC");
         aporteIBC.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteIBCReferencia = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteIBCReferencia");
+        aporteIBCReferencia = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteIBCReferencia");
         aporteIBCReferencia.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteDiasCotizados = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteDiasCotizados");
+        aporteDiasCotizados = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteDiasCotizados");
         aporteDiasCotizados.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteTipoAportante = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTipoAportante");
+        aporteTipoAportante = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTipoAportante");
         aporteTipoAportante.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteING = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteING");
+        aporteING = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteING");
         aporteING.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteRET = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteRET");
+        aporteRET = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteRET");
         aporteRET.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteTDA = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTDA");
+        aporteTDA = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTDA");
         aporteTDA.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteTAA = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTAA");
+        aporteTAA = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTAA");
         aporteTAA.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteVSP = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteVSP");
+        aporteVSP = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteVSP");
         aporteVSP.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteVTE = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteVTE");
+        aporteVTE = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteVTE");
         aporteVTE.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteVST = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteVST");
+        aporteVST = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteVST");
         aporteVST.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteSLN = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteSLN");
+        aporteSLN = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteSLN");
         aporteSLN.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteIGE = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteIGE");
+        aporteIGE = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteIGE");
         aporteIGE.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteLMA = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteLMA");
+        aporteLMA = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteLMA");
         aporteLMA.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteVAC = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteVAC");
+        aporteVAC = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteVAC");
         aporteVAC.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteAVP = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteAVP");
+        aporteAVP = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteAVP");
         aporteAVP.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteVCT = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteVCT");
+        aporteVCT = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteVCT");
         aporteVCT.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteIRP = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteIRP");
+        aporteIRP = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteIRP");
         aporteIRP.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteSUS = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteSUS");
+        aporteSUS = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteSUS");
         aporteSUS.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteINTE = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteINTE");
+        aporteINTE = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteINTE");
         aporteINTE.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteTarifaEPS = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTarifaEPS");
+        aporteTarifaEPS = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTarifaEPS");
         aporteTarifaEPS.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteTarifaAAFP = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTarifaAAFP");
+        aporteTarifaAAFP = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTarifaAAFP");
         aporteTarifaAAFP.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteTarifaACTT = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTarifaACTT");
+        aporteTarifaACTT = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTarifaACTT");
         aporteTarifaACTT.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteCodigoCTT = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteCodigoCTT");
+        aporteCodigoCTT = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteCodigoCTT");
         aporteCodigoCTT.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteAVPEValor = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteAVPEValor");
+        aporteAVPEValor = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteAVPEValor");
         aporteAVPEValor.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteAVPPValor = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteAVPPValor");
+        aporteAVPPValor = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteAVPPValor");
         aporteAVPPValor.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteRETCONTAValor = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteRETCONTAValor");
+        aporteRETCONTAValor = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteRETCONTAValor");
         aporteRETCONTAValor.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteCodigoNEPS = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteCodigoNEPS");
+        aporteCodigoNEPS = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteCodigoNEPS");
         aporteCodigoNEPS.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteCodigoNAFP = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteCodigoNAFP");
+        aporteCodigoNAFP = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteCodigoNAFP");
         aporteCodigoNAFP.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteEGValor = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteEGValor");
+        aporteEGValor = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteEGValor");
         aporteEGValor.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteEGAutorizacion = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteEGAutorizacion");
+        aporteEGAutorizacion = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteEGAutorizacion");
         aporteEGAutorizacion.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteMaternidadValor = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteMaternidadValor");
+        aporteMaternidadValor = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteMaternidadValor");
         aporteMaternidadValor.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteMaternidadAuto = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteMaternidadAuto");
+        aporteMaternidadAuto = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteMaternidadAuto");
         aporteMaternidadAuto.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteUPCValor = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteUPCValor");
+        aporteUPCValor = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteUPCValor");
         aporteUPCValor.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteTipo = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTipo");
+        aporteTipo = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTipo");
         aporteTipo.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteTipoPensionado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTipoPensionado");
+        aporteTipoPensionado = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTipoPensionado");
         aporteTipoPensionado.setFilterStyle("display: none; visibility: hidden;");
 
-        aportePensionCompartida = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aportePensionCompartida");
+        aportePensionCompartida = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aportePensionCompartida");
         aportePensionCompartida.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteExtranjero = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteExtranjero");
+        aporteExtranjero = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteExtranjero");
         aporteExtranjero.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteFechaIngreso = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteFechaIngreso");
+        aporteFechaIngreso = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteFechaIngreso");
         aporteFechaIngreso.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteSubTipoCotizante = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteSubTipoCotizante");
+        aporteSubTipoCotizante = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteSubTipoCotizante");
         aporteSubTipoCotizante.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteTarifaCaja = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTarifaCaja");
+        aporteTarifaCaja = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTarifaCaja");
         aporteTarifaCaja.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteTarifaSena = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTarifaSena");
+        aporteTarifaSena = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTarifaSena");
         aporteTarifaSena.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteTarifaICBF = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTarifaICBF");
+        aporteTarifaICBF = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTarifaICBF");
         aporteTarifaICBF.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteTarifaESAP = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTarifaESAP");
+        aporteTarifaESAP = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTarifaESAP");
         aporteTarifaESAP.setFilterStyle("display: none; visibility: hidden;");
 
-        aporteTarifaMEN = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTarifaMEN");
+        aporteTarifaMEN = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTarifaMEN");
         aporteTarifaMEN.setFilterStyle("display: none; visibility: hidden;");
 
-        RequestContext.getCurrentInstance().update("form:tablaSuperiorIzquierda");
-        RequestContext.getCurrentInstance().update("form:tablaSuperiorDerecha");
+        RequestContext.getCurrentInstance().update("form:tablaAportesEntidades");
 
         altoDivTablaInferiorIzquierda = "195px";
         topDivTablaInferiorIzquierda = "37px";
@@ -2044,185 +2032,184 @@ public class ControlParametroAutoliq implements Serializable {
         FacesContext c = FacesContext.getCurrentInstance();
         altoTablaAporte = "158";
 
-        aporteCodigoEmpleado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:aporteCodigoEmpleado");
+        aporteCodigoEmpleado = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteCodigoEmpleado");
         aporteCodigoEmpleado.setFilterStyle("width: 85%");
 
-        aporteAno = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:aporteAno");
+        aporteAno = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteAno");
         aporteAno.setFilterStyle("width: 85%");
 
-        aporteMes = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:aporteMes");
+        aporteMes = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteMes");
         aporteMes.setFilterStyle("width: 85%");
 
-        aporteNombreEmpleado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorIzquierda:aporteNombreEmpleado");
+        aporteNombreEmpleado = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteNombreEmpleado");
         aporteNombreEmpleado.setFilterStyle("width: 85%");
 
-        aporteNIT = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteNIT");
+        aporteNIT = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteNIT");
         aporteNIT.setFilterStyle("width: 85%");
 
-        aporteTercero = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTercero");
+        aporteTercero = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTercero");
         aporteTercero.setFilterStyle("width: 85%");
 
-        aporteTipoEntidad = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTipoEntidad");
+        aporteTipoEntidad = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTipoEntidad");
         aporteTipoEntidad.setFilterStyle("width: 85%");
 
-        aporteEmpleado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteEmpleado");
+        aporteEmpleado = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteEmpleado");
         aporteEmpleado.setFilterStyle("width: 85%");
 
-        aporteEmpleador = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteEmpleador");
+        aporteEmpleador = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteEmpleador");
         aporteEmpleador.setFilterStyle("width: 85%");
 
-        aporteAjustePatronal = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteAjustePatronal");
+        aporteAjustePatronal = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteAjustePatronal");
         aporteAjustePatronal.setFilterStyle("width: 85%");
 
-        aporteSolidaridadl = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteSolidaridadl");
+        aporteSolidaridadl = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteSolidaridadl");
         aporteSolidaridadl.setFilterStyle("width: 85%");
 
-        aporteSubSistencia = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteSubSistencia");
+        aporteSubSistencia = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteSubSistencia");
         aporteSubSistencia.setFilterStyle("width: 85%");
 
-        aporteSubsPensionados = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteSubsPensionados");
+        aporteSubsPensionados = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteSubsPensionados");
         aporteSubsPensionados.setFilterStyle("width: 85%");
 
-        aporteSalarioBasico = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteSalarioBasico");
+        aporteSalarioBasico = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteSalarioBasico");
         aporteSalarioBasico.setFilterStyle("width: 85%");
 
-        aporteIBC = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteIBC");
+        aporteIBC = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteIBC");
         aporteIBC.setFilterStyle("width: 85%");
 
-        aporteIBCReferencia = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteIBCReferencia");
+        aporteIBCReferencia = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteIBCReferencia");
         aporteIBCReferencia.setFilterStyle("width: 85%");
 
-        aporteDiasCotizados = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteDiasCotizados");
+        aporteDiasCotizados = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteDiasCotizados");
         aporteDiasCotizados.setFilterStyle("width: 85%");
 
-        aporteTipoAportante = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTipoAportante");
+        aporteTipoAportante = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTipoAportante");
         aporteTipoAportante.setFilterStyle("width: 85%");
 
-        aporteING = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteING");
+        aporteING = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteING");
         aporteING.setFilterStyle("width: 85%");
 
-        aporteRET = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteRET");
+        aporteRET = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteRET");
         aporteRET.setFilterStyle("width: 85%");
 
-        aporteTDA = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTDA");
+        aporteTDA = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTDA");
         aporteTDA.setFilterStyle("width: 85%");
 
-        aporteTAA = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTAA");
+        aporteTAA = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTAA");
         aporteTAA.setFilterStyle("width: 85%");
 
-        aporteVSP = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteVSP");
+        aporteVSP = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteVSP");
         aporteVSP.setFilterStyle("width: 85%");
 
-        aporteVTE = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteVTE");
+        aporteVTE = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteVTE");
         aporteVTE.setFilterStyle("width: 85%");
 
-        aporteVST = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteVST");
+        aporteVST = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteVST");
         aporteVST.setFilterStyle("width: 85%");
 
-        aporteSLN = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteSLN");
+        aporteSLN = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteSLN");
         aporteSLN.setFilterStyle("width: 85%");
 
-        aporteIGE = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteIGE");
+        aporteIGE = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteIGE");
         aporteIGE.setFilterStyle("width: 85%");
 
-        aporteLMA = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteLMA");
+        aporteLMA = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteLMA");
         aporteLMA.setFilterStyle("width: 85%");
 
-        aporteVAC = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteVAC");
+        aporteVAC = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteVAC");
         aporteVAC.setFilterStyle("width: 85%");
 
-        aporteAVP = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteAVP");
+        aporteAVP = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteAVP");
         aporteAVP.setFilterStyle("width: 85%");
 
-        aporteVCT = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteVCT");
+        aporteVCT = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteVCT");
         aporteVCT.setFilterStyle("width: 85%");
 
-        aporteIRP = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteIRP");
+        aporteIRP = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteIRP");
         aporteIRP.setFilterStyle("width: 85%");
 
-        aporteSUS = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteSUS");
+        aporteSUS = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteSUS");
         aporteSUS.setFilterStyle("width: 85%");
 
-        aporteINTE = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteINTE");
+        aporteINTE = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteINTE");
         aporteINTE.setFilterStyle("width: 85%");
 
-        aporteTarifaEPS = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTarifaEPS");
+        aporteTarifaEPS = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTarifaEPS");
         aporteTarifaEPS.setFilterStyle("width: 85%");
 
-        aporteTarifaAAFP = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTarifaAAFP");
+        aporteTarifaAAFP = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTarifaAAFP");
         aporteTarifaAAFP.setFilterStyle("width: 85%");
 
-        aporteTarifaACTT = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTarifaACTT");
+        aporteTarifaACTT = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTarifaACTT");
         aporteTarifaACTT.setFilterStyle("width: 85%");
 
-        aporteCodigoCTT = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteCodigoCTT");
+        aporteCodigoCTT = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteCodigoCTT");
         aporteCodigoCTT.setFilterStyle("width: 85%");
 
-        aporteAVPEValor = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteAVPEValor");
+        aporteAVPEValor = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteAVPEValor");
         aporteAVPEValor.setFilterStyle("width: 85%");
 
-        aporteAVPPValor = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteAVPPValor");
+        aporteAVPPValor = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteAVPPValor");
         aporteAVPPValor.setFilterStyle("width: 85%");
 
-        aporteRETCONTAValor = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteRETCONTAValor");
+        aporteRETCONTAValor = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteRETCONTAValor");
         aporteRETCONTAValor.setFilterStyle("width: 85%");
 
-        aporteCodigoNEPS = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteCodigoNEPS");
+        aporteCodigoNEPS = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteCodigoNEPS");
         aporteCodigoNEPS.setFilterStyle("width: 85%");
 
-        aporteCodigoNAFP = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteCodigoNAFP");
+        aporteCodigoNAFP = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteCodigoNAFP");
         aporteCodigoNAFP.setFilterStyle("width: 85%");
 
-        aporteEGValor = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteEGValor");
+        aporteEGValor = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteEGValor");
         aporteEGValor.setFilterStyle("width: 85%");
 
-        aporteEGAutorizacion = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteEGAutorizacion");
+        aporteEGAutorizacion = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteEGAutorizacion");
         aporteEGAutorizacion.setFilterStyle("width: 85%");
 
-        aporteMaternidadValor = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteMaternidadValor");
+        aporteMaternidadValor = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteMaternidadValor");
         aporteMaternidadValor.setFilterStyle("width: 85%");
 
-        aporteMaternidadAuto = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteMaternidadAuto");
+        aporteMaternidadAuto = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteMaternidadAuto");
         aporteMaternidadAuto.setFilterStyle("width: 85%");
 
-        aporteUPCValor = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteUPCValor");
+        aporteUPCValor = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteUPCValor");
         aporteUPCValor.setFilterStyle("width: 85%");
 
-        aporteTipo = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTipo");
+        aporteTipo = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTipo");
         aporteTipo.setFilterStyle("width: 85%");
 
-        aporteTipoPensionado = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTipoPensionado");
+        aporteTipoPensionado = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTipoPensionado");
         aporteTipoPensionado.setFilterStyle("width: 85%");
 
-        aportePensionCompartida = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aportePensionCompartida");
+        aportePensionCompartida = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aportePensionCompartida");
         aportePensionCompartida.setFilterStyle("width: 85%");
 
-        aporteExtranjero = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteExtranjero");
+        aporteExtranjero = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteExtranjero");
         aporteExtranjero.setFilterStyle("width: 85%");
 
-        aporteFechaIngreso = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteFechaIngreso");
+        aporteFechaIngreso = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteFechaIngreso");
         aporteFechaIngreso.setFilterStyle("width: 85%");
 
-        aporteSubTipoCotizante = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteSubTipoCotizante");
+        aporteSubTipoCotizante = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteSubTipoCotizante");
         aporteSubTipoCotizante.setFilterStyle("width: 85%");
 
-        aporteTarifaCaja = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTarifaCaja");
+        aporteTarifaCaja = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTarifaCaja");
         aporteTarifaCaja.setFilterStyle("width: 85%");
 
-        aporteTarifaSena = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTarifaSena");
+        aporteTarifaSena = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTarifaSena");
         aporteTarifaSena.setFilterStyle("width: 85%");
 
-        aporteTarifaICBF = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTarifaICBF");
+        aporteTarifaICBF = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTarifaICBF");
         aporteTarifaICBF.setFilterStyle("width: 85%");
 
-        aporteTarifaESAP = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTarifaESAP");
+        aporteTarifaESAP = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTarifaESAP");
         aporteTarifaESAP.setFilterStyle("width: 85%");
 
-        aporteTarifaMEN = (Column) c.getViewRoot().findComponent("form:tablaSuperiorDerecha:aporteTarifaMEN");
+        aporteTarifaMEN = (Column) c.getViewRoot().findComponent("form:tablaAportesEntidades:aporteTarifaMEN");
         aporteTarifaMEN.setFilterStyle("width: 85%");
 
-        RequestContext.getCurrentInstance().update("form:tablaSuperiorIzquierda");
-        RequestContext.getCurrentInstance().update("form:tablaSuperiorDerecha");
+        RequestContext.getCurrentInstance().update("form:tablaAportesEntidades:tablaAportesEntidades");
 
         altoDivTablaInferiorIzquierda = "173px";
         altoDivTablaInferiorDerecha = "173px";
@@ -2232,12 +2219,6 @@ public class ControlParametroAutoliq implements Serializable {
 
         RequestContext.getCurrentInstance().update("form:PanelTotal");
 
-    }
-
-    public void organizarTablas() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:tablaInferiorIzquierda");
-        context.update("form:tablaInferiorDerecha");
     }
 
     public void salir() {
@@ -2471,7 +2452,7 @@ public class ControlParametroAutoliq implements Serializable {
             }
             permitirIndexAporte = true;
             cambiosAporte = true;
-            context.update("form:tablaInferiorIzquierda");
+            context.update("form:tablaAportesEntidades");
 
         }
         filtrarLovEmpleados = null;
@@ -2528,7 +2509,7 @@ public class ControlParametroAutoliq implements Serializable {
             }
             permitirIndexAporte = true;
             cambiosAporte = true;
-            context.update("form:tablaInferiorDerecha");
+            context.update("form:tablaAportesEntidades");
         }
         filtrarLovTerceros = null;
         terceroSeleccionado = new Terceros();
@@ -2583,7 +2564,7 @@ public class ControlParametroAutoliq implements Serializable {
             }
             permitirIndexAporte = true;
             cambiosAporte = true;
-            context.update("form:tablaInferiorDerecha");
+            context.update("form:tablaAportesEntidades");
         }
         filtrarLovTiposEntidades = null;
         tipoEntidadSeleccionado = new TiposEntidades();
@@ -2831,8 +2812,7 @@ public class ControlParametroAutoliq implements Serializable {
                 tipoListaAporte = 1;
             }
             modificarInfoRegistroAporte(filtrarListaAportesEntidades.size());
-            context.update("form:tablaInferiorIzquierda");
-            context.update("form:tablaInferiorDerecha");
+            context.update("form:tablaAportesEntidades");
         }
     }
 

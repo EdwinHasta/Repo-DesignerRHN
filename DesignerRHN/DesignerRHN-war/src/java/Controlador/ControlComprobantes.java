@@ -106,6 +106,7 @@ public class ControlComprobantes implements Serializable {
         solucionNodoSeleccionada = null;
         solucionNodoEmpleadorSeleccionada = null;
         editarSolucionNodo = new SolucionesNodos();
+        registroActual = 0;
     }
 
     @PostConstruct
