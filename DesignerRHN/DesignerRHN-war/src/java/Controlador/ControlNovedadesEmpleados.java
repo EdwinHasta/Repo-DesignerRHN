@@ -470,7 +470,6 @@ public class ControlNovedadesEmpleados implements Serializable {
     public void agregarNuevaNovedadEmpleado() throws UnknownHostException {
         int pasa = 0;
         int pasa2 = 0;
-//        cargarTodosEmpleados();
         Empleados emp = new Empleados();
         Empleados emp2 = new Empleados();
         RequestContext context = RequestContext.getCurrentInstance();
@@ -666,6 +665,7 @@ public class ControlNovedadesEmpleados implements Serializable {
 
         if (cualLista == 0) {
             if (cargarTodos) {
+                listaEmpleadosNovedad = null;
                 cargarTodosEmpleados();
                 cargarTodos = false;
             }
@@ -739,7 +739,7 @@ public class ControlNovedadesEmpleados implements Serializable {
     }
 
     //AUTOCOMPLETAR
-    public void modificarNovedades(Novedades novedad, String confirmarCambio, String valorConfirmar) {
+    public void modificarNovedades(Novedades novedad, String confirmarCambio, String valor) {
 
         novedadSeleccionada = novedad;
         int coincidencias = 0;
@@ -749,7 +749,6 @@ public class ControlNovedadesEmpleados implements Serializable {
         context.update("form:ACUMULADOS");
         if (confirmarCambio.equalsIgnoreCase("N")) {
             if (!listaNovedadesCrear.contains(novedadSeleccionada)) {
-
                 if (listaNovedadesModificar.isEmpty()) {
                     listaNovedadesModificar.add(novedadSeleccionada);
                 } else if (!listaNovedadesModificar.contains(novedadSeleccionada)) {
@@ -760,14 +759,12 @@ public class ControlNovedadesEmpleados implements Serializable {
                     RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
-
             context.update("form:datosNovedadesEmpleado");
         } else if (confirmarCambio.equalsIgnoreCase("FORMULA")) {
             cargarLOVFormulas();
             novedadSeleccionada.getFormula().setNombresFormula(Formula);
-
             for (int i = 0; i < listaFormulas.size(); i++) {
-                if (listaFormulas.get(i).getNombresFormula().startsWith(valorConfirmar.toUpperCase())) {
+                if (listaFormulas.get(i).getNombresFormula().startsWith(valor.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -783,9 +780,8 @@ public class ControlNovedadesEmpleados implements Serializable {
         } else if (confirmarCambio.equalsIgnoreCase("NIT")) {
             cargarLOVTerceros();
             novedadSeleccionada.getTercero().setNitalternativo(NitTercero);
-
             for (int i = 0; i < listaTerceros.size(); i++) {
-                if (listaTerceros.get(i).getNitalternativo().startsWith(valorConfirmar.toUpperCase())) {
+                if (listaTerceros.get(i).getNitalternativo().startsWith(valor.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -799,22 +795,21 @@ public class ControlNovedadesEmpleados implements Serializable {
                 context.execute("tercerosDialogo.show()");
                 tipoActualizacion = 0;
             }
+            
         } else if (confirmarCambio.equalsIgnoreCase("CONCEPTO")) {
             cargarLOVConceptos();
+            
         } else if (confirmarCambio.equalsIgnoreCase("CODIGOPERIODICIDAD")) {
             cargarLOVConceptos();
             novedadSeleccionada.getPeriodicidad().setCodigoStr(CodigoPeriodicidad);
-
             for (int i = 0; i < listaPeriodicidades.size(); i++) {
-                if ((listaPeriodicidades.get(i).getCodigoStr()).startsWith(valorConfirmar.toString().toUpperCase())) {
-
+                if ((listaPeriodicidades.get(i).getCodigoStr()).startsWith(valor.toString().toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
             }
             if (coincidencias == 1) {
                 novedadSeleccionada.setPeriodicidad(listaPeriodicidades.get(indiceUnicoElemento));
-
             } else {
                 permitirIndex = false;
                 context.update("formularioDialogos:periodicidadesDialogo");
@@ -1062,7 +1057,7 @@ public class ControlNovedadesEmpleados implements Serializable {
         }
     }
 
-    public void autocompletarNuevoyDuplicado(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
+    public void autocompletarNuevoyDuplicado(String confirmarCambio, String valor, int tipoNuevo) {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1074,7 +1069,7 @@ public class ControlNovedadesEmpleados implements Serializable {
                 duplicarNovedad.getFormula().setNombrelargo(Formula);
             }
             for (int i = 0; i < listaFormulas.size(); i++) {
-                if (listaFormulas.get(i).getNombrelargo().startsWith(valorConfirmar.toUpperCase())) {
+                if (listaFormulas.get(i).getNombrelargo().startsWith(valor.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -1106,9 +1101,11 @@ public class ControlNovedadesEmpleados implements Serializable {
             }
 
             for (int i = 0; i < listaTerceros.size(); i++) {
-                if (listaTerceros.get(i).getNitalternativo().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
+                if (listaTerceros.get(i).getNitalternativo() != null) {
+                    if (listaTerceros.get(i).getNitalternativo().startsWith(valor.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
                 }
             }
             if (coincidencias == 1) {
@@ -1142,7 +1139,7 @@ public class ControlNovedadesEmpleados implements Serializable {
             }
 
             for (int i = 0; i < listaPeriodicidades.size(); i++) {
-                if (listaPeriodicidades.get(i).getCodigoStr().startsWith(valorConfirmar.toUpperCase())) {
+                if (listaPeriodicidades.get(i).getCodigoStr().startsWith(valor.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -1177,7 +1174,7 @@ public class ControlNovedadesEmpleados implements Serializable {
                 duplicarNovedad.getConcepto().setCodigoSTR(CodigoConcepto);
             }
             for (int i = 0; i < listaConceptos.size(); i++) {
-                if (listaConceptos.get(i).getCodigoSTR().startsWith(valorConfirmar.toUpperCase())) {
+                if (listaConceptos.get(i).getCodigoSTR().startsWith(valor.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -1185,11 +1182,15 @@ public class ControlNovedadesEmpleados implements Serializable {
             if (coincidencias == 1) {
                 if (tipoNuevo == 1) {
                     nuevaNovedad.setConcepto(listaConceptos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevoConcepto");
+                    Formulas formula = verificarFormulaConcepto(nuevaNovedad.getConcepto().getSecuencia());
+                    nuevaNovedad.setFormula(formula);
+                    context.update("formularioDialogos:nuevaNovedad");
                     context.update("formularioDialogos:nuevoConceptoDescripcion");
                 } else if (tipoNuevo == 2) {
                     duplicarNovedad.setConcepto(listaConceptos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarConcepto");
+                    Formulas formula = verificarFormulaConcepto(duplicarNovedad.getConcepto().getSecuencia());
+                    duplicarNovedad.setFormula(formula);
+                    context.update("formularioDialogos:duplicarNovedad");
                     context.update("formularioDialogos:duplicarConceptoDescripcion");
                 }
             } else {
@@ -1436,8 +1437,13 @@ public class ControlNovedadesEmpleados implements Serializable {
     public void mostrarTodos() {
         System.out.println("controlNovedadesEmpleados.mostrarTodos...");
         RequestContext context = RequestContext.getCurrentInstance();
-        listaEmpleadosNovedad.clear();
+        if (cargarTodos) {
+            listaEmpleadosNovedad = null;
+            cargarTodosEmpleados();
+            cargarTodos = false;
+        }
 
+        listaEmpleadosNovedad.clear();
         if (lovEmpleados != null) {
             for (int i = 0; i < lovEmpleados.size(); i++) {
                 listaEmpleadosNovedad.add(lovEmpleados.get(i));
@@ -1753,11 +1759,12 @@ public class ControlNovedadesEmpleados implements Serializable {
     }
 
     public void cargarTodosEmpleados() {
-        listaEmpleadosNovedad = null;
-        listaEmpleadosNovedad = administrarNovedadesEmpleados.empleadosNovedad();
-        lovEmpleados = new ArrayList<PruebaEmpleados>();
-        for (int i = 0; i < listaEmpleadosNovedad.size(); i++) {
-            lovEmpleados.add(listaEmpleadosNovedad.get(i));
+        if (listaEmpleadosNovedad == null) {
+            listaEmpleadosNovedad = administrarNovedadesEmpleados.empleadosNovedad();
+            lovEmpleados = new ArrayList<PruebaEmpleados>();
+            for (int i = 0; i < listaEmpleadosNovedad.size(); i++) {
+                lovEmpleados.add(listaEmpleadosNovedad.get(i));
+            }
         }
     }
 
@@ -2189,5 +2196,5 @@ public class ControlNovedadesEmpleados implements Serializable {
     public void setActivarLOV(boolean activarLOV) {
         this.activarLOV = activarLOV;
     }
-    
+
 }

@@ -128,7 +128,7 @@ public class Periodicidades implements Serializable {
     }
 
     public void setCodigoStr(String codigoStr) {
-        if (codigoStr != " ") {
+        if (!codigoStr.equals(" ") && !codigoStr.equals("")) {
             codigo = Integer.parseInt(codigoStr);
             this.codigoStr = codigoStr;
         } else {
