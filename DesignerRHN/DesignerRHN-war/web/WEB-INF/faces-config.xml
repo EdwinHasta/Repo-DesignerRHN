@@ -5492,24 +5492,6 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/parametroautoliq.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>odiscabeceras</from-outcome>
-            <to-view-id>/odicabecera.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/odicabecera.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>atrasodiscabeceras</from-outcome>
-            <to-view-id>/parametroautoliq.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-      <navigation-rule>
         <from-view-id>/nominaf.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>estadisticas</from-outcome>
@@ -5522,6 +5504,23 @@
         <navigation-case>
             <from-outcome>atrasNomina</from-outcome>
             <to-view-id>/nominaf.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/parametroautoliq.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nreportesseguridad</from-outcome>
+            <to-view-id>/nreporteseguridad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/nreporteseguridad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasnreportesseguridad</from-outcome>
+            <to-view-id>/parametroautoliq.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

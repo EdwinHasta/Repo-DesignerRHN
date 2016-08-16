@@ -1265,6 +1265,7 @@ public class ControlParametroAutoliq implements Serializable {
             }
             listaParametrosAutoliq.add(nuevoParametro);
             parametroTablaSeleccionado = nuevoParametro;
+            cambiarIndice(nuevoParametro, cualCelda);
             nuevoParametro = new ParametrosAutoliq();
             nuevoParametro.setTipotrabajador(new TiposTrabajadores());
             nuevoParametro.setEmpresa(new Empresas());
@@ -1272,7 +1273,6 @@ public class ControlParametroAutoliq implements Serializable {
 
             modificarInfoRegistroParametro(listaParametrosAutoliq.size());
 
-            context.update("form:infoRegistroParametro");
             context.update("form:datosParametroAuto");
             context.execute("NuevoRegistroParametro.hide()");
             if (guardado == true) {
@@ -2281,6 +2281,7 @@ public class ControlParametroAutoliq implements Serializable {
         if (dialogo == 2) {
             context.update("formularioLovEmpresa:EmpresaDialogo");
             context.execute("EmpresaDialogo.show()");
+            modificarInfoRegistroEmpresa(lovEmpresas.size());
         }
     }
 

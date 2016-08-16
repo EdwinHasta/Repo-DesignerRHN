@@ -1111,27 +1111,34 @@
 
 
 
-                        <p:commandButton id="novedadauto"  style="position: absolute; left: 20px; top: 460px;" action="novedadauto" actionListener="#{controlNovedadAutoLiquidacion.recibirPag('novedadautoliq')}" oncomplete="#{controlNovedadAutoLiquidacion.recibirParametros(controlParametroAutoliq.parametroTablaSeleccionado.ano,controlParametroAutoliq.parametroTablaSeleccionado.mes,controlParametroAutoliq.parametroTablaSeleccionado.empresa.secuencia)}"  value="#{msg['novAuto']}" process="@this" />
+                        <p:commandButton id="novedadauto"  style="position: absolute; left: 20px; top: 440px; height: 40px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" action="novedadauto" actionListener="#{controlNovedadAutoLiquidacion.recibirPag('novedadautoliq')}" 
+                                         oncomplete="#{controlNovedadAutoLiquidacion.recibirParametros(controlParametroAutoliq.parametroTablaSeleccionado.ano,controlParametroAutoliq.parametroTablaSeleccionado.mes,controlParametroAutoliq.parametroTablaSeleccionado.empresa.secuencia)}"
+                                         value="#{msg['novAuto']}" process="@this" />
                         <!--onclick="#/{controlNovedadAutoLiquidacion.recibirParametros(infoPA.ano, infoPA.mes, infoPA.empresa.secuencia)}"-->
                         <p:tooltip value="#{msg['btn2']}" for="novedadauto"/>
 
 <!--                        <p:commandButton id="incaPag"  style="position: absolute; left: 110px; top: 460px;"   value="#{msg['incaPag']}" action="odiscabeceras" actionListener="#{controlOdiCabecera.recibirPag('odicabecera')}" oncomplete="#{controlOdiCabecera.recibirParametros(controlParametroAutoliq.parametroTablaSeleccionado.ano,controlParametroAutoliq.parametroTablaSeleccionado.mes,controlParametroAutoliq.parametroTablaSeleccionado.empresa.secuencia)}" process="@this"/>
                         <p:tooltip value="#{msg['btn3']}" for="incaPag"/>-->
 
-                        <p:commandButton id="eliminarToda" style="position: absolute; left: 110px; top: 460px;"   value="#{msg['eliminarToda']}" onclick="confirmarBorrarTodoAuto.show()" process="@this" />
+                        <p:commandButton id="eliminarToda" style="position: absolute; left: 150px; top: 440px;height: 40px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;"   value="#{msg['eliminarToda']}" onclick="confirmarBorrarTodoAuto.show()" process="@this" />
                         <p:tooltip value="#{msg['btn4']}" for="eliminarToda"/>
 
-                        <p:commandButton id="procesoLiq" style="position: absolute; left: 280px; top: 460px;"  value="#{msg['procesoLiq']}" actionListener="#{controlParametroAutoliq.procesoLiquidacionAporteEntidad()}" process="@this" />
+                        <p:commandButton id="procesoLiq" style="position: absolute; left: 330px; top: 440px;height: 40px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;"  value="#{msg['procesoLiq']}" actionListener="#{controlParametroAutoliq.procesoLiquidacionAporteEntidad()}" process="@this" />
                         <p:tooltip value="#{msg['btn5']}" for="procesoLiq"/>
 
-                        <p:commandButton id="generacionArch" style="position: absolute; left: 425px; top: 460px;"  value="#{msg['generacionArch']}" process="@this" action="nreportescontabilidad" />
+                        <p:commandButton id="generacionArch" style="position: absolute; left: 475px; top: 440px;height: 40px; width: 130px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;"  value="#{msg['generacionArch']}" process="@this" action="nreportesseguridad" />
                         <p:tooltip value="#{msg['btn6']}" for="generacionArch"/>
 
-                        <p:commandButton id="acumDif"  style="position: absolute; left: 262px; top: 460px;width: 1px; height: 18px; border-color: black"  actionListener="#{controlParametroAutoliq.procesoAcumularDiferenciaAporteEntidad()}" value=" " process="@this" />
+                        <p:commandButton id="acumDif"  style="position: absolute; left: 312px; top: 450px;height: 90px; width: 30px; background-image: url(Imagenes/Iconos/boton.png); color: white;
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 1px; height: 18px; border-color: black"  actionListener="#{controlParametroAutoliq.procesoAcumularDiferenciaAporteEntidad()}" value=" " process="@this" />
                         <p:tooltip value="#{msg['btn7']}" for="acumDif"/>
                         <!--disabled="#/{controlParametroAutoliq.activoBtnsPaginas}"-->
 
-                        <p:commandButton id="buscar" style="position: absolute; left: 20px; top: 490px;width: 150px; height: 30px; background-image: url(Imagenes/Iconos/buscardbL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlParametroAutoliq.dispararDialogoBuscar()}"  value=" " process="@this" />
+                        <p:commandButton id="buscar" style="position: absolute; left: 20px; top: 490px;  width: 150px; height: 30px; background-image: url(Imagenes/Iconos/buscardbL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;" actionListener="#{controlParametroAutoliq.dispararDialogoBuscar()}"  value=" " process="@this" />
                         <p:tooltip value="#{msg['btn1']}" for="buscar"/>
 
                         <p:commandButton id="mostrarTodos" style="position: absolute; left: 200px; top: 490px;  width: 150px; height: 30px; background-image: url(Imagenes/Iconos/todosdbL.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; " onclick="operacionEnProceso.show()" actionListener="#{controlParametroAutoliq.mostrarTodosAporteEntidad()}" value="" process="@this" />

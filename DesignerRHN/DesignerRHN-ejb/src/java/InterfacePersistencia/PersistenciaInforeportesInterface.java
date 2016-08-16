@@ -65,6 +65,8 @@ public interface PersistenciaInforeportesInterface {
      */
     public List<Inforeportes> buscarInforeportesUsuarioBienestar(EntityManager em );
     
+    public List<Inforeportes> buscarInforeportesUsuarioSeguridadSocial(EntityManager em);
+    
     
     
 }
