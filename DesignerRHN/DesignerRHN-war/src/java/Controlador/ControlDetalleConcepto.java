@@ -232,12 +232,12 @@ public class ControlDetalleConcepto implements Serializable {
             infoRegistroGrupoConcepto, infoRegistroTipoTrabajador, infoRegistroTipoContrato, infoRegistroReformaLaboral, infoRegistroFormula, infoRegistroOrden;
 
     public ControlDetalleConcepto() {
-        altoTablaVigenciaCuenta = "125";
-        altoTablaVigenciaGrupoC = "140";
-        altoTablaVigenciaConceptoTT = "125";
-        altoTablaVigenciaConceptoTC = "125";
-        altoTablaVigenciaConceptoRL = "125";
-        altoTablaFormulaConcepto = "142";
+        altoTablaVigenciaCuenta = "105";
+        altoTablaVigenciaGrupoC = "120";
+        altoTablaVigenciaConceptoTT = "105";
+        altoTablaVigenciaConceptoTC = "105";
+        altoTablaVigenciaConceptoRL = "105";
+        altoTablaFormulaConcepto = "122";
         //
         paginaRetorno = "";
         formulaSeleccionada = true;
@@ -3891,7 +3891,7 @@ public class ControlDetalleConcepto implements Serializable {
     public void filtradoVigenciaCuenta() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (banderaVigenciaCuenta == 0) {
-            altoTablaVigenciaCuenta = "103";
+            altoTablaVigenciaCuenta = "83";
             vigenciaCuentaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaInicial");
             vigenciaCuentaFechaInicial.setFilterStyle("width: 94%");
             vigenciaCuentaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaFinal");
@@ -3920,7 +3920,7 @@ public class ControlDetalleConcepto implements Serializable {
     public void filtradoVigenciaGrupoConcepto() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (banderaVigenciaGrupoConcepto == 0) {
-            altoTablaVigenciaGrupoC = "118";
+            altoTablaVigenciaGrupoC = "98";
             vigenciaGCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaInicial");
             vigenciaGCFechaInicial.setFilterStyle("width: 94%");
             vigenciaGCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaFinal");
@@ -3940,7 +3940,7 @@ public class ControlDetalleConcepto implements Serializable {
     public void filtradoVigenciaConceptoTT() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (banderaVigenciaConceptoTT == 0) {
-            altoTablaVigenciaConceptoTT = "103";
+            altoTablaVigenciaConceptoTT = "83";
             vigenciaCTTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaFinal");
             vigenciaCTTFechaFinal.setFilterStyle("width: 94%");
             vigenciaCTTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaInicial");
@@ -3958,7 +3958,7 @@ public class ControlDetalleConcepto implements Serializable {
     public void filtradoVigenciaConceptoTC() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (banderaVigenciaConceptoTC == 0) {
-            altoTablaVigenciaConceptoTC = "103";
+            altoTablaVigenciaConceptoTC = "83";
             vigenciaCTCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaFinal");
             vigenciaCTCFechaFinal.setFilterStyle("width: 94%");
             vigenciaCTCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaInicial");
@@ -3975,7 +3975,7 @@ public class ControlDetalleConcepto implements Serializable {
     public void filtradoVigenciaConceptoRL() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (banderaVigenciaConceptoRL == 0) {
-            altoTablaVigenciaConceptoRL = "103";
+            altoTablaVigenciaConceptoRL = "83";
             vigenciaCRLFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaFinal");
             vigenciaCRLFechaFinal.setFilterStyle("width: 94%");
             vigenciaCRLFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
@@ -3992,7 +3992,7 @@ public class ControlDetalleConcepto implements Serializable {
     public void filtradoFormulasConceptos() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (banderaFormulasConceptos == 0) {
-            altoTablaFormulaConcepto = "142";
+            altoTablaFormulaConcepto = "122";
             formulaCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaInicial");
             formulaCFechaInicial.setFilterStyle("width: 94%");
             formulaCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaFinal");
@@ -5137,7 +5137,7 @@ public class ControlDetalleConcepto implements Serializable {
 
     public void recargarVigenciaCuentaDefault() {
 
-        altoTablaVigenciaCuenta = "125";
+        altoTablaVigenciaCuenta = "105";
         FacesContext c = FacesContext.getCurrentInstance();
         vigenciaCuentaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaInicial");
         vigenciaCuentaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
@@ -5163,7 +5163,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void recargarVigenciaGrupoCDefault() {
-        altoTablaVigenciaGrupoC = "140";
+        altoTablaVigenciaGrupoC = "120";
         FacesContext c = FacesContext.getCurrentInstance();
         vigenciaGCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaInicial");
         vigenciaGCFechaInicial.setFilterStyle("display: none; visibility: hidden;");
@@ -5179,7 +5179,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void recargarVigenciaConceptoTT() {
-        altoTablaVigenciaConceptoTT = "125";
+        altoTablaVigenciaConceptoTT = "105";
         FacesContext c = FacesContext.getCurrentInstance();
         vigenciaCTTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaFinal");
         vigenciaCTTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
@@ -5194,7 +5194,7 @@ public class ControlDetalleConcepto implements Serializable {
 
     public void recargarVigenciaConceptoRT() {
         FacesContext c = FacesContext.getCurrentInstance();
-        altoTablaVigenciaConceptoRL = "125";
+        altoTablaVigenciaConceptoRL = "105";
         vigenciaCRLFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaFinal");
         vigenciaCRLFechaFinal.setFilterStyle("display: none; visibility: hidden;");
         vigenciaCRLFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
@@ -5208,7 +5208,7 @@ public class ControlDetalleConcepto implements Serializable {
 
     public void recargarFormulaConcepto() {
         FacesContext c = FacesContext.getCurrentInstance();
-        altoTablaFormulaConcepto = "142";
+        altoTablaFormulaConcepto = "122";
         formulaCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaInicial");
         formulaCFechaInicial.setFilterStyle("display: none; visibility: hidden;");
         formulaCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaFinal");
@@ -5223,7 +5223,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void recargarVigenciaConceptoTC() {
-        altoTablaVigenciaConceptoTC = "125";
+        altoTablaVigenciaConceptoTC = "105";
         FacesContext c = FacesContext.getCurrentInstance();
         vigenciaCTCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaFinal");
         vigenciaCTCFechaFinal.setFilterStyle("display: none; visibility: hidden;");

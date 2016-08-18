@@ -40,7 +40,7 @@ public class PersistenciaDetallesFormulas implements PersistenciaDetallesFormula
                     + "        formulahijo FORMULAHIJO, \n"
                     + "        HISTORIAFORMULA, \n"
                     + "        HISTORIAFORMULAHIJO,\n"
-                    + "        LIQUIDACIONESLOGS_PKG.ConsultarValor(?, operandos_pkg.ObtenerCodigo(operando), to_date(?,'dd/mm/yyyy'), to_date(?,'dd/mm/yyyy'), procesos_pkg.ObtenerCodigo(?))\n"
+                    + "        LIQUIDACIONESLOGS_PKG.ConsultarValor(?, operandos_pkg.ObtenerCodigo(operando), to_date(?,'dd/mm/yyyy'), to_date(?,'dd/mm/yyyy'), operandos_pkg.ObtenerCodigo(?))\n"
                     + "          VALOR\n"
                     + "      from vwarbolesformulas\n"
                     + "      START WITH historiaFORMULA= ?\n"

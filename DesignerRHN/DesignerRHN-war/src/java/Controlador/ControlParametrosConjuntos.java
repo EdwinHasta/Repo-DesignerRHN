@@ -624,258 +624,258 @@ public class ControlParametrosConjuntos implements Serializable {
         BigDecimal cero = new BigDecimal("0.00");
         porcentajesVariacion.clear();
 
-        if (totalesEstadisticasLB.get(0).getConjunto1().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto1().doubleValue() != 0) {
             porcentajesVariacion.put("1", ((totalesEstadisticasLB.get(1).getConjunto1()).divide(totalesEstadisticasLB.get(0).getConjunto1().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("1", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto2().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto2().doubleValue() != 0) {
             porcentajesVariacion.put("2", ((totalesEstadisticasLB.get(1).getConjunto2()).divide(totalesEstadisticasLB.get(0).getConjunto2().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("2", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto3().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto3().doubleValue() != 0) {
             porcentajesVariacion.put("3", ((totalesEstadisticasLB.get(1).getConjunto3()).divide(totalesEstadisticasLB.get(0).getConjunto3().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("3", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto4().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto4().doubleValue() != 0) {
             porcentajesVariacion.put("4", ((totalesEstadisticasLB.get(1).getConjunto4()).divide(totalesEstadisticasLB.get(0).getConjunto4().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("4", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto5().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto5().doubleValue() != 0) {
             porcentajesVariacion.put("5", ((totalesEstadisticasLB.get(1).getConjunto5()).divide(totalesEstadisticasLB.get(0).getConjunto5().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("5", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto6().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto6().doubleValue() != 0) {
             porcentajesVariacion.put("6", ((totalesEstadisticasLB.get(1).getConjunto6()).divide(totalesEstadisticasLB.get(0).getConjunto6().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("6", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto7().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto7().doubleValue() != 0) {
             porcentajesVariacion.put("7", ((totalesEstadisticasLB.get(1).getConjunto7()).divide(totalesEstadisticasLB.get(0).getConjunto7().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("7", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto8().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto8().doubleValue() != 0) {
             porcentajesVariacion.put("8", ((totalesEstadisticasLB.get(1).getConjunto8()).divide(totalesEstadisticasLB.get(0).getConjunto8().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("8", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto9().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto9().doubleValue() != 0) {
             porcentajesVariacion.put("9", ((totalesEstadisticasLB.get(1).getConjunto9()).divide(totalesEstadisticasLB.get(0).getConjunto9().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("9", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto10().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto10().doubleValue() != 0) {
             porcentajesVariacion.put("10", ((totalesEstadisticasLB.get(1).getConjunto10()).divide(totalesEstadisticasLB.get(0).getConjunto10().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("10", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto11().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto11().doubleValue() != 0) {
             porcentajesVariacion.put("11", ((totalesEstadisticasLB.get(1).getConjunto11()).divide(totalesEstadisticasLB.get(0).getConjunto11().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("11", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto12().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto12().doubleValue() != 0) {
             porcentajesVariacion.put("12", ((totalesEstadisticasLB.get(1).getConjunto12()).divide(totalesEstadisticasLB.get(0).getConjunto12().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("12", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto13().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto13().doubleValue() != 0) {
             porcentajesVariacion.put("13", ((totalesEstadisticasLB.get(1).getConjunto13()).divide(totalesEstadisticasLB.get(0).getConjunto13().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("13", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto14().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto14().doubleValue() != 0) {
             porcentajesVariacion.put("14", ((totalesEstadisticasLB.get(1).getConjunto14()).divide(totalesEstadisticasLB.get(0).getConjunto14().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("14", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto15().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto15().doubleValue() != 0) {
             porcentajesVariacion.put("15", ((totalesEstadisticasLB.get(1).getConjunto15()).divide(totalesEstadisticasLB.get(0).getConjunto15().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("15", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto16().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto16().doubleValue() != 0) {
             porcentajesVariacion.put("16", ((totalesEstadisticasLB.get(1).getConjunto16()).divide(totalesEstadisticasLB.get(0).getConjunto16().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("16", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto17().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto17().doubleValue() != 0) {
             porcentajesVariacion.put("17", ((totalesEstadisticasLB.get(1).getConjunto17()).divide(totalesEstadisticasLB.get(0).getConjunto17().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("17", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto18().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto18().doubleValue() != 0) {
             porcentajesVariacion.put("18", ((totalesEstadisticasLB.get(1).getConjunto18()).divide(totalesEstadisticasLB.get(0).getConjunto18().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("18", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto19().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto19().doubleValue() != 0) {
             porcentajesVariacion.put("19", ((totalesEstadisticasLB.get(1).getConjunto19()).divide(totalesEstadisticasLB.get(0).getConjunto19().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("19", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto20().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto20().doubleValue() != 0) {
             porcentajesVariacion.put("20", ((totalesEstadisticasLB.get(1).getConjunto20()).divide(totalesEstadisticasLB.get(0).getConjunto20().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("20", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto21().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto21().doubleValue() != 0) {
             porcentajesVariacion.put("21", ((totalesEstadisticasLB.get(1).getConjunto21()).divide(totalesEstadisticasLB.get(0).getConjunto21().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("21", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto22().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto22().doubleValue() != 0) {
             porcentajesVariacion.put("22", ((totalesEstadisticasLB.get(1).getConjunto22()).divide(totalesEstadisticasLB.get(0).getConjunto22().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("22", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto23().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto23().doubleValue() != 0) {
             porcentajesVariacion.put("23", ((totalesEstadisticasLB.get(1).getConjunto23()).divide(totalesEstadisticasLB.get(0).getConjunto23().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("23", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto24().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto24().doubleValue() != 0) {
             porcentajesVariacion.put("24", ((totalesEstadisticasLB.get(1).getConjunto24()).divide(totalesEstadisticasLB.get(0).getConjunto24().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("24", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto25().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto25().doubleValue() != 0) {
             porcentajesVariacion.put("25", ((totalesEstadisticasLB.get(1).getConjunto25()).divide(totalesEstadisticasLB.get(0).getConjunto25().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("25", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto26().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto26().doubleValue() != 0) {
             porcentajesVariacion.put("26", ((totalesEstadisticasLB.get(1).getConjunto26()).divide(totalesEstadisticasLB.get(0).getConjunto26().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("26", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto27().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto27().doubleValue() != 0) {
             porcentajesVariacion.put("27", ((totalesEstadisticasLB.get(1).getConjunto27()).divide(totalesEstadisticasLB.get(0).getConjunto27().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("27", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto28().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto28().doubleValue() != 0) {
             porcentajesVariacion.put("28", ((totalesEstadisticasLB.get(1).getConjunto28()).divide(totalesEstadisticasLB.get(0).getConjunto28().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("28", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto29().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto29().doubleValue() != 0) {
             porcentajesVariacion.put("29", ((totalesEstadisticasLB.get(1).getConjunto29()).divide(totalesEstadisticasLB.get(0).getConjunto29().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("29", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto30().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto30().doubleValue() != 0) {
             porcentajesVariacion.put("30", ((totalesEstadisticasLB.get(1).getConjunto30()).divide(totalesEstadisticasLB.get(0).getConjunto30().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("30", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto31().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto31().doubleValue() != 0) {
             porcentajesVariacion.put("31", ((totalesEstadisticasLB.get(1).getConjunto31()).divide(totalesEstadisticasLB.get(0).getConjunto31().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("31", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto32().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto32().doubleValue() != 0) {
             porcentajesVariacion.put("32", ((totalesEstadisticasLB.get(1).getConjunto32()).divide(totalesEstadisticasLB.get(0).getConjunto32().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("32", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto33().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto33().doubleValue() != 0) {
             porcentajesVariacion.put("33", ((totalesEstadisticasLB.get(1).getConjunto33()).divide(totalesEstadisticasLB.get(0).getConjunto33().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("33", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto34().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto34().doubleValue() != 0) {
             porcentajesVariacion.put("34", ((totalesEstadisticasLB.get(1).getConjunto34()).divide(totalesEstadisticasLB.get(0).getConjunto34().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("34", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto35().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto35().doubleValue() != 0) {
             porcentajesVariacion.put("35", ((totalesEstadisticasLB.get(1).getConjunto35()).divide(totalesEstadisticasLB.get(0).getConjunto35().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("35", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto36().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto36().doubleValue() != 0) {
             porcentajesVariacion.put("36", ((totalesEstadisticasLB.get(1).getConjunto36()).divide(totalesEstadisticasLB.get(0).getConjunto36().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("36", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto37().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto37().doubleValue() != 0) {
             porcentajesVariacion.put("37", ((totalesEstadisticasLB.get(1).getConjunto37()).divide(totalesEstadisticasLB.get(0).getConjunto37().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("37", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto38().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto38().doubleValue() != 0) {
             porcentajesVariacion.put("38", ((totalesEstadisticasLB.get(1).getConjunto38()).divide(totalesEstadisticasLB.get(0).getConjunto38().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("38", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto39().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto39().doubleValue() != 0) {
             porcentajesVariacion.put("39", ((totalesEstadisticasLB.get(1).getConjunto39()).divide(totalesEstadisticasLB.get(0).getConjunto39().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("39", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto40().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto40().doubleValue() != 0) {
             porcentajesVariacion.put("40", ((totalesEstadisticasLB.get(1).getConjunto40()).divide(totalesEstadisticasLB.get(0).getConjunto40().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("40", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto41().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto41().doubleValue() != 0) {
             porcentajesVariacion.put("41", ((totalesEstadisticasLB.get(1).getConjunto41()).divide(totalesEstadisticasLB.get(0).getConjunto41().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("41", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto42().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto42().doubleValue() != 0) {
             porcentajesVariacion.put("42", ((totalesEstadisticasLB.get(1).getConjunto42()).divide(totalesEstadisticasLB.get(0).getConjunto42().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("42", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto43().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto43().doubleValue() != 0) {
             porcentajesVariacion.put("43", ((totalesEstadisticasLB.get(1).getConjunto43()).divide(totalesEstadisticasLB.get(0).getConjunto43().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("43", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto44().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto44().doubleValue() != 0) {
             porcentajesVariacion.put("44", ((totalesEstadisticasLB.get(1).getConjunto44()).divide(totalesEstadisticasLB.get(0).getConjunto44().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("44", cero);
         }
-        if (totalesEstadisticasLB.get(0).getConjunto45().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getConjunto45().doubleValue() != 0) {
             porcentajesVariacion.put("45", ((totalesEstadisticasLB.get(1).getConjunto45()).divide(totalesEstadisticasLB.get(0).getConjunto45().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("45", cero);
         }
 
-        if (totalesEstadisticasLB.get(0).getTotalPagos().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getTotalPagos().doubleValue() != 0) {
             porcentajesVariacion.put("TP", ((totalesEstadisticasLB.get(1).getTotalPagos()).divide(totalesEstadisticasLB.get(0).getTotalPagos().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("TP", cero);
         }
-        if (totalesEstadisticasLB.get(0).getTotalDescuentos().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getTotalDescuentos().doubleValue() != 0) {
             porcentajesVariacion.put("TD", ((totalesEstadisticasLB.get(1).getTotalDescuentos()).divide(totalesEstadisticasLB.get(0).getTotalDescuentos().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("TD", cero);
         }
-        if (totalesEstadisticasLB.get(0).getTotalGastos().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getTotalGastos().doubleValue() != 0) {
             porcentajesVariacion.put("TG", ((totalesEstadisticasLB.get(1).getTotalGastos()).divide(totalesEstadisticasLB.get(0).getTotalGastos().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("TG", cero);
         }
-        if (totalesEstadisticasLB.get(0).getTotalPasivos().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getTotalPasivos().doubleValue() != 0) {
             porcentajesVariacion.put("TPvos", ((totalesEstadisticasLB.get(1).getTotalPasivos()).divide(totalesEstadisticasLB.get(0).getTotalPasivos().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("TPvos", cero);
         }
-        if (totalesEstadisticasLB.get(0).getNetos().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getNetos().doubleValue() != 0) {
             porcentajesVariacion.put("N", ((totalesEstadisticasLB.get(1).getNetos()).divide(totalesEstadisticasLB.get(0).getNetos().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("N", cero);
         }
-        if (totalesEstadisticasLB.get(0).getGranTotal().intValue() != 0) {
+        if (totalesEstadisticasLB.get(0).getGranTotal().doubleValue() != 0) {
             porcentajesVariacion.put("GT", ((totalesEstadisticasLB.get(1).getGranTotal()).divide(totalesEstadisticasLB.get(0).getGranTotal().divide(cien), 2, RoundingMode.CEILING)));
         } else {
             porcentajesVariacion.put("GT", cero);
@@ -934,315 +934,315 @@ public class ControlParametrosConjuntos implements Serializable {
 
         String estilo = "position: relative; text-align: right; z-index: 5; margin: auto; font-weight: bold; font-size: 9px; width: 47%; height: 9px; border-radius: 4px; left:-10%;";
 
-        if ((parametrosActuales.getDesviacion1().intValue() == 0) || (porcentajesVariacion.get("1").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion1().doubleValue() == 0) || (porcentajesVariacion.get("1").doubleValue() == 0)) {
             input1.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion1().compareTo(porcentajesVariacion.get("1")) == -1) {
             input1.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input1.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion2().intValue() == 0) || (porcentajesVariacion.get("2").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion2().doubleValue() == 0) || (porcentajesVariacion.get("2").doubleValue() == 0)) {
             input2.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion2().compareTo(porcentajesVariacion.get("2")) == -1) {
             input2.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input2.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion3().intValue() == 0) || (porcentajesVariacion.get("3").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion3().doubleValue() == 0) || (porcentajesVariacion.get("3").doubleValue() == 0)) {
             input3.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion3().compareTo(porcentajesVariacion.get("3")) == -1) {
             input3.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input3.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion4().intValue() == 0) || (porcentajesVariacion.get("4").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion4().doubleValue() == 0) || (porcentajesVariacion.get("4").doubleValue() == 0)) {
             input4.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion4().compareTo(porcentajesVariacion.get("4")) == -1) {
             input4.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input4.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion5().intValue() == 0) || (porcentajesVariacion.get("5").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion5().doubleValue() == 0) || (porcentajesVariacion.get("5").doubleValue() == 0)) {
             input5.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion5().compareTo(porcentajesVariacion.get("5")) == -1) {
             input5.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input5.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion6().intValue() == 0) || (porcentajesVariacion.get("6").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion6().doubleValue() == 0) || (porcentajesVariacion.get("6").doubleValue() == 0)) {
             input6.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion6().compareTo(porcentajesVariacion.get("6")) == -1) {
             input6.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input6.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion7().intValue() == 0) || (porcentajesVariacion.get("7").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion7().doubleValue() == 0) || (porcentajesVariacion.get("7").doubleValue() == 0)) {
             input7.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion7().compareTo(porcentajesVariacion.get("7")) == -1) {
             input7.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input7.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion8().intValue() == 0) || (porcentajesVariacion.get("8").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion8().doubleValue() == 0) || (porcentajesVariacion.get("8").doubleValue() == 0)) {
             input8.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion8().compareTo(porcentajesVariacion.get("8")) == -1) {
             input8.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input8.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion9().intValue() == 0) || (porcentajesVariacion.get("9").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion9().doubleValue() == 0) || (porcentajesVariacion.get("9").doubleValue() == 0)) {
             input9.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion9().compareTo(porcentajesVariacion.get("9")) == -1) {
             input9.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input9.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion10().intValue() == 0) || (porcentajesVariacion.get("10").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion10().doubleValue() == 0) || (porcentajesVariacion.get("10").doubleValue() == 0)) {
             input10.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion10().compareTo(porcentajesVariacion.get("10")) == -1) {
             input10.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input10.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion11().intValue() == 0) || (porcentajesVariacion.get("11").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion11().doubleValue() == 0) || (porcentajesVariacion.get("11").doubleValue() == 0)) {
             input11.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion11().compareTo(porcentajesVariacion.get("11")) == -1) {
             input11.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input11.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion12().intValue() == 0) || (porcentajesVariacion.get("12").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion12().doubleValue() == 0) || (porcentajesVariacion.get("12").doubleValue() == 0)) {
             input12.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion12().compareTo(porcentajesVariacion.get("12")) == -1) {
             input12.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input12.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion13().intValue() == 0) || (porcentajesVariacion.get("13").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion13().doubleValue() == 0) || (porcentajesVariacion.get("13").doubleValue() == 0)) {
             input13.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion13().compareTo(porcentajesVariacion.get("13")) == -1) {
             input13.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input13.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion14().intValue() == 0) || (porcentajesVariacion.get("14").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion14().doubleValue() == 0) || (porcentajesVariacion.get("14").doubleValue() == 0)) {
             input14.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion14().compareTo(porcentajesVariacion.get("14")) == -1) {
             input14.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input14.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion15().intValue() == 0) || (porcentajesVariacion.get("15").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion15().doubleValue() == 0) || (porcentajesVariacion.get("15").doubleValue() == 0)) {
             input15.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion15().compareTo(porcentajesVariacion.get("15")) == -1) {
             input15.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input15.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion16().intValue() == 0) || (porcentajesVariacion.get("16").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion16().doubleValue() == 0) || (porcentajesVariacion.get("16").doubleValue() == 0)) {
             input16.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion16().compareTo(porcentajesVariacion.get("16")) == -1) {
             input16.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input16.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion17().intValue() == 0) || (porcentajesVariacion.get("17").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion17().doubleValue() == 0) || (porcentajesVariacion.get("17").doubleValue() == 0)) {
             input17.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion17().compareTo(porcentajesVariacion.get("17")) == -1) {
             input17.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input17.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion18().intValue() == 0) || (porcentajesVariacion.get("18").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion18().doubleValue() == 0) || (porcentajesVariacion.get("18").doubleValue() == 0)) {
             input18.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion18().compareTo(porcentajesVariacion.get("18")) == -1) {
             input18.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input18.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion19().intValue() == 0) || (porcentajesVariacion.get("19").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion19().doubleValue() == 0) || (porcentajesVariacion.get("19").doubleValue() == 0)) {
             input19.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion19().compareTo(porcentajesVariacion.get("19")) == -1) {
             input19.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input19.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion20().intValue() == 0) || (porcentajesVariacion.get("20").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion20().doubleValue() == 0) || (porcentajesVariacion.get("20").doubleValue() == 0)) {
             input20.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion20().compareTo(porcentajesVariacion.get("20")) == -1) {
             input20.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input20.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion21().intValue() == 0) || (porcentajesVariacion.get("21").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion21().doubleValue() == 0) || (porcentajesVariacion.get("21").doubleValue() == 0)) {
             input21.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion21().compareTo(porcentajesVariacion.get("21")) == -1) {
             input21.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input21.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion22().intValue() == 0) || (porcentajesVariacion.get("22").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion22().doubleValue() == 0) || (porcentajesVariacion.get("22").doubleValue() == 0)) {
             input22.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion22().compareTo(porcentajesVariacion.get("22")) == -1) {
             input22.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input22.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion23().intValue() == 0) || (porcentajesVariacion.get("23").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion23().doubleValue() == 0) || (porcentajesVariacion.get("23").doubleValue() == 0)) {
             input23.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion23().compareTo(porcentajesVariacion.get("23")) == -1) {
             input23.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input23.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion24().intValue() == 0) || (porcentajesVariacion.get("24").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion24().doubleValue() == 0) || (porcentajesVariacion.get("24").doubleValue() == 0)) {
             input24.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion24().compareTo(porcentajesVariacion.get("24")) == -1) {
             input24.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input24.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion25().intValue() == 0) || (porcentajesVariacion.get("25").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion25().doubleValue() == 0) || (porcentajesVariacion.get("25").doubleValue() == 0)) {
             input25.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion25().compareTo(porcentajesVariacion.get("25")) == -1) {
             input25.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input25.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion26().intValue() == 0) || (porcentajesVariacion.get("26").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion26().doubleValue() == 0) || (porcentajesVariacion.get("26").doubleValue() == 0)) {
             input26.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion26().compareTo(porcentajesVariacion.get("26")) == -1) {
             input26.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input26.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion27().intValue() == 0) || (porcentajesVariacion.get("27").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion27().doubleValue() == 0) || (porcentajesVariacion.get("27").doubleValue() == 0)) {
             input27.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion27().compareTo(porcentajesVariacion.get("27")) == -1) {
             input27.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input27.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion28().intValue() == 0) || (porcentajesVariacion.get("28").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion28().doubleValue() == 0) || (porcentajesVariacion.get("28").doubleValue() == 0)) {
             input28.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion28().compareTo(porcentajesVariacion.get("28")) == -1) {
             input28.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input28.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion29().intValue() == 0) || (porcentajesVariacion.get("29").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion29().doubleValue() == 0) || (porcentajesVariacion.get("29").doubleValue() == 0)) {
             input29.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion29().compareTo(porcentajesVariacion.get("29")) == -1) {
             input29.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input29.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion30().intValue() == 0) || (porcentajesVariacion.get("30").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion30().doubleValue() == 0) || (porcentajesVariacion.get("30").doubleValue() == 0)) {
             input30.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion30().compareTo(porcentajesVariacion.get("30")) == -1) {
             input30.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input30.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion31().intValue() == 0) || (porcentajesVariacion.get("31").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion31().doubleValue() == 0) || (porcentajesVariacion.get("31").doubleValue() == 0)) {
             input31.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion31().compareTo(porcentajesVariacion.get("31")) == -1) {
             input31.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input31.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion32().intValue() == 0) || (porcentajesVariacion.get("32").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion32().doubleValue() == 0) || (porcentajesVariacion.get("32").doubleValue() == 0)) {
             input32.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion32().compareTo(porcentajesVariacion.get("32")) == -1) {
             input32.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input32.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion33().intValue() == 0) || (porcentajesVariacion.get("33").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion33().doubleValue() == 0) || (porcentajesVariacion.get("33").doubleValue() == 0)) {
             input33.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion33().compareTo(porcentajesVariacion.get("33")) == -1) {
             input33.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input33.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion34().intValue() == 0) || (porcentajesVariacion.get("34").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion34().doubleValue() == 0) || (porcentajesVariacion.get("34").doubleValue() == 0)) {
             input34.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion34().compareTo(porcentajesVariacion.get("34")) == -1) {
             input34.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input34.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion35().intValue() == 0) || (porcentajesVariacion.get("35").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion35().doubleValue() == 0) || (porcentajesVariacion.get("35").doubleValue() == 0)) {
             input35.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion35().compareTo(porcentajesVariacion.get("35")) == -1) {
             input35.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input35.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion36().intValue() == 0) || (porcentajesVariacion.get("36").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion36().doubleValue() == 0) || (porcentajesVariacion.get("36").doubleValue() == 0)) {
             input36.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion36().compareTo(porcentajesVariacion.get("36")) == -1) {
             input36.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input36.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion37().intValue() == 0) || (porcentajesVariacion.get("37").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion37().doubleValue() == 0) || (porcentajesVariacion.get("37").doubleValue() == 0)) {
             input37.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion37().compareTo(porcentajesVariacion.get("37")) == -1) {
             input37.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input37.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion38().intValue() == 0) || (porcentajesVariacion.get("38").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion38().doubleValue() == 0) || (porcentajesVariacion.get("38").doubleValue() == 0)) {
             input38.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion38().compareTo(porcentajesVariacion.get("38")) == -1) {
             input38.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input38.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion39().intValue() == 0) || (porcentajesVariacion.get("39").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion39().doubleValue() == 0) || (porcentajesVariacion.get("39").doubleValue() == 0)) {
             input39.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion39().compareTo(porcentajesVariacion.get("39")) == -1) {
             input39.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input39.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion40().intValue() == 0) || (porcentajesVariacion.get("40").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion40().doubleValue() == 0) || (porcentajesVariacion.get("40").doubleValue() == 0)) {
             input40.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion40().compareTo(porcentajesVariacion.get("40")) == -1) {
             input40.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input40.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion41().intValue() == 0) || (porcentajesVariacion.get("41").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion41().doubleValue() == 0) || (porcentajesVariacion.get("41").doubleValue() == 0)) {
             input41.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion41().compareTo(porcentajesVariacion.get("41")) == -1) {
             input41.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input41.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion42().intValue() == 0) || (porcentajesVariacion.get("42").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion42().doubleValue() == 0) || (porcentajesVariacion.get("42").doubleValue() == 0)) {
             input42.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion42().compareTo(porcentajesVariacion.get("42")) == -1) {
             input42.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input42.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion43().intValue() == 0) || (porcentajesVariacion.get("43").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion43().doubleValue() == 0) || (porcentajesVariacion.get("43").doubleValue() == 0)) {
             input43.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion43().compareTo(porcentajesVariacion.get("43")) == -1) {
             input43.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input43.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion44().intValue() == 0) || (porcentajesVariacion.get("44").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion44().doubleValue() == 0) || (porcentajesVariacion.get("44").doubleValue() == 0)) {
             input44.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion44().compareTo(porcentajesVariacion.get("44")) == -1) {
             input44.setStyle(estilo + " background-color: red; color: white;");
         } else {
             input44.setStyle(estilo + " background-color: #89fd89;");
         }
-        if ((parametrosActuales.getDesviacion45().intValue() == 0) || (porcentajesVariacion.get("45").intValue() == 0)) {
+        if ((parametrosActuales.getDesviacion45().doubleValue() == 0) || (porcentajesVariacion.get("45").doubleValue() == 0)) {
             input45.setStyle(estilo + " background-color: #FDAB1C;");
         } else if (parametrosActuales.getDesviacion45().compareTo(porcentajesVariacion.get("45")) == -1) {
             input45.setStyle(estilo + " background-color: red; color: white;");

@@ -412,7 +412,7 @@
                                 </p:column>
 
                             </p:dataTable>
-                            <h:outputText id="infoRegistro" value="#{msg['infoRegistro']} #{controlNovedadesEmpleados.infoRegistro}" style="position: absolute; left: 20px; top: 212px; font-weight: bold;"/>
+                            <h:outputText id="infoRegistro" value="#{msg['infoRegistro']} #{controlNovedadesEmpleados.infoRegistro}" style="position: relative; left: 10px; top: 200px; font-weight: bold; display: block;"/>
 
                         </fieldset>
 
@@ -945,10 +945,10 @@
 
                     <!-- L.O.V Empleado-->
                     <p:dialog header="#{msg['buscar']}" widgetVar="empleadosDialogo" draggable="false" resizable="false" id="empleadosDialogo" closable="false"  
-                              showEffect="fade" hideEffect="fade" modal="true" width="650" height="350" >
+                              showEffect="fade" hideEffect="fade" modal="true" width="550" height="350" >
 
                         <p:dataTable  id="LOVEmpleados" style=" width: 600px" var="emp" value="#{controlNovedadesEmpleados.lovEmpleados}"
-                                      scrollable="true" scrollHeight="200" scrollWidth="620" widgetVar="LOVEmpleados" selectionMode="single"
+                                      scrollable="true" scrollHeight="200" scrollWidth="520" widgetVar="LOVEmpleados" selectionMode="single"
                                       filteredValue="#{controlNovedadesEmpleados.filtrarLovEmpleados}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{emp.id}" selection="#{controlNovedadesEmpleados.empleadoSeleccionadoLov}">
 
@@ -957,24 +957,24 @@
                             <p:ajax event="filter" listener="#{controlNovedadesEmpleados.eventoFiltrarEmpleadosLOV()}"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['nombre']}"  style="position: absolute; left: 27px; top: 15px;"/>  
-                                <p:inputText id="globalFilter" onkeyup="LOVEmpleados.filter();" style="width: 400px; position: relative; left: 60px;" />  
+                                <p:inputText id="globalFilter" onkeyup="LOVEmpleados.filter();" style="width: 300px; position: relative; left: 60px;" />  
                             </f:facet>
 
-                            <p:column sortBy="#{emp.nombre}" filterBy="#{emp.nombre}" width="200" filterMatchMode="contains" filterStyle="width: 85%;" > 
+                            <p:column sortBy="#{emp.nombre}" filterBy="#{emp.nombre}" filterMatchMode="contains" filterStyle="width: 85%;" > 
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['nombre']}" />
                                 </f:facet>
                                 <h:outputText value="#{emp.nombre}" />  
                             </p:column>
 
-                            <p:column sortBy="#{emp.codigo}" filterBy="#{emp.codigo}" width="150" filterMatchMode="contains" filterStyle="width: 85%;" > 
+                            <p:column sortBy="#{emp.codigo}" filterBy="#{emp.codigo}" width="100" filterMatchMode="contains" filterStyle="width: 85%;" > 
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['codigo']}" />
                                 </f:facet>
                                 <h:outputText value="#{emp.codigo}" />  
                             </p:column>
 
-                            <p:column sortBy="#{emp.tipo}" filterBy="#{emp.tipo}" width="150" filterMatchMode="contains" filterStyle="width: 85%;" > 
+                            <p:column sortBy="#{emp.tipo}" filterBy="#{emp.tipo}" width="100" filterMatchMode="contains" filterStyle="width: 85%;" > 
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['tipo']}" />
                                 </f:facet>

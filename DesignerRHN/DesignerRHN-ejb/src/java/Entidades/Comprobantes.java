@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "COMPROBANTES")
 public class Comprobantes implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -160,6 +160,11 @@ public class Comprobantes implements Serializable {
     }
 
     public boolean isReadOnlyFechaEntregado() {
+        if (fechaentregado == null) {
+            readOnlyFechaEntregado = false;
+        } else {
+            readOnlyFechaEntregado = true;
+        }
         return readOnlyFechaEntregado;
     }
 
@@ -191,7 +196,6 @@ public class Comprobantes implements Serializable {
     public String toString() {
         return "Entidades.Comprobantes[ secuencia=" + secuencia + " ]";
     }
-
 
     public boolean isReadOnlyNumero() {
         if (numero == null) {

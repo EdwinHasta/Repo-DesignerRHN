@@ -16,96 +16,97 @@
                     <f:loadBundle basename="Recursos.detalleconcepto" var="msg" />
                     <p:growl id="growl" showDetail="true" />
 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left;" >  
+                    <p:panel id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal" >  
 
-                        <p:toolbar styleClass="cssToolbar" style="position: absolute; top: 30px; left: 10px;">
+                        <p:toolbar styleClass="cssToolbar">
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-size: 100% 100%;background-image: url(Imagenes/Iconos/guardar.png) ;background-repeat: no-repeat; 
-                                                 width: 25px; height: 25px;"   actionListener="#{controlDetalleConcepto.guardadoGeneral()}"/>
+                                <p:commandButton id="guardarRapido" value="" actionListener="#{controlDetalleConcepto.guardadoGeneral()}" 
+                                                 style="background-size: 100% 100%;background-image: url(Imagenes/Iconos/guardar.png) ;background-repeat: no-repeat; border: none; width: 25px; height: 25px;"/>
                                 <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
 
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; 
-                                                 width: 25px; height: 25px " actionListener="#{controlDetalleConcepto.editarCelda()}" />
+                                <p:commandButton id="editar" value="" actionListener="#{controlDetalleConcepto.editarCelda()}" 
+                                                 style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;"/>
                                 <p:tooltip  for="editar" value="#{msg['editar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; 
-                                                 width: 25px; height: 25px "  actionListener="#{controlDetalleConcepto.listaValoresBoton()}"/>
+                                <p:commandButton id="listaValores" value="" actionListener="#{controlDetalleConcepto.listaValoresBoton()}"
+                                                 style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; 
-                                                 width: 25px; height: 25px " actionListener="#{controlDetalleConcepto.activarCtrlF11()}" />
+                                <p:commandButton id="filtrar" value="" actionListener="#{controlDetalleConcepto.activarCtrlF11()}"
+                                                 style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;" />
                                 <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; 
-                                                 width: 25px; height: 25px " actionListener="#{controlDetalleConcepto.verificarExportXLS()}" ajax="false"  />
+                                <p:commandButton id="exportarXLS" value="" actionListener="#{controlDetalleConcepto.verificarExportXLS()}" ajax="false"
+                                                 style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;"/>
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; 
-                                                 width: 25px; height: 25px "  ajax="false">
+                                <p:commandButton id="exportarXML" value="" ajax="false"
+                                                 style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;">
                                     <p:dataExporter type="xml"  target="#{controlDetalleConcepto.exportXML()}" fileName="#{controlDetalleConcepto.nombreXML}" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; 
-                                                 width: 25px; height: 25px " actionListener="#{controlDetalleConcepto.validarExportPDF()}" ajax="false"/>
+                                <p:commandButton id="exportarPDF" value="" ajax="false" actionListener="#{controlDetalleConcepto.validarExportPDF()}"
+                                                 style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;"/>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; 
-                                                 width: 25px; height: 25px " actionListener="#{controlDetalleConcepto.ingresoNuevoRegistro()}"  /> 
+                                <p:commandButton id="insertar" value="" actionListener="#{controlDetalleConcepto.ingresoNuevoRegistro()}" 
+                                                 style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;"/> 
                                 <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; 
-                                                 width: 25px; height: 25px " actionListener="#{controlDetalleConcepto.validarBorradoRegistro()}" />  
+                                <p:commandButton id="eliminar" value="" actionListener="#{controlDetalleConcepto.validarBorradoRegistro()}" 
+                                                 style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;"/>  
                                 <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; 
-                                                 width: 25px; height: 25px "  actionListener="#{controlDetalleConcepto.validarDuplicadoRegistro()}" />  
+                                <p:commandButton id="duplicar" value="" actionListener="#{controlDetalleConcepto.validarDuplicadoRegistro()}" 
+                                                 style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;"/>  
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; 
-                                                 width: 25px; height: 25px " actionListener="#{controlDetalleConcepto.verificarRastroTabla()}" />  
+                                <p:commandButton id="rastro" value="" actionListener="#{controlDetalleConcepto.verificarRastroTabla()}"
+                                                 style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; 
-                                                 width: 25px; height: 25px " actionListener="#{controlDetalleConcepto.cancelarModificacion()}" />  
+                                <p:commandButton id="refrescar" value="" actionListener="#{controlDetalleConcepto.cancelarModificacion()}"
+                                                 style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; 
-                                                 width: 25px; height: 25px " actionListener="#{controlDetalleConcepto.salir()}" action="retornoConcepto" />  
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="salir" value="" actionListener="#{controlDetalleConcepto.salir()}" action="retornoConcepto"
+                                                 style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
+                        <fieldset style="position: absolute; top: 73px; left: 10px; height: 18px; width: 833px; border-radius: 3px; text-align: left; border: solid #C7BFBF 1px;">
+                            <p:commandButton value="" id="btnDeteleConcepto" style="position: absolute; top: 3px; left: 5px; background-image: url(Imagenes/Iconos/deleteConcepto.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 24px; height: 24px;" 
+                                             actionListener="#{controlDetalleCuenta.validarEliminacionConcepto()}"/>
+                            <h:outputText value="#{msg['concepto']}" style="position: absolute; left: 35px; top: 6px;color: #14388B; font-weight: bold;"/>
+                            <h:outputText id="nombreConcepto" value="#{controlDetalleConcepto.comportamientoConcepto}" style="font-weight: bold; color: #BF1A1A; position: absolute; left: 110px; top: 6px;"/>
+                            <p:tooltip  for="btnDeteleConcepto" value="#{msg['hojadevidadelconcepto']}" />
+                        </fieldset>
 
-                        <h:outputText value="#{msg['concepto']}" style="position: absolute;left: 45px; top: 70px;color: #14388B;font-weight: bold"/>
-                        <h:outputText id="nombreConcepto" value="#{controlDetalleConcepto.comportamientoConcepto}" style="font-weight: bold; color: #BF1A1A; position: absolute; left: 115px; top: 70px"/>
-                        <p:commandButton value="" id="btnDeteleConcepto" style="position: absolute; top: 75px; left: 10px;background-image: url(Imagenes/deleteConcepto.png);background-size: 100% 100%; background-repeat: no-repeat;width: 25px; height: 30px;" 
-                                         actionListener="#{controlDetalleCuenta.validarEliminacionConcepto()}"/>
-                        <p:tooltip  for="btnDeteleConcepto" value="#{msg['hojadevidadelconcepto']}" />
-
-
-                        <fieldset  style="position: absolute; left: 3px; top: 90px; width: 850px; height: 370px; border-radius: 10px; text-align: left;">
+                        <fieldset  style="position: absolute; left: 10px; top: 105px; width: 832px; height: 375px; border-radius: 10px; text-align: left;">
                             <legend style="color: blue"><strong>#{msg['asignaciondecuentas']}</strong></legend>
 
-                            <p:scrollPanel id="scrollPrincipal" style="position: absolute; left: 3px; top: 15px; width:856px; height:350px; border: none" mode="native">  
+                            <p:scrollPanel id="scrollPrincipal" style="position: absolute; left: 3px; top: 15px; width:846px; height:360px; border: none" mode="native">  
 
-                                <fieldset style="position: absolute; top: -2px; width: 815px; height: 180px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute; top: -2px; width: 805px; height: 180px; border-radius: 10px; text-align: left">
                                     <legend style="color: blue"><strong>#{msg['cuentasytipocc']}</strong></legend>
 
-                                    <p:dataTable id="datosVigenciaCuenta" var="infoVC" rowKey="#{infoVC.secuencia}" rowIndexVar="indiceVC" style="border: 1px; width: 815px"   
-                                                 value="#{controlDetalleConcepto.listVigenciasCuentasConcepto}" scrollable="true" scrollHeight="#{controlDetalleConcepto.altoTablaVigenciaCuenta}" scrollWidth="815"
+                                    <p:dataTable id="datosVigenciaCuenta" var="infoVC" rowKey="#{infoVC.secuencia}" rowIndexVar="indiceVC" style="border: 1px; width: 800px; font-size: 11px;"   
+                                                 value="#{controlDetalleConcepto.listVigenciasCuentasConcepto}" scrollable="true" scrollHeight="#{controlDetalleConcepto.altoTablaVigenciaCuenta}" scrollWidth="805"
                                                  filteredValue="#{controlDetalleConcepto.filtrarListVigenciasCuentasConcepto}" emptyMessage="#{msg['vacio']}" selectionMode="single"
                                                  editable="true" editMode="cell" liveScroll="true" scrollRows="10" selection="#{controlDetalleConcepto.vigenciaCuentaSeleccionada}">
 
@@ -277,11 +278,11 @@
                                     </p:dataTable>
                                 </fieldset>
 
-                                <fieldset style="position: absolute; top: 197px; width: 815px; height: 200px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute; top: 197px; width: 805px; height: 200px; border-radius: 10px; text-align: left">
                                     <legend style="color: blue"><strong>#{msg['gruposcontables']}</strong></legend>
 
-                                    <p:dataTable id="datosVigenciaGrupoConcepto" var="infoVGC" rowKey="#{infoVGC.secuencia}" rowIndexVar="indiceVGC" style="border: 1px;width: 790px"   
-                                                 value="#{controlDetalleConcepto.listVigenciasGruposConceptos}" scrollable="true" scrollHeight="#{controlDetalleConcepto.altoTablaVigenciaGrupoC}" scrollWidth="815"
+                                    <p:dataTable id="datosVigenciaGrupoConcepto" var="infoVGC" rowKey="#{infoVGC.secuencia}" rowIndexVar="indiceVGC" style="border: 1px; width: 790px; font-size: 11px;"   
+                                                 value="#{controlDetalleConcepto.listVigenciasGruposConceptos}" scrollable="true" scrollHeight="#{controlDetalleConcepto.altoTablaVigenciaGrupoC}" scrollWidth="805"
                                                  filteredValue="#{controlDetalleConcepto.filtrarListVigenciasGruposConceptosConcepto}" emptyMessage="#{msg['vacio']}" selectionMode="single"
                                                  editable="true" editMode="cell" liveScroll="true" scrollRows="15" selection="#{controlDetalleConcepto.vigenciaGrupoCoSeleccionada}">
 
@@ -369,16 +370,16 @@
                                     </p:dataTable>
                                 </fieldset>
 
-                                <fieldset style="position: absolute; top: 417px; width: 815px; height: 180px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute; top: 417px; width: 805px; height: 180px; border-radius: 10px; text-align: left">
                                     <legend style="color: blue"><strong>#{msg['tiposdetrabajadores']}</strong></legend>
 
-                                    <p:dataTable id="datosVigenciaConceptoTT" var="infoVCTT" rowKey="#{infoVCTT.secuencia}" rowIndexVar="indiceVCTT" style="border: 1px;width: 790px"   
-                                                 value="#{controlDetalleConcepto.listVigenciasConceptosTTConcepto}" scrollable="true" scrollHeight="#{controlDetalleConcepto.altoTablaVigenciaConceptoTT}" scrollWidth="815"
+                                    <p:dataTable id="datosVigenciaConceptoTT" var="infoVCTT" rowKey="#{infoVCTT.secuencia}" rowIndexVar="indiceVCTT" style="border: 1px; width: 790px; font-size: 11px;"   
+                                                 value="#{controlDetalleConcepto.listVigenciasConceptosTTConcepto}" scrollable="true" scrollHeight="#{controlDetalleConcepto.altoTablaVigenciaConceptoTT}" scrollWidth="805"
                                                  filteredValue="#{controlDetalleConcepto.filtrarListVigenciasConceptosTT}" emptyMessage="#{msg['vacio']}" selectionMode="single"
-                                                 editable="true" editMode="cell"   liveScroll="true" scrollRows="15" selection="#{controlDetalleConcepto.vigenciaConceptoTTSeleccionada}">
+                                                 editable="true" editMode="cell" liveScroll="true" scrollRows="15" selection="#{controlDetalleConcepto.vigenciaConceptoTTSeleccionada}">
 
                                         <f:event type="preRenderView" listener="#{controlDetalleConcepto.recordarSeleccionesTT()}"/>
-                                        
+
                                         <p:ajax event="filter" listener="#{controlDetalleConcepto.eventoFiltrar()}"/>
 
                                         <p:column style="text-align: center" headerText="#{msg['fechainicial']}" sortBy="#{infoVCTT.strFechaInicial}" filterBy="#{infoVCTT.strFechaInicial}" filterMatchMode="contains" id="vigenciaCTTFechaInicial" width="80"
@@ -443,16 +444,16 @@
                                     </p:dataTable>
                                 </fieldset>
 
-                                <fieldset style="position: absolute; top: 617px; width: 815px; height: 180px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute; top: 617px; width: 805px; height: 180px; border-radius: 10px; text-align: left">
                                     <legend style="color: blue"><strong>#{msg['tiposdecontratos']}</strong></legend>
 
-                                    <p:dataTable id="datosVigenciaConceptoTC" var="infoVCTC" rowKey="#{infoVCTC.secuencia}" rowIndexVar="indiceVCTC" style="border: 1px;width: 790px"   
-                                                 value="#{controlDetalleConcepto.listVigenciasConceptosTCConcepto}" scrollable="true" scrollHeight="#{controlDetalleConcepto.altoTablaVigenciaConceptoTC}" scrollWidth="815"
+                                    <p:dataTable id="datosVigenciaConceptoTC" var="infoVCTC" rowKey="#{infoVCTC.secuencia}" rowIndexVar="indiceVCTC" style="border: 1px;width: 790px; font-size: 11px;"   
+                                                 value="#{controlDetalleConcepto.listVigenciasConceptosTCConcepto}" scrollable="true" scrollHeight="#{controlDetalleConcepto.altoTablaVigenciaConceptoTC}" scrollWidth="805"
                                                  filteredValue="#{controlDetalleConcepto.filtrarListVigenciasConceptosTC}" emptyMessage="#{msg['vacio']}" selectionMode="single"
                                                  editable="true" editMode="cell" liveScroll="true" scrollRows="15" selection="#{controlDetalleConcepto.vigenciaConceptoTCSeleccionada}">
 
                                         <f:event type="preRenderView" listener="#{controlDetalleConcepto.recordarSeleccionesTC()}"/>
-                                        
+
                                         <p:ajax event="filter" listener="#{controlDetalleConcepto.eventoFiltrar()}"/>
 
                                         <p:column style="text-align: center" headerText="#{msg['fechainicial']}" sortBy="#{infoVCTC.strFechaInicial}" filterBy="#{infoVCTC.strFechaInicial}" filterMatchMode="contains" id="vigenciaCTCFechaInicial" width="80"
@@ -519,16 +520,16 @@
                                     </p:dataTable>
                                 </fieldset>
 
-                                <fieldset style="position: absolute; top: 815px; width: 815px; height: 180px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute; top: 815px; width: 805px; height: 180px; border-radius: 10px; text-align: left">
                                     <legend style="color: blue"><strong>#{msg['tiposdesalario']}</strong></legend>
 
-                                    <p:dataTable id="datosVigenciaConceptoRL" var="infoVCRL" rowKey="#{infoVCRL.secuencia}" rowIndexVar="indiceVCRL" style="border: 1px;width: 800px"   
-                                                 value="#{controlDetalleConcepto.listVigenciasConceptosRLConcepto}" scrollable="true" scrollHeight="#{controlDetalleConcepto.altoTablaVigenciaConceptoRL}" scrollWidth="815"
+                                    <p:dataTable id="datosVigenciaConceptoRL" var="infoVCRL" rowKey="#{infoVCRL.secuencia}" rowIndexVar="indiceVCRL" style="border: 1px;width: 800px; font-size: 11px;"   
+                                                 value="#{controlDetalleConcepto.listVigenciasConceptosRLConcepto}" scrollable="true" scrollHeight="#{controlDetalleConcepto.altoTablaVigenciaConceptoRL}" scrollWidth="805"
                                                  filteredValue="#{controlDetalleConcepto.filtrarListVigenciasConceptosRL}" emptyMessage="#{msg['vacio']}" selectionMode="single"
                                                  editable="true" editMode="cell" liveScroll="true" scrollRows="15" selection="#{controlDetalleConcepto.vigenciaConceptoRLSeleccionada}">
 
                                         <f:event type="preRenderView" listener="#{controlDetalleConcepto.recordarSeleccionesRL()}"/>
-                                        
+
                                         <p:ajax event="filter" listener="#{controlDetalleConcepto.eventoFiltrar()}"/>
 
                                         <p:column style="text-align: center" headerText="#{msg['fechainicial']}" sortBy="#{infoVCRL.strFechaInicial}" filterBy="#{infoVCRL.strFechaInicial}" filterMatchMode="contains" id="vigenciaCRLFechaInicial" width="80"
@@ -593,16 +594,16 @@
                                     </p:dataTable>
                                 </fieldset>
 
-                                <fieldset style="position: absolute; top: 1014px; width: 815px; height: 195px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute; top: 1014px; width: 805px; height: 195px; border-radius: 10px; text-align: left">
                                     <legend style="color: blue"><strong>#{msg['formulas']}</strong></legend>
 
-                                    <p:dataTable id="datosFormulaConcepto" var="infoFC" rowKey="#{infoFC.secuencia}" rowIndexVar="indiceFC" style="border: 1px; width: 790px"   
-                                                 value="#{controlDetalleConcepto.listFormulasConceptos}" scrollable="true" scrollHeight="#{controlDetalleConcepto.altoTablaFormulaConcepto}" scrollWidth="815"
+                                    <p:dataTable id="datosFormulaConcepto" var="infoFC" rowKey="#{infoFC.secuencia}" rowIndexVar="indiceFC" style="border: 1px; width: 790px; font-size: 11px;"   
+                                                 value="#{controlDetalleConcepto.listFormulasConceptos}" scrollable="true" scrollHeight="#{controlDetalleConcepto.altoTablaFormulaConcepto}" scrollWidth="805"
                                                  filteredValue="#{controlDetalleConcepto.filtrarListFormulasConceptos}" emptyMessage="#{msg['vacio']}" selectionMode="single"
                                                  editable="true" editMode="cell" liveScroll="true" scrollRows="15" selection="#{controlDetalleConcepto.formulaConceptoSeleccionada}">
 
                                         <f:event type="preRenderView" listener="#{controlDetalleConcepto.recordarSeleccionesFC()}"/>
-                                        
+
                                         <p:ajax event="filter" listener="#{controlDetalleConcepto.eventoFiltrar()}"/>
 
                                         <p:column style="text-align: center" headerText="#{msg['fechainicial']}" sortBy="#{infoFC.strFechaInicial}" filterBy="#{infoFC.strFechaInicial}" filterMatchMode="contains" id="formulaCFechaInicial" width="80"
@@ -687,18 +688,18 @@
 
                                     </p:dataTable>
                                 </fieldset>
-                                <p:commandButton value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; 
-                                                  width: 28px; height: 28px; left: 10px; top: 1245px;" id="detalleFormula" disabled="#{controlDetalleConcepto.formulaSeleccionada}" 
-                                                  action="formulaSeleccionada"  actionListener="#{controlFormula.obtenerFormulaSecuencia(controlDetalleConcepto.actualFormulaConcepto.formula.secuencia)}" />
+                                <p:commandButton value="" style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none;position: absolute; 
+                                                 width: 28px; height: 28px; left: 10px; top: 1245px;" id="detalleFormula" disabled="#{controlDetalleConcepto.formulaSeleccionada}" 
+                                                 action="formulaSeleccionada"  actionListener="#{controlFormula.obtenerFormulaSecuencia(controlDetalleConcepto.actualFormulaConcepto.formula.secuencia)}" />
                                 <p:tooltip  for="detalleFormula" value="#{msg['detallesdelaformulaseleccionada']}" />
 
                             </p:scrollPanel>  
                         </fieldset>
 
-                        <p:commandButton style="position: absolute; left: 660px; top: 480px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/aceptar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat;" id="ACEPTAR" value="" disabled="#{controlDetalleConcepto.guardado}" onclick="confirmarGuardar.show();" update=":form:datosVigenciaCuenta"  />
-                        <p:commandButton style="position: absolute; left: 765px; top: 480px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/cancelar.png); 
-                                         background-size: 100% 100%; background-repeat: no-repeat;" id="ATRAS" value="" actionListener="#{controlDetalleConcepto.salir()}" action="retornoConcepto"  />
+                        <p:commandButton style="position: absolute; left: 660px; top: 500px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/aceptar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ACEPTAR" value="" disabled="#{controlDetalleConcepto.guardado}" onclick="confirmarGuardar.show();" update=":form:datosVigenciaCuenta"  />
+                        <p:commandButton style="position: absolute; left: 765px; top: 500px; height: 33px; width: 100px; background-image: url(Imagenes/Iconos/cancelar.png); 
+                                         background-size: 100% 100%; background-repeat: no-repeat; border: none;" id="ATRAS" value="" actionListener="#{controlDetalleConcepto.salir()}" action="retornoConcepto"  />
                     </p:panel>
 
 
@@ -739,63 +740,63 @@
                     </p:dialog>
 
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlDetalleConcepto.msnConfirmarRastro}" id="msnConfirmarRastro" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlDetalleConcepto.backUp, controlDetalleConcepto.nombreTablaRastro , 'detalleConceptoRastro')}" style="position: absolute; top: 63px; left: 230px" action="rastro"  />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" actionListener="#{controlDetalleConcepto.limpiarMSNRastros()}" style="position: absolute; top: 63px; left: 270px"  />
                     </p:dialog>
 
                     <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlDetalleConcepto.msnConfirmarRastroHistorico}" id="msnConfirmarRastroHisttorico" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla(controlDetalleConcepto.nombreTablaRastro , 'detalleConceptoRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro"  />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlDetalleConcepto.limpiarMSNRastros()}" style="position: absolute; top: 60px; left: 270px"  />
                     </p:dialog>
 
                     <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlDetalleConcepto.backUp, controlDetalleConcepto.nombreTablaRastro , 'detalleConceptoRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro"  />
                         <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px"  />
                     </p:dialog>
 
                     <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
                     <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
                     <p:dialog id="errorRegNuevo" header="#{msg['atencion']}" widgetVar="errorRegNuevo"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRegNuevo']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
                     <p:dialog id="errorFechasVC" header="#{msg['atencion']}" widgetVar="errorFechasVC"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechasVC']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/alerta.png" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlDetalleConcepto.guardadoGeneral()}" action="retornoConcepto" style="position: absolute; top: 50px; left: 207px"  icon="ui-icon-check" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlDetalleConcepto.cancelarModificacion()}" action="retornoConcepto" style="position: absolute; top: 50px; left: 258px"  icon="ui-icon-close" />
@@ -803,28 +804,28 @@
                     </p:dialog>
 
                     <p:dialog id="errorEliminacionConcepto" header="#{msg['eliminacionError']}" widgetVar="errorEliminacionConcepto"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorEliminacionConcepto']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="OK" onclick="errorEliminacionConcepto.hide();" style="position: absolute; top: 60px; left: 270px"  />
                     </p:dialog>
 
                     <p:dialog id="paso1Eliminacion" header="#{msg['eliminacion14']}" widgetVar="paso1Eliminacion"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['paso1Eliminacion']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="OK" onclick="paso2Eliminacion.show();
-                            paso1Eliminacion.hide();" style="position: absolute; top: 60px; left: 270px"  />
+                                paso1Eliminacion.hide();" style="position: absolute; top: 60px; left: 270px"  />
                     </p:dialog>
 
                     <p:dialog id="paso2Eliminacion" header="#{msg['eliminacion24']}" widgetVar="paso2Eliminacion"  resizable="false" draggable="false" modal="true" height="95" width="350px" closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['paso2Eliminacion']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['continuar']}" onclick="paso3Eliminacion.show();
-                            paso2Eliminacion.hide();" style="position: absolute; top: 60px; left: 170px"  />
+                                paso2Eliminacion.hide();" style="position: absolute; top: 60px; left: 170px"  />
                         <p:commandButton value="#{msg['cancelar']}" onclick="paso2Eliminacion.hide();" style="position: absolute; top: 60px; left: 260px"  />
                     </p:dialog>
 
                     <p:dialog id="paso3Eliminacion" header="#{msg['eliminacion34']}" widgetVar="paso3Eliminacion"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/Iconos/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{controlDetalleConcepto.conceptoAEliminar()}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="paso3Eliminacion.hide();" actionListener="#{controlDetalleConcepto.eliminarConcepto()}" style="position: absolute; top: 60px; left: 170px" action="#{controlDetalleConcepto.paginaRetorno}"  />
                         <p:commandButton value="#{msg['cancelar']}" onclick="paso3Eliminacion.hide();" style="position: absolute; top: 60px; left: 260px"  />

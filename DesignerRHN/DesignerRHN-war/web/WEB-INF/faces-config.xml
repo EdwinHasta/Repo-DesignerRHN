@@ -5426,12 +5426,12 @@
         <from-view-id>/emplvigenciatipotrabajador.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>tipotrabajadoremplvigenciatipotrabajador</from-outcome>
-            <to-view-id>/tiposTrabajadores.xhtml</to-view-id>
+            <to-view-id>/tipostrabajadores.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/tiposTrabajadores.xhtml</from-view-id>
+        <from-view-id>/tipostrabajadores.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrastipotrabajadoremplvigenciatipotrabajador</from-outcome>
             <to-view-id>/emplvigenciatipotrabajador.xhtml</to-view-id>

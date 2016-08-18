@@ -12,15 +12,15 @@
         <Node id="motivoretiro.xhtml" x="2150" y="150" zoom="true"/>
         <Node id="usuariovista.xhtml" x="3150" y="1500" zoom="true"/>
         <Node id="tipocentrocosto.xhtml" x="400" y="1350" zoom="true"/>
-        <Node id="actualizarconcepto.xhtml" x="2900" y="1500" zoom="true"/>
         <Node id="conceptoproyeccion.xhtml" x="3150" y="1050" zoom="true"/>
-        <Node id="motivoreemplazo.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="actualizarconcepto.xhtml" x="2900" y="1500" zoom="true"/>
         <Node id="actoinseguro.xhtml" x="150" y="1650" zoom="true"/>
+        <Node id="motivoreemplazo.xhtml" x="400" y="150" zoom="true"/>
         <Node id="formulasaseguradas.xhtml" x="3650" y="300" zoom="true"/>
         <Node id="detalleconcepto.xhtml" x="400" y="2400" zoom="true"/>
         <Node id="interfasecontablesapbope.xhtml" x="900" y="2850" zoom="true"/>
-        <Node id="centrocosto.xhtml" x="150" y="2250" zoom="true"/>
         <Node id="perreferencialaboral1.xhtml" x="2150" y="300" zoom="true"/>
+        <Node id="centrocosto.xhtml" x="150" y="2250" zoom="true"/>
         <Node id="motivosretiros.xhtml" x="2900" y="1050" zoom="true"/>
         <Node id="interfasecontablesapbopq.xhtml" x="5400" y="300" zoom="true"/>
         <Node id="interfasecontabletotalgeo.xhtml" x="1150" y="300" zoom="true"/>
@@ -30,8 +30,8 @@
         <Node id="idioma.xhtml" x="150" y="600" zoom="true"/>
         <Node id="interfasecontablesapbo.xhtml" x="650" y="3000" zoom="true"/>
         <Node id="interfasecontabledynamicsps.xhtml" x="1150" y="1650" zoom="true"/>
-        <Node id="motivoembargo.xhtml" x="1650" y="600" zoom="true"/>
         <Node id="tipoexamen.xhtml" x="3400" y="1200" zoom="true"/>
+        <Node id="motivoembargo.xhtml" x="1650" y="600" zoom="true"/>
         <Node id="retencion.xhtml" x="650" y="600" zoom="true"/>
         <Node id="formulaproceso.xhtml" x="900" y="2100" zoom="true"/>
         <Node id="athoraextra.xhtml" x="150" y="450" zoom="true"/>
@@ -43,8 +43,8 @@
         <Node id="interfasecontabledynamicspb.xhtml" x="3650" y="600" zoom="true"/>
         <Node id="proverbio.xhtml" x="400" y="1050" zoom="true"/>
         <Node id="emplviajero.xhtml" x="900" y="1500" zoom="true"/>
-        <Node id="tipodescanso.xhtml" x="2650" y="1350" zoom="true"/>
         <Node id="jornada.xhtml" x="400" y="1200" zoom="true"/>
+        <Node id="tipodescanso.xhtml" x="2650" y="1350" zoom="true"/>
         <Node id="partecuerpo.xhtml" x="1650" y="1050" zoom="true"/>
         <Node id="causaausentismo.xhtml" x="150" y="3000" zoom="true"/>
         <Node id="operando.xhtml" x="3150" y="300" zoom="true"/>
@@ -65,24 +65,24 @@
         <Node id="tipochequeo.xhtml" x="1150" y="2850" zoom="true"/>
         <Node id="tipobloque.xhtml" x="650" y="1950" zoom="true"/>
         <Node id="categoriaesca.xhtml" x="1650" y="150" zoom="true"/>
-        <Node id="moneda.xhtml" x="150" y="750" zoom="true"/>
         <Node id="proyeccion.xhtml" x="1900" y="2250" zoom="true"/>
+        <Node id="moneda.xhtml" x="150" y="750" zoom="true"/>
         <Node id="motivomvr.xhtml" x="4400" y="150" zoom="true"/>
         <Node id="evento.xhtml" x="650" y="2400" zoom="true"/>
         <Node id="claseaccidente.xhtml" x="900" y="900" zoom="true"/>
         <Node id="busquedaavanzada.xhtml" x="150" y="2550" zoom="true"/>
         <Node id="vigenciaplanta.xhtml" x="3400" y="150" zoom="true"/>
         <Node id="emplibcs.xhtml" x="4900" y="150" zoom="true"/>
-        <Node id="operandogrupoconcepto.xhtml" x="2400" y="900" zoom="true"/>
         <Node id="metodospagos.xhtml" x="5150" y="300" zoom="true"/>
+        <Node id="operandogrupoconcepto.xhtml" x="2400" y="900" zoom="true"/>
         <Node id="empresa.xhtml" x="1650" y="2250" zoom="true"/>
         <Node id="usuario.xhtml" x="3150" y="450" zoom="true"/>
-        <Node id="tipocurso.xhtml" x="900" y="2400" zoom="true"/>
         <Node id="upmenu.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="tipocurso.xhtml" x="900" y="2400" zoom="true"/>
         <Node id="conceptoretroactivo.xhtml" x="150" y="300" zoom="true"/>
         <Node id="ataprobacionhe.xhtml" x="2650" y="1800" zoom="true"/>
-        <Node id="solucionformula.xhtml" x="1400" y="2100" zoom="true"/>
         <Node id="cerrarliquidacion.xhtml" x="150" y="1050" zoom="true"/>
+        <Node id="solucionformula.xhtml" x="1400" y="2100" zoom="true"/>
         <Node id="hventrevista.xhtml" x="2400" y="450" zoom="true"/>
         <Node id="motivocambiocargo.xhtml" x="2900" y="300" zoom="true"/>
         <Node id="firmareporte.xhtml" x="1650" y="1200" zoom="true"/>
@@ -108,9 +108,9 @@
         <Node id="personaindividual.xhtml" x="400" y="750" zoom="true"/>
         <Node id="historiaformula.xhtml" x="1900" y="1650" zoom="true"/>
         <Node id="cambiofechaingreso.xhtml" x="2650" y="750" zoom="true"/>
-        <Node id="interfasecontabledynamicscps.xhtml" x="400" y="2100" zoom="true"/>
-        <Node id="sitioocurrencia.xhtml" x="650" y="2100" zoom="true"/>
         <Node id="escalafon.xhtml" x="1150" y="2100" zoom="true"/>
+        <Node id="sitioocurrencia.xhtml" x="650" y="2100" zoom="true"/>
+        <Node id="interfasecontabledynamicscps.xhtml" x="400" y="2100" zoom="true"/>
         <Node id="index.xhtml" x="150" y="2400" zoom="true"/>
         <Node id="tipoembargo.xhtml" x="150" y="3150" zoom="true"/>
         <Node id="interfasecontabledynamicsmt.xhtml" x="1650" y="750" zoom="true"/>
@@ -132,22 +132,22 @@
         <Node id="evalactividad.xhtml" x="1900" y="2400" zoom="true"/>
         <Node id="novedad.xhtml" x="150" y="1800" zoom="true"/>
         <Node id="configurarcolumnas.xhtml" x="1650" y="2400" zoom="true"/>
-        <Node id="formulaconcepto.xhtml" x="1400" y="1200" zoom="true"/>
         <Node id="emplvigenciaformapago.xhtml" x="1900" y="450" zoom="true"/>
+        <Node id="formulaconcepto.xhtml" x="1400" y="1200" zoom="true"/>
         <Node id="tipotalla.xhtml" x="1650" y="2100" zoom="true"/>
         <Node id="juzgado.xhtml" x="2650" y="300" zoom="true"/>
         <Node id="deporte.xhtml" x="3400" y="450" zoom="true"/>
-        <Node id="motivodefinitiva.xhtml" x="2650" y="1650" zoom="true"/>
         <Node id="iniciored.xhtml" x="400" y="2550" zoom="true"/>
+        <Node id="motivodefinitiva.xhtml" x="2650" y="1650" zoom="true"/>
         <Node id="evalevaluador.xhtml" x="1900" y="1200" zoom="true"/>
         <Node id="motivoprestamo.xhtml" x="3150" y="750" zoom="true"/>
         <Node id="emplibc.xhtml" x="900" y="1350" zoom="true"/>
-        <Node id="detallelegislacion.xhtml" x="1400" y="2400" zoom="true"/>
         <Node id="parametroautoliq.xhtml" x="650" y="1200" zoom="true"/>
+        <Node id="detallelegislacion.xhtml" x="1400" y="2400" zoom="true"/>
         <Node id="template.xhtml" x="1650" y="900" zoom="true"/>
+        <Node id="tipoempresa.xhtml" x="650" y="150" zoom="true"/>
         <Node id="acercade.xhtml" x="2150" y="750" zoom="true"/>
         <Node id="papel.xhtml" x="3900" y="900" zoom="true"/>
-        <Node id="tipoempresa.xhtml" x="650" y="150" zoom="true"/>
         <Node id="clasepension.xhtml" x="5400" y="450" zoom="true"/>
         <Node id="interfasecontablesapbovca.xhtml" x="650" y="3150" zoom="true"/>
         <Node id="nppmenu.xhtml" x="4150" y="900" zoom="true"/>
@@ -157,16 +157,16 @@
         <Node id="emplvigsaludocupacional.xhtml" x="900" y="3000" zoom="true"/>
         <Node id="perdireccion.xhtml" x="3400" y="300" zoom="true"/>
         <Node id="motivocontrato.xhtml" x="900" y="2550" zoom="true"/>
-        <Node id="perreferencialaboral.xhtml" x="2400" y="600" zoom="true"/>
         <Node id="vigenciaaficion.xhtml" x="650" y="1050" zoom="true"/>
+        <Node id="perreferencialaboral.xhtml" x="2400" y="600" zoom="true"/>
         <Node id="perestadocivil.xhtml" x="3150" y="900" zoom="true"/>
         <Node id="motivocesantia.xhtml" x="150" y="1950" zoom="true"/>
-        <Node id="tiporeemplazo.xhtml" x="2650" y="900" zoom="true"/>
         <Node id="tipoausentismo.xhtml" x="900" y="600" zoom="true"/>
+        <Node id="tiporeemplazo.xhtml" x="2650" y="900" zoom="true"/>
         <Node id="motivodemanda.xhtml" x="2900" y="900" zoom="true"/>
         <Node id="tipoconclusion.xhtml" x="3650" y="1350" zoom="true"/>
-        <Node id="valoresconceptos.xhtml" x="650" y="1650" zoom="true"/>
         <Node id="controlperiodoactivo.xhtml" x="1650" y="1350" zoom="true"/>
+        <Node id="valoresconceptos.xhtml" x="650" y="1650" zoom="true"/>
         <Node id="tipoentidad.xhtml" x="2150" y="1800" zoom="true"/>
         <Node id="retencionminima.xhtml" x="5900" y="150" zoom="true"/>
         <Node id="perexperiencialaboral.xhtml" x="2150" y="900" zoom="true"/>
@@ -177,8 +177,8 @@
         <Node id="procesoproductivo.xhtml" x="1650" y="1950" zoom="true"/>
         <Node id="attipodia.xhtml" x="1650" y="1650" zoom="true"/>
         <Node id="sucursal.xhtml" x="1150" y="2550" zoom="true"/>
-        <Node id="tipocontrato.xhtml" x="400" y="450" zoom="true"/>
         <Node id="bienestar.xhtml" x="1900" y="900" zoom="true"/>
+        <Node id="tipocontrato.xhtml" x="400" y="450" zoom="true"/>
         <Node id="proceso.xhtml" x="2150" y="2250" zoom="true"/>
         <Node id="interfasecontablesapbohp.xhtml" x="2900" y="1350" zoom="true"/>
         <Node id="tipotelefono.xhtml" x="2900" y="1650" zoom="true"/>
@@ -194,12 +194,12 @@
         <Node id="sucursal_pila.xhtml" x="1900" y="1950" zoom="true"/>
         <Node id="poblacionobjetivo.xhtml" x="4400" y="900" zoom="true"/>
         <Node id="empldemanda.xhtml" x="1400" y="150" zoom="true"/>
-        <Node id="declarante" x="4400" y="450" zoom="true"/>
         <Node id="formulanovedad.xhtml" x="4150" y="450" zoom="true"/>
+        <Node id="declarante" x="4400" y="450" zoom="true"/>
         <Node id="resources/linkare/calendar.xhtml" x="1400" y="1050" zoom="true"/>
         <Node id="interfasecontablesapbov8.xhtml" x="900" y="2250" zoom="true"/>
-        <Node id="tipodocumento.xhtml" x="1900" y="1800" zoom="true"/>
         <Node id="emplvigenciaindicador.xhtml" x="2900" y="600" zoom="true"/>
+        <Node id="tipodocumento.xhtml" x="1900" y="1800" zoom="true"/>
         <Node id="grupotipoentidad.xhtml" x="4150" y="1050" zoom="true"/>
         <Node id="estadocivil.xhtml" x="5650" y="150" zoom="true"/>
         <Node id="socondiciontrabajo.xhtml" x="2900" y="1800" zoom="true"/>
