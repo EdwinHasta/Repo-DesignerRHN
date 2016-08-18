@@ -147,7 +147,7 @@
                                          editable="true" editMode="cell" liveScroll="true" scrollRows="25" 
                                          selection="#{controlInterfaseContableTotal.generadoTablaSeleccionado}" selectionMode="single">
 
-                                <p:ajax event="filter" listener="#{controlInterfaseContableTotal.eventoFiltrar()}"/>
+                                <p:ajax event="filter" listener="#{controlInterfaseContableTotal.eventoFiltrarGenerados()}"/>
 
                                 <p:column headerText="#{msg['proceso']}" sortBy="#{infoG.proceso.descripcion}" filterBy="#{infoG.proceso.descripcion}"   width="133"
                                           id="genProceso"  filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"  >  
@@ -273,18 +273,19 @@
                                 </p:column>
 
                             </p:dataTable> 
+                            <h:outputText id="infoRegistroGenerados" value="#{msg['infoRegistros']} #{controlInterfaseContableTotal.infoRegistroGenerados}" style="position: raltive; left: 20px; top: 1px; font-weight: bold"/>
 
-                            <p:commandButton id="btnEnviar" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" disabled="#{controlInterfaseContableTotal.activarEnviar}" value="#{msg['enviar']}" icon="ui-icon-arrowreturnthick-1-s" style="position: relative; top: 5px; left: 10px" actionListener="#{controlInterfaseContableTotal.actionBtnEnviar()}"/>
-                            <p:commandButton id="btnDeshacer"  disabled="#{controlInterfaseContableTotal.activarDeshacer}" value="#{msg['deshacer']}"  style="position: relative; top: 2px; left: 20px" onclick="procesoDeshacer.show()"/>
-                            <p:commandButton id="reporteControl"   value="#{msg['reportecontrol']}"  style="position: relative; top: 2px; left: 30px" actionListener="#{controlInterfaseContableTotal.generarReporte()}" />
+                            <p:commandButton id="btnEnviar" onclick="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" disabled="#{controlInterfaseContableTotal.activarEnviar}" value="#{msg['enviar']}" icon="ui-icon-arrowreturnthick-1-s" style="position: relative; top: 5px; left: 40px;height: 22px;text-align: center" actionListener="#{controlInterfaseContableTotal.actionBtnEnviar()}"/>
+                            <p:commandButton id="btnDeshacer"  disabled="#{controlInterfaseContableTotal.activarDeshacer}" value="#{msg['deshacer']}"  style="position: relative; top: 2px; left: 45px" onclick="procesoDeshacer.show()"/>
+                            <p:commandButton id="reporteControl"   value="#{msg['reportecontrol']}"  style="position: relative; top: 2px; left: 55px" actionListener="#{controlInterfaseContableTotal.generarReporte()}" />
 
-                            <strong><h:outputText value="#{msg['totalC']}" style="position: relative; top: 5px; left: 135px"/></strong>
-                            <p:inputText id="totalCGenerado" value="#{controlInterfaseContableTotal.totalCGenerado}" readonly="true" style="position: relative; top: 5px; left: 140px;width: 90px">
+                            <strong><h:outputText value="#{msg['totalC']}" style="position: relative; top: 5px; left: 62px"/></strong>
+                            <p:inputText id="totalCGenerado" value="#{controlInterfaseContableTotal.totalCGenerado}" readonly="true" style="position: relative; top: 5px; left: 65px;width: 90px">
                                 <f:convertNumber currencySymbol="$" type="currency" />
                             </p:inputText>
 
-                            <strong><h:outputText value="#{msg['totalD']}" style="position: relative; top: 5px; left: 155px"/></strong>
-                            <p:inputText id="totalDGenerado" value="#{controlInterfaseContableTotal.totalDGenerado}" readonly="true" style="position: relative; top: 5px; left: 160px;width: 90px">
+                            <strong><h:outputText value="#{msg['totalD']}" style="position: relative; top: 5px; left: 70px"/></strong>
+                            <p:inputText id="totalDGenerado" value="#{controlInterfaseContableTotal.totalDGenerado}" readonly="true" style="position: relative; top: 5px; left: 72px;width: 90px">
                                 <f:convertNumber currencySymbol="$" type="currency" />
                             </p:inputText>
 
@@ -302,7 +303,7 @@
                                          editable="true" editMode="cell" liveScroll="true" scrollRows="25"
                                          selection="#{controlInterfaseContableTotal.interconTablaSeleccionada}" selectionMode="single">
 
-                                <p:ajax event="filter" listener="#{controlInterfaseContableTotal.eventoFiltrar()}"/>
+                                <p:ajax event="filter" listener="#{controlInterfaseContableTotal.eventoFiltrarContabilizados()}"/>
 
                                 <p:column headerText="#{msg['empleado']}" sortBy="#{infoI.empleado.persona.nombreCompleto}" filterBy="#{infoI.empleado.persona.nombreCompleto}"   width="133"
                                           id="interEmpleado"  filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"  >  
@@ -430,14 +431,15 @@
                                 </p:column>
 
                             </p:dataTable> 
+                            <h:outputText id="infoRegistroContabilizados" value="#{msg['infoRegistros']} #{controlInterfaseContableTotal.infoRegistroContabilizados}" style="position: raltive; left: 20px; top: 1px; font-weight: bold"/>
 
-                            <strong><h:outputText value="#{msg['totalD']}" style="position: relative; top: 2px; left: 430px"/></strong>
-                            <p:inputText id="totalDInter" readonly="true" value="#{controlInterfaseContableTotal.totalDInter}" style="position: relative; top: 2px; left: 433px;width: 90px;height: 10px">
+                            <strong><h:outputText value="#{msg['totalD']}" style="position: relative; top: 2px; left: 360px"/></strong>
+                            <p:inputText id="totalDInter" readonly="true" value="#{controlInterfaseContableTotal.totalDInter}" style="position: relative; top: 2px; left: 362px;width: 90px;height: 10px">
                                 <f:convertNumber currencySymbol="$" type="currency" />
                             </p:inputText>
 
-                            <strong><h:outputText value="#{msg['totalC']}" style="position: relative; top: 2px; left: 438px"/></strong>
-                            <p:inputText id="totalCInter" readonly="true" value="#{controlInterfaseContableTotal.totalCInter}" style="position: relative; top: 2px; left: 443px;width: 90px;height: 10px">
+                            <strong><h:outputText value="#{msg['totalC']}" style="position: relative; top: 2px; left: 365px"/></strong>
+                            <p:inputText id="totalCInter" readonly="true" value="#{controlInterfaseContableTotal.totalCInter}" style="position: relative; top: 2px; left: 368px;width: 90px;height: 10px">
                                 <f:convertNumber currencySymbol="$" type="currency" />
                             </p:inputText>
 
@@ -449,7 +451,8 @@
                             <f:selectItem itemLabel="#{msg['detallado']}" itemValue="1" />
                             <f:selectItem itemLabel="#{msg['semiDetallado']}" itemValue="2" />
                             <f:selectItem itemLabel="#{msg['resumido']}" itemValue="3" />
-                            <p:ajax event="select" process="@this" update="tipoPlano"/>
+                            <p:ajax event="change" listener="#{controlInterfaseContableTotal.modificarTipoPlano(controlInterfaseContableTotal.tipoPlano)}" process="@this" update="tipoPlano"/>
+                            <!--<p:ajax event="select" process="@this" update="tipoPlano"/>-->
                         </p:selectOneMenu>
 
                         <p:commandButton style="position: relative; left: 20px; top: 455px;" id="PLANO" value="#{msg['generarPlano']}" disabled="#{controlInterfaseContableTotal.activarDeshacer}" actionListener="#{controlInterfaseContableTotal.actionBtnGenerarPlano()}" process="@this" />

@@ -119,7 +119,8 @@
                                          value="#{controlComprobantes.listaSolucionesNodosEmpleado}" scrollable="true" rowIndexVar="indice" scrollHeight="#{controlComprobantes.altoScrollSolucionesNodosEmpleado}" 
                                          scrollWidth="830" editable="true" editMode="cell" liveScroll="true" scrollRows="15" filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleado}" 
                                          selectionMode="single" selection="#{controlComprobantes.solucionNodoSeleccionada}" emptyMessage="#{msg['vacio']}">
-
+                                <p:ajax event="filter" listener="#{controlComprobantes.eventoFiltrarComprobanteEmpleado()}"/>
+                                
                                 <p:column width="20" style="padding: 0px"> 
                                     <p:commandButton value="" style="width: 20px; height: 20px;" actionListener="#{controlComprobantes.parcialSolucionNodo(solucionNodoEmpleado,0)}"/>
                                 </p:column>
@@ -354,10 +355,10 @@
                                         <p:column footerText="" style="border: none; background-color: white; width: 2px;"/>
                                         <p:column footerText="" style="border: none; background-color: white"/>
                                         <p:column footerText="" style="border: none; background-color: white"/>
-                                        <p:column footerText="#{msg['totales']}" style="text-align:left; position: relative; z-index: 1; padding-left: 0px; border: none; color: #14388B; background-color: white; left: -15px;"/> 
-                                        <p:column footerText="#{controlComprobantes.pago}" style="text-align: right; position: relative; padding-left: 0px; border: none; background-color: white; left: -15px; font-weight: bold; color: #14388B; "/>
-                                        <p:column footerText="#{controlComprobantes.descuento}" style="text-align: right; position: relative; padding-left: 0px; border: none; background-color: white; left: -15px; font-weight: bold; color: #14388B;"/> 
-                                        <p:column footerText="&nbsp;&nbsp;&nbsp; Neto: &nbsp;&nbsp;&nbsp; #{controlComprobantes.netoTotal}"  style=" text-align: left; position: relative; padding-left: 0px; border: none; border: none; color: #14388B; background-color: white; left: -15px;"/>
+                                        <p:column footerText="#{msg['totales']}" style="text-align:left; position: relative;  border: none; color: #14388B; background-color: white; left: -15px;"/> 
+                                        <p:column footerText="#{controlComprobantes.pago}" style="text-align: right; position: relative;  border: none; background-color: white; left: -15px; font-weight: bold; color: #14388B; "/>
+                                        <p:column footerText="#{controlComprobantes.descuento}" style="text-align: right; position: relative;  border: none; background-color: white; left: -15px; font-weight: bold; color: #14388B;"/> 
+                                        <p:column footerText="&nbsp;&nbsp; Neto:  #{controlComprobantes.netoTotal}"  style=" text-align: left; position: relative;  border: none; border: none; color: #14388B; background-color: white; left: -15px;"/>
                                         <p:column footerText="" style="position: relative; border: none; background-color: white; left: -15px;"/>
                                         <p:column footerText="" style="position: relative; border: none; background-color: white; left: -15px;"/>
                                         <p:column footerText="" style="position: relative; border: none; background-color: white; left: -15px;"/>
@@ -370,6 +371,7 @@
                                     </p:row>  
                                 </p:columnGroup>
                             </p:dataTable>
+                            <h:outputText id="infoRegistroComprobanteEmpleado" value="#{msg['infoRegistros']} #{controlComprobantes.infoRegistroComprobanteEmpleado}" style="position: relative; left: 10px; top: -10px; font-weight: bold"/>
                             <p:remoteCommand name="posicionOtro" actionListener="#{controlComprobantes.posicionOtro()}"/>
                         </fieldset>
 
@@ -379,7 +381,9 @@
                             <p:dataTable id="datosSolucionesNodosEmpleador" var="solucionNodoEmpleador" style="width: 830px;" value="#{controlComprobantes.listaSolucionesNodosEmpleador}"
                                          rowKey="#{solucionNodoEmpleador.secuencia}" scrollable="true" rowIndexVar="indiceER"
                                          editable="true" editMode="cell"  scrollHeight="#{controlComprobantes.altoScrollSolucionesNodosEmpleador}" filteredValue="#{controlComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="#{msg['vacio']}">
-
+                                
+                                <p:ajax event="filter" listener="#{controlComprobantes.eventoFiltrarComprobanteEmpleador()}"/>
+                                
                                 <p:column style="padding: 0px !important; width: 20px; alignment-adjust: central; text-align: center"> 
                                     <p:commandButton value="" style="width: 18px; height: 18px;" actionListener="#{controlComprobantes.parcialSolucionNodoEmpleador(indiceER, 0)}"/>
                                 </p:column>
@@ -606,6 +610,7 @@
                                     </p:row>  
                                 </p:columnGroup>
                             </p:dataTable>
+                             <h:outputText id="infoRegistroComprobanteEmpleador" value="#{msg['infoRegistros']} #{controlComprobantes.infoRegistroComprobanteEmpleador}" style="position: relative; left: 10px; top: -10px; font-weight: bold"/>
                             <p:remoteCommand name="posicionOtroEmpleador" actionListener="#{controlComprobantes.posicionOtroEmpleador()}"/>
                         </fieldset>
                         <h:outputText style="position: absolute; background-color: white; left: 817px; top: 310px; width: 35px; height: 19px;"    />   

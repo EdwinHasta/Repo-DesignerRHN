@@ -75,7 +75,7 @@ public class ControlComprobantes implements Serializable {
     private SimpleDateFormat formatoFecha;
     private boolean estadoBtnArriba, estadoBtnAbajo;
     //
-    private String infoRegistroEmpleado, infoRegistroComprobante;
+    private String infoRegistroEmpleado, infoRegistroComprobante, infoRegistroComprobanteEmpleador, infoRegistroComprobanteEmpleado;
     private Parametros editarParametros;
     private int tipoLista, cualCelda;
 
@@ -95,11 +95,11 @@ public class ControlComprobantes implements Serializable {
         estadoBtnArriba = false;
         estadoBtnAbajo = false;
         parametroActual = null;
-        pasivo = "vacío";
-        gasto = "vacío";
-        pago = "vacío";
-        descuento = "vacío";
-        netoTotal = "vacío";
+        pasivo = "0";
+        gasto = "0";
+        pago = "0";
+        descuento = "0";
+        netoTotal = "0";
         listaParametrosLOV = new ArrayList<Parametros>();
         editarParametros = new Parametros();
         tipoLista = 0;
@@ -107,6 +107,9 @@ public class ControlComprobantes implements Serializable {
         solucionNodoEmpleadorSeleccionada = null;
         editarSolucionNodo = new SolucionesNodos();
         registroActual = 0;
+        listaSolucionesNodosEmpleado = null;
+        listaSolucionesNodosEmpleador = null;
+        listaParametros = null;
     }
 
     @PostConstruct
@@ -228,6 +231,8 @@ public class ControlComprobantes implements Serializable {
         listaSolucionesNodosEmpleador = null;
         getListaSolucionesNodosEmpleado();
         getListaSolucionesNodosEmpleador();
+        modificarInfoRegistroComprobanteEmpleado(listaSolucionesNodosEmpleado.size());
+        modificarInfoRegistroComprobanteEmpleador(listaSolucionesNodosEmpleador.size());
         mostrarTodos = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:panelInf");
@@ -531,19 +536,26 @@ public class ControlComprobantes implements Serializable {
         RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroEmpleado");
     }
 
-    public void eventoFiltrarEmpleado() {
-        modificarInfoRegistroEmpleado(filtradoListaParametrosLOV.size());
-        System.out.println("eventoFiltrarEmpleado infoRegistroEmpleado : " + infoRegistroEmpleado);
-        System.out.println("listaFiltrado: " + filtradoListaParametrosLOV.size());
+    public void modificarInfoRegistroComprobanteEmpleador(int valor) {
+        infoRegistroComprobanteEmpleador = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroComprobanteEmpleador");
     }
 
-    public void contarRegistrosEmpleado() {
-        if (listaParametrosLOV != null) {
-            modificarInfoRegistroEmpleado(listaParametrosLOV.size());
-        } else {
-            modificarInfoRegistroEmpleado(0);
-        }
+    public void modificarInfoRegistroComprobanteEmpleado(int valor) {
+        infoRegistroComprobanteEmpleado = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroComprobanteEmpleado");
+    }
 
+    public void eventoFiltrarEmpleado() {
+        modificarInfoRegistroEmpleado(filtradoListaParametrosLOV.size());
+    }
+
+    public void eventoFiltrarComprobanteEmpleado() {
+        modificarInfoRegistroComprobanteEmpleado(filtradolistaSolucionesNodosEmpleado.size());
+    }
+
+    public void eventoFiltrarComprobanteEmpleador() {
+        modificarInfoRegistroComprobanteEmpleador(filtradolistaSolucionesNodosEmpleador.size());
     }
 
     public void editarCelda() {
@@ -708,7 +720,7 @@ public class ControlComprobantes implements Serializable {
     //GETTER AND SETTER
     public List<Parametros> getListaParametros() {
         listaParametros = administrarComprobantes.consultarParametrosComprobantesActualUsuario();
-        if (listaParametros == null || listaParametros.isEmpty() || listaParametros.size() == 1) {
+        if (listaParametros == null || listaParametros.isEmpty()) {
             estadoBtnArriba = true;
             estadoBtnAbajo = true;
         } else {
@@ -750,9 +762,9 @@ public class ControlComprobantes implements Serializable {
     public List<Parametros> getListaParametrosLOV() {
         if (listaParametrosLOV == null || listaParametrosLOV.isEmpty()) {
             listaParametrosLOV = administrarComprobantes.consultarParametrosComprobantesActualUsuario();
-            if(listaParametrosLOV != null){
+            if (listaParametrosLOV != null) {
                 modificarInfoRegistroEmpleado(listaParametrosLOV.size());
-            } else{
+            } else {
                 modificarInfoRegistroEmpleado(0);
             }
         }
@@ -789,8 +801,8 @@ public class ControlComprobantes implements Serializable {
     }
 
     public List<SolucionesNodos> getListaSolucionesNodosEmpleado() {
-            if (parametroActual != null) {
-                listaSolucionesNodosEmpleado = administrarComprobantes.consultarSolucionesNodosEmpleado(parametroActual.getEmpleado().getSecuencia());
+        if (parametroActual != null) {
+            listaSolucionesNodosEmpleado = administrarComprobantes.consultarSolucionesNodosEmpleado(parametroActual.getEmpleado().getSecuencia());
             if (listaSolucionesNodosEmpleado != null) {
                 subtotalPago = new BigDecimal(0);
                 subtotalDescuento = new BigDecimal(0);
@@ -806,6 +818,9 @@ public class ControlComprobantes implements Serializable {
                 descuento = nf.format(subtotalDescuento);
                 netoTotal = nf.format(neto);
             }
+            modificarInfoRegistroComprobanteEmpleado(listaSolucionesNodosEmpleado.size());
+        } else {
+            modificarInfoRegistroComprobanteEmpleado(0);
         }
         return listaSolucionesNodosEmpleado;
     }
@@ -825,7 +840,7 @@ public class ControlComprobantes implements Serializable {
     public List<SolucionesNodos> getListaSolucionesNodosEmpleador() {
         if (parametroActual != null) {
             if (parametroActual.getEmpleado().getSecuencia() != null) {
-                    listaSolucionesNodosEmpleador = administrarComprobantes.consultarSolucionesNodosEmpleador(parametroActual.getEmpleado().getSecuencia());
+                listaSolucionesNodosEmpleador = administrarComprobantes.consultarSolucionesNodosEmpleador(parametroActual.getEmpleado().getSecuencia());
                 if (listaSolucionesNodosEmpleador != null) {
                     subtotalPasivo = new BigDecimal(0);
                     subtotalGasto = new BigDecimal(0);
@@ -840,7 +855,11 @@ public class ControlComprobantes implements Serializable {
                     gasto = nf.format(subtotalGasto);
                 }
             }
+            modificarInfoRegistroComprobanteEmpleador(listaSolucionesNodosEmpleador.size());
+        } else {
+            modificarInfoRegistroComprobanteEmpleador(0);
         }
+
         return listaSolucionesNodosEmpleador;
     }
 
@@ -938,10 +957,10 @@ public class ControlComprobantes implements Serializable {
     }
 
     public String getInfoRegistroComprobante() {
-        if (listaParametros != null) {
-            infoRegistroComprobante = "Reg. " + (registroActual + 1) + " de " + listaParametros.size();
+        if (listaParametros == null || listaParametros.isEmpty()) {
+            infoRegistroComprobante = "Reg. " + "0" + " de " + listaParametros.size();
         } else {
-            infoRegistroComprobante = "Reg. " + (registroActual) + " de " + listaParametros.size();
+            infoRegistroComprobante = "Reg. " + (registroActual+1) + " de " + listaParametros.size();
         }
         return infoRegistroComprobante;
     }
@@ -980,6 +999,22 @@ public class ControlComprobantes implements Serializable {
 
     public void setSolucionNodoEmpleadorSeleccionada(SolucionesNodos solucionNodoEmpleadorSeleccionada) {
         this.solucionNodoEmpleadorSeleccionada = solucionNodoEmpleadorSeleccionada;
+    }
+
+    public String getInfoRegistroComprobanteEmpleador() {
+        return infoRegistroComprobanteEmpleador;
+    }
+
+    public void setInfoRegistroComprobanteEmpleador(String infoRegistroComprobanteEmpleador) {
+        this.infoRegistroComprobanteEmpleador = infoRegistroComprobanteEmpleador;
+    }
+
+    public String getInfoRegistroComprobanteEmpleado() {
+        return infoRegistroComprobanteEmpleado;
+    }
+
+    public void setInfoRegistroComprobanteEmpleado(String infoRegistroComprobanteEmpleado) {
+        this.infoRegistroComprobanteEmpleado = infoRegistroComprobanteEmpleado;
     }
 
 }

@@ -83,10 +83,12 @@ public class ControlInterfaseContableTotal implements Serializable {
     private int cualCeldaGenerado;
     private SolucionesNodos editarGenerado;
     private int tipoListaGenerada, banderaGenerado;
+    private String infoRegistroGenerados;
     //
     private List<InterconTotal> listaInterconTotal;
     private List<InterconTotal> filtrarListaInterconTotal;
     private InterconTotal interconTablaSeleccionada;
+    private String infoRegistroContabilizados;
     private int cualCeldaIntercon;
     private InterconTotal editarIntercon;
     private int tipoListaIntercon, banderaIntercon;
@@ -148,7 +150,7 @@ public class ControlInterfaseContableTotal implements Serializable {
     private FTPClient ftpClient;
     private DefaultStreamedContent download;
     private UsuariosInterfases usuarioInterfaseContabilizacion;
-      private boolean estadoReporte;
+    private boolean estadoReporte;
     private String resultadoReporte;
 
     public ControlInterfaseContableTotal() {
@@ -231,6 +233,10 @@ public class ControlInterfaseContableTotal implements Serializable {
         modificarInfoRegistroEmpresas(lovEmpresas.size());
         getLovProcesos();
         modificarInfoRegistroProcesos(lovProcesos.size());
+        getListaGenerados();
+        contarRegistrosGenerados();
+        getListaInterconTotal();
+        contarRegistrosContabilizados();
     }
 
     public String redirigir() {
@@ -803,10 +809,10 @@ public class ControlInterfaseContableTotal implements Serializable {
 
     public void conectarAlFTP() {
         try {
-            System.out.println("server remoto : " + usuarioInterfaseContabilizacion.getServernameremoto() );
+            System.out.println("server remoto : " + usuarioInterfaseContabilizacion.getServernameremoto());
             System.out.println("usuario remoto : " + usuarioInterfaseContabilizacion.getUsuarioremoto());
             System.out.println("password remoto : " + usuarioInterfaseContabilizacion.getPasswordremoto());
-            
+
             ftpClient.connect(usuarioInterfaseContabilizacion.getServernameremoto());
             ftpClient.login(usuarioInterfaseContabilizacion.getUsuarioremoto(), usuarioInterfaseContabilizacion.getPasswordremoto());
             ftpClient.enterLocalPassiveMode();
@@ -1150,6 +1156,7 @@ public class ControlInterfaseContableTotal implements Serializable {
                 }
                 getTotalCGenerado();
                 getTotalDGenerado();
+                modificarInfoRegistroGenerados(listaGenerados.size());
             }
             /*
            
@@ -1169,6 +1176,7 @@ public class ControlInterfaseContableTotal implements Serializable {
                 }
                 getTotalCInter();
                 getTotalDInter();
+                modificarInfoRegistroContabilizados(listaInterconTotal.size());
             }
 
             context.update("form:PanelTotal");
@@ -1793,6 +1801,13 @@ public class ControlInterfaseContableTotal implements Serializable {
         nuevoParametroContable.setProceso(new Procesos());
     }
 
+    public void modificarTipoPlano(int tipo) {
+        System.out.println("tipo : " + tipo);
+        tipoPlano = tipo;
+        System.out.println("tipo Plano despues de modificar : " + tipoPlano);
+        RequestContext.getCurrentInstance().update("form:tipoPlano");
+    }
+
     public void validarExportPDF() throws IOException {
         if (indexParametroContable >= 0) {
             exportPDF_PC();
@@ -1903,19 +1918,6 @@ public class ControlInterfaseContableTotal implements Serializable {
             nombre = "InterconTotal_XML";
         }
         return nombre;
-    }
-
-    public void eventoFiltrar() {
-        if (generadoTablaSeleccionado != null) {
-            if (tipoListaGenerada == 0) {
-                tipoListaGenerada = 1;
-            }
-        }
-        if (interconTablaSeleccionada != null) {
-            if (tipoListaIntercon == 0) {
-                tipoListaIntercon = 1;
-            }
-        }
     }
 
     public void activarCtrlF11() {
@@ -2047,6 +2049,50 @@ public class ControlInterfaseContableTotal implements Serializable {
         RequestContext.getCurrentInstance().update("form:infoRegistroProceso");
     }
 
+    public void modificarInfoRegistroGenerados(int valor) {
+        infoRegistroGenerados = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroGenerados");
+    }
+
+    public void modificarInfoRegistroContabilizados(int valor) {
+        infoRegistroContabilizados = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:infoRegistroContabilizados");
+    }
+
+    public void contarRegistrosGenerados(){
+        if(listaGenerados != null){
+            modificarInfoRegistroGenerados(listaGenerados.size());
+        } else{
+            modificarInfoRegistroGenerados(0);
+        }
+    }
+    
+    public void contarRegistrosContabilizados(){
+        if(listaInterconTotal != null){
+            modificarInfoRegistroContabilizados(listaInterconTotal.size());
+        } else{
+            modificarInfoRegistroContabilizados(0);
+        }
+    }
+    
+    public void eventoFiltrarGenerados() {
+        if (generadoTablaSeleccionado != null) {
+            if (tipoListaGenerada == 0) {
+                tipoListaGenerada = 1;
+            }
+            modificarInfoRegistroGenerados(filtrarListaGenerados.size());
+        }
+    }
+
+    public void eventoFiltrarContabilizados() {
+        if (interconTablaSeleccionada != null) {
+            if (tipoListaIntercon == 0) {
+                tipoListaIntercon = 1;
+            }
+            modificarInfoRegistroContabilizados(filtrarListaInterconTotal.size());
+        }
+    }
+
     public void eventoFiltrarEmpresas() {
         modificarInfoRegistroEmpresas(filtrarLovEmpresas.size());
     }
@@ -2072,7 +2118,7 @@ public class ControlInterfaseContableTotal implements Serializable {
 //    }
     public void generarDocumentoReporte() {
         RequestContext context = RequestContext.getCurrentInstance();
-            System.out.println("nombreReporte antes de entrar" + nombreReporte);
+        System.out.println("nombreReporte antes de entrar" + nombreReporte);
         if (nombreReporte != null) {
             System.out.println("nombreReporte después de entrar" + nombreReporte);
             System.out.println("generando reporte - ingreso al 2 if");
@@ -2096,8 +2142,8 @@ public class ControlInterfaseContableTotal implements Serializable {
             validarDescargaReporte();
         }
     }
-    
-      public AsynchronousFilllListener listener() {
+
+    public AsynchronousFilllListener listener() {
         System.out.println(this.getClass().getName() + ".listener()");
         return new AsynchronousFilllListener() {
             //RequestContext context = c;
@@ -2108,7 +2154,7 @@ public class ControlInterfaseContableTotal implements Serializable {
                 try {
                     estadoReporte = true;
                     resultadoReporte = "Exito";
-                 //  RequestContext.getCurrentInstance().execute("formularioDialogos:generandoReporte");
+                    //  RequestContext.getCurrentInstance().execute("formularioDialogos:generandoReporte");
 //                    generarArchivoReporte(jp);
                 } catch (Exception e) {
                     System.out.println("ControlNReporteNomina reportFinished ERROR: " + e.toString());
@@ -2135,8 +2181,7 @@ public class ControlInterfaseContableTotal implements Serializable {
             }
         };
     }
-    
-    
+
     public void validarDescargaReporte() {
         System.out.println(this.getClass().getName() + ".validarDescargaReporte()");
         RequestContext context = RequestContext.getCurrentInstance();
@@ -2189,10 +2234,10 @@ public class ControlInterfaseContableTotal implements Serializable {
         administarReportes.cancelarReporte();
     }
 
-      public void exportarReporte() throws IOException {
+    public void exportarReporte() throws IOException {
         System.out.println(this.getClass().getName() + ".exportarReporte()");
         if (pathReporteGenerado != null) {
-            
+
             File reporteF = new File(pathReporteGenerado);
             System.out.println("reporteF:  " + reporteF);
             FacesContext ctx = FacesContext.getCurrentInstance();
@@ -2216,7 +2261,7 @@ public class ControlInterfaseContableTotal implements Serializable {
             }
         }
     }
-    
+
 /////////////////////SETS Y GETS/////////////////////////////
     public ActualUsuario getActualUsuarioBD() {
         if (actualUsuarioBD == null) {
@@ -2246,8 +2291,8 @@ public class ControlInterfaseContableTotal implements Serializable {
     }
 
     public List<Empresas> getLovEmpresas() {
-        if(lovEmpresas == null){
-        lovEmpresas = administrarInterfaseContableTotal.lovEmpresas();
+        if (lovEmpresas == null) {
+            lovEmpresas = administrarInterfaseContableTotal.lovEmpresas();
         }
         return lovEmpresas;
     }
@@ -2273,8 +2318,8 @@ public class ControlInterfaseContableTotal implements Serializable {
     }
 
     public List<Procesos> getLovProcesos() {
-        if(lovProcesos == null){
-        lovProcesos = administrarInterfaseContableTotal.lovProcesos();
+        if (lovProcesos == null) {
+            lovProcesos = administrarInterfaseContableTotal.lovProcesos();
         }
         return lovProcesos;
     }
@@ -2519,6 +2564,7 @@ public class ControlInterfaseContableTotal implements Serializable {
     }
 
     public int getTipoPlano() {
+        System.out.println("tipo plano : " + tipoPlano);
         return tipoPlano;
     }
 
@@ -2704,6 +2750,22 @@ public class ControlInterfaseContableTotal implements Serializable {
 
     public void setReporte(StreamedContent reporte) {
         this.reporte = reporte;
+    }
+
+    public String getInfoRegistroGenerados() {
+        return infoRegistroGenerados;
+    }
+
+    public void setInfoRegistroGenerados(String infoRegistroGenerados) {
+        this.infoRegistroGenerados = infoRegistroGenerados;
+    }
+
+    public String getInfoRegistroContabilizados() {
+        return infoRegistroContabilizados;
+    }
+
+    public void setInfoRegistroContabilizados(String infoRegistroContabilizados) {
+        this.infoRegistroContabilizados = infoRegistroContabilizados;
     }
 
 }
