@@ -1360,8 +1360,8 @@ public class ControlParametrosConjuntos implements Serializable {
     public void cambiarSeleccionDefault() {
         seleccionPorcentajes = false;
         estadisticaLBSeleccionada = null;
-        RequestContext.getCurrentInstance().execute("tablaEstadisticasLB.unselectAllRows()");
-        RequestContext.getCurrentInstance().update("form:tablaEstadisticasLB");
+//        RequestContext.getCurrentInstance().execute("tablaEstadisticasLB.unselectAllRows()");
+//        RequestContext.getCurrentInstance().update("form:tablaEstadisticasLB");
         System.out.println("Termino cambiarSeleccionDefault() :");
         System.out.println("estadisticaSeleccionada : " + estadisticaSeleccionada);
         System.out.println("estadisticaLBSeleccionada : " + estadisticaLBSeleccionada);
@@ -1370,8 +1370,8 @@ public class ControlParametrosConjuntos implements Serializable {
     public void cambiarSeleccionLBDefault() {
         seleccionPorcentajes = false;
         estadisticaSeleccionada = null;
-        RequestContext.getCurrentInstance().execute("tablaEstadisticas.unselectAllRows()");
-        RequestContext.getCurrentInstance().update("form:tablaEstadisticas");
+//        RequestContext.getCurrentInstance().execute("tablaEstadisticas.unselectAllRows()");
+//        RequestContext.getCurrentInstance().update("form:tablaEstadisticas");
         System.out.println("Termino cambiarSeleccionLBDefault() :");
         System.out.println("estadisticaSeleccionada : " + estadisticaSeleccionada);
         System.out.println("estadisticaLBSeleccionada : " + estadisticaLBSeleccionada);

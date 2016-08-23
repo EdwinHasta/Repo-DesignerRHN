@@ -58,9 +58,9 @@ public class ControlTiposTrabajadores implements Serializable {
     private List<TiposTrabajadores> filtrarLovTiposTrabajadores;
     private TiposTrabajadores tipoTrabajadorLovSeleccionado;
     //Columnas Tabla Tipos Trabajadores
-    private Column tTCodigo, tTNombre, ttFactorD, ttTipoCot, ttDiasVacNoOrd, ttDiasVac,
-            tTModalidad, tTTipo, tTNivel, tTBase, tTPor, tTMPS, tTPatronPS, tTPatronPP, tTPatronPR, tTCesCC,
-            VDTdias, VDTFecha;
+    private Column tTCodigo, tTNombre, ttFactorD, ttTipoCot, ttDiasVacNoOrd, ttDiasVac, tTModalidad, tTTipo,
+            tTNivel, tTBase, tTPor, tTMPS, tTPatronPS, tTPatronPP, tTPatronPR, tTCesCC, VDTdias, VDTFecha;
+            
     //Variables de control
     private int tipoActualizacion;
     private int bandera;

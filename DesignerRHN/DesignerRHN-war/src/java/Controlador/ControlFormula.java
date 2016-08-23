@@ -153,6 +153,7 @@ public class ControlFormula implements Serializable {
 
     //OBTENER FORMULA POR SECUENCIA
     public void obtenerFormulaSecuencia(BigInteger secuencia) {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (secuencia != null) {
             Formulas actual = administrarFormula.buscarFormulaSecuencia(secuencia);
             listaFormulas = new ArrayList<Formulas>();
@@ -164,7 +165,6 @@ public class ControlFormula implements Serializable {
                 } else {
                     propiedadesFormula = true;
                 }
-                RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:novedadFormula");
                 context.update("form:procesoFormula");
                 context.update("form:conceptoFormula");
@@ -174,12 +174,14 @@ public class ControlFormula implements Serializable {
             }
         } else {
             getListaFormulas();
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:buscarFormula");
             context.update("form:mostrarTodos");
             activoBuscarTodos = false;
         }
         llamadoPrevioPagina = 0;
+        contarRegistros();
+        mostrarTodos = false;
+        context.update("form:mostrarTodos");
     }
 
     public void recibirDatosTiposFormulas(BigInteger secuenciaTiposFormulas, TiposFormulas tiposFormulasRegistro) {
@@ -378,12 +380,12 @@ public class ControlFormula implements Serializable {
             listaFormulas.clear();
             listaFormulas.add(formulaSeleccionadaLOV);
             formulaSeleccionada = formulaSeleccionadaLOV;
-            mostrarTodos = false;
             activoDetalleFormula = true;
+            mostrarTodos = false;
+            context.update("form:mostrarTodos");
             context.update("form:detalleFormula");
             context.update("form:operandoFormula");
             context.update("form:datosFormulas");
-            context.update("form:mostrarTodos");
             modificarInfoRegistro(listaFormulas.size());
             context.update("form:informacionRegistro");
         } else {
@@ -886,7 +888,6 @@ public class ControlFormula implements Serializable {
         formulaSeleccionada = null;
         RequestContext context = RequestContext.getCurrentInstance();
         modificarInfoRegistro(filtradoListaFormulas.size());
-        context.update("form:informacionRegistro");
     }
 
     public void eventoFiltrarFormulas() {
@@ -908,6 +909,7 @@ public class ControlFormula implements Serializable {
         } else {
             modificarInfoRegistro(0);
         }
+        RequestContext.getCurrentInstance().update("form:informacionRegistro");
     }
 
     public void verDetalle(Formulas formula) {

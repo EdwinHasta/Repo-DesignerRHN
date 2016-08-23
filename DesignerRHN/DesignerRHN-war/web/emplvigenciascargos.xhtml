@@ -184,7 +184,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.cargo.nombre}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.cargo.nombre}" id="editNombreCargo" style="border-radius: 0px; text-transform: uppercase; height: 12px;  width: 94%;" >
+                                            <p:inputText value="#{info.cargo.nombre}" id="editNombreCargo" style="border-radius: 0px; text-transform: uppercase; height: 12px; width: 94%;" >
                                                 <p:ajax event="change" listener="#{controlVigenciasCargos.modificarVC(info, 'NOMBREC', info.cargo.nombre)}"/>
                                                 <p:ajax event="select" listener="#{controlVigenciasCargos.cambiarIndice(info, 3)}" />
                                                 <p:ajax event="dblclick" listener="#{controlVigenciasCargos.asignarIndex(info, 1)}"/>
