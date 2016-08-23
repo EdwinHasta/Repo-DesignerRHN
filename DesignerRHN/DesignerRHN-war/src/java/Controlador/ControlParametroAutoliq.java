@@ -244,25 +244,7 @@ public class ControlParametroAutoliq implements Serializable {
             modificarInfoRegistroAporte(listaAportesEntidades.size());
         }
         
-//        cargarListas();
     }
-
-//    public void cargarListas() {
-//        getLovAportesEntidades();
-//        modificarInfoRegistroAportesEntidades(lovAportesEntidades.size());
-//        getLovEmpleados();
-//        modificarInfoRegistroEmpleados(lovEmpleados.size());
-//        getLovEmpresas();
-//        modificarInfoRegistroEmpresa(lovEmpresas.size());
-//        getLovTerceros();
-//        modificarInfoRegistroTercero(lovTerceros.size());
-//        getLovTiposEntidades();
-//        modificarInfoRegistroTiposEntidades(lovTiposEntidades.size());
-//        getLovTiposTrabajadores();
-//        modificarInfoRegistroTiposTrabajadores(lovTiposTrabajadores.size());
-//        getListaAportesEntidades();
-//        modificarInfoRegistroAporte(listaAportesEntidades.size());
-//    }
 
     public String redirigir() {
         return paginaAnterior;
@@ -272,21 +254,6 @@ public class ControlParametroAutoliq implements Serializable {
         return numeroScrollAporte;
     }
 
-//    public void pruebaRemota() {
-//        RequestContext context = RequestContext.getCurrentInstance();
-//        int tam = 0;
-//        if (tipoListaAporte == 0) {
-//            tam = listaAportesEntidades.size();
-//        } else {
-//            tam = filtrarListaAportesEntidades.size();
-//        }
-//        if (rowsAporteEntidad < tam) {
-//            rowsAporteEntidad = rowsAporteEntidad + 20;
-//            numeroScrollAporte = numeroScrollAporte + 500;
-//            context.execute("operacionEnProceso.hide()");
-//            context.update("form:PanelTotal");
-//        }
-//    }
 
     public void modificarParametroAutoliq(ParametrosAutoliq parametro) {
         RequestContext context = RequestContext.getCurrentInstance();

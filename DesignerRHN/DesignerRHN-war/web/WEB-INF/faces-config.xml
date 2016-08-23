@@ -5525,4 +5525,122 @@
         </navigation-case>
     </navigation-rule>
     
+    <navigation-rule>
+        <from-view-id>/atausentismos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tiposausentismos</from-outcome>
+            <to-view-id>/tipoausentismo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipoausentismo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastiposausentismos</from-outcome>
+            <to-view-id>/atausentismos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+        <navigation-rule>
+        <from-view-id>/claseausentismo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tiposausentismos</from-outcome>
+            <to-view-id>/tipoausentismo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipoausentismo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrastiposausentismos</from-outcome>
+            <to-view-id>/claseausentismo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/atausentismos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>diagnostico</from-outcome>
+            <to-view-id>/diagnosticoscategorias.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/diagnosticoscategorias.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasdiagnostico</from-outcome>
+            <to-view-id>/atausentismos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/atausentismos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>clasesausentismos</from-outcome>
+            <to-view-id>/claseausentismo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/claseausentismo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasclasesausentismos</from-outcome>
+            <to-view-id>/atausentismos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/novedad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atausentismos</from-outcome>
+            <to-view-id>/atausentismos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>    
+    <navigation-rule>
+        <from-view-id>/atausentismos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedad</from-outcome>
+            <to-view-id>/novedad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/atausentismos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>causaausentismos</from-outcome>
+            <to-view-id>/causaausentismo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/causaausentismo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrascausaausentismos</from-outcome>
+            <to-view-id>/atausentismos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/causaausentismo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>claseausentismos</from-outcome>
+            <to-view-id>/claseausentismo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/claseausentismo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasclaseausentismos</from-outcome>
+            <to-view-id>/causaausentismo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

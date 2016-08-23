@@ -124,11 +124,8 @@
                                     <!-- Fila de Abajo -->
                                     <p:row>
                                         <p:column  style="width: 100px" colspan="1"  width="100" headerText="#{msg['tipo']}" filterBy="#{ausentismos.tipo.descripcion}" filterMatchMode="contains" id="ATipo" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.tipo.descripcion}" />  
-                                        <p:column  width="100" headerText="#{msg['clase']}" filterBy="#{ausentismos.clase.descripcion}" filterMatchMode="contains" id="AClase" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.clase.descripcion}" >     
-                                        </p:column>
-
-                                        <p:column  width="100" headerText="#{msg['causa']}" filterBy="#{ausentismos.causa.descripcion}" filterMatchMode="contains" id="ACausa" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.causa.descripcion}" >
-                                        </p:column>
+                                        <p:column  width="100" headerText="#{msg['clase']}" filterBy="#{ausentismos.clase.descripcion}" filterMatchMode="contains" id="AClase" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.clase.descripcion}" />     
+                                        <p:column  width="100" headerText="#{msg['causa']}" filterBy="#{ausentismos.causa.descripcion}" filterMatchMode="contains" id="ACausa" filterStyle="display: none; visibility: hidden" sortBy="#{ausentismos.causa.descripcion}" />
 
                                         <p:column  headerText="#{msg['dias']}" filterBy="#{ausentismos.dias}" filterMatchMode="contains" id="ADias" filterStyle="display: none; visibility: hidden" sortBy= "#{ausentismos.dias}">
                                         </p:column>
@@ -231,37 +228,6 @@
                                     </p:row>
                                 </p:columnGroup>
 
-                                <p:columnGroup type="footer"> 
-                                    <!-- Footers-->
-                                    <p:row>  
-                                        <p:column  rowspan="1" colspan="1"  />                                        
-                                        <p:column  rowspan="1" colspan="1"  />                               
-                                        <p:column  rowspan="1" colspan="1"  >  
-                                            <f:facet name="footer">
-                                                <p:commandButton style="width: 315px; margin: -14px; height: 26px; border: none; color: blue" value=" " id="fooCausaAusentismo" action="causasausentismos" actionListener="#{controlCausasAusentismos.recibirPaginaEntrante('atausentismos')}" process="@this"/>
-                                            </f:facet>
-                                        </p:column>
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                        <p:column  rowspan="1" colspan="3"  />  
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                        <p:column  rowspan="1" colspan="1"  />    
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                        <p:column  rowspan="1" colspan="1"  />  
-                                    </p:row>
-                                </p:columnGroup>
                                 <!-- DATOS-->
                                 <!--Tipo Ausentismo-->
                                 <p:column >                             
@@ -276,6 +242,9 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 140px; margin: -14px; height: 26px; border: none; color: blue" value=" " id="fooTipoAusentismo" actionListener="#{controlTiposAusentismos.recibirPagina('atausentismos')}" action="tiposausentismos"  process="@this"/>
+                                    </f:facet>
                                 </p:column>
                                 <!--Clase Ausentismo -->
                                 <p:column >                                  
@@ -289,6 +258,10 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>
+                                    
+                                       <f:facet name="footer">
+                                           <p:commandButton style="width: 140px; margin: -14px; height: 26px; border: none; color: blue" value=" " id="fooClaseAusentismo" actionListener="#{controlClasesAusentismos.recibirPagina('atausentismos')}" action="clasesausentismos"  process="@this"/>
+                                    </f:facet>
                                 </p:column>
                                 <!--Causa Ausentismo-->
                                 <p:column >                                  
@@ -303,6 +276,9 @@
                                         </f:facet>
                                     </p:cellEditor>                                     
 
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 140px; margin: -14px; height: 26px; border: none; color: blue" value=" " id="fooCausaAusentismo" actionListener="#{controlCausasAusentismos.recibirPaginaEntrante('atausentismos')}" action="causaausentismos"  process="@this"/>
+                                    </f:facet>
                                 </p:column>
                                 <!-- Dias Ausentismo -->  
                                 <p:column >                                  
@@ -503,6 +479,9 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 140px; margin: -14px; height: 26px; border: none; color: blue" value=" " id="fooDiagnostico" actionListener="#{controlDiagnosticosCategorias.recibirPagina('atausentismos')}" action="diagnostico"  process="@this"/>
+                                    </f:facet>
                                 </p:column>
                                 <!-- Prorroga -->
                                 <p:column >                                  

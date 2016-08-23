@@ -4,7 +4,10 @@
  */
 package InterfacePersistencia;
 
+import Entidades.Diagnosticoscapitulos;
 import Entidades.Diagnosticoscategorias;
+import Entidades.Diagnosticossecciones;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -14,26 +17,17 @@ import javax.persistence.EntityManager;
  * @author Viktor
  */
 public interface PersistenciaDiagnosticosCategoriasInterface {
-    /**
-     * Método encargado de insertar un diagnosticoCategoria en la base de datos.
-     * @param diagnosticosCategorias diagnosticoCategoria que se quiere crear.
-     */
-    public void crear(EntityManager em,Diagnosticoscategorias diagnosticosCategorias);
-    /**
-     * Método encargado de modificar un diagnosticoCategoria de la base de datos.
-     * Este método recibe la información del parámetro para hacer un 'merge' con la 
-     * información de la base de datos.
-     * @param diagnosticosCategorias diagnosticoCategoria con los cambios que se van a realizar.
-     */
-    public void editar(EntityManager em,Diagnosticoscategorias diagnosticosCategorias);
-    /**
-     * Método encargado de eliminar de la base de datos el diagnosticoCategoria que entra por parámetro.
-     * @param diagnosticosCategorias diagnosticoCategoria que se quiere eliminar.
-     */
-    public void borrar(EntityManager em,Diagnosticoscategorias diagnosticosCategorias);
-    /**
-     * Método encargado de buscar todos los diagnosticosCategorias existentes en la base de datos.
-     * @return Retorna una lista de diagnosticosCategorias
-     */
+    public List<Diagnosticoscategorias> buscarCategorias(EntityManager em,BigDecimal secSeccion);
     public List<Diagnosticoscategorias> buscarDiagnosticos(EntityManager em);
+    public void crear(EntityManager em,Diagnosticoscategorias diagnosticosCategorias);
+    public void editar(EntityManager em,Diagnosticoscategorias diagnosticosCategorias);
+    public void borrar(EntityManager em,Diagnosticoscategorias diagnosticosCategorias);
+    public List<Diagnosticoscapitulos> buscarCapitulo(EntityManager em);
+    public void crearCapitulo(EntityManager em,Diagnosticoscapitulos diagnosticosCapitulo);
+    public void editarCapitulo(EntityManager em,Diagnosticoscapitulos diagnosticosCapitulo);
+    public void borrarCapitulo(EntityManager em,Diagnosticoscapitulos diagnosticosCapitulo);
+    public List<Diagnosticossecciones> buscarSeccion(EntityManager em,BigDecimal secCapitulo);
+    public void crearSeccion(EntityManager em,Diagnosticossecciones diagnosticosSeccion);
+    public void editarSeccion(EntityManager em,Diagnosticossecciones diagnosticosSeccion);
+    public void borrarSeccion(EntityManager em,Diagnosticossecciones diagnosticosSeccion);
 }

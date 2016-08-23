@@ -57,11 +57,10 @@ public class ControlCausasAusentismos implements Serializable {
     private Causasausentismos duplicarCausasAusentismos;
     private Causasausentismos editarCausasAusentismos;
     private Causasausentismos causasAusentismoSeleccionado;
-    private BigInteger secRegistro;
     public String altoTabla;
     public String infoRegistroClasesausentismos;
     //AutoCompletar
-    private boolean permitirIndex;
+    private boolean permitirIndex, activarBotonLov;
     private String claseAusentismo;
     //Tabla a Imprimir
     private String tablaImprimir, nombreArchivo;
@@ -75,7 +74,7 @@ public class ControlCausasAusentismos implements Serializable {
     public boolean buscador;
     public String paginaAnterior;
     //otros
-    private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
+    private int cualCelda, tipoLista, tipoActualizacion, k, bandera;
     private BigInteger l;
     private Short codiguin;
     private boolean aceptar, guardado;
@@ -91,14 +90,13 @@ public class ControlCausasAusentismos implements Serializable {
         listaCausasAusentismosModificar = new ArrayList<Causasausentismos>();
         listaCausasAusentismosBorrar = new ArrayList<Causasausentismos>();
         lovClasesAusentismos = new ArrayList<Clasesausentismos>();
-
+        activarBotonLov = true;
         cualCelda = -1;
-        tipoLista = 0;
         nuevaCausasAusentismos = new Causasausentismos();
         nuevaCausasAusentismos.setClase(new Clasesausentismos());
         duplicarCausasAusentismos = new Causasausentismos();
         duplicarCausasAusentismos.setClase(new Clasesausentismos());
-        secRegistro = null;
+        causasAusentismoSeleccionado = null;
         k = 0;
         altoTabla = "270";
         guardado = true;
@@ -115,12 +113,6 @@ public class ControlCausasAusentismos implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarCausasAusentismos.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
-            getListaCausasAusentismos();
-            if (listaCausasAusentismos != null) {
-                infoRegistro = "Cantidad de registros : " + listaCausasAusentismos.size();
-            } else {
-                infoRegistro = "Cantidad de registros : 0";
-            }
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -129,6 +121,15 @@ public class ControlCausasAusentismos implements Serializable {
 
     public void recibirPaginaEntrante(String pagina) {
         paginaAnterior = pagina;
+        getListaCausasAusentismos();
+        contarRegistros();
+        lovClasesAusentismos = null;
+        getLovClasesAusentismos();
+        if (listaCausasAusentismos != null) {
+            if (!listaCausasAusentismos.isEmpty()) {
+                causasAusentismoSeleccionado = listaCausasAusentismos.get(0);
+            }
+        }
     }
 
     public String redirigir() {
@@ -146,19 +147,19 @@ public class ControlCausasAusentismos implements Serializable {
         if (bandera == 0) {
             System.out.println("Activar");
             Codigo = (Column) c.getViewRoot().findComponent("form:datosCausasAusentismos:codigo");
-            Codigo.setFilterStyle("width:20px");
+            Codigo.setFilterStyle("width:85%");
             Descripcion = (Column) c.getViewRoot().findComponent("form:datosCausasAusentismos:descripcion");
-            Descripcion.setFilterStyle("");
+            Descripcion.setFilterStyle("width:85%");
             Clase = (Column) c.getViewRoot().findComponent("form:datosCausasAusentismos:clase");
             Clase.setFilterStyle("");
             OrigenIncapacidad = (Column) c.getViewRoot().findComponent("form:datosCausasAusentismos:origenIncapacidad");
-            OrigenIncapacidad.setFilterStyle("width:20px");
+            OrigenIncapacidad.setFilterStyle("width:85%");
             PorcentajeLiquidacion = (Column) c.getViewRoot().findComponent("form:datosCausasAusentismos:porcentajeLiquidacion");
-            PorcentajeLiquidacion.setFilterStyle("width:15px");
+            PorcentajeLiquidacion.setFilterStyle("width:85%");
             RestaDiasIncapacidad = (Column) c.getViewRoot().findComponent("form:datosCausasAusentismos:restaDiasIncapacidad");
-            RestaDiasIncapacidad.setFilterStyle("width:15px");
+            RestaDiasIncapacidad.setFilterStyle("width:85%");
             FormaLiquidacion = (Column) c.getViewRoot().findComponent("form:datosCausasAusentismos:formaLiquidacion");
-            FormaLiquidacion.setFilterStyle("width:40px");
+            FormaLiquidacion.setFilterStyle("width:85%");
             altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosCausasAusentismos");
             bandera = 1;
@@ -196,41 +197,49 @@ public class ControlCausasAusentismos implements Serializable {
             tipoLista = 1;
         }
         RequestContext context = RequestContext.getCurrentInstance();
-        infoRegistro = "Cantidad de registros: " + filtrarCausasAusentismos.size();
-        context.update("form:informacionRegistro");
+        modificarInfoRegistro(filtrarCausasAusentismos.size());
     }
 
     //UBICACION CELDA
-    public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(Causasausentismos causa, int celda) {
         if (permitirIndex == true) {
-            index = indice;
+            causasAusentismoSeleccionado = causa;
             cualCelda = celda;
             tablaImprimir = ":formExportar:datosCausasAusentismosExportar";
             nombreArchivo = "CausasAusentismosXML";
             if (tipoLista == 0) {
-                codiguin = listaCausasAusentismos.get(index).getCodigo();
-                secRegistro = listaCausasAusentismos.get(index).getSecuencia();
+                deshabilitarBotonLov();
+                codiguin = causasAusentismoSeleccionado.getCodigo();
+                causasAusentismoSeleccionado.getSecuencia();
                 if (cualCelda == 2) {
-                    claseAusentismo = listaCausasAusentismos.get(index).getClase().getDescripcion();
+                    habilitarBotonLov();
+                    claseAusentismo = causasAusentismoSeleccionado.getClase().getDescripcion();
+                } else {
+                    deshabilitarBotonLov();
                 }
             } else {
-                codiguin = filtrarCausasAusentismos.get(index).getCodigo();
-                secRegistro = filtrarCausasAusentismos.get(index).getSecuencia();
+                codiguin = causasAusentismoSeleccionado.getCodigo();
+                causasAusentismoSeleccionado.getSecuencia();
+                deshabilitarBotonLov();
                 if (cualCelda == 2) {
-                    claseAusentismo = filtrarCausasAusentismos.get(index).getClase().getDescripcion();
+                    habilitarBotonLov();
+                    claseAusentismo = causasAusentismoSeleccionado.getClase().getDescripcion();
+                } else {
+                    deshabilitarBotonLov();
                 }
             }
         }
+
     }
 
     //MOSTRAR DATOS CELDA
     public void editarCelda() {
-        if (index >= 0) {
+        if (causasAusentismoSeleccionado != null) {
             if (tipoLista == 0) {
-                editarCausasAusentismos = listaCausasAusentismos.get(index);
+                editarCausasAusentismos = causasAusentismoSeleccionado;
             }
             if (tipoLista == 1) {
-                editarCausasAusentismos = filtrarCausasAusentismos.get(index);
+                editarCausasAusentismos = causasAusentismoSeleccionado;
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -256,9 +265,9 @@ public class ControlCausasAusentismos implements Serializable {
                 context.execute("editarRestaDiasIncapacidad.show()");
                 cualCelda = -1;
             }
+        } else {
+            RequestContext.getCurrentInstance().execute("formularioDialogos:seleccionarRegistro");
         }
-        index = -1;
-        secRegistro = null;
     }
 
     //SELECCIONAR ORIGEN INCAPACIDAD
@@ -268,51 +277,51 @@ public class ControlCausasAusentismos implements Serializable {
         if (tipoLista == 0) {
             if (estadoOrigenIncapacidad != null) {
                 if (estadoOrigenIncapacidad.equals("AT")) {
-                    listaCausasAusentismos.get(indice).setOrigenincapacidad("AT");
+                    causasAusentismoSeleccionado.setOrigenincapacidad("AT");
                 } else if (estadoOrigenIncapacidad.equals("EG")) {
-                    listaCausasAusentismos.get(indice).setOrigenincapacidad("EG");
+                    causasAusentismoSeleccionado.setOrigenincapacidad("EG");
                 } else if (estadoOrigenIncapacidad.equals("EP")) {
-                    listaCausasAusentismos.get(indice).setOrigenincapacidad("EP");
+                    causasAusentismoSeleccionado.setOrigenincapacidad("EP");
                 } else if (estadoOrigenIncapacidad.equals("MA")) {
-                    listaCausasAusentismos.get(indice).setOrigenincapacidad("MA");
+                    causasAusentismoSeleccionado.setOrigenincapacidad("MA");
                 } else if (estadoOrigenIncapacidad.equals("OT")) {
-                    listaCausasAusentismos.get(indice).setOrigenincapacidad("OT");
+                    causasAusentismoSeleccionado.setOrigenincapacidad("OT");
                 } else if (estadoOrigenIncapacidad.equals(" ")) {
-                    listaCausasAusentismos.get(indice).setOrigenincapacidad(null);
+                    causasAusentismoSeleccionado.setOrigenincapacidad(null);
                 }
             } else {
-                listaCausasAusentismos.get(indice).setOrigenincapacidad(null);
+                causasAusentismoSeleccionado.setOrigenincapacidad(null);
             }
-            if (!listaCausasAusentismosCrear.contains(listaCausasAusentismos.get(indice))) {
+            if (!listaCausasAusentismosCrear.contains(causasAusentismoSeleccionado)) {
                 if (listaCausasAusentismosModificar.isEmpty()) {
-                    listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
-                } else if (!listaCausasAusentismosModificar.contains(listaCausasAusentismos.get(indice))) {
-                    listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
+                    listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
+                } else if (!listaCausasAusentismosModificar.contains(causasAusentismoSeleccionado)) {
+                    listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
                 }
             }
         } else {
             if (estadoOrigenIncapacidad != null) {
                 if (estadoOrigenIncapacidad.equals("AT")) {
-                    filtrarCausasAusentismos.get(indice).setOrigenincapacidad("AT");
+                    causasAusentismoSeleccionado.setOrigenincapacidad("AT");
                 } else if (estadoOrigenIncapacidad.equals("EG")) {
-                    filtrarCausasAusentismos.get(indice).setOrigenincapacidad("EG");
+                    causasAusentismoSeleccionado.setOrigenincapacidad("EG");
                 } else if (estadoOrigenIncapacidad.equals("EP")) {
-                    filtrarCausasAusentismos.get(indice).setOrigenincapacidad("EP");
+                    causasAusentismoSeleccionado.setOrigenincapacidad("EP");
                 } else if (estadoOrigenIncapacidad.equals("MA")) {
-                    filtrarCausasAusentismos.get(indice).setOrigenincapacidad("MA");
+                    causasAusentismoSeleccionado.setOrigenincapacidad("MA");
                 } else if (estadoOrigenIncapacidad.equals("OT")) {
-                    filtrarCausasAusentismos.get(indice).setOrigenincapacidad("OT");
+                    causasAusentismoSeleccionado.setOrigenincapacidad("OT");
                 } else if (estadoOrigenIncapacidad.equals(" ")) {
-                    filtrarCausasAusentismos.get(indice).setOrigenincapacidad(null);
+                    causasAusentismoSeleccionado.setOrigenincapacidad(null);
                 }
             } else {
-                filtrarCausasAusentismos.get(indice).setOrigenincapacidad(null);
+                causasAusentismoSeleccionado.setOrigenincapacidad(null);
             }
-            if (!listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(indice))) {
+            if (!listaCausasAusentismosCrear.contains(causasAusentismoSeleccionado)) {
                 if (listaCausasAusentismosModificar.isEmpty()) {
-                    listaCausasAusentismosModificar.add(filtrarCausasAusentismos.get(indice));
-                } else if (!listaCausasAusentismosModificar.contains(filtrarCausasAusentismos.get(indice))) {
-                    listaCausasAusentismosModificar.add(filtrarCausasAusentismos.get(indice));
+                    listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
+                } else if (!listaCausasAusentismosModificar.contains(causasAusentismoSeleccionado)) {
+                    listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
                 }
             }
         }
@@ -322,7 +331,7 @@ public class ControlCausasAusentismos implements Serializable {
         }
 
         RequestContext.getCurrentInstance().update("form:datosCausasAusentismos");
-        System.out.println("Subtipo: " + listaCausasAusentismos.get(indice).getOrigenincapacidad());
+        System.out.println("Subtipo: " + causasAusentismoSeleccionado.getOrigenincapacidad());
     }
 
     //NUEVO Y DUPLICADO, REGISTRO DE ORIGEN INCAPACIDAD
@@ -379,59 +388,59 @@ public class ControlCausasAusentismos implements Serializable {
         if (tipoLista == 0) {
             if (estadoFormaLiquidacion != null) {
                 if (estadoFormaLiquidacion.equals("BASICO")) {
-                    listaCausasAusentismos.get(indice).setFormaliquidacion("BASICO");
+                    causasAusentismoSeleccionado.setFormaliquidacion("BASICO");
                 } else if (estadoFormaLiquidacion.equals("IBC MES ANTERIOR")) {
-                    listaCausasAusentismos.get(indice).setFormaliquidacion("IBC MES ANTERIOR");
+                    causasAusentismoSeleccionado.setFormaliquidacion("IBC MES ANTERIOR");
                 } else if (estadoFormaLiquidacion.equals("IBC MES ENERO")) {
-                    listaCausasAusentismos.get(indice).setFormaliquidacion("IBC MES ENERO");
+                    causasAusentismoSeleccionado.setFormaliquidacion("IBC MES ENERO");
                 } else if (estadoFormaLiquidacion.equals("IBC MES INCAPACIDAD")) {
-                    listaCausasAusentismos.get(indice).setFormaliquidacion("IBC MES INCAPACIDAD");
+                    causasAusentismoSeleccionado.setFormaliquidacion("IBC MES INCAPACIDAD");
                 } else if (estadoFormaLiquidacion.equals("PROMEDIO ACUMULADOS 12 MESES")) {
-                    listaCausasAusentismos.get(indice).setFormaliquidacion("PROMEDIO ACUMULADOS 12 MESES");
+                    causasAusentismoSeleccionado.setFormaliquidacion("PROMEDIO ACUMULADOS 12 MESES");
                 } else if (estadoFormaLiquidacion.equals("PROMEDIO IBC 12 MESES")) {
-                    listaCausasAusentismos.get(indice).setFormaliquidacion("PROMEDIO IBC 12 MESES");
+                    causasAusentismoSeleccionado.setFormaliquidacion("PROMEDIO IBC 12 MESES");
                 } else if (estadoFormaLiquidacion.equals("PROMEDIO IBC 6 MESES")) {
-                    listaCausasAusentismos.get(indice).setFormaliquidacion("PROMEDIO IBC 6 MESES");
+                    causasAusentismoSeleccionado.setFormaliquidacion("PROMEDIO IBC 6 MESES");
                 } else if (estadoFormaLiquidacion.equals(" ")) {
-                    listaCausasAusentismos.get(indice).setFormaliquidacion(null);
+                    causasAusentismoSeleccionado.setFormaliquidacion(null);
                 }
             } else {
-                listaCausasAusentismos.get(indice).setFormaliquidacion(null);
+                causasAusentismoSeleccionado.setFormaliquidacion(null);
             }
-            if (!listaCausasAusentismosCrear.contains(listaCausasAusentismos.get(indice))) {
+            if (!listaCausasAusentismosCrear.contains(causasAusentismoSeleccionado)) {
                 if (listaCausasAusentismosModificar.isEmpty()) {
-                    listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
-                } else if (!listaCausasAusentismosModificar.contains(listaCausasAusentismos.get(indice))) {
-                    listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
+                    listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
+                } else if (!listaCausasAusentismosModificar.contains(causasAusentismoSeleccionado)) {
+                    listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
                 }
             }
         } else {
             if (estadoFormaLiquidacion != null) {
                 if (estadoFormaLiquidacion.equals("BASICO")) {
-                    filtrarCausasAusentismos.get(indice).setFormaliquidacion("BASICO");
+                    causasAusentismoSeleccionado.setFormaliquidacion("BASICO");
                 } else if (estadoFormaLiquidacion.equals("IBC MES ANTERIOR")) {
-                    filtrarCausasAusentismos.get(indice).setFormaliquidacion("IBC MES ANTERIOR");
+                    causasAusentismoSeleccionado.setFormaliquidacion("IBC MES ANTERIOR");
                 } else if (estadoFormaLiquidacion.equals("IBC MES ENERO")) {
-                    filtrarCausasAusentismos.get(indice).setFormaliquidacion("IBC MES ENERO");
+                    causasAusentismoSeleccionado.setFormaliquidacion("IBC MES ENERO");
                 } else if (estadoFormaLiquidacion.equals("IBC MES INCAPACIDAD")) {
-                    filtrarCausasAusentismos.get(indice).setFormaliquidacion("IBC MES INCAPACIDAD");
+                    causasAusentismoSeleccionado.setFormaliquidacion("IBC MES INCAPACIDAD");
                 } else if (estadoFormaLiquidacion.equals("PROMEDIO ACUMULADOS 12 MESES")) {
-                    filtrarCausasAusentismos.get(indice).setFormaliquidacion("PROMEDIO ACUMULADOS 12 MESES");
+                    causasAusentismoSeleccionado.setFormaliquidacion("PROMEDIO ACUMULADOS 12 MESES");
                 } else if (estadoFormaLiquidacion.equals("PROMEDIO IBC 12 MESES")) {
-                    filtrarCausasAusentismos.get(indice).setFormaliquidacion("PROMEDIO IBC 12 MESES");
+                    causasAusentismoSeleccionado.setFormaliquidacion("PROMEDIO IBC 12 MESES");
                 } else if (estadoFormaLiquidacion.equals("PROMEDIO IBC 6 MESES")) {
-                    filtrarCausasAusentismos.get(indice).setFormaliquidacion("PROMEDIO IBC 6 MESES");
+                    causasAusentismoSeleccionado.setFormaliquidacion("PROMEDIO IBC 6 MESES");
                 } else if (estadoFormaLiquidacion.equals(" ")) {
-                    filtrarCausasAusentismos.get(indice).setFormaliquidacion(null);
+                    causasAusentismoSeleccionado.setFormaliquidacion(null);
                 }
             } else {
-                filtrarCausasAusentismos.get(indice).setFormaliquidacion(null);
+                causasAusentismoSeleccionado.setFormaliquidacion(null);
             }
-            if (!listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(indice))) {
+            if (!listaCausasAusentismosCrear.contains(causasAusentismoSeleccionado)) {
                 if (listaCausasAusentismosModificar.isEmpty()) {
-                    listaCausasAusentismosModificar.add(filtrarCausasAusentismos.get(indice));
-                } else if (!listaCausasAusentismosModificar.contains(filtrarCausasAusentismos.get(indice))) {
-                    listaCausasAusentismosModificar.add(filtrarCausasAusentismos.get(indice));
+                    listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
+                } else if (!listaCausasAusentismosModificar.contains(causasAusentismoSeleccionado)) {
+                    listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
                 }
             }
         }
@@ -441,7 +450,7 @@ public class ControlCausasAusentismos implements Serializable {
         }
 
         RequestContext.getCurrentInstance().update("form:datosCausasAusentismos");
-        System.out.println("Subtipo: " + listaCausasAusentismos.get(indice).getFormaliquidacion());
+        System.out.println("Subtipo: " + causasAusentismoSeleccionado.getFormaliquidacion());
     }
 
     //NUEVO Y DUPLICADO, REGISTRO DE FORMA LIQUIDACION
@@ -499,8 +508,8 @@ public class ControlCausasAusentismos implements Serializable {
     }
 
     //AUTOCOMPLETAR
-    public void modificarCausasAusentismos(int indice, String confirmarCambio, String valorConfirmar) {
-        index = indice;
+    public void modificarCausasAusentismos(Causasausentismos causa, String confirmarCambio, String valorConfirmar) {
+        causasAusentismoSeleccionado = causa;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         int pasa = 0;
@@ -510,24 +519,24 @@ public class ControlCausasAusentismos implements Serializable {
         if (confirmarCambio.equalsIgnoreCase("C")) {
             if (tipoLista == 0) {
 
-                if (!listaCausasAusentismosCrear.contains(listaCausasAusentismos.get(indice))) {
-                    if (listaCausasAusentismos.get(indice).getCodigo() != null) {
+                if (!listaCausasAusentismosCrear.contains(causasAusentismoSeleccionado)) {
+                    if (causasAusentismoSeleccionado.getCodigo() != null) {
                         for (int i = 0; i < listaCausasAusentismos.size(); i++) {
-                            if (listaCausasAusentismos.get(indice).getCodigo().compareTo(listaCausasAusentismos.get(i).getCodigo()) == 0) {
+                            if (causasAusentismoSeleccionado.getCodigo().compareTo(listaCausasAusentismos.get(i).getCodigo()) == 0) {
                                 pasa++;
                             }
                         }
                     }
-                    if (listaCausasAusentismos.get(indice).getCodigo() == null || (listaCausasAusentismos.get(indice).getCodigo().toString()).equals("")) {
+                    if (causasAusentismoSeleccionado.getCodigo() == null || (causasAusentismoSeleccionado.getCodigo().toString()).equals("")) {
                         pasac++;
                         System.out.println("pasac: " + pasac);
                     }
                     if (pasa == 1 && pasac == 0) {
                         System.out.println("pasac es: " + pasac);
                         if (listaCausasAusentismosModificar.isEmpty()) {
-                            listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
-                        } else if (!listaCausasAusentismosModificar.contains(listaCausasAusentismos.get(indice))) {
-                            listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
+                            listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
+                        } else if (!listaCausasAusentismosModificar.contains(causasAusentismoSeleccionado)) {
+                            listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
                         }
 
                         if (guardado == true) {
@@ -535,33 +544,31 @@ public class ControlCausasAusentismos implements Serializable {
                             context.update("form:ACEPTAR");
                         }
                     } else if (pasac != 0) {
-                        listaCausasAusentismos.get(indice).setCodigo(codiguin);
+                        causasAusentismoSeleccionado.setCodigo(codiguin);
                         context.update("formularioDialogos:validacionCodigo2");
                         context.execute("validacionCodigo2.show()");
 
                     } else if (pasa > 1) {
-                        listaCausasAusentismos.get(indice).setCodigo(codiguin);
+                        causasAusentismoSeleccionado.setCodigo(codiguin);
                         context.update("formularioDialogos:validacionCodigo");
                         context.execute("validacionCodigo.show()");
                     }
                 }
-                index = -1;
-                secRegistro = null;
             } else {
-                if (!listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(indice))) {
+                if (!listaCausasAusentismosCrear.contains(causasAusentismoSeleccionado)) {
                     for (int i = 0; i < filtrarCausasAusentismos.size(); i++) {
-                        if (filtrarCausasAusentismos.get(indice).getCodigo().compareTo(filtrarCausasAusentismos.get(i).getCodigo()) == 0) {
+                        if (causasAusentismoSeleccionado.getCodigo().compareTo(filtrarCausasAusentismos.get(i).getCodigo()) == 0) {
                             pasaf++;
                         }
                     }
-                    if (filtrarCausasAusentismos.get(indice).getCodigo() == null || filtrarCausasAusentismos.get(indice).getCodigo().equals("")) {
+                    if (causasAusentismoSeleccionado.getCodigo() == null || causasAusentismoSeleccionado.getCodigo().equals("")) {
                         pasaf++;
                     }
                     if (pasaf == 1) {
                         if (listaCausasAusentismosCrear.isEmpty()) {
-                            listaCausasAusentismosCrear.add(filtrarCausasAusentismos.get(indice));
-                        } else if (!listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(indice))) {
-                            listaCausasAusentismosCrear.add(filtrarCausasAusentismos.get(indice));
+                            listaCausasAusentismosCrear.add(causasAusentismoSeleccionado);
+                        } else if (!listaCausasAusentismosCrear.contains(causasAusentismoSeleccionado)) {
+                            listaCausasAusentismosCrear.add(causasAusentismoSeleccionado);
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -569,13 +576,11 @@ public class ControlCausasAusentismos implements Serializable {
                         }
 
                     } else {
-                        filtrarCausasAusentismos.get(indice).setCodigo(codiguin);
+                        causasAusentismoSeleccionado.setCodigo(codiguin);
                         context.update("formularioDialogos:validacionCodigo");
                         context.execute("validacionCodigo.show()");
                     }
                 }
-                index = -1;
-                secRegistro = null;
             }
             context.update("form:datosCausasAusentismos");
 
@@ -584,12 +589,12 @@ public class ControlCausasAusentismos implements Serializable {
 
             if (tipoLista == 0) {
 
-                if (!listaCausasAusentismosCrear.contains(listaCausasAusentismos.get(indice))) {
+                if (!listaCausasAusentismosCrear.contains(causasAusentismoSeleccionado)) {
 
                     if (listaCausasAusentismosModificar.isEmpty()) {
-                        listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
-                    } else if (!listaCausasAusentismosModificar.contains(listaCausasAusentismos.get(indice))) {
-                        listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
+                        listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
+                    } else if (!listaCausasAusentismosModificar.contains(causasAusentismoSeleccionado)) {
+                        listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
                     }
 
                     if (guardado == true) {
@@ -598,15 +603,13 @@ public class ControlCausasAusentismos implements Serializable {
                     }
 
                 }
-                index = -1;
-                secRegistro = null;
             } else {
-                if (!listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(indice))) {
+                if (!listaCausasAusentismosCrear.contains(causasAusentismoSeleccionado)) {
 
                     if (listaCausasAusentismosCrear.isEmpty()) {
-                        listaCausasAusentismosCrear.add(filtrarCausasAusentismos.get(indice));
-                    } else if (!listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(indice))) {
-                        listaCausasAusentismosCrear.add(filtrarCausasAusentismos.get(indice));
+                        listaCausasAusentismosCrear.add(causasAusentismoSeleccionado);
+                    } else if (!listaCausasAusentismosCrear.contains(causasAusentismoSeleccionado)) {
+                        listaCausasAusentismosCrear.add(causasAusentismoSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
@@ -614,16 +617,14 @@ public class ControlCausasAusentismos implements Serializable {
                     }
 
                 }
-                index = -1;
-                secRegistro = null;
             }
             context.update("form:datosCausasAusentismos");
 
         } else if (confirmarCambio.equalsIgnoreCase("CLASESAUSENTISMOS")) {
             if (tipoLista == 0) {
-                listaCausasAusentismos.get(indice).getClase().setDescripcion(claseAusentismo);
+                causasAusentismoSeleccionado.getClase().setDescripcion(claseAusentismo);
             } else {
-                filtrarCausasAusentismos.get(indice).getClase().setDescripcion(claseAusentismo);
+                causasAusentismoSeleccionado.getClase().setDescripcion(claseAusentismo);
             }
             for (int i = 0; i < lovClasesAusentismos.size(); i++) {
                 if (lovClasesAusentismos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
@@ -633,9 +634,9 @@ public class ControlCausasAusentismos implements Serializable {
             }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listaCausasAusentismos.get(indice).setClase(lovClasesAusentismos.get(indiceUnicoElemento));
+                    causasAusentismoSeleccionado.setClase(lovClasesAusentismos.get(indiceUnicoElemento));
                 } else {
-                    filtrarCausasAusentismos.get(indice).setClase(lovClasesAusentismos.get(indiceUnicoElemento));
+                    causasAusentismoSeleccionado.setClase(lovClasesAusentismos.get(indiceUnicoElemento));
                 }
                 lovClasesAusentismos.clear();
                 getLovClasesAusentismos();
@@ -648,11 +649,11 @@ public class ControlCausasAusentismos implements Serializable {
         }
         if (coincidencias == 1) {
             if (tipoLista == 0) {
-                if (!listaCausasAusentismosCrear.contains(listaCausasAusentismos.get(indice))) {
+                if (!listaCausasAusentismosCrear.contains(causasAusentismoSeleccionado)) {
                     if (listaCausasAusentismosModificar.isEmpty()) {
-                        listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
-                    } else if (!listaCausasAusentismosModificar.contains(listaCausasAusentismos.get(indice))) {
-                        listaCausasAusentismosModificar.add(listaCausasAusentismos.get(indice));
+                        listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
+                    } else if (!listaCausasAusentismosModificar.contains(causasAusentismoSeleccionado)) {
+                        listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
@@ -660,15 +661,13 @@ public class ControlCausasAusentismos implements Serializable {
 
                     }
                 }
-                index = -1;
-                secRegistro = null;
             } else {
-                if (!listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(indice))) {
+                if (!listaCausasAusentismosCrear.contains(causasAusentismoSeleccionado)) {
 
                     if (listaCausasAusentismosModificar.isEmpty()) {
-                        listaCausasAusentismosModificar.add(filtrarCausasAusentismos.get(indice));
-                    } else if (!listaCausasAusentismosModificar.contains(filtrarCausasAusentismos.get(indice))) {
-                        listaCausasAusentismosModificar.add(filtrarCausasAusentismos.get(indice));
+                        listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
+                    } else if (!listaCausasAusentismosModificar.contains(causasAusentismoSeleccionado)) {
+                        listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
                     }
                     if (guardado == true) {
                         guardado = false;
@@ -676,30 +675,18 @@ public class ControlCausasAusentismos implements Serializable {
 
                     }
                 }
-                index = -1;
-                secRegistro = null;
             }
         }
         context.update("form:datosCausasAusentismos");
     }
-    
-     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LND = LISTA - NUEVO - DUPLICADO)
-    public void asignarIndex(Integer indice, int dlg, int LND) {
-        index = indice;
+
+    //ASIGNAR INDEX PARA DIALOGOS COMUNES (LND = LISTA - NUEVO - DUPLICADO)
+    public void asignarIndex(Causasausentismos causa, int dlg, int LND) {
+        causasAusentismoSeleccionado = causa;
         RequestContext context = RequestContext.getCurrentInstance();
-        if (LND == 0) {
-            tipoActualizacion = 0;
-        } else if (LND == 1) {
-            tipoActualizacion = 1;
-            index = -1;
-            secRegistro = null;
-            System.out.println("Tipo Actualizacion: " + tipoActualizacion);
-        } else if (LND == 2) {
-            index = -1;
-            secRegistro = null;
-            tipoActualizacion = 2;
-        }
+        tipoActualizacion = LND;
         if (dlg == 0) {
+            modificarInfoRegistroLovClases(lovClasesAusentismos.size());
             context.update("form:clasesAusentismosDialogo");
             context.execute("clasesAusentismosDialogo.show()");
         }
@@ -710,21 +697,21 @@ public class ControlCausasAusentismos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listaCausasAusentismos.get(index).setClase(clasesAusentismosSeleccionado);
-                if (!listaCausasAusentismosCrear.contains(listaCausasAusentismos.get(index))) {
+                causasAusentismoSeleccionado.setClase(clasesAusentismosSeleccionado);
+                if (!listaCausasAusentismosCrear.contains(causasAusentismoSeleccionado)) {
                     if (listaCausasAusentismosModificar.isEmpty()) {
-                        listaCausasAusentismosModificar.add(listaCausasAusentismos.get(index));
-                    } else if (!listaCausasAusentismosModificar.contains(listaCausasAusentismos.get(index))) {
-                        listaCausasAusentismosModificar.add(listaCausasAusentismos.get(index));
+                        listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
+                    } else if (!listaCausasAusentismosModificar.contains(causasAusentismoSeleccionado)) {
+                        listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
                     }
                 }
             } else {
-                filtrarCausasAusentismos.get(index).setClase(clasesAusentismosSeleccionado);
-                if (!listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(index))) {
+                causasAusentismoSeleccionado.setClase(clasesAusentismosSeleccionado);
+                if (!listaCausasAusentismosCrear.contains(causasAusentismoSeleccionado)) {
                     if (listaCausasAusentismosModificar.isEmpty()) {
-                        listaCausasAusentismosModificar.add(filtrarCausasAusentismos.get(index));
-                    } else if (!listaCausasAusentismosModificar.contains(filtrarCausasAusentismos.get(index))) {
-                        listaCausasAusentismosModificar.add(filtrarCausasAusentismos.get(index));
+                        listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
+                    } else if (!listaCausasAusentismosModificar.contains(causasAusentismoSeleccionado)) {
+                        listaCausasAusentismosModificar.add(causasAusentismoSeleccionado);
                     }
                 }
             }
@@ -745,8 +732,8 @@ public class ControlCausasAusentismos implements Serializable {
         lovFiltradoClasesAusentismos = null;
         clasesAusentismosSeleccionado = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        causasAusentismoSeleccionado = null;
+        causasAusentismoSeleccionado = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         context.reset("formularioDialogos:LOVClasesAusentismos:globalFilter");
@@ -759,8 +746,8 @@ public class ControlCausasAusentismos implements Serializable {
         lovFiltradoClasesAusentismos = null;
         clasesAusentismosSeleccionado = null;
         aceptar = true;
-        index = -1;
-        secRegistro = null;
+        causasAusentismoSeleccionado = null;
+        causasAusentismoSeleccionado = null;
         tipoActualizacion = -1;
         cualCelda = -1;
         permitirIndex = true;
@@ -772,12 +759,15 @@ public class ControlCausasAusentismos implements Serializable {
 
     //LISTA DE VALORES DINAMICA
     public void listaValoresBoton() {
-        if (index >= 0) {
+        if (causasAusentismoSeleccionado != null) {
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 2) {
+                habilitarBotonLov();
                 context.update("formularioDialogos:clasesAusentismosDialogo");
                 context.execute("clasesAusentismosDialogo.show()");
                 tipoActualizacion = 0;
+            } else {
+                deshabilitarBotonLov();
             }
         }
     }
@@ -789,8 +779,8 @@ public class ControlCausasAusentismos implements Serializable {
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "CausasAusentismosPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        causasAusentismoSeleccionado = null;
+        causasAusentismoSeleccionado = null;
     }
 
     public void exportXLS() throws IOException {
@@ -799,8 +789,8 @@ public class ControlCausasAusentismos implements Serializable {
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "CausasAusentismosXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
-        index = -1;
-        secRegistro = null;
+        causasAusentismoSeleccionado = null;
+        causasAusentismoSeleccionado = null;
     }
 
     //LIMPIAR NUEVO REGISTRO CAUSA AUSENTISMO
@@ -808,56 +798,38 @@ public class ControlCausasAusentismos implements Serializable {
         nuevaCausasAusentismos = new Causasausentismos();
         nuevaCausasAusentismos.setClase(new Clasesausentismos());
         nuevaCausasAusentismos.getClase().setDescripcion(" ");
-        index = -1;
-        secRegistro = null;
     }
 
     //LIMPIAR DUPLICAR
     public void limpiarDuplicarCausaAusentismo() {
         duplicarCausasAusentismos = new Causasausentismos();
+        duplicarCausasAusentismos.setClase(new Clasesausentismos());
+        duplicarCausasAusentismos.getClase().setDescripcion(" ");
     }
 
     //BORRAR CAUSA AUSENTISMO
     public void borrarCausaAusentismo() {
 
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                if (!listaCausasAusentismosModificar.isEmpty() && listaCausasAusentismosModificar.contains(listaCausasAusentismos.get(index))) {
-                    int modIndex = listaCausasAusentismosModificar.indexOf(listaCausasAusentismos.get(index));
-                    listaCausasAusentismosModificar.remove(modIndex);
-                    listaCausasAusentismosBorrar.add(listaCausasAusentismos.get(index));
-                } else if (!listaCausasAusentismosCrear.isEmpty() && listaCausasAusentismosCrear.contains(listaCausasAusentismos.get(index))) {
-                    int crearIndex = listaCausasAusentismosCrear.indexOf(listaCausasAusentismos.get(index));
-                    listaCausasAusentismosCrear.remove(crearIndex);
-                } else {
-                    listaCausasAusentismosBorrar.add(listaCausasAusentismos.get(index));
-                }
-                listaCausasAusentismos.remove(index);
-                infoRegistro = "Cantidad de registros: " + listaCausasAusentismos.size();
+        if (causasAusentismoSeleccionado != null) {
+            if (!listaCausasAusentismosModificar.isEmpty() && listaCausasAusentismosModificar.contains(causasAusentismoSeleccionado)) {
+                int modIndex = listaCausasAusentismosModificar.indexOf(causasAusentismoSeleccionado);
+                listaCausasAusentismosModificar.remove(modIndex);
+                listaCausasAusentismosBorrar.add(causasAusentismoSeleccionado);
+            } else if (!listaCausasAusentismosCrear.isEmpty() && listaCausasAusentismosCrear.contains(causasAusentismoSeleccionado)) {
+                int crearIndex = listaCausasAusentismosCrear.indexOf(causasAusentismoSeleccionado);
+                listaCausasAusentismosCrear.remove(crearIndex);
+            } else {
+                listaCausasAusentismosBorrar.add(causasAusentismoSeleccionado);
             }
-
+            listaCausasAusentismos.remove(causasAusentismoSeleccionado);
             if (tipoLista == 1) {
-                if (!listaCausasAusentismosModificar.isEmpty() && listaCausasAusentismosModificar.contains(filtrarCausasAusentismos.get(index))) {
-                    int modIndex = listaCausasAusentismosModificar.indexOf(filtrarCausasAusentismos.get(index));
-                    listaCausasAusentismosModificar.remove(modIndex);
-                    listaCausasAusentismosBorrar.add(filtrarCausasAusentismos.get(index));
-                } else if (!listaCausasAusentismosCrear.isEmpty() && listaCausasAusentismosCrear.contains(filtrarCausasAusentismos.get(index))) {
-                    int crearIndex = listaCausasAusentismosCrear.indexOf(filtrarCausasAusentismos.get(index));
-                    listaCausasAusentismosCrear.remove(crearIndex);
-                } else {
-                    listaCausasAusentismosBorrar.add(filtrarCausasAusentismos.get(index));
-                }
-                int CIndex = listaCausasAusentismos.indexOf(filtrarCausasAusentismos.get(index));
-                listaCausasAusentismos.remove(CIndex);
-                filtrarCausasAusentismos.remove(index);
-                infoRegistro = "Cantidad de registros: " + filtrarCausasAusentismos.size();
+                filtrarCausasAusentismos.remove(causasAusentismoSeleccionado);
             }
-
             RequestContext context = RequestContext.getCurrentInstance();
+            modificarInfoRegistro(listaCausasAusentismos.size());
             context.update("form:datosCausasAusentismos");
             context.update("form:informacionRegistro");
-            index = -1;
-            secRegistro = null;
+            causasAusentismoSeleccionado = null;
 
             if (guardado == true) {
                 guardado = false;
@@ -1015,7 +987,8 @@ public class ControlCausasAusentismos implements Serializable {
 
             listaCausasAusentismosCrear.add(nuevaCausasAusentismos);
             listaCausasAusentismos.add(nuevaCausasAusentismos);
-            infoRegistro = "Cantidad de registros: " + listaCausasAusentismos.size();
+            causasAusentismoSeleccionado = nuevaCausasAusentismos;
+            modificarInfoRegistro(listaCausasAusentismos.size());
             context.update("form:infoRegistro");
             nuevaCausasAusentismos = new Causasausentismos();
             context.update("form:datosCausasAusentismos");
@@ -1025,8 +998,6 @@ public class ControlCausasAusentismos implements Serializable {
             }
             context.update("formularioDialogos:NuevoRegistroCausaAusentismo");
             context.execute("NuevoRegistroCausaAusentismo.hide()");
-            index = -1;
-            secRegistro = null;
         } else if (nuevaCausasAusentismos.getClase().getDescripcion() == null || nuevaCausasAusentismos.getClase().getDescripcion().equals("") || nuevaCausasAusentismos.getCodigo() == null) {
             context.update("formularioDialogos:validacionNuevaCausaAusentismo");
             context.execute("validacionNuevaCausaAusentismo.show()");
@@ -1034,41 +1005,39 @@ public class ControlCausasAusentismos implements Serializable {
     }
 
     public void duplicarCausaausentismo() {
-        if (index >= 0) {
+        if (causasAusentismoSeleccionado != null) {
             duplicarCausasAusentismos = new Causasausentismos();
 
             if (tipoLista == 0) {
-                duplicarCausasAusentismos.setCodigo(listaCausasAusentismos.get(index).getCodigo());
-                duplicarCausasAusentismos.setDescripcion(listaCausasAusentismos.get(index).getDescripcion());
-                duplicarCausasAusentismos.setClase(listaCausasAusentismos.get(index).getClase());
-                duplicarCausasAusentismos.setOrigenincapacidad(listaCausasAusentismos.get(index).getOrigenincapacidad());
-                duplicarCausasAusentismos.setPorcentajeliquidacion(listaCausasAusentismos.get(index).getPorcentajeliquidacion());
-                duplicarCausasAusentismos.setRestadiasincapacidad(listaCausasAusentismos.get(index).getRestadiasincapacidad());
-                duplicarCausasAusentismos.setFormaliquidacion(listaCausasAusentismos.get(index).getFormaliquidacion());
-                duplicarCausasAusentismos.setRemunerada(listaCausasAusentismos.get(index).getRemunerada());
-                duplicarCausasAusentismos.setDescuentatiempocontinuo(listaCausasAusentismos.get(index).getDescuentatiempocontinuo());
-                duplicarCausasAusentismos.setRestatiemposoloprestaciones(listaCausasAusentismos.get(index).getRestatiemposoloprestaciones());
-                duplicarCausasAusentismos.setGarantizabasesml(listaCausasAusentismos.get(index).getGarantizabasesml());
+                duplicarCausasAusentismos.setCodigo(causasAusentismoSeleccionado.getCodigo());
+                duplicarCausasAusentismos.setDescripcion(causasAusentismoSeleccionado.getDescripcion());
+                duplicarCausasAusentismos.setClase(causasAusentismoSeleccionado.getClase());
+                duplicarCausasAusentismos.setOrigenincapacidad(causasAusentismoSeleccionado.getOrigenincapacidad());
+                duplicarCausasAusentismos.setPorcentajeliquidacion(causasAusentismoSeleccionado.getPorcentajeliquidacion());
+                duplicarCausasAusentismos.setRestadiasincapacidad(causasAusentismoSeleccionado.getRestadiasincapacidad());
+                duplicarCausasAusentismos.setFormaliquidacion(causasAusentismoSeleccionado.getFormaliquidacion());
+                duplicarCausasAusentismos.setRemunerada(causasAusentismoSeleccionado.getRemunerada());
+                duplicarCausasAusentismos.setDescuentatiempocontinuo(causasAusentismoSeleccionado.getDescuentatiempocontinuo());
+                duplicarCausasAusentismos.setRestatiemposoloprestaciones(causasAusentismoSeleccionado.getRestatiemposoloprestaciones());
+                duplicarCausasAusentismos.setGarantizabasesml(causasAusentismoSeleccionado.getGarantizabasesml());
             }
             if (tipoLista == 1) {
-                duplicarCausasAusentismos.setCodigo(filtrarCausasAusentismos.get(index).getCodigo());
-                duplicarCausasAusentismos.setDescripcion(filtrarCausasAusentismos.get(index).getDescripcion());
-                duplicarCausasAusentismos.setClase(filtrarCausasAusentismos.get(index).getClase());
-                duplicarCausasAusentismos.setOrigenincapacidad(filtrarCausasAusentismos.get(index).getOrigenincapacidad());
-                duplicarCausasAusentismos.setPorcentajeliquidacion(filtrarCausasAusentismos.get(index).getPorcentajeliquidacion());
-                duplicarCausasAusentismos.setRestadiasincapacidad(filtrarCausasAusentismos.get(index).getRestadiasincapacidad());
-                duplicarCausasAusentismos.setFormaliquidacion(filtrarCausasAusentismos.get(index).getFormaliquidacion());
-                duplicarCausasAusentismos.setRemunerada(filtrarCausasAusentismos.get(index).getRemunerada());
-                duplicarCausasAusentismos.setDescuentatiempocontinuo(filtrarCausasAusentismos.get(index).getDescuentatiempocontinuo());
-                duplicarCausasAusentismos.setRestatiemposoloprestaciones(filtrarCausasAusentismos.get(index).getRestatiemposoloprestaciones());
-                duplicarCausasAusentismos.setGarantizabasesml(filtrarCausasAusentismos.get(index).getGarantizabasesml());
+                duplicarCausasAusentismos.setCodigo(causasAusentismoSeleccionado.getCodigo());
+                duplicarCausasAusentismos.setDescripcion(causasAusentismoSeleccionado.getDescripcion());
+                duplicarCausasAusentismos.setClase(causasAusentismoSeleccionado.getClase());
+                duplicarCausasAusentismos.setOrigenincapacidad(causasAusentismoSeleccionado.getOrigenincapacidad());
+                duplicarCausasAusentismos.setPorcentajeliquidacion(causasAusentismoSeleccionado.getPorcentajeliquidacion());
+                duplicarCausasAusentismos.setRestadiasincapacidad(causasAusentismoSeleccionado.getRestadiasincapacidad());
+                duplicarCausasAusentismos.setFormaliquidacion(causasAusentismoSeleccionado.getFormaliquidacion());
+                duplicarCausasAusentismos.setRemunerada(causasAusentismoSeleccionado.getRemunerada());
+                duplicarCausasAusentismos.setDescuentatiempocontinuo(causasAusentismoSeleccionado.getDescuentatiempocontinuo());
+                duplicarCausasAusentismos.setRestatiemposoloprestaciones(causasAusentismoSeleccionado.getRestatiemposoloprestaciones());
+                duplicarCausasAusentismos.setGarantizabasesml(causasAusentismoSeleccionado.getGarantizabasesml());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarCausaAusentismo");
             context.execute("DuplicarRegistroCausaAusentismo.show()");
-            index = -1;
-            secRegistro = null;
         }
     }
 
@@ -1100,8 +1069,8 @@ public class ControlCausasAusentismos implements Serializable {
         }
 
         if (pasa == 0) {
-            index = -1;
-            secRegistro = null;
+            causasAusentismoSeleccionado = null;
+            causasAusentismoSeleccionado = null;
             if (guardado == true) {
                 guardado = false;
                 context.update("form:ACEPTAR");
@@ -1142,9 +1111,10 @@ public class ControlCausasAusentismos implements Serializable {
 
             listaCausasAusentismos.add(duplicarCausasAusentismos);
             listaCausasAusentismosCrear.add(duplicarCausasAusentismos);
+            causasAusentismoSeleccionado = duplicarCausasAusentismos;
             context.update("form:datosCausasAusentismos");
             duplicarCausasAusentismos = new Causasausentismos();
-            infoRegistro = "Cantidad de registros: " + listaCausasAusentismos.size();
+            modificarInfoRegistro(listaCausasAusentismos.size());
             context.update("form:informacionRegistro");
 
             context.update("formularioDialogos:duplicarCausaAusentismo");
@@ -1160,25 +1130,19 @@ public class ControlCausasAusentismos implements Serializable {
     //VERIFICAR RASTRO
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("lol");
-        if (!listaCausasAusentismos.isEmpty()) {
-            if (secRegistro != null) {
-                System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "CAUSASAUSENTISMOS");
-                System.out.println("resultado: " + resultado);
-                if (resultado == 1) {
-                    context.execute("errorObjetosDB.show()");
-                } else if (resultado == 2) {
-                    context.execute("confirmarRastro.show()");
-                } else if (resultado == 3) {
-                    context.execute("errorRegistroRastro.show()");
-                } else if (resultado == 4) {
-                    context.execute("errorTablaConRastro.show()");
-                } else if (resultado == 5) {
-                    context.execute("errorTablaSinRastro.show()");
-                }
-            } else {
-                context.execute("seleccionarRegistro.show()");
+        if (causasAusentismoSeleccionado != null) {
+            int resultado = administrarRastros.obtenerTabla(causasAusentismoSeleccionado.getSecuencia(), "CAUSASAUSENTISMOS");
+            System.out.println("resultado: " + resultado);
+            if (resultado == 1) {
+                context.execute("errorObjetosDB.show()");
+            } else if (resultado == 2) {
+                context.execute("confirmarRastro.show()");
+            } else if (resultado == 3) {
+                context.execute("errorRegistroRastro.show()");
+            } else if (resultado == 4) {
+                context.execute("errorTablaConRastro.show()");
+            } else if (resultado == 5) {
+                context.execute("errorTablaSinRastro.show()");
             }
         } else {
             if (administrarRastros.verificarHistoricosTabla("CAUSASAUSENTISMOS")) {
@@ -1188,7 +1152,7 @@ public class ControlCausasAusentismos implements Serializable {
             }
 
         }
-        index = -1;
+        causasAusentismoSeleccionado = null;
     }
 
     //REFRESCAR LA PAGINA, CANCELAR MODIFICACION SI NO SE A GUARDADO
@@ -1231,20 +1195,14 @@ public class ControlCausasAusentismos implements Serializable {
         listaCausasAusentismosBorrar.clear();
         listaCausasAusentismosCrear.clear();
         listaCausasAusentismosModificar.clear();
-        index = -1;
-        secRegistro = null;
+        causasAusentismoSeleccionado = null;
         k = 0;
         listaCausasAusentismos = null;
         getListaCausasAusentismos();
         for (int i = 0; i < listaCausasAusentismos.size(); i++) {
             System.out.println("Posicion: " + i + "Tiene en origen: " + listaCausasAusentismos.get(i).getOrigenincapacidad());
         }
-        if (listaCausasAusentismos != null && !listaCausasAusentismos.isEmpty()) {
-            causasAusentismoSeleccionado = listaCausasAusentismos.get(0);
-            infoRegistro = "Cantidad de registros: " + listaCausasAusentismos.size();
-        } else {
-            infoRegistro = "Cantidad de registros: 0";
-        }
+        contarRegistros();
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1294,8 +1252,7 @@ public class ControlCausasAusentismos implements Serializable {
         listaCausasAusentismosBorrar.clear();
         listaCausasAusentismosCrear.clear();
         listaCausasAusentismosModificar.clear();
-        index = -1;
-        secRegistro = null;
+        causasAusentismoSeleccionado = null;
         k = 0;
         listaCausasAusentismos = null;
         guardado = true;
@@ -1328,12 +1285,7 @@ public class ControlCausasAusentismos implements Serializable {
                 System.out.println("Se guardaron los datos con exito");
                 listaCausasAusentismos = null;
                 getListaCausasAusentismos();
-                if (listaCausasAusentismos != null && !listaCausasAusentismos.isEmpty()) {
-                    causasAusentismoSeleccionado = listaCausasAusentismos.get(0);
-                    infoRegistro = "Cantidad de registros: " + listaCausasAusentismos.size();
-                } else {
-                    infoRegistro = "Cantidad de registros: 0";
-                }
+                contarRegistros();
                 context.update("form:informacionRegistro");
                 context.update("form:datosCausasAusentismos");
                 guardado = true;
@@ -1343,14 +1295,45 @@ public class ControlCausasAusentismos implements Serializable {
                 context.update("form:growl");
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 k = 0;
-                index = -1;
-                secRegistro = null;
+                causasAusentismoSeleccionado = null;
             }
         } catch (Exception e) {
             FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado, intente nuevamente.");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
         }
+    }
+
+    public void modificarInfoRegistro(int valor) {
+        infoRegistro = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("form:informacionRegistro");
+    }
+
+    public void modificarInfoRegistroLovClases(int valor) {
+        infoRegistroClasesausentismos = String.valueOf(valor);
+        RequestContext.getCurrentInstance().update("formularioDialogos:infoRegistroClasesAusentismos");
+    }
+
+    public void eventoFiltrarLovClases() {
+        modificarInfoRegistroLovClases(lovFiltradoClasesAusentismos.size());
+    }
+
+    public void contarRegistros() {
+        if (listaCausasAusentismos != null) {
+            modificarInfoRegistro(listaCausasAusentismos.size());
+        } else {
+            modificarInfoRegistro(0);
+        }
+    }
+
+    public void habilitarBotonLov() {
+        activarBotonLov = false;
+        RequestContext.getCurrentInstance().update("form:listaValores");
+    }
+
+    public void deshabilitarBotonLov() {
+        activarBotonLov = true;
+        RequestContext.getCurrentInstance().update("form:listaValores");
     }
 
     //Getter & Setters
@@ -1391,15 +1374,9 @@ public class ControlCausasAusentismos implements Serializable {
     }
 
     public List<Clasesausentismos> getLovClasesAusentismos() {
-        lovClasesAusentismos = administrarCausasAusentismos.consultarClasesAusentismos();
-        RequestContext context = RequestContext.getCurrentInstance();
-
-        if (lovClasesAusentismos == null || lovClasesAusentismos.isEmpty()) {
-            infoRegistroClasesausentismos = "Cantidad de registros: 0 ";
-        } else {
-            infoRegistroClasesausentismos = "Cantidad de registros: " + lovClasesAusentismos.size();
+        if (lovClasesAusentismos == null) {
+            lovClasesAusentismos = administrarCausasAusentismos.consultarClasesAusentismos();
         }
-        context.update("formularioDialogos:infoRegistroClasesAusentismos");
         return lovClasesAusentismos;
     }
 
@@ -1487,14 +1464,6 @@ public class ControlCausasAusentismos implements Serializable {
         this.guardado = guardado;
     }
 
-    public BigInteger getSecRegistro() {
-        return secRegistro;
-    }
-
-    public void setSecRegistro(BigInteger secRegistro) {
-        this.secRegistro = secRegistro;
-    }
-
     public String getNombreArchivo() {
         return nombreArchivo;
     }
@@ -1533,6 +1502,14 @@ public class ControlCausasAusentismos implements Serializable {
 
     public void setDuplicarCausasAusentismos(Causasausentismos duplicarCausasAusentismos) {
         this.duplicarCausasAusentismos = duplicarCausasAusentismos;
+    }
+
+    public boolean isActivarBotonLov() {
+        return activarBotonLov;
+    }
+
+    public void setActivarBotonLov(boolean activarBotonLov) {
+        this.activarBotonLov = activarBotonLov;
     }
 
 }

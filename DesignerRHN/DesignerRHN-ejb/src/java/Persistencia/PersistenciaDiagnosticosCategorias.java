@@ -3,8 +3,11 @@
  */
 package Persistencia;
 
+import Entidades.Diagnosticoscapitulos;
 import Entidades.Diagnosticoscategorias;
+import Entidades.Diagnosticossecciones;
 import InterfacePersistencia.PersistenciaDiagnosticosCategoriasInterface;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -24,6 +27,8 @@ public class PersistenciaDiagnosticosCategorias implements PersistenciaDiagnosti
 
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
+     * @param em
+     * @param diagnosticosCategorias
      */
     /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
@@ -52,7 +57,7 @@ public class PersistenciaDiagnosticosCategorias implements PersistenciaDiagnosti
             em.merge(diagnosticosCategorias);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaDiagnosticosCategorias.crear: " + e);
+            System.out.println("Error PersistenciaDiagnosticosCategorias.editar: " + e);
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -83,13 +88,161 @@ public class PersistenciaDiagnosticosCategorias implements PersistenciaDiagnosti
     public List<Diagnosticoscategorias> buscarDiagnosticos(EntityManager em) {
         try {
             em.clear();
-            Query query = em.createQuery("SELECT d FROM Diagnosticoscategorias d ORDER BY d.codigo DESC");
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            String sql = "SELECT * FROM DIAGNOSTICOSCATEGORIAS";
+            Query query = em.createNativeQuery(sql, Diagnosticoscategorias.class);
             List<Diagnosticoscategorias> diagnosticosCategorias = query.getResultList();
             return diagnosticosCategorias;
         } catch (Exception e) {
-            System.out.println("Error en PersistenciaDiagnosticosCategorias buscarDiagnosticos ERROR" + e);
+            System.out.println("Error en PersistenciaDiagnosticosCategorias buscarDiagnosticos ERROR : " + e.getMessage().toString());
             return null;
+        }
+    }
+
+    @Override
+    public List<Diagnosticoscategorias> buscarCategorias(EntityManager em,BigDecimal secSeccion) {
+        try {
+            em.clear();
+            String sql = "SELECT * FROM DIAGNOSTICOSCATEGORIAS WHERE SECCION=?";
+            Query query = em.createNativeQuery(sql, Diagnosticoscategorias.class);
+            query.setParameter(1,secSeccion);
+            List<Diagnosticoscategorias> diagnosticosCategorias = query.getResultList();
+            return diagnosticosCategorias;
+        } catch (Exception e) {
+            System.out.println("Error en PersistenciaDiagnosticosCategorias buscarDiagnosticos ERROR : " + e.getMessage().toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public List<Diagnosticoscapitulos> buscarCapitulo(EntityManager em) {
+        try {
+            em.clear();
+            String sql = "SELECT * FROM DIAGNOSTICOSCAPITULOS";
+            Query query = em.createNativeQuery(sql, Diagnosticoscapitulos.class);
+            List<Diagnosticoscapitulos> diagnosticosCapitulos = query.getResultList();
+            return diagnosticosCapitulos;
+        } catch (Exception e) {
+            System.out.println("Error en PersistenciaDiagnosticosCategorias buscarCapitulo ERROR : " + e.getMessage().toString());
+            return null;
+        }
+    }
+
+    @Override
+    public void crearCapitulo(EntityManager em, Diagnosticoscapitulos diagnosticosCapitulo) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(diagnosticosCapitulo);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaDiagnosticosCategorias.crearCapitulo: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void editarCapitulo(EntityManager em, Diagnosticoscapitulos diagnosticosCapitulo) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(diagnosticosCapitulo);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaDiagnosticosCategorias.editarCapitulo: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void borrarCapitulo(EntityManager em, Diagnosticoscapitulos diagnosticosCapitulo) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(diagnosticosCapitulo));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaDiagnosticosCategorias.borrarCapitulo: " + e);
+            }
+        }
+    }
+
+    @Override
+    public List<Diagnosticossecciones> buscarSeccion(EntityManager em,BigDecimal secCapitulo) {
+        try {
+            em.clear();
+            String sql = "SELECT * FROM DIAGNOSTICOSSECCIONES WHERE CAPITULO = ? ORDER BY CODIGO ASC";
+            Query query = em.createNativeQuery(sql, Diagnosticossecciones.class);
+            query.setParameter(1,secCapitulo);
+            List<Diagnosticossecciones> diagnosticosSecciones = query.getResultList();
+            return diagnosticosSecciones;
+        } catch (Exception e) {
+            System.out.println("Error en PersistenciaDiagnosticosCategorias buscarSección ERROR : " + e.getMessage().toString());
+            return null;
+        }
+    }
+
+    @Override
+    public void crearSeccion(EntityManager em, Diagnosticossecciones diagnosticosSeccion) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(diagnosticosSeccion);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaDiagnosticosCategorias.crearSección: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void editarSeccion(EntityManager em, Diagnosticossecciones diagnosticosSeccion) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(diagnosticosSeccion);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaDiagnosticosCategorias.editarSección: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void borrarSeccion(EntityManager em, Diagnosticossecciones diagnosticosSeccion) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(diagnosticosSeccion));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaDiagnosticosCategorias.borrarSección: " + e);
+            }
         }
     }
 }
