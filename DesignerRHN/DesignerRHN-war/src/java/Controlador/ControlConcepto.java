@@ -1732,12 +1732,8 @@ public class ControlConcepto implements Serializable {
 
     public void verDetalle(Conceptos conceptoS) {
         conceptoSeleccionado = conceptoS;
-        //RequestContext context = RequestContext.getCurrentInstance();
         FacesContext fc = FacesContext.getCurrentInstance();
-        //((ControlDetalleConcepto) fc.getApplication().evaluateExpressionGet(fc, "#{ControlDetalleConcepto}", ControlDetalleConcepto.class)).obtenerConcepto(secuencia);
-
         fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "detalleConcepto");
-//.getElementById('datosConceptos').scrollTop;
     }
 
     public void cargarLovs() {

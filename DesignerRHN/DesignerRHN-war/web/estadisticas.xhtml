@@ -228,140 +228,220 @@
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto1}"/>
                                                 <f:facet name="footer">  
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto1}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/> 
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto1}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto2}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto2}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>   
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto2}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>   
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto3}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto3}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/> 
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto3}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText> 
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto4}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto4}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>     
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto4}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>     
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto5}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto5}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>   
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto5}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto6}"/>
                                                 <f:facet name="footer">                                          
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto6}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>  
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto6}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto7}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto7}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>    
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto7}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto8}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto8}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>  
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto8}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto9}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto9}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>  
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto9}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto10}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto10}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>   
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto10}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto11}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto11}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>   
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto11}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto12}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto12}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>   
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto12}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto13}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto13}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>           
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto13}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto14}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto14}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>   
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto14}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto15}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto15}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>           
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto15}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto16}"/>
                                                 <f:facet name="footer">                                        
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto16}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>    
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto16}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto17}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto17}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>    
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto17}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto18}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto18}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>    
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto18}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto19}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto19}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto19}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;"  width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto20}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto20}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto20}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
@@ -375,70 +455,110 @@
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto21}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto21}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>   
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto21}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto22}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto22}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>     
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto22}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto23}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto23}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>       
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto23}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto24}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto24}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>   
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto24}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto25}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto25}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>      
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto25}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto26}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto26}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>    
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto26}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto27}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto27}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>  
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto27}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto28}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto28}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/> 
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto28}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto29}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto29}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>  
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto29}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto30}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto30}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>     
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto30}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
@@ -459,49 +579,71 @@
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto31}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto31}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/> 
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto31}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto32}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto32}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto32}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto33}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto33}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>  
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto33}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>  
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto34}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto34}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>  
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto34}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>  
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto35}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto35}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>    
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto35}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto36}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto36}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>   
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto36}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto37}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto37}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto37}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
@@ -515,49 +657,77 @@
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto38}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto38}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/> 
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto38}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto39}"/>
                                                 <f:facet name="footer">                                          
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto39}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/> 
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto39}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto40}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto40}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/> 
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto40}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto41}"/>
                                                 <f:facet name="footer">                                           
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto41}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto41}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto42}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto42}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>     
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto42}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto43}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto43}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>     
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto43}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >   
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto44}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto44}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/>      
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto44}" 
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
@@ -571,7 +741,11 @@
                                             <p:column style="text-align: right; border-color: transparent;" width="80" >  
                                                 <h:outputText style="padding: 0px; font-size: 10px; font-weight: bold;" value="#{titulosCol.conjunto45}"/>
                                                 <f:facet name="footer">                                            
-                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto45}" readonly="true" style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;"/> 
+                                                    <h:inputText value="#{controlParametrosConjuntos.parametrosActuales.tituloConjunto45}"
+                                                                 style="position: relative; text-align: right; z-index: 5; margin: auto; width: 98%; height: 11px; border-radius: 4px; left:-2%; color: red; font-size: 9px; font-weight: bold;">
+                                                        <p:ajax event="change" listener="#{controlParametrosConjuntos.modificarParametrosActuales()}" 
+                                                                onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" update="@this"/>
+                                                    </h:inputText>
                                                 </f:facet>
                                             </p:column>
 
@@ -1681,7 +1855,7 @@
                                                     <f:facet name="footer"><h:outputText value="" /></f:facet>
                                                 </f:facet>
                                             </p:column>
-                                                    <!--<p:commandButton value="" style="z-index: 5; width: 115px; height: 10px; border-radius: 0px; margin-left: -10px; margin-right: -10px; background-color: #b2daf2;"/>-->
+                                            <!--<p:commandButton value="" style="z-index: 5; width: 115px; height: 10px; border-radius: 0px; margin-left: -10px; margin-right: -10px; background-color: #b2daf2;"/>-->
                                         </p:dataTable>
                                         <h:outputText id="informacionRegistro" value="#{msg['infoRegistro']} #{controlParametrosConjuntos.infoRegistro}" style="position: absolute; left: 10px; top: 110px; font-weight: bold; z-index: 99;"/>
                                         <p:remoteCommand name="posicionEstadisticas" actionListener="#{controlParametrosConjuntos.posicionEstadisticas()}" onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()"/>
@@ -2054,7 +2228,7 @@
 
                                         <p:ajax event="filter" listener="#{controlParametrosConjuntos.eventoFiltrarLB()}"/>
                                         <p:ajax event="rowSelect" listener="#{controlParametrosConjuntos.cambiarSeleccionLBDefault()}" onstart="tablaEstadisticas.unselectAllRows()"/>
-                                                <!--onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()"-->
+                                        <!--onstart="operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()"-->
 
                                         <p:column headerText="#{msg['descripcion']}" width="220" sortBy="#{infoLB.dimension}" filterBy="#{infoLB.dimension}" filterMatchMode="contains" id="eLBDimension" filterStyle="display: none; visibility: hidden;">  
                                             <p:cellEditor> 

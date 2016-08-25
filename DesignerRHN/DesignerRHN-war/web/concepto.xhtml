@@ -14,72 +14,72 @@
                 <h:form id="form" > 
                     <f:loadBundle basename="Recursos.concepto" var="msg"/>
                     <p:growl id="growl" showDetail="true"/> 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal"> 
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" styleClass="panelTotal">
                         <p:toolbar styleClass="cssToolbar" >  
                             <p:toolbarGroup align="left"> 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px; " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/guardar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;" 
                                                  id="guardarRapido" value="" actionListener="#{controlConcepto.guardarCambios()}" process="@this" />
                                 <p:tooltip  for="guardarRapido" value="#{msg['guardar']}"/>
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/editar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;" 
                                                  id="editar" value="" actionListener="#{controlConcepto.editarCelda()}" process="@this"/>
                                 <p:tooltip  for="editar" value="#{msg['editar']}"/>
 
-                                <p:separator style="position: relative; top: -9px"/>
+                                <p:separator style="position: relative; top: -9px;"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;" 
                                                  id="listaValores" value="" actionListener="#{controlConcepto.listaValoresBoton()}" disabled="#{controlConcepto.activarLov}" process="@this"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}"/>
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/embudo.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;" 
                                                  id="filtrar" value="" actionListener="#{controlConcepto.activarCtrlF11()}" process="@this"/>
                                 <p:tooltip for="filtrar" value="#{msg['filtrar']}"/>
 
-                                <p:separator style="position: relative; top: -9px"/>
+                                <p:separator style="position: relative; top: -9px;"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/excel.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;" 
                                                  id="exportarXLS" value="" ajax="false" actionListener="#{controlConcepto.exportXLS()}"/>
                                 <p:tooltip for="exportarXLS" value="#{msg['xls']}"/>
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/xml.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;" 
                                                  id="exportarXML" value="" actionListener="#{controlConcepto.limpiarNuevoConcepto()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosConceptosExportar" fileName="ConceptosXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}"/>
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/pdf.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;" 
                                                  id="exportarPDF" value="" actionListener="#{controlConcepto.exportPDF()}" ajax="false"/>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}"/>
 
-                                <p:separator style="position: relative; top: -9px"/>
+                                <p:separator style="position: relative; top: -9px;"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/nuevoRegistro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;" 
                                                  id="insertar" value="" oncomplete="NuevoConceptoDialogo.show()"  process="@this"/> 
                                 <p:tooltip for="insertar" value="#{msg['nuevo']}"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/delete.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;" 
                                                  id="eliminar" value="" actionListener="#{controlConcepto.borrarConcepto()}" process="@this"/>  
                                 <p:tooltip  for="eliminar" value="#{msg['eliminar']}"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/duplicar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;" 
                                                  id="duplicar" value="" actionListener="#{controlConcepto.duplicarRegistro()}"  process="@this"/>  
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}"/>
 
-                                <p:separator style="position: relative; top: -9px"/>
+                                <p:separator style="position: relative; top: -9px;"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/rastro.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;" 
                                                  id="rastro" value="" actionListener="#{controlConcepto.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
 
-                                <p:separator style="position: relative; top: -9px"/>
+                                <p:separator style="position: relative; top: -9px;"/>
 
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;" 
                                                  id="refrescar" value="" actionListener="#{controlConcepto.refrescar()}" process="@this" update=":form:datosConceptos" oncomplete="window.location.reload()"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px " 
+                                <p:separator style="position: relative; top: -9px;"/>
+                                <p:commandButton style="background-image: url(Imagenes/Iconos/salir.png); background-size: 100% 100%; background-repeat: no-repeat; border: none; width: 25px; height: 25px;" 
                                                  id="salir" value="" actionListener="#{controlConcepto.refrescar()}" action="#{controlConcepto.redirigir()}" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
                                 
                                 <p:selectOneRadio  id="opciones" value="#{controlConcepto.estadoConceptoEmpresa}" styleClass="ui-radiobutton" 
-                                                   style="font-weight: bold; position: absolute; left: 590px; top: 5px; width: 100%; border-collapse: collapse; background-color: transparent; color: #000000">  
+                                                   style="font-weight: bold; position: absolute; left: 590px; top: 5px; width: 100%; border-collapse: collapse; background-color: transparent; color: #000000;">  
                                     <f:selectItem itemLabel="#{msg['activo']}" itemValue="S"/>
                                     <f:selectItem itemLabel="#{msg['inactivo']}" itemValue="N"/>  
                                     <f:selectItem itemLabel="#{msg['todos']}" itemValue="TODOS"/>
@@ -101,10 +101,10 @@
 
                             <p:dataTable id="datosConceptos" var="concepto" rowKey="#{concepto.secuencia}" rowIndexVar="indice" style="width: 835px; position: relative;"                           
                                          value="#{controlConcepto.listaConceptosEmpresa}" scrollable="true" scrollWidth="835" scrollHeight="#{controlConcepto.altoTabla}" 
-                                         liveScroll="true" scrollRows="20" filteredValue="#{controlConcepto.filtradoConceptosEmpresa}" emptyMessage="#{msg['vacio']}"
+                                         liveScroll="true" scrollRows="40" filteredValue="#{controlConcepto.filtradoConceptosEmpresa}" emptyMessage="#{msg['vacio']}"
                                          widgetVar="datosConceptos" editable="true" editMode="cell" selection="#{controlConcepto.conceptoSeleccionado}" selectionMode="single">
 
-                                <f:event type="preRenderView" listener="#{controlConcepto.recordarSeleccion()}"/>
+                                <!--<f:event type="preRenderView" listener="#/{controlConcepto.recordarSeleccion()}"/>-->
                                 <p:ajax event="filter" listener="#{controlConcepto.eventoFiltrar()}" />
 
                                 <p:column id="columnaDetalleConcepto" width="19" style="padding-left: 5px; padding: 0px; text-align: center;" >                                                              
@@ -116,7 +116,7 @@
                                         <f:facet name="output"><img src="Imagenes/Iconos/editar.png" width="18" height="18"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="D" maxlength="1" style="background-color: blue; width: 6px; height: 6px;" id="editarD">
-                                                <p:ajax event="select" listener="#{controlConcepto.verDetalle(concepto)}" oncomplete="#{controlDetalleConcepto.obtenerConcepto(concepto.secuencia)}" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlDetalleConcepto.obtenerConcepto(concepto.secuencia, 'retornoConcepto')}"/>
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>
@@ -183,9 +183,9 @@
                                 </p:column>  
 
                                 <p:column headerText="#{msg['cu']}" sortBy="#{concepto.unidad.codigo}" filterBy="#{concepto.unidad.codigo}" filterMatchMode="contains" 
-                                          id="columnaCodigoUnidad" width="20" style="padding: 0px; text-align: center" filterStyle="display: none; visibility: hidden;">                                                              
+                                          id="columnaCodigoUnidad" width="20" style="padding: 0px; text-align: center;-" filterStyle="display: none; visibility: hidden;">                                                              
                                     <f:facet name="header">
-                                        <h:outputText id="headerCu" value="#{msg['cu']}" />
+                                        <h:outputText id="headerCu" value="#{msg['cu']}"/>
                                         <p:tooltip  for="headerCu" value="#{msg['cuTtip']}"/> 
                                     </f:facet>
                                     <p:cellEditor>   

@@ -9,6 +9,7 @@ import Entidades.Cuentas;
 import Entidades.Formulas;
 import Entidades.FormulasConceptos;
 import Entidades.GruposConceptos;
+import Entidades.Procesos;
 import Entidades.ReformasLaborales;
 import Entidades.TiposCentrosCostos;
 import Entidades.TiposContratos;
@@ -323,6 +324,7 @@ public interface AdministrarDetalleConceptoInterface {
      */
     public List<FormulasConceptos> consultarLOVFormulasConceptos();
 
+    public List<Procesos> consultarLOVProcesos();
     /**
      * Método encargado de recuperar el número de FormulasConceptos asociadas
      * con un concepto específico. Esto con el fin de determinar si se usa el

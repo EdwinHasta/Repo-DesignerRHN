@@ -6,6 +6,7 @@ import Entidades.Cuentas;
 import Entidades.Formulas;
 import Entidades.FormulasConceptos;
 import Entidades.GruposConceptos;
+import Entidades.Procesos;
 import Entidades.ReformasLaborales;
 import Entidades.TiposCentrosCostos;
 import Entidades.TiposContratos;
@@ -93,9 +94,10 @@ public class ControlDetalleConcepto implements Serializable {
     private int cualCeldaVigenciaCuenta, tipoListaVigenciaCuenta;
     private VigenciasCuentas duplicarVigenciaCuenta;
     private boolean cambiosVigenciaCuenta;
-    private String auxVC_TipoCC, auxVC_Debito, auxVC_DescDeb, auxVC_Credito, auxVC_DescCre, auxVC_ConsDeb, auxVC_ConsCre;
+    private String auxVC_TipoCC, auxVC_Debito, auxVC_DescDeb, auxVC_Credito, auxVC_DescCre, auxVC_ConsDeb, auxVC_ConsCre, auxVC_Proceso;
     private Date auxVC_FechaIni, auxVC_FechaFin;
-    private Column vigenciaCuentaFechaInicial, vigenciaCuentaFechaFinal, vigenciaCuentaTipoCC, vigenciaCuentaDebitoCod, vigenciaCuentaDebitoDes, vigenciaCuentaCCConsolidadorD, vigenciaCuentaCreditoCod, vigenciaCuentaCreditoDes, vigenciaCuentaCCConsolidadorC;
+    private Column vigenciaCuentaFechaInicial, vigenciaCuentaFechaFinal, vigenciaCuentaTipoCC, vigenciaCuentaDebitoCod, vigenciaCuentaDebitoDes,
+            vigenciaCuentaCCConsolidadorD, vigenciaCuentaCreditoCod, vigenciaCuentaCreditoDes, vigenciaCuentaCCProceso, vigenciaCuentaCCConsolidadorC;
     private boolean permitirIndexVigenciaCuenta;
     ///////////////////VigenciasGruposConceptos///////////////////////
     private int banderaVigenciaGrupoConcepto;
@@ -181,6 +183,10 @@ public class ControlDetalleConcepto implements Serializable {
     private List<CentrosCostos> lovCentrosCostos;
     private List<CentrosCostos> filtrarListCentrosCostos;
     private CentrosCostos centroCostoSeleccionadoLOV;
+
+    private List<Procesos> lovProcesos;
+    private List<Procesos> filtrarlovProcesos;
+    private Procesos procesoSeleccionadoLOV;
     /////////////Lista Valores VigenciaGrupoConcepto///////////////////////
     private List<GruposConceptos> lovGruposConceptos;
     private List<GruposConceptos> filtrarListGruposConceptos;
@@ -205,7 +211,7 @@ public class ControlDetalleConcepto implements Serializable {
     private List<FormulasConceptos> lovFormulasConceptos;
     private List<FormulasConceptos> filtrarListFormulasConceptos;
     private FormulasConceptos formulaConceptoSeleccionadoLOV;
-    //////////////Otros////////////////Otros////////////////////
+    //////////////Otros////////////////
     private boolean aceptar;
     private boolean guardado;
     private BigInteger l;
@@ -221,8 +227,10 @@ public class ControlDetalleConcepto implements Serializable {
     private boolean formulaSeleccionada;
     private String paginaRetorno;
     private String conceptoEliminar;
+    private int num;
+    private String pagina;
     ////////////////////////////////
-    private String infoRegistroLovTipoCentroCosto, infoRegistroLovCuentaDebito, infoRegistroLovCuentaCredito, infoRegistroLovCentroCostoDebito, infoRegistroLovCentroCostoCredito,
+    private String infoRegistroLovTipoCentroCosto, infoRegistroLovCuentaDebito, infoRegistroLovCuentaCredito, infoRegistroLovCentroCostoDebito, infoRegistroLovCentroCostoCredito, infoRegistroLovProcesos,
             infoRegistroLovGrupoConcepto, infoRegistroLovTipoTrabajador, infoRegistroLovTipoContrato, infoRegistroLovReformaLaboral, infoRegistroLovFormula, infoRegistroLovFormulasConceptos;
     ////
     public boolean activarLOV;
@@ -264,6 +272,7 @@ public class ControlDetalleConcepto implements Serializable {
         lovReformasLaborales = null;
         lovFormulas = null;
         lovFormulasConceptos = null;
+        lovProcesos = null;
 
         tipoCentroCostoSeleccionadoLOV = null;
         tipoTrabajadorSeleccionadoLOV = null;
@@ -402,6 +411,8 @@ public class ControlDetalleConcepto implements Serializable {
 
         activarLOV = true;
         System.err.println("ControlDetalleConcepto() : 2");
+        num = 1;
+        pagina = "";
     }
 
     @PostConstruct
@@ -420,61 +431,85 @@ public class ControlDetalleConcepto implements Serializable {
         }
     }
 
-    public void obtenerConcepto(BigInteger secuencia) {
-        conceptoActual = administrarDetalleConcepto.consultarConceptoActual(secuencia);
-        if (conceptoActual != null) {
-            Long auto = administrarDetalleConcepto.contarFormulasConceptosConcepto(conceptoActual.getSecuencia());
-            Long semi = administrarDetalleConcepto.contarFormulasNovedadesConcepto(conceptoActual.getSecuencia());
-            System.out.println("obtenerConcepto() auto : " + auto);
-            System.out.println("obtenerConcepto() semi : " + semi);
-            if ((auto == 0 && semi == 0) || auto == null || semi == null) {
-                comportamientoConcepto = conceptoActual.getInfoDetalleConcepto() + "MANUAL";
-            } else {
-                if (auto > 0 && semi > 0) {
-                    comportamientoConcepto = conceptoActual.getInfoDetalleConcepto() + "AUTOMATICO";
-                }
-                if (auto > 0 && semi == 0) {
-                    comportamientoConcepto = conceptoActual.getInfoDetalleConcepto() + "AUTOMATICO";
-                }
-                if (auto == 0 && semi > 0) {
-                    comportamientoConcepto = conceptoActual.getInfoDetalleConcepto() + "SEMI-AUTOMATICO";
+    public void obtenerConcepto(BigInteger secuencia, String paginaEntr) {
+        if (num == 1) {
+            pagina = paginaEntr;
+            conceptoActual = administrarDetalleConcepto.consultarConceptoActual(secuencia);
+            if (conceptoActual != null) {
+                Long auto = administrarDetalleConcepto.contarFormulasConceptosConcepto(conceptoActual.getSecuencia());
+                Long semi = administrarDetalleConcepto.contarFormulasNovedadesConcepto(conceptoActual.getSecuencia());
+                System.out.println("obtenerConcepto() auto : " + auto);
+                System.out.println("obtenerConcepto() semi : " + semi);
+                if ((auto == 0 && semi == 0) || auto == null || semi == null) {
+                    if (conceptoActual.getDescripcion().length() > 60) {
+//                        comportamientoConcepto = conceptoActual.getInfoDetalleConcepto().substring(0, 30) + "/ MANUAL";
+                        comportamientoConcepto = conceptoActual.getCodigo() + " - " + conceptoActual.getDescripcion().substring(0, 59) + " - " + conceptoActual.getNaturalezaConcepto() + " / MANUAL";
+                    } else {
+//                        comportamientoConcepto = conceptoActual.getInfoDetalleConcepto() + "MANUAL";
+                        comportamientoConcepto = conceptoActual.getCodigo() + " - " + conceptoActual.getDescripcion() + " - " + conceptoActual.getNaturalezaConcepto() + " / MANUAL";
+                    }
+                } else {
+                    if ((auto > 0 && semi > 0) || (auto > 0 && semi == 0)) {
+                        if (conceptoActual.getDescripcion().length() > 60) {
+                            comportamientoConcepto = conceptoActual.getCodigo() + " - " + conceptoActual.getDescripcion().substring(0, 59) + " - " + conceptoActual.getNaturalezaConcepto() + " / AUTOMATICO";
+//                            comportamientoConcepto = conceptoActual.getInfoDetalleConcepto().substring(0, 30) + "/ AUTOMATICO";
+                        } else {
+                            comportamientoConcepto = conceptoActual.getCodigo() + " - " + conceptoActual.getDescripcion() + " - " + conceptoActual.getNaturalezaConcepto() + " / AUTOMATICO";
+//                            comportamientoConcepto = conceptoActual.getInfoDetalleConcepto() + "AUTOMATICO";
+                        }
+                    } else if (auto == 0 && semi > 0) {
+                        if (conceptoActual.getDescripcion().length() > 60) {
+                            comportamientoConcepto = conceptoActual.getCodigo() + " - " + conceptoActual.getDescripcion().substring(0, 59) + " - " + conceptoActual.getNaturalezaConcepto() + " / SEMI-AUTOMATICO";
+//                            comportamientoConcepto = conceptoActual.getInfoDetalleConcepto().substring(0, 30) + "/ SEMI-AUTOMATICO";
+                        } else {
+                            comportamientoConcepto = conceptoActual.getCodigo() + " - " + conceptoActual.getDescripcion() + " - " + conceptoActual.getNaturalezaConcepto() + " / SEMI-AUTOMATICO";
+//                        comportamientoConcepto = conceptoActual.getInfoDetalleConcepto() + "SEMI-AUTOMATICO";
+                        }
+                    }
                 }
             }
+            System.out.println("1");
+            getListFormulasConceptos();
+            getListVigenciasConceptosRLConcepto();
+            getListVigenciasConceptosTTConcepto();
+            getListVigenciasConceptosTCConcepto();
+            getListVigenciasGruposConceptos();
+            getListVigenciasCuentasConcepto();
+            contarRegistrosConceptoRL();
+            contarRegistrosConceptoTT();
+            contarRegistrosConceptoTC();
+            contarRegistrosCuentas();
+            contarRegistrosFormulaConcepto();
+            contarRegistrosGrupoC();
+            System.out.println("2");
+            listVigenciasCuentasConcepto = null;
+            listVigenciasGruposConceptos = null;
+            listVigenciasConceptosTTConcepto = null;
+            listVigenciasConceptosTCConcepto = null;
+            listVigenciasConceptosRLConcepto = null;
+            listFormulasConceptos = null;
+            formulaSeleccionada = true;
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                fc.getApplication().getNavigationHandler().handleNavigation(fc, null, "detalleConcepto");
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosVigenciaCuenta");
+                context.update("form:datosVigenciaGrupoConcepto");
+                context.update("form:datosVigenciaConceptoTT");
+                context.update("form:datosVigenciaConceptoTC");
+                context.update("form:datosVigenciaConceptoRL");
+                context.update("form:datosFormulaConcepto");
+                System.out.println("3");
+            } catch (Exception e) {
+                System.out.println("obtenerConcepto() Entro al Catch, Error : " + e.toString());
+            }
+            num++;
         }
-        System.out.println("1");
-        getListFormulasConceptos();
-        getListVigenciasConceptosRLConcepto();
-        getListVigenciasConceptosTTConcepto();
-        getListVigenciasConceptosTCConcepto();
-        getListVigenciasGruposConceptos();
-        getListVigenciasCuentasConcepto();
-        contarRegistrosConceptoRL();
-        contarRegistrosConceptoTT();
-        contarRegistrosConceptoTC();
-        contarRegistrosCuentas();
-        contarRegistrosFormulaConcepto();
-        contarRegistrosGrupoC();
-        System.out.println("2");
-        listVigenciasCuentasConcepto = null;
-        listVigenciasGruposConceptos = null;
-        listVigenciasConceptosTTConcepto = null;
-        listVigenciasConceptosTCConcepto = null;
-        listVigenciasConceptosRLConcepto = null;
-        listFormulasConceptos = null;
-        formulaSeleccionada = true;
-        try{
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciaCuenta");
-        context.update("form:datosVigenciaGrupoConcepto");
-        context.update("form:datosVigenciaConceptoTT");
-        context.update("form:datosVigenciaConceptoTC");
-        context.update("form:datosVigenciaConceptoRL");
-        context.update("form:datosFormulaConcepto");
-        System.out.println("3");
-        }        
-        catch(Exception e){
-            System.out.println("obtenerConcepto() Entro al Catch, Error : " + e.toString()); 
-        }
+    }
+
+    public String retornarPagina() {
+        num = 1;
+        return pagina;
     }
 
     public void modificarVigenciaCuenta() {
@@ -501,6 +536,7 @@ public class ControlDetalleConcepto implements Serializable {
                 vigenciaCuentaSeleccionada.getCuentac().setDescripcion(auxVC_DescCre);
                 vigenciaCuentaSeleccionada.getCuentac().setCodigo(auxVC_Credito);
                 vigenciaCuentaSeleccionada.getConsolidadorc().setNombre(auxVC_ConsCre);
+                vigenciaCuentaSeleccionada.setNombreProceso(auxVC_Proceso);
 
                 context.update("form:datosVigenciaCuenta");
                 context.execute("errorRegNuevo.show()");
@@ -627,6 +663,26 @@ public class ControlDetalleConcepto implements Serializable {
                 permitirIndexVigenciaCuenta = false;
                 context.update("form:DebitoDialogo");
                 context.execute("DebitoDialogo.show()");
+                tipoActualizacion = 0;
+            }
+        }
+        if (columnCambio.equalsIgnoreCase("PROCESO")) {
+            vigenciaCuentaSeleccionada.setNombreProceso(auxVC_Proceso);
+
+            for (int i = 0; i < lovProcesos.size(); i++) {
+                if (lovProcesos.get(i).getDescripcion().startsWith(valor.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                vigenciaCuentaSeleccionada.setProceso(lovProcesos.get(indiceUnicoElemento).getSecuencia());
+                vigenciaCuentaSeleccionada.setNombreProceso(lovProcesos.get(indiceUnicoElemento).getDescripcion());
+            } else {
+                contarRegistrosLovCuentaCredito(0);
+                permitirIndexVigenciaCuenta = false;
+                context.update("form:ProcesosDialogo");
+                context.execute("ProcesosDialogo.show()");
                 tipoActualizacion = 0;
             }
         }
@@ -1123,6 +1179,12 @@ public class ControlDetalleConcepto implements Serializable {
                 } else if (tipoNuevo == 2) {
                     auxVC_ConsCre = duplicarVigenciaCuenta.getConsolidadorc().getNombre();
                 }
+            } else if (Campo.equals("PROCESO")) {
+                if (tipoNuevo == 1) {
+                    auxVC_Proceso = nuevaVigenciaCuenta.getNombreProceso();
+                } else if (tipoNuevo == 2) {
+                    auxVC_Proceso = duplicarVigenciaCuenta.getNombreProceso();
+                }
             }
         }
         if (tabla == 1) {
@@ -1423,6 +1485,39 @@ public class ControlDetalleConcepto implements Serializable {
                     context.update("formularioDialogos:duplicaConsoliCreVC");
                 }
             }
+        } else if (confirmarCambio.equalsIgnoreCase("PROCESO")) {
+            if (tipoNuevo == 1) {
+                nuevaVigenciaCuenta.setNombreProceso(auxVC_Proceso);
+            } else if (tipoNuevo == 2) {
+                duplicarVigenciaCuenta.setNombreProceso(auxVC_Proceso);
+            }
+            for (int i = 0; i < lovProcesos.size(); i++) {
+                if (lovProcesos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                if (tipoNuevo == 1) {
+                    nuevaVigenciaCuenta.setProceso(lovProcesos.get(indiceUnicoElemento).getSecuencia());
+                    nuevaVigenciaCuenta.setNombreProceso(lovProcesos.get(indiceUnicoElemento).getDescripcion());
+                    context.update("formularioDialogos:nuevoProceso");
+                } else if (tipoNuevo == 2) {
+                    duplicarVigenciaCuenta.setProceso(lovProcesos.get(indiceUnicoElemento).getSecuencia());
+                    duplicarVigenciaCuenta.setNombreProceso(lovProcesos.get(indiceUnicoElemento).getDescripcion());
+                    context.update("formularioDialogos:duplicadoProceso");
+                }
+            } else {
+                contarRegistrosLovCentroCostoCredito(0);
+                context.update("form:ProcesosDialogo");
+                context.execute("ProcesosDialogo.show()");
+                tipoActualizacion = tipoNuevo;
+                if (tipoNuevo == 1) {
+                    context.update("formularioDialogos:nuevoProceso");
+                } else if (tipoNuevo == 2) {
+                    context.update("formularioDialogos:duplicadoProceso");
+                }
+            }
         }
     }
 
@@ -1712,6 +1807,7 @@ public class ControlDetalleConcepto implements Serializable {
             auxVC_DescCre = vigenciaCuentaSeleccionada.getCuentac().getDescripcion();
             auxVC_Credito = vigenciaCuentaSeleccionada.getCuentac().getCodigo();
             auxVC_ConsCre = vigenciaCuentaSeleccionada.getConsolidadorc().getNombre();
+            auxVC_Proceso = vigenciaCuentaSeleccionada.getNombreProceso();
 
             vigenciaConceptoTCSeleccionada = null;
             vigenciaConceptoTTSeleccionada = null;
@@ -2531,6 +2627,12 @@ public class ControlDetalleConcepto implements Serializable {
                 context.execute("CentroCostoCDialogo.show()");
                 tipoActualizacion = 0;
             }
+            if (cualCeldaVigenciaCuenta == 9) {
+                contarRegistrosLovProcesos(0);
+                context.update("form:ProcesosDialogo");
+                context.execute("ProcesosDialogo.show()");
+                tipoActualizacion = 0;
+            }
         }
         if (vigenciaGrupoCoSeleccionada != null) {
             if (cualCeldaVigenciaGrupoConcepto == 2) {
@@ -2625,6 +2727,10 @@ public class ControlDetalleConcepto implements Serializable {
                 contarRegistrosLovCentroCostoCredito(0);
                 context.update("form:CentroCostoCDialogo");
                 context.execute("CentroCostoCDialogo.show()");
+            } else if (campo == 9) {
+                contarRegistrosLovProcesos(0);
+                context.update("form:ProcesosDialogo");
+                context.execute("ProcesosDialogo.show()");
             }
         }
         if (tabla == 1) {
@@ -3165,12 +3271,7 @@ public class ControlDetalleConcepto implements Serializable {
                 vigenciaCuentaSeleccionada = listVigenciasCuentasConcepto.get(listVigenciasCuentasConcepto.indexOf(nuevaVigenciaCuenta));
                 contarRegistrosCuentas();
                 ////------////
-                nuevaVigenciaCuenta = new VigenciasCuentas();
-                nuevaVigenciaCuenta.setConsolidadorc(new CentrosCostos());
-                nuevaVigenciaCuenta.setConsolidadord(new CentrosCostos());
-                nuevaVigenciaCuenta.setCuentac(new Cuentas());
-                nuevaVigenciaCuenta.setCuentad(new Cuentas());
-                nuevaVigenciaCuenta.setTipocc(new TiposCentrosCostos());
+                limpiarNuevoVigenciaCuenta();
                 ////-----////
                 context.execute("NuevoRegistroVigenciaCuenta.hide()");
                 context.update("form:datosVigenciaCuenta");
@@ -3195,6 +3296,8 @@ public class ControlDetalleConcepto implements Serializable {
         nuevaVigenciaCuenta.setCuentac(new Cuentas());
         nuevaVigenciaCuenta.setCuentad(new Cuentas());
         nuevaVigenciaCuenta.setTipocc(new TiposCentrosCostos());
+        nuevaVigenciaCuenta.setProceso(new BigInteger("0"));
+        nuevaVigenciaCuenta.setNombreProceso("");
     }
 
     public void agregarNuevoVigenciaGrupoConcepto() {
@@ -3432,6 +3535,8 @@ public class ControlDetalleConcepto implements Serializable {
             duplicarVigenciaCuenta.setFechafinal(vigenciaCuentaSeleccionada.getFechafinal());
             duplicarVigenciaCuenta.setFechainicial(vigenciaCuentaSeleccionada.getFechainicial());
             duplicarVigenciaCuenta.setTipocc(vigenciaCuentaSeleccionada.getTipocc());
+            duplicarVigenciaCuenta.setProceso(vigenciaCuentaSeleccionada.getProceso());
+            duplicarVigenciaCuenta.setNombreProceso(vigenciaCuentaSeleccionada.getNombreProceso());
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:DuplicarRegistroVigenciaCuenta");
@@ -3531,12 +3636,7 @@ public class ControlDetalleConcepto implements Serializable {
                     vigenciaCuentaSeleccionada = listVigenciasCuentasConcepto.get(listVigenciasCuentasConcepto.indexOf(duplicarVigenciaCuenta));
                     contarRegistrosCuentas();
 
-                    duplicarVigenciaCuenta = new VigenciasCuentas();
-                    duplicarVigenciaCuenta.setConsolidadorc(new CentrosCostos());
-                    duplicarVigenciaCuenta.setConsolidadord(new CentrosCostos());
-                    duplicarVigenciaCuenta.setCuentac(new Cuentas());
-                    duplicarVigenciaCuenta.setCuentad(new Cuentas());
-                    duplicarVigenciaCuenta.setTipocc(new TiposCentrosCostos());
+                    limpiarDuplicarVigenciaCuenta();
                     context.update("form:datosVigenciaCuenta");
                     if (guardado == true) {
                         guardado = false;
@@ -3559,7 +3659,8 @@ public class ControlDetalleConcepto implements Serializable {
         duplicarVigenciaCuenta.setConsolidadord(new CentrosCostos());
         duplicarVigenciaCuenta.setCuentac(new Cuentas());
         duplicarVigenciaCuenta.setCuentad(new Cuentas());
-        duplicarVigenciaCuenta.setTipocc(new TiposCentrosCostos());
+        duplicarVigenciaCuenta.setProceso(new BigInteger("0"));
+        duplicarVigenciaCuenta.setNombreProceso("");
     }
 
     public void confirmarDuplicarVigenciaGrupoConcepto() {
@@ -4020,6 +4121,8 @@ public class ControlDetalleConcepto implements Serializable {
             vigenciaCuentaCreditoDes.setFilterStyle("width: 90%");
             vigenciaCuentaCCConsolidadorC = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorC");
             vigenciaCuentaCCConsolidadorC.setFilterStyle("width: 90%");
+            vigenciaCuentaCCProceso = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCProceso");
+            vigenciaCuentaCCProceso.setFilterStyle("width: 90%");
             banderaVigenciaCuenta = 1;
         } else if (banderaVigenciaCuenta == 1) {
             recargarVigenciaCuentaDefault();
@@ -4233,6 +4336,7 @@ public class ControlDetalleConcepto implements Serializable {
         lovReformasLaborales = null;
         lovFormulas = null;
         lovFormulasConceptos = null;
+        lovProcesos = null;
 
         formulaSeleccionada = true;
         paginaRetorno = "";
@@ -4503,6 +4607,52 @@ public class ControlDetalleConcepto implements Serializable {
         context.reset("form:lovCentroCostoC:globalFilter");
         context.execute("lovCentroCostoC.clearFilters()");
         context.execute("CentroCostoCDialogo.hide()");
+    }
+
+    public void actualizarProceso() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (tipoActualizacion == 0) {
+            vigenciaCuentaSeleccionada.setProceso(procesoSeleccionadoLOV.getSecuencia());
+            vigenciaCuentaSeleccionada.setNombreProceso(procesoSeleccionadoLOV.getDescripcion());
+            if (!listVigenciasCuentasCrear.contains(vigenciaCuentaSeleccionada)) {
+                if (listVigenciasCuentasModificar.isEmpty()) {
+                    listVigenciasCuentasModificar.add(vigenciaCuentaSeleccionada);
+                } else if (!listVigenciasCuentasModificar.contains(vigenciaCuentaSeleccionada)) {
+                    listVigenciasCuentasModificar.add(vigenciaCuentaSeleccionada);
+                }
+            }
+            if (guardado == true) {
+                guardado = false;
+                context.update("form:ACEPTAR");
+            }
+            cambiosVigenciaCuenta = true;
+
+            context.update("form:datosVigenciaCuenta");
+        } else if (tipoActualizacion == 1) {
+            nuevaVigenciaCuenta.setProceso(procesoSeleccionadoLOV.getSecuencia());
+            nuevaVigenciaCuenta.setNombreProceso(procesoSeleccionadoLOV.getDescripcion());
+            context.update("formularioDialogos:nuevoProceso");
+        } else if (tipoActualizacion == 2) {
+            duplicarVigenciaCuenta.setProceso(procesoSeleccionadoLOV.getSecuencia());
+            duplicarVigenciaCuenta.setNombreProceso(procesoSeleccionadoLOV.getDescripcion());
+            context.update("formularioDialogos:duplicadoProceso");
+        }
+        cancelarCambioProceso();
+    }
+
+    public void cancelarCambioProceso() {
+        filtrarlovProcesos = null;
+        procesoSeleccionadoLOV = null;
+        aceptar = true;
+        tipoActualizacion = -1;
+        permitirIndexVigenciaCuenta = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:lovProceso");
+        context.update("form:ProcesosDialogo");
+        context.update("form:ProcesosDialogo:aceptarPro");
+        context.reset("form:lovProceso:globalFilter");
+        context.execute("lovProceso.clearFilters()");
+        context.execute("ProcesosDialogo.hide()");
     }
 
     public void actualizarGrupoConcepto() {
@@ -4857,7 +5007,6 @@ public class ControlDetalleConcepto implements Serializable {
             formulaSeleccionada = true;
             RequestContext.getCurrentInstance().update("form:detalleFormula");
         }
-
         return nombreTabla;
     }
 
@@ -5294,6 +5443,8 @@ public class ControlDetalleConcepto implements Serializable {
         vigenciaCuentaCreditoDes.setFilterStyle("display: none; visibility: hidden;");
         vigenciaCuentaCCConsolidadorC = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorC");
         vigenciaCuentaCCConsolidadorC.setFilterStyle("display: none; visibility: hidden;");
+        vigenciaCuentaCCProceso = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCProceso");
+        vigenciaCuentaCCProceso.setFilterStyle("display: none; visibility: hidden;");
         banderaVigenciaCuenta = 0;
         filtrarListVigenciasCuentasConcepto = null;
         tipoListaVigenciaCuenta = 0;
@@ -5432,6 +5583,9 @@ public class ControlDetalleConcepto implements Serializable {
         if (lovCentrosCostos == null) {
             lovCentrosCostos = administrarDetalleConcepto.consultarLOVCentrosCostos();
         }
+        if (lovProcesos == null) {
+            lovProcesos = administrarDetalleConcepto.consultarLOVProcesos();
+        }
         /////////////Lista Valores VigenciaGrupoConcepto///////////////////////
         if (lovGruposConceptos == null) {
             lovGruposConceptos = administrarDetalleConcepto.consultarLOVGruposConceptos();
@@ -5557,6 +5711,17 @@ public class ControlDetalleConcepto implements Serializable {
             infoRegistroLovCuentaCredito = String.valueOf(0);
         }
         RequestContext.getCurrentInstance().update("form:infoRegistroLovCuentaCredito");
+    }
+
+    public void contarRegistrosLovProcesos(int tipoListaLov) {
+        if (tipoListaLov == 1) {
+            infoRegistroLovProcesos = String.valueOf(filtrarlovProcesos.size());
+        } else if (lovProcesos != null) {
+            infoRegistroLovProcesos = String.valueOf(lovProcesos.size());
+        } else {
+            infoRegistroLovProcesos = String.valueOf(0);
+        }
+        RequestContext.getCurrentInstance().update("form:infoRegistroLovProcesos");
     }
 
     public void contarRegistrosLovCentroCostoDebito(int tipoListaLov) {
@@ -6652,12 +6817,44 @@ public class ControlDetalleConcepto implements Serializable {
         this.infoRegistroFormulaConcepto = infoRegistroFormulaConcepto;
     }
 
+    public String getInfoRegistroLovProcesos() {
+        return infoRegistroLovProcesos;
+    }
+
+    public void setInfoRegistroLovProcesos(String infoRegistroLovProcesos) {
+        this.infoRegistroLovProcesos = infoRegistroLovProcesos;
+    }
+
     public boolean isActivarLOV() {
         return activarLOV;
     }
 
     public void setActivarLOV(boolean activarLOV) {
         this.activarLOV = activarLOV;
+    }
+
+    public List<Procesos> getLovProcesos() {
+        return lovProcesos;
+    }
+
+    public void setLovProcesos(List<Procesos> lovProcesos) {
+        this.lovProcesos = lovProcesos;
+    }
+
+    public List<Procesos> getFiltrarlovProcesos() {
+        return filtrarlovProcesos;
+    }
+
+    public void setFiltrarlovProcesos(List<Procesos> filtrarlovProcesos) {
+        this.filtrarlovProcesos = filtrarlovProcesos;
+    }
+
+    public Procesos getProcesoSeleccionadoLOV() {
+        return procesoSeleccionadoLOV;
+    }
+
+    public void setProcesoSeleccionadoLOV(Procesos procesoSeleccionadoLOV) {
+        this.procesoSeleccionadoLOV = procesoSeleccionadoLOV;
     }
 
 }
